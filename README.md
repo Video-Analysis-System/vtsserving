@@ -1,17 +1,17 @@
-# The parody of VtsServing, just for learning
+# The parody of BentoML
 
 <!-- [<img src="https://raw.githubusercontent.com/vtsserving/VtsServing/main/docs/source/_static/img/vtsserving-readme-header.jpeg" width="600px" margin-left="-5px">](https://github.com/vtsserving/VtsServing)
-<br>
+<br> -->
 
-# The Unified Model Serving Framework [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=VtsServing:%20The%20Unified%20Model%20Serving%20Framework%20&url=https://github.com/vtsserving&via=vtsservingai&hashtags=mlops,vtsserving)
+<!-- # The Unified Model Serving Framework [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=VtsServing:%20The%20Unified%20Model%20Serving%20Framework%20&url=https://github.com/vtsserving&via=vtsservingai&hashtags=mlops,vtsserving) -->
 
-[![pypi_status](https://img.shields.io/pypi/v/vtsserving.svg)](https://pypi.org/project/VtsServing)
+<!-- [![pypi_status](https://img.shields.io/pypi/v/vtsserving.svg)](https://pypi.org/project/VtsServing)
 [![downloads](https://pepy.tech/badge/vtsserving)](https://pepy.tech/project/vtsserving)
 [![actions_status](https://github.com/vtsserving/vtsserving/workflows/CI/badge.svg)](https://github.com/vtsserving/vtsserving/actions)
 [![documentation_status](https://readthedocs.org/projects/vtsserving/badge/?version=latest)](https://docs.vtsserving.org/)
-[![join_slack](https://badgen.net/badge/Join/VtsServing%20Slack/cyan?icon=slack)](https://join.slack.vtsserving.org)
+[![join_slack](https://badgen.net/badge/Join/VtsServing%20Slack/cyan?icon=slack)](https://join.slack.vtsserving.org) -->
 
-VtsServing makes it easy to create Machine Learning services that are ready to deploy and scale.
+<!-- VtsServing makes it easy to create Machine Learning services that are ready to deploy and scale.
 
 👉 [Join our Slack community today!](https://l.vtsserving.com/join-slack)
 
@@ -60,7 +60,7 @@ for the easiest and fastest way to deploy your vts.
   - [🚀 vtsctl](https://github.com/vtsserving/vtsctl): Fast model deployment on AWS SageMaker, Lambda, ECE, GCP, Azure, Heroku, and more!
 - Run offline batch inference jobs with Spark or Dask
 - Built-in support for Prometheus metrics and OpenTelemetry
-- Flexible APIs for advanced CI/CD workflows
+- Flexible APIs for advanced CI/CD workflows -->
 
 ## How it works
 
@@ -136,7 +136,7 @@ $ docker run -p 3000:3000 pytorch_mnist:4mymorgurocxjuqj
 Starting production BentoServer from "pytorch_mnist:4mymorgurocxjuqj" running on http://0.0.0.0:3000
 ```
 
-For a more detailed user guide, check out the [VtsServing Tutorial](https://docs.vtsserving.org/en/latest/tutorial.html).
+<!-- For a more detailed user guide, check out the [VtsServing Tutorial](https://docs.vtsserving.org/en/latest/tutorial.html).
 
 ---
 
