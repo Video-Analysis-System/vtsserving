@@ -7,9 +7,9 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 )
 
-require github.com/bentoml/bentoml/grpc/v1alpha1 v0.0.0-unpublished
+require github.com/vtsserving/vtsserving/grpc/v1alpha1 v0.0.0-unpublished
 
-replace github.com/bentoml/bentoml/grpc/v1alpha1 v0.0.0-unpublished => ./github.com/bentoml/bentoml/grpc/v1alpha1
+replace github.com/vtsserving/vtsserving/grpc/v1alpha1 v0.0.0-unpublished => ./github.com/vtsserving/vtsserving/grpc/v1alpha1
 
 require (
 	github.com/golang/protobuf v1.5.2 // indirect

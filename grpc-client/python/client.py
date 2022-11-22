@@ -2,7 +2,7 @@ import asyncio
 
 import grpc
 
-from bentoml.grpc.utils import import_generated_stubs
+from vtsserving.grpc.utils import import_generated_stubs
 
 pb, services = import_generated_stubs()
 

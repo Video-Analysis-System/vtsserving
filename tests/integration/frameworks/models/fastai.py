@@ -15,7 +15,7 @@ from fastai.torch_core import set_seed
 from fastai.tabular.all import tabular_learner
 from fastai.tabular.all import TabularDataLoaders
 
-import bentoml
+import vtsserving
 
 from . import FrameworkTestModel
 from . import FrameworkTestModelInput as Input
@@ -24,9 +24,9 @@ from . import FrameworkTestModelConfiguration as Config
 if TYPE_CHECKING:
     from sklearn.utils import Bunch
 
-    import bentoml._internal.external_typing as ext
+    import vtsserving._internal.external_typing as ext
 
-framework = bentoml.fastai
+framework = vtsserving.fastai
 
 SEED = 123
 

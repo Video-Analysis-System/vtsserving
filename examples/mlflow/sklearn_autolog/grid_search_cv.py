@@ -7,7 +7,7 @@ from sklearn import svm
 from sklearn import datasets
 from sklearn.model_selection import GridSearchCV
 
-import bentoml
+import vtsserving
 
 
 def main():
@@ -37,11 +37,11 @@ def main():
     pd.set_option("display.max_columns", None)  # prevent truncating columns
     print(runs[["run_id", *param_cols, *metric_cols]])
 
-    # import only the best_estimator artifact to BentoML
+    # import only the best_estimator artifact to VtsServing
     artifact_path = "best_estimator"
     model_uri = f"runs:/{run_id}/{artifact_path}"
-    bento_model = bentoml.mlflow.import_model("sklearn_gs_iris", model_uri)
-    print("\nModel imported to BentoML: %s" % bento_model)
+    vts_model = vtsserving.mlflow.import_model("sklearn_gs_iris", model_uri)
+    print("\nModel imported to VtsServing: %s" % vts_model)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-BentoML
+VtsServing
 BentoService
 Colab
 Conda
@@ -41,11 +41,11 @@ args
 autoscale
 aws
 backend
-bento
-bentofile
-bentoignore
-bentoml
-bentos
+vts
+vtsfile
+vtsignore
+vtsserving
+vtss
 catboost
 cbt
 clf

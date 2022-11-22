@@ -12,14 +12,14 @@ import numpy as np
 import pytest
 import fs.errors
 
-from bentoml import Tag
-from bentoml.exceptions import BentoMLException
-from bentoml.testing.pytest import TEST_MODEL_CONTEXT
-from bentoml._internal.models import ModelOptions as InternalModelOptions
-from bentoml._internal.models.model import Model
-from bentoml._internal.models.model import ModelInfo
-from bentoml._internal.models.model import ModelStore
-from bentoml._internal.configuration import VTSSERVING_VERSION
+from vtsserving import Tag
+from vtsserving.exceptions import VtsServingException
+from vtsserving.testing.pytest import TEST_MODEL_CONTEXT
+from vtsserving._internal.models import ModelOptions as InternalModelOptions
+from vtsserving._internal.models.model import Model
+from vtsserving._internal.models.model import ModelInfo
+from vtsserving._internal.models.model import ModelStore
+from vtsserving._internal.configuration import VTSSERVING_VERSION
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -49,7 +49,7 @@ context:
   framework_name: testing
   framework_versions:
     testing: v1
-  bentoml_version: {bentoml_version}
+  vtsserving_version: {vtsserving_version}
   python_version: {python_version}
 signatures:
   predict:
@@ -96,7 +96,7 @@ def test_model_info(tmpdir: "Path"):
     )
     end = datetime.now(timezone.utc)
 
-    assert modelinfo_a.context.bentoml_version == VTSSERVING_VERSION
+    assert modelinfo_a.context.vtsserving_version == VTSSERVING_VERSION
     assert modelinfo_a.context.python_version == TEST_PYTHON_VERSION
     assert start <= modelinfo_a.creation_time <= end
 
@@ -130,7 +130,7 @@ def test_model_info(tmpdir: "Path"):
 
     with open(model_yaml_b_filename, encoding="utf-8") as model_yaml_b:
         assert model_yaml_b.read() == expected_yaml.format(
-            bentoml_version=VTSSERVING_VERSION,
+            vtsserving_version=VTSSERVING_VERSION,
             creation_time=modelinfo_b.creation_time.isoformat(),
             python_version=TEST_PYTHON_VERSION,
         )
@@ -190,8 +190,8 @@ class AdditionClass:
 add_num_1 = 5
 
 
-@pytest.fixture(name="bento_model")
-def fixture_bento_model():
+@pytest.fixture(name="vts_model")
+def fixture_vts_model():
     model = Model.create(
         "testmodel",
         module=__name__,
@@ -207,22 +207,22 @@ def fixture_bento_model():
     return model
 
 
-def test_model_equal(bento_model):
+def test_model_equal(vts_model):
     # note: models are currently considered to be equal if their tag is equal;
     #       this is a test of that behavior
     eq_to_b = Model.create(
         "tmp", module="bar", api_version="v1", signatures={}, context=TEST_MODEL_CONTEXT
     )
-    eq_to_b._tag = bento_model._tag  # type: ignore
+    eq_to_b._tag = vts_model._tag  # type: ignore
 
-    assert eq_to_b == bento_model
-    assert eq_to_b.__hash__() == bento_model.__hash__()
+    assert eq_to_b == vts_model
+    assert eq_to_b.__hash__() == vts_model.__hash__()
 
 
-def test_model_export_import(bento_model, tmpdir: "Path"):
+def test_model_export_import(vts_model, tmpdir: "Path"):
     # note: these tests rely on created models having a system path
-    sys_written_path = bento_model.path_of("sys_written/file")
-    assert sys_written_path == os.path.join(bento_model.path, "sys_written", "file")
+    sys_written_path = vts_model.path_of("sys_written/file")
+    assert sys_written_path == os.path.join(vts_model.path, "sys_written", "file")
 
     os.makedirs(os.path.dirname(sys_written_path))
     sys_written_content = "this is a test\n"
@@ -231,16 +231,16 @@ def test_model_export_import(bento_model, tmpdir: "Path"):
     ) as sys_written_file:
         sys_written_file.write(sys_written_content)
 
-    with open(bento_model.path_of("sys_written/file"), encoding="utf-8") as f:
+    with open(vts_model.path_of("sys_written/file"), encoding="utf-8") as f:
         assert f.read() == sys_written_content
 
     export_tar_path = f"tar://{fs.path.join(str(tmpdir), 'model_b.tar')}"
-    bento_model.export(export_tar_path)
+    vts_model.export(export_tar_path)
     tar_fs = fs.open_fs(export_tar_path)
     from_tar_model = Model.from_fs(tar_fs)
 
-    assert from_tar_model == bento_model
-    assert from_tar_model.info == bento_model.info
+    assert from_tar_model == vts_model
+    assert from_tar_model.info == vts_model.info
     assert (
         from_tar_model._fs.readtext("sys_written/file")  # type: ignore
         == sys_written_content
@@ -249,12 +249,12 @@ def test_model_export_import(bento_model, tmpdir: "Path"):
     with pytest.raises(fs.errors.NoSysPath):
         assert from_tar_model.path
 
-    # tmpdir/modelb.bentomodel
-    export_bentomodel_path = fs.path.join(str(tmpdir), "modelb.bentomodel")
-    bento_model.export(export_bentomodel_path)
+    # tmpdir/modelb.vtsmodel
+    export_vtsmodel_path = fs.path.join(str(tmpdir), "modelb.vtsmodel")
+    vts_model.export(export_vtsmodel_path)
 
     from_fs_model = Model.from_fs(
-        fs.tarfs.TarFS(export_bentomodel_path, compression="xz")
+        fs.tarfs.TarFS(export_vtsmodel_path, compression="xz")
     )
 
     # can cause model.path to fail by using `from_fs`.
@@ -268,12 +268,12 @@ def test_model_export_import(bento_model, tmpdir: "Path"):
         tmpdir,
         os.path.join(from_fs_model.tag.name, from_fs_model.tag.version) + os.path.sep,
     )
-    assert str(from_fs_model) == f'Model(tag="{bento_model.tag}")'
-    assert repr(from_fs_model) == f'Model(tag="{bento_model.tag}", path="{save_path}")'
+    assert str(from_fs_model) == f'Model(tag="{vts_model.tag}")'
+    assert repr(from_fs_model) == f'Model(tag="{vts_model.tag}", path="{save_path}")'
 
 
 def test_load_bad_model(tmpdir: "Path"):
-    with pytest.raises(BentoMLException):
+    with pytest.raises(VtsServingException):
         Model.from_fs(fs.open_fs(os.path.join(tmpdir, "nonexistent"), create=True))
 
     bad_path = os.path.join(tmpdir, "badmodel")
@@ -282,5 +282,5 @@ def test_load_bad_model(tmpdir: "Path"):
         os.path.join(bad_path, "model.yaml"), "w", encoding="utf-8", newline=""
     ) as model_yaml:
         model_yaml.write("bad yaml")
-    with pytest.raises(BentoMLException):
+    with pytest.raises(VtsServingException):
         Model.from_fs(fs.open_fs(bad_path))

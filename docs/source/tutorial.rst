@@ -1,10 +1,10 @@
 ==========================
-Tutorial: Intro to BentoML
+Tutorial: Intro to VtsServing
 ==========================
 
 *time expected: 10 minutes*
 
-In this tutorial, we will focus on online model serving with BentoML, using a
+In this tutorial, we will focus on online model serving with VtsServing, using a
 classification model trained with `scikit-learn <https://scikit-learn.org/stable/>`_ and the Iris dataset.
 By the end of this tutorial, we will have a Bento that can be served easily using HTTP or gRPC for handling inference requests, and a docker
 container image for deployment.
@@ -14,8 +14,8 @@ container image for deployment.
 
     You might be tempted to skip this tutorial because you are not using scikit-learn,
     but give it a chance. The concepts you will learn in the tutorial are fundamental to
-    model serving with any ML framework using BentoML, and mastering it will give you a
-    deep understanding of BentoML.
+    model serving with any ML framework using VtsServing, and mastering it will give you a
+    deep understanding of VtsServing.
 
 
 Setup for the tutorial
@@ -25,7 +25,7 @@ There are three ways to complete this tutorial:
 
 #. Run with Google Colab in your browser
 
-   👉 `Open Tutorial Notebook on Colab <https://colab.research.google.com/github/bentoml/BentoML/blob/main/examples/quickstart/iris_classifier.ipynb>`_
+   👉 `Open Tutorial Notebook on Colab <https://colab.research.google.com/github/vtsserving/VtsServing/blob/main/examples/quickstart/iris_classifier.ipynb>`_
    side by side with this guide. As you go through this guide, you can simply run the
    sample code from the Colab Notebook.
 
@@ -40,18 +40,18 @@ There are three ways to complete this tutorial:
 
    .. code-block:: bash
 
-      » docker run -it --rm -p 8888:8888 -p 3000:3000 -p 3001:3001 bentoml/quickstart:latest
+      » docker run -it --rm -p 8888:8888 -p 3000:3000 -p 3001:3001 vtsserving/quickstart:latest
 
 #. Local Development Environment
 
-   Download the source code of this tutorial from `bentoml/examples <https://github.com/bentoml/BentoML/tree/main/examples>`_:
+   Download the source code of this tutorial from `vtsserving/examples <https://github.com/vtsserving/VtsServing/tree/main/examples>`_:
 
    .. code-block:: bash
 
-      » git clone --depth=1 git@github.com:bentoml/BentoML.git
-      » cd bentoml/examples/quickstart/
+      » git clone --depth=1 git@github.com:vtsserving/VtsServing.git
+      » cd vtsserving/examples/quickstart/
 
-   BentoML supports Linux, Windows and MacOS. You will need Python 3.7 or above to run
+   VtsServing supports Linux, Windows and MacOS. You will need Python 3.7 or above to run
    this tutorial. We recommend using `virtual environment <https://docs.python.org/3/library/venv.html>`_
    to create an isolated local environment. However this is not required.
 
@@ -59,33 +59,33 @@ There are three ways to complete this tutorial:
 
    .. code-block:: bash
 
-      » pip install bentoml scikit-learn pandas
+      » pip install vtsserving scikit-learn pandas
 
 .. note::
 
-   BentoML provides gRPC support, and we will provide gRPC examples alongside the HTTP
+   VtsServing provides gRPC support, and we will provide gRPC examples alongside the HTTP
    ones in this tutorial. However, these examples are optional and you don't have to
-   know about gRPC to get started with BentoML.
+   know about gRPC to get started with VtsServing.
 
    If you are interested in trying the gRPC examples in this tutorial, install
-   the gRPC dependencies for BentoML:
+   the gRPC dependencies for VtsServing:
 
    .. code-block:: bash
 
-      » pip install "bentoml[grpc]"
+      » pip install "vtsserving[grpc]"
 
 
-Saving Models with BentoML
+Saving Models with VtsServing
 --------------------------
 
-To begin with BentoML, you will need to save your trained models with BentoML API in
-its model store (a local directory managed by BentoML). The model store is used for
+To begin with VtsServing, you will need to save your trained models with VtsServing API in
+its model store (a local directory managed by VtsServing). The model store is used for
 managing all your trained models locally as well as accessing them for serving.
 
 .. code-block:: python
    :emphasize-lines: 14,15
 
-   import bentoml
+   import vtsserving
 
    from sklearn import svm
    from sklearn import datasets
@@ -98,8 +98,8 @@ managing all your trained models locally as well as accessing them for serving.
    clf = svm.SVC(gamma='scale')
    clf.fit(X, y)
 
-   # Save model to the BentoML local model store
-   saved_model = bentoml.sklearn.save_model("iris_clf", clf)
+   # Save model to the VtsServing local model store
+   saved_model = vtsserving.sklearn.save_model("iris_clf", clf)
    print(f"Model saved: {saved_model}")
 
    # Model saved: Model(tag="iris_clf:zy3dfgxzqkjrlgxi")
@@ -111,44 +111,44 @@ instance, the original model object can be loaded back into memory for testing v
 
 .. code-block:: python
 
-   model = bentoml.sklearn.load_model("iris_clf:2uo5fkgxj27exuqj")
+   model = vtsserving.sklearn.load_model("iris_clf:2uo5fkgxj27exuqj")
 
    # Alternatively, use `latest` to find the newest version
-   model = bentoml.sklearn.load_model("iris_clf:latest")
+   model = vtsserving.sklearn.load_model("iris_clf:latest")
 
 
-The ``bentoml.sklearn.save_model`` API is built specifically for the Scikit-Learn
+The ``vtsserving.sklearn.save_model`` API is built specifically for the Scikit-Learn
 framework and uses its native saved model format under the hood for best compatibility
 and performance. This goes the same for other ML frameworks, e.g.
-``bentoml.pytorch.save_model``, see the :doc:`frameworks/index` to learn more.
+``vtsserving.pytorch.save_model``, see the :doc:`frameworks/index` to learn more.
 
 
 .. seealso::
 
-   It is possible to use pre-trained models directly with BentoML or import existing
-   trained model files to BentoML. Learn more about it from :doc:`concepts/model`.
+   It is possible to use pre-trained models directly with VtsServing or import existing
+   trained model files to VtsServing. Learn more about it from :doc:`concepts/model`.
 
 
-Saved models can be managed via the ``bentoml models`` CLI command or Python API,
+Saved models can be managed via the ``vtsserving models`` CLI command or Python API,
 learn about it here: :ref:`concepts/model:Managing Models`.
 
 
 Creating a Service
 ------------------
 
-Services are the core components of BentoML, where the serving logic is defined. Create
+Services are the core components of VtsServing, where the serving logic is defined. Create
 a file ``service.py`` with:
 
 .. code-block:: python
    :caption: `service.py`
 
     import numpy as np
-    import bentoml
-    from bentoml.io import NumpyNdarray
+    import vtsserving
+    from vtsserving.io import NumpyNdarray
 
-    iris_clf_runner = bentoml.sklearn.get("iris_clf:latest").to_runner()
+    iris_clf_runner = vtsserving.sklearn.get("iris_clf:latest").to_runner()
 
-    svc = bentoml.Service("iris_classifier", runners=[iris_clf_runner])
+    svc = vtsserving.Service("iris_classifier", runners=[iris_clf_runner])
 
     @svc.api(input=NumpyNdarray(), output=NumpyNdarray())
     def classify(input_series: np.ndarray) -> np.ndarray:
@@ -156,7 +156,7 @@ a file ``service.py`` with:
         return result
 
 
-We can now run the BentoML server for our new service in development mode:
+We can now run the VtsServing server for our new service in development mode:
 
 .. tab-set::
 
@@ -165,26 +165,26 @@ We can now run the BentoML server for our new service in development mode:
 
        .. code-block:: bash
 
-          » bentoml serve service:svc --reload
+          » vtsserving serve service:svc --reload
           2022-09-18T21:11:22-0700 [INFO] [cli] Prometheus metrics for HTTP BentoServer from "service.py:svc" can be accessed at http://localhost:3000/metrics.
           2022-09-18T21:11:22-0700 [INFO] [cli] Starting development HTTP BentoServer from "service.py:svc" listening on 0.0.0.0:3000 (Press CTRL+C to quit)
           2022-09-18 21:11:23 circus[80177] [INFO] Loading the plugin...
           2022-09-18 21:11:23 circus[80177] [INFO] Endpoint: 'tcp://127.0.0.1:61825'
           2022-09-18 21:11:23 circus[80177] [INFO] Pub/sub: 'tcp://127.0.0.1:61826'
-          2022-09-18T21:11:23-0700 [INFO] [observer] Watching directories: ['~/workspace/bentoml/examples/quickstart', '~/bentoml/models']
+          2022-09-18T21:11:23-0700 [INFO] [observer] Watching directories: ['~/workspace/vtsserving/examples/quickstart', '~/vtsserving/models']
 
     .. tab-item:: gRPC
        :sync: grpc
 
        .. code-block:: bash
 
-          » bentoml serve-grpc service:svc --reload --enable-reflection
+          » vtsserving serve-grpc service:svc --reload --enable-reflection
           2022-09-18T21:12:18-0700 [INFO] [cli] Prometheus metrics for gRPC BentoServer from "service.py:svc" can be accessed at http://localhost:3001.
           2022-09-18T21:12:18-0700 [INFO] [cli] Starting development gRPC BentoServer from "service.py:svc" listening on 0.0.0.0:3000 (Press CTRL+C to quit)
           2022-09-18 21:12:19 circus[81102] [INFO] Loading the plugin...
           2022-09-18 21:12:19 circus[81102] [INFO] Endpoint: 'tcp://127.0.0.1:61849'
           2022-09-18 21:12:19 circus[81102] [INFO] Pub/sub: 'tcp://127.0.0.1:61850'
-          2022-09-18T21:12:19-0700 [INFO] [observer] Watching directories: ['~/workspace/bentoml/examples/quickstart', '~/bentoml/models']
+          2022-09-18T21:12:19-0700 [INFO] [observer] Watching directories: ['~/workspace/vtsserving/examples/quickstart', '~/vtsserving/models']
 
 Send prediction request to the service:
 
@@ -235,7 +235,7 @@ Send prediction request to the service:
 
                import grpc
                import numpy as np
-               from bentoml.grpc.utils import import_generated_stubs
+               from vtsserving.grpc.utils import import_generated_stubs
 
                pb, services = import_generated_stubs()
 
@@ -268,7 +268,7 @@ Send prediction request to the service:
 
                   .. code-block:: bash
 
-                     » docker run -i --rm fullstorydev/grpcurl -d @ -plaintext host.docker.internal:3000 bentoml.grpc.v1.BentoService/Call <<EOM
+                     » docker run -i --rm fullstorydev/grpcurl -d @ -plaintext host.docker.internal:3000 vtsserving.grpc.v1.BentoService/Call <<EOM
                      {
                         "apiName": "classify",
                         "ndarray": {
@@ -283,7 +283,7 @@ Send prediction request to the service:
 
                   .. code-block:: bash
 
-                     » docker run -i --rm --network=host fullstorydev/grpcurl -d @ -plaintext 0.0.0.0:3000 bentoml.grpc.v1.BentoService/Call <<EOM
+                     » docker run -i --rm --network=host fullstorydev/grpcurl -d @ -plaintext 0.0.0.0:3000 vtsserving.grpc.v1.BentoService/Call <<EOM
                      {
                         "apiName": "classify",
                         "ndarray": {
@@ -323,7 +323,7 @@ Send prediction request to the service:
 Using Models in a Service
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In this example, ``bentoml.sklearn.get`` creates a reference to the saved model
+In this example, ``vtsserving.sklearn.get`` creates a reference to the saved model
 in the model store, and ``to_runner`` creates a Runner instance from the model.
 The Runner abstraction gives BentoServer more flexibility in terms of how to schedule
 the inference computation, how to dynamically batch inference calls and better take
@@ -333,9 +333,9 @@ You can test out the Runner interface this way:
 
 .. code-block:: python
 
-   import bentoml
+   import vtsserving
 
-   iris_clf_runner = bentoml.sklearn.get("iris_clf:latest").to_runner()
+   iris_clf_runner = vtsserving.sklearn.get("iris_clf:latest").to_runner()
    iris_clf_runner.init_local()
    iris_clf_runner.predict.run([[5.9, 3., 5.1, 1.8]])
 
@@ -347,13 +347,13 @@ You can test out the Runner interface this way:
 Service API and IO Descriptor
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``svc.api`` decorator adds a function to the ``bentoml.Service`` object's
+The ``svc.api`` decorator adds a function to the ``vtsserving.Service`` object's
 APIs list. The ``input`` and ``output`` parameter takes an
 :doc:`IO Descriptor <reference/api_io_descriptors>` object, which specifies the API
 function's expected input/output types, and is used for generating HTTP endpoints.
 
 In this example, both ``input`` and ``output`` are defined with
-:ref:`bentoml.io.NumpyNdarray <reference/api_io_descriptors:NumPy \`\`ndarray\`\`>`, which means
+:ref:`vtsserving.io.NumpyNdarray <reference/api_io_descriptors:NumPy \`\`ndarray\`\`>`, which means
 the API function being decorated, takes a ``numpy.ndarray`` as input, and returns a
 ``numpy.ndarray`` as output.
 
@@ -366,12 +366,12 @@ the API function being decorated, takes a ``numpy.ndarray`` as input, and return
 
 Inside the API function, users can define any business logic, feature fetching, and
 feature transformation code. Model inference calls are made directly through runner
-objects, that are passed into ``bentoml.Service(name=.., runners=[..])`` call when
+objects, that are passed into ``vtsserving.Service(name=.., runners=[..])`` call when
 creating the service object.
 
 .. tip::
 
-   BentoML supports both :ref:`sync and async endpoints <concepts/service:Sync vs Async APIs>`.
+   VtsServing supports both :ref:`sync and async endpoints <concepts/service:Sync vs Async APIs>`.
    For performance sensitive use cases, especially when working with IO-intense
    workloads (e.g. fetching features from multiple sources) or when
    :ref:`composing multiple models <concepts/runner:Serving Multiple Models via Runner>` , you may consider defining an
@@ -391,11 +391,11 @@ Building a Bento 🍱
 -------------------
 
 Once the service definition is finalized, we can build the model and service into a
-``bento``. Bento is the distribution format for a service. It is a self-contained
+``vts``. Bento is the distribution format for a service. It is a self-contained
 archive that contains all the source code, model files and dependency specifications
 required to run the service.
 
-To build a Bento, first create a ``bentofile.yaml`` file in your project directory:
+To build a Bento, first create a ``vtsfile.yaml`` file in your project directory:
 
 .. tab-set::
 
@@ -404,12 +404,12 @@ To build a Bento, first create a ``bentofile.yaml`` file in your project directo
 
        .. code-block:: yaml
 
-          service: "service:svc"  # Same as the argument passed to `bentoml serve`
+          service: "service:svc"  # Same as the argument passed to `vtsserving serve`
           labels:
-             owner: bentoml-team
+             owner: vtsserving-team
              stage: dev
           include:
-          - "*.py"  # A pattern for matching which files to include in the bento
+          - "*.py"  # A pattern for matching which files to include in the vts
           python:
              packages:  # Additional pip packages required by the service
              - scikit-learn
@@ -420,32 +420,32 @@ To build a Bento, first create a ``bentofile.yaml`` file in your project directo
 
        .. code-block:: yaml
 
-          service: "service:svc"  # Same as the argument passed to `bentoml serve`
+          service: "service:svc"  # Same as the argument passed to `vtsserving serve`
           labels:
-             owner: bentoml-team
+             owner: vtsserving-team
              stage: dev
           include:
-          - "*.py"  # A pattern for matching which files to include in the bento
+          - "*.py"  # A pattern for matching which files to include in the vts
           python:
              packages:  # Additional pip packages required by the service
-             - bentoml[grpc]
+             - vtsserving[grpc]
              - scikit-learn
              - pandas
 
 .. tip::
 
-   BentoML provides lots of build options in ``bentofile.yaml`` for customizing the
+   VtsServing provides lots of build options in ``vtsfile.yaml`` for customizing the
    Python dependencies, cuda installation, docker image distro, etc. Read more about it
-   on the :doc:`concepts/bento` page.
+   on the :doc:`concepts/vts` page.
 
 
-Next, run the ``bentoml build`` CLI command from the same directory:
+Next, run the ``vtsserving build`` CLI command from the same directory:
 
 .. code-block:: bash
 
-    » bentoml build
+    » vtsserving build
 
-    Building BentoML service "iris_classifier:6otbsmxzq6lwbgxi" from build context "/home/user/gallery/quickstart"
+    Building VtsServing service "iris_classifier:6otbsmxzq6lwbgxi" from build context "/home/user/gallery/quickstart"
     Packing model "iris_clf:zy3dfgxzqkjrlgxi"
     Locking PyPI package versions..
  
@@ -459,7 +459,7 @@ Next, run the ``bentoml build`` CLI command from the same directory:
     Successfully built Bento(tag="iris_classifier:6otbsmxzq6lwbgxi")
 
 🎉 You've just created your first Bento, and it is now ready for serving in production!
-For starters, you can now serve it with the ``bentoml serve`` CLI command:
+For starters, you can now serve it with the ``vtsserving serve`` CLI command:
 
 .. tab-set::
 
@@ -468,7 +468,7 @@ For starters, you can now serve it with the ``bentoml serve`` CLI command:
 
        .. code-block:: bash
 
-          » bentoml serve iris_classifier:latest --production
+          » vtsserving serve iris_classifier:latest --production
 
           2022-09-18T21:22:17-0700 [INFO] [cli] Environ for worker 0: set CPU thread count to 10
           2022-09-18T21:22:17-0700 [INFO] [cli] Prometheus metrics for HTTP BentoServer from "iris_classifier:latest" can be accessed at http://0.0.0.0:3000/metrics.
@@ -479,7 +479,7 @@ For starters, you can now serve it with the ``bentoml serve`` CLI command:
 
        .. code-block:: bash
 
-          » bentoml serve-grpc iris_classifier:latest --production
+          » vtsserving serve-grpc iris_classifier:latest --production
 
           2022-09-18T21:23:11-0700 [INFO] [cli] Environ for worker 0: set CPU thread count to 10
           2022-09-18T21:23:11-0700 [INFO] [cli] Prometheus metrics for gRPC BentoServer from "iris_classifier:latest" can be accessed at http://0.0.0.0:3001.
@@ -490,9 +490,9 @@ For starters, you can now serve it with the ``bentoml serve`` CLI command:
    The build process resolves ``iris_clf:latest`` and packages the latest version of the ``iris_clf`` model in the model store to ensure the same version of the model gets deployed every time.
 
 
-Bento is the unit of deployment in BentoML, one of the most important artifacts to keep
-track of in your model deployment workflow. BentoML provides CLI commands and APIs for
-managing Bentos and moving them around, see the :ref:`concepts/bento:Managing Bentos`
+Bento is the unit of deployment in VtsServing, one of the most important artifacts to keep
+track of in your model deployment workflow. VtsServing provides CLI commands and APIs for
+managing Bentos and moving them around, see the :ref:`concepts/vts:Managing Bentos`
 section to learn more.
 
 
@@ -500,7 +500,7 @@ Generate Docker Image
 ---------------------
 
 A docker image can be automatically generated from a Bento for production deployment,
-via the ``bentoml containerize`` CLI command:
+via the ``vtsserving containerize`` CLI command:
 
 .. tab-set::
 
@@ -509,7 +509,7 @@ via the ``bentoml containerize`` CLI command:
 
        .. code-block:: bash
 
-          » bentoml containerize iris_classifier:latest
+          » vtsserving containerize iris_classifier:latest
 
           Building docker image for Bento(tag="iris_classifier:6otbsmxzq6lwbgxi")...
           Successfully built docker image for "iris_classifier:6otbsmxzq6lwbgxi" with tags "iris_classifier:6otbsmxzq6lwbgxi"
@@ -520,7 +520,7 @@ via the ``bentoml containerize`` CLI command:
 
        .. code-block:: bash
 
-          » bentoml containerize iris_classifier:latest --enable-features grpc
+          » vtsserving containerize iris_classifier:latest --enable-features grpc
 
           Building docker image for Bento(tag="iris_classifier:6otbsmxzq6lwbgxi")...
           Successfully built docker image for "iris_classifier:6otbsmxzq6lwbgxi" with tags "iris_classifier:6otbsmxzq6lwbgxi"
@@ -540,7 +540,7 @@ via the ``bentoml containerize`` CLI command:
 
    .. code-block:: bash
 
-      » bentoml containerize --platform=linux/amd64 iris_classifier:latest
+      » vtsserving containerize --platform=linux/amd64 iris_classifier:latest
 
 This creates a docker image that includes the Bento, and has all its dependencies
 installed. The docker image tag will be same as the Bento tag by default:
@@ -564,16 +564,16 @@ Run the docker image to start the BentoServer:
 
           » docker run -it --rm -p 3000:3000 iris_classifier:6otbsmxzq6lwbgxi serve --production
 
-          2022-09-19T05:27:31+0000 [INFO] [cli] Service loaded from Bento directory: bentoml.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/bentoml/bento/")
+          2022-09-19T05:27:31+0000 [INFO] [cli] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
           2022-09-19T05:27:31+0000 [WARNING] [cli] GPU not detected. Unable to initialize pynvml lib.
           2022-09-19T05:27:31+0000 [INFO] [cli] Environ for worker 0: set CPU thread count to 4
-          2022-09-19T05:27:31+0000 [INFO] [cli] Prometheus metrics for HTTP BentoServer from "/home/bentoml/bento" can be accessed at http://0.0.0.0:3000/metrics.
-          2022-09-19T05:27:32+0000 [INFO] [cli] Starting production HTTP BentoServer from "/home/bentoml/bento" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
-          2022-09-19T05:27:32+0000 [INFO] [api_server:2] Service loaded from Bento directory: bentoml.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/bentoml/bento/")
-          2022-09-19T05:27:32+0000 [INFO] [api_server:1] Service loaded from Bento directory: bentoml.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/bentoml/bento/")
-          2022-09-19T05:27:32+0000 [INFO] [runner:iris_clf:1] Service loaded from Bento directory: bentoml.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/bentoml/bento/")
-          2022-09-19T05:27:32+0000 [INFO] [api_server:3] Service loaded from Bento directory: bentoml.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/bentoml/bento/")
-          2022-09-19T05:27:32+0000 [INFO] [api_server:4] Service loaded from Bento directory: bentoml.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/bentoml/bento/")
+          2022-09-19T05:27:31+0000 [INFO] [cli] Prometheus metrics for HTTP BentoServer from "/home/vtsserving/vts" can be accessed at http://0.0.0.0:3000/metrics.
+          2022-09-19T05:27:32+0000 [INFO] [cli] Starting production HTTP BentoServer from "/home/vtsserving/vts" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
+          2022-09-19T05:27:32+0000 [INFO] [api_server:2] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:27:32+0000 [INFO] [api_server:1] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:27:32+0000 [INFO] [runner:iris_clf:1] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:27:32+0000 [INFO] [api_server:3] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:27:32+0000 [INFO] [api_server:4] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
 
     .. tab-item:: gRPC
        :sync: grpc
@@ -582,28 +582,28 @@ Run the docker image to start the BentoServer:
 
           » docker run -it --rm -p 3000:3000 -p 3001:3001 iris_classifier:6otbsmxzq6lwbgxi serve-grpc --production
 
-          2022-09-19T05:28:29+0000 [INFO] [cli] Service loaded from Bento directory: bentoml.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/bentoml/bento/")
+          2022-09-19T05:28:29+0000 [INFO] [cli] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
           2022-09-19T05:28:29+0000 [WARNING] [cli] GPU not detected. Unable to initialize pynvml lib.
           2022-09-19T05:28:29+0000 [INFO] [cli] Environ for worker 0: set CPU thread count to 4
-          2022-09-19T05:28:29+0000 [INFO] [cli] Prometheus metrics for gRPC BentoServer from "/home/bentoml/bento" can be accessed at http://0.0.0.0:3001.
-          2022-09-19T05:28:30+0000 [INFO] [cli] Starting production gRPC BentoServer from "/home/bentoml/bento" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
-          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:2] Service loaded from Bento directory: bentoml.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/bentoml/bento/")
-          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:4] Service loaded from Bento directory: bentoml.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/bentoml/bento/")
-          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:3] Service loaded from Bento directory: bentoml.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/bentoml/bento/")
-          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:1] Service loaded from Bento directory: bentoml.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/bentoml/bento/")
-          2022-09-19T05:28:30+0000 [INFO] [runner:iris_clf:1] Service loaded from Bento directory: bentoml.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/bentoml/bento/")
+          2022-09-19T05:28:29+0000 [INFO] [cli] Prometheus metrics for gRPC BentoServer from "/home/vtsserving/vts" can be accessed at http://0.0.0.0:3001.
+          2022-09-19T05:28:30+0000 [INFO] [cli] Starting production gRPC BentoServer from "/home/vtsserving/vts" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
+          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:2] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:4] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:3] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:1] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:28:30+0000 [INFO] [runner:iris_clf:1] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
 
 
-Most of the deployment tools built on top of BentoML use Docker under the hood. It is
+Most of the deployment tools built on top of VtsServing use Docker under the hood. It is
 recommended to test out serving from a containerized Bento docker image first, before
 moving to a production deployment. This helps verify the correctness of all the docker
-and dependency configs specified in the ``bentofile.yaml``.
+and dependency configs specified in the ``vtsfile.yaml``.
 
 
 Deploying Bentos
 ----------------
 
-BentoML standardizes the saved model format, service API definition and the Bento build
+VtsServing standardizes the saved model format, service API definition and the Bento build
 process, which opens up many different deployment options for ML teams.
 
 The Bento we built and the docker image created in the previous steps are designed to
@@ -624,26 +624,26 @@ docker images can be directly deployed to your infrastructure without any modifi
 
 
 For teams looking for an end-to-end solution, with more powerful deployment features
-specific for ML, the BentoML team has also created Yatai and bentoctl:
+specific for ML, the VtsServing team has also created Yatai and vtsctl:
 
 .. grid::  1 2 2 2
     :gutter: 3
     :margin: 0
     :padding: 0
 
-    .. grid-item-card:: `🦄️ Yatai <https://github.com/bentoml/Yatai>`_
-        :link: https://github.com/bentoml/Yatai
+    .. grid-item-card:: `🦄️ Yatai <https://github.com/vtsserving/Yatai>`_
+        :link: https://github.com/vtsserving/Yatai
         :link-type: url
 
         Model Deployment at scale on Kubernetes.
 
-    .. grid-item-card:: `🚀 bentoctl <https://github.com/bentoml/bentoctl>`_
-        :link: https://github.com/bentoml/bentoctl
+    .. grid-item-card:: `🚀 vtsctl <https://github.com/vtsserving/vtsctl>`_
+        :link: https://github.com/vtsserving/vtsctl
         :link-type: url
 
         Fast model deployment on any cloud platform.
 
-Learn more about different deployment options with BentoML from the
+Learn more about different deployment options with VtsServing from the
 :doc:`concepts/deploy` page.
 
 

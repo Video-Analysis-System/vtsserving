@@ -7,9 +7,9 @@ from grpc import aio
 from grpc_health.v1 import health_pb2 as pb_health
 from google.protobuf import wrappers_pb2
 
-from bentoml.grpc.v1 import service_pb2 as pb
-from bentoml.testing.grpc import create_channel
-from bentoml.testing.grpc import async_client_call
+from vtsserving.grpc.v1 import service_pb2 as pb
+from vtsserving.testing.grpc import create_channel
+from vtsserving.testing.grpc import async_client_call
 
 
 @pytest.mark.asyncio
@@ -23,7 +23,7 @@ async def test_success_invocation_custom_servicer(host: str) -> None:
         health = await t.cast(
             t.Awaitable[pb_health.HealthCheckResponse],
             HealthCheck(
-                pb_health.HealthCheckRequest(service="bentoml.grpc.v1.BentoService")
+                pb_health.HealthCheckRequest(service="vtsserving.grpc.v1.BentoService")
             ),
         )
         assert health.status == pb_health.HealthCheckResponse.SERVING  # type: ignore ( no generated enum types)
@@ -35,7 +35,7 @@ async def test_trailing_metadata_interceptors(host: str) -> None:
         await async_client_call(
             "bonjour",
             channel=channel,
-            data={"text": wrappers_pb2.StringValue(value="BentoML")},
+            data={"text": wrappers_pb2.StringValue(value="VtsServing")},
             assert_trailing_metadata=aio.Metadata.from_tuple(
                 (("usage", "NLP"), ("accuracy_score", "0.8247"))
             ),

@@ -1,13 +1,13 @@
-import bentoml
-from bentoml.io import JSON
-from bentoml.io import Text
+import vtsserving
+from vtsserving.io import JSON
+from vtsserving.io import Text
 
-bento_model = bentoml.sklearn.get("20_news_group:latest")
+vts_model = vtsserving.sklearn.get("20_news_group:latest")
 
-target_names = bento_model.custom_objects["target_names"]
-model_runner = bento_model.to_runner()
+target_names = vts_model.custom_objects["target_names"]
+model_runner = vts_model.to_runner()
 
-svc = bentoml.Service("doc_classifier", runners=[model_runner])
+svc = vtsserving.Service("doc_classifier", runners=[model_runner])
 
 
 @svc.api(input=Text(), output=JSON())

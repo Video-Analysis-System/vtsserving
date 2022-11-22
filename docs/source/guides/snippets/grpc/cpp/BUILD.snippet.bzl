@@ -3,7 +3,7 @@ load("@rules_proto_grpc//cpp:defs.bzl", "cc_grpc_library", "cc_proto_library")
 
 proto_library(
     name = "service_v1_proto",
-    srcs = ["bentoml/grpc/v1/service.proto"],
+    srcs = ["vtsserving/grpc/v1/service.proto"],
     deps = ["@com_google_protobuf//:struct_proto", "@com_google_protobuf//:wrappers_proto"],
 )
 

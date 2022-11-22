@@ -1,4 +1,4 @@
-# Simple Python model via bentoml.picklable_model
+# Simple Python model via vtsserving.picklable_model
 
 
 0. Install dependencies:
@@ -16,7 +16,7 @@ python ./model.py
 2. Run the service:
 
 ```bash
-bentoml serve service.py:svc
+vtsserving serve service.py:svc
 ```
 
 3. Send test request:
@@ -28,13 +28,13 @@ curl -X POST -H "content-type: application/json" --data "[1,2,3,4,5]" http://127
 4. Build Bento
 
 ```bash
-bentoml build
+vtsserving build
 ```
 
 5. Build docker image
 
 ```bash
-bentoml containerize simple_square_svc:latest
+vtsserving containerize simple_square_svc:latest
 ```
 
 ```bash

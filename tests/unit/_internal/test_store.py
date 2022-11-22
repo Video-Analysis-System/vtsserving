@@ -9,11 +9,11 @@ import fs
 import attr
 import pytest
 
-from bentoml import Tag
-from bentoml.exceptions import NotFound
-from bentoml.exceptions import BentoMLException
-from bentoml._internal.store import Store
-from bentoml._internal.store import StoreItem
+from vtsserving import Tag
+from vtsserving.exceptions import NotFound
+from vtsserving.exceptions import VtsServingException
+from vtsserving._internal.store import Store
+from vtsserving._internal.store import StoreItem
 
 if sys.version_info < (3, 7):
     from backports.datetime_fromisoformat import MonkeyPatch
@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
     from fs.base import FS
 
-    from bentoml._internal.types import PathType
+    from vtsserving._internal.types import PathType
 
 
 @attr.define(repr=False)
@@ -37,7 +37,7 @@ class DummyItem(StoreItem):
 
     @staticmethod
     def _export_ext() -> str:
-        return "bentodummy"
+        return "vtsdummy"
 
     @property
     def tag(self) -> Tag:
@@ -85,7 +85,7 @@ def test_store(tmpdir: "Path"):
     DummyItem.create("test:version3", creation_time=oldtime)
     time.sleep(1)
     DummyItem.create("test1:version1")
-    with pytest.raises(BentoMLException):
+    with pytest.raises(VtsServingException):
         DummyItem.create("test:version2")
 
     item = store.get("test:version1")
@@ -97,7 +97,7 @@ def test_store(tmpdir: "Path"):
     latest = store.get("test")
     assert latest.tag == Tag("test", "version2")
 
-    with pytest.raises(BentoMLException):
+    with pytest.raises(VtsServingException):
         store.get("test:ver")
 
     with pytest.raises(NotFound):

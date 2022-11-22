@@ -7,9 +7,9 @@ import pandas as pd
 import pytest
 from scipy.sparse import csr_matrix
 
-import bentoml._internal.utils as utils
-from bentoml._internal.types import LazyType
-from bentoml._internal.types import MetadataDict
+import vtsserving._internal.utils as utils
+from vtsserving._internal.types import LazyType
+from vtsserving._internal.types import MetadataDict
 
 
 def test_typeref():

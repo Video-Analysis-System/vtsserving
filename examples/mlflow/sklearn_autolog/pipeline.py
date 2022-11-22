@@ -7,7 +7,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import StandardScaler
 
-import bentoml
+import vtsserving
 
 
 def main():
@@ -29,11 +29,11 @@ def main():
         print("\n---------- logged {} ----------".format(key))
         pprint(data)
 
-    # import logged MLFlow model to BentoML
+    # import logged MLFlow model to VtsServing
     artifact_path = "model"
     model_uri = f"runs:/{run_id}/{artifact_path}"
-    bento_model = bentoml.mlflow.import_model("pipeline_model", model_uri)
-    print("\nModel imported to BentoML: %s" % bento_model)
+    vts_model = vtsserving.mlflow.import_model("pipeline_model", model_uri)
+    print("\nModel imported to VtsServing: %s" % vts_model)
 
 
 if __name__ == "__main__":

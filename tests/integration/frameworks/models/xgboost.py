@@ -10,7 +10,7 @@ import xgboost as xgb
 from sklearn.datasets import load_iris
 from sklearn.datasets import load_breast_cancer
 
-import bentoml
+import vtsserving
 
 from . import FrameworkTestModel
 from . import FrameworkTestModelInput as Input
@@ -19,9 +19,9 @@ from . import FrameworkTestModelConfiguration as Config
 if TYPE_CHECKING:
     from sklearn.utils import Bunch
 
-    from bentoml._internal import external_typing as ext
+    from vtsserving._internal import external_typing as ext
 
-framework = bentoml.xgboost
+framework = vtsserving.xgboost
 
 backward_compatible = True
 

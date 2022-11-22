@@ -1,10 +1,10 @@
 # Developer Guide
 
-Before getting started, check out the `#bentoml-contributors` channel in the [BentoML community slack](https://l.linklyhq.com/l/ktOh).
+Before getting started, check out the `#VTSSERVING-contributors` channel in the [VTSSERVING community slack](https://l.linklyhq.com/l/ktOh).
 
-If you are interested in contributing to existing issues and feature requets, check out the [good-first-issue](https://github.com/bentoml/BentoML/issues?q=is%3Aopen+is%3Aissue+label%3Agood-first-issue) and [help-wanted](https://github.com/bentoml/BentoML/issues?q=is%3Aopen+is%3Aissue+label%3Ahelp-wanted) issues list.
+If you are interested in contributing to existing issues and feature requets, check out the [good-first-issue](https://github.com/VTSSERVING/VTSSERVING/issues?q=is%3Aopen+is%3Aissue+label%3Agood-first-issue) and [help-wanted](https://github.com/VTSSERVING/VTSSERVING/issues?q=is%3Aopen+is%3Aissue+label%3Ahelp-wanted) issues list.
 
-If you are interested in proposing a new feature, make sure to create a new feature request ticket [here](https://github.com/bentoml/BentoML/issues/new/choose) and share your proposal in the `#bentoml-contributors` slack channel for feedback.
+If you are interested in proposing a new feature, make sure to create a new feature request ticket [here](https://github.com/VTSSERVING/VTSSERVING/issues/new/choose) and share your proposal in the `#VTSSERVING-contributors` slack channel for feedback.
 
 ## Start Developing
 
@@ -15,18 +15,18 @@ If you are interested in proposing a new feature, make sure to create a new feat
    Optionally, make sure to have [GNU Make](https://www.gnu.org/software/make/) available on your system if you aren't using a UNIX-based system for a better developer experience.
    If you don't want to use `make` then please refer to the [Makefile](./Makefile) for specific commands on a given make target.
 
-2. Fork the BentoML project on [GitHub](https://github.com/bentoml/BentoML).
+2. Fork the VTSSERVING project on [GitHub](https://github.com/VTSSERVING/VTSSERVING).
 
-3. Clone the source code from your fork of BentoML's GitHub repository:
+3. Clone the source code from your fork of VTSSERVING's GitHub repository:
 
    ```bash
-   git clone git@github.com:username/BentoML.git && cd BentoML
+   git clone git@github.com:username/vtsserving.git && cd VTSSERVING
    ```
 
-4. Add the BentoML upstream remote to your local BentoML clone:
+4. Add the VTSSERVING upstream remote to your local VTSSERVING clone:
 
    ```bash
-   git remote add upstream git@github.com:bentoml/BentoML.git
+   git remote add upstream git@github.com:VTSSERVING/vtsserving.git
    ```
 
 5. Configure git to pull from the upstream remote:
@@ -36,31 +36,31 @@ If you are interested in proposing a new feature, make sure to create a new feat
    git branch --set-upstream-to=upstream/main
    ```
 
-6. Install BentoML with pip in editable mode:
+6. Install VTSSERVING with pip in editable mode:
 
    ```bash
    pip install -e .
    ```
 
-   This installs BentoML in an editable state. The changes you make will automatically be reflected without reinstalling BentoML.
+   This installs VTSSERVING in an editable state. The changes you make will automatically be reflected without reinstalling vtsserving.
 
-7. Install the BentoML development requirements:
+7. Install the VTSSERVING development requirements:
 
    ```bash
    pip install -r ./requirements/dev-requirements.txt
    ```
 
-8. Test the BentoML installation either with `bash`:
+8. Test the VTSSERVING installation either with `bash`:
 
    ```bash
-   bentoml --version
+   VTSSERVING --version
    ```
 
    or in a Python session:
 
    ```python
-   import bentoml
-   print(bentoml.__version__)
+   import VTSSERVING
+   print(vtsserving.__version__)
    ```
 
 </details>
@@ -72,23 +72,23 @@ If you are interested in proposing a new feature, make sure to create a new feat
    - [Python3.7+](https://www.python.org/downloads/)
    - VS Code with the [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python) and [Pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance) extensions
 
-2. Fork the BentoML project on [GitHub](https://github.com/bentoml/BentoML).
+2. Fork the VTSSERVING project on [GitHub](https://github.com/VTSSERVING/VTSSERVING).
 
 3. Clone the GitHub repository:
 
    1. Open the command palette with Ctrl+Shift+P and type in 'clone'.
    2. Select 'Git: Clone(Recursive)'.
-   3. Clone BentoML.
+   3. Clone vtsserving.
 
-4. Add an BentoML upstream remote:
+4. Add an VTSSERVING upstream remote:
 
    1. Open the command palette and enter 'add remote'.
    2. Select 'Git: Add Remote'.
    3. Press enter to select 'Add remote' from GitHub.
-   4. Enter https://github.com/bentoml/BentoML.git to select the BentoML repository.
+   4. Enter https://github.com/VTSSERVING/vtsserving.git to select the VTSSERVING repository.
    5. Name your remote 'upstream'.
 
-5. Pull from the BentoML upstream remote to your main branch:
+5. Pull from the VTSSERVING upstream remote to your main branch:
 
    1. Open the command palette and enter 'checkout'.
    2. Select 'Git: Checkout to...'
@@ -126,7 +126,7 @@ If you are interested in proposing a new feature, make sure to create a new feat
    git switch main
    ```
 
-2. Use the git pull command to retrieve content from the BentoML Github repository.
+2. Use the git pull command to retrieve content from the VTSSERVING Github repository.
 
    ```bash
    git pull
@@ -192,18 +192,18 @@ If you are interested in proposing a new feature, make sure to create a new feat
 
 </details>
 
-## Run BentoML with verbose/debug logging
+## Run VTSSERVING with verbose/debug logging
 
-To view internal debug loggings for development, set the `BENTOML_DEBUG` environment variable to `TRUE`:
+To view internal debug loggings for development, set the `VTSSERVING_DEBUG` environment variable to `TRUE`:
 
 ```bash
-export BENTOML_DEBUG=TRUE
+export VTSSERVING_DEBUG=TRUE
 ```
 
-And/or use the `--verbose` option when running `bentoml` CLI command, e.g.:
+And/or use the `--verbose` option when running `VTSSERVING` CLI command, e.g.:
 
 ```bash
-bentoml get IrisClassifier --verbose
+VTSSERVING get IrisClassifier --verbose
 ```
 
 ## Style check, auto-formatting, type-checking
@@ -215,7 +215,7 @@ linter: [pylint](https://pylint.org/), [buf](https://github.com/bufbuild/buf)
 type checker: [pyright](https://github.com/microsoft/pyright)
 
 We are using [buf](https://github.com/bufbuild/buf) for formatting and linting
-of our proto files. Configuration can be found [here](./bentoml/grpc/buf.yaml).
+of our proto files. Configuration can be found [here](./VTSSERVING/grpc/buf.yaml).
 Currently, we are running `buf` with docker, hence we kindly ask our developers
 to have docker available. Docker installation can be found [here](https://docs.docker.com/get-docker/).
 
@@ -235,34 +235,34 @@ make type
 
 ## Editing proto files
 
-The proto files for the BentoML gRPC service are located under [`bentoml/grpc`](./bentoml/grpc/).
+The proto files for the VTSSERVING gRPC service are located under [`VTSSERVING/grpc`](./VTSSERVING/grpc/).
 The generated python files are not checked in the git repository, and are instead generated via this [`script`](./scripts/generate_grpc_stubs.sh).
 If you edit the proto files, make sure to run `./scripts/generate_grpc_stubs.sh` to
 regenerate the proto stubs.
 
 ## Deploy with your changes
 
-Test test out your changes in an actual BentoML model deployment, you can create a new Bento with your custom BentoML source repo:
+Test test out your changes in an actual VTSSERVING model deployment, you can create a new Bento with your custom VTSSERVING source repo:
 
-1. Install custom BentoML in editable mode. e.g.:
-   - git clone your bentoml fork
+1. Install custom VTSSERVING in editable mode. e.g.:
+   - git clone your VTSSERVING fork
    - `pip install -e PATH_TO_THE_FORK`
-2. Set env var `export BENTOML_BUNDLE_LOCAL_BUILD=True` and `export SETUPTOOLS_USE_DISTUTILS=stdlib`
+2. Set env var `export VTSSERVING_BUNDLE_LOCAL_BUILD=True` and `export SETUPTOOLS_USE_DISTUTILS=stdlib`
    - make sure you have the latest setuptools installed: `pip install -U setuptools`
-3. Build a new Bento with `bentoml build` in your project directory
-4. The new Bento will include a wheel file built from the BentoML source, and
-   `bentoml containerize` will install it to override the default BentoML installation in base image
+3. Build a new Bento with `VTSSERVING build` in your project directory
+4. The new Bento will include a wheel file built from the VTSSERVING source, and
+   `VTSSERVING containerize` will install it to override the default VTSSERVING installation in base image
 
-### Distribute a custom BentoML release for your team
+### Distribute a custom VTSSERVING release for your team
 
-If you want other team members to easily use your custom BentoML distribution, you may publish your
-branch to your fork of BentoML, and have your users install it this way:
+If you want other team members to easily use your custom VTSSERVING distribution, you may publish your
+branch to your fork of VTSSERVING, and have your users install it this way:
 
 ```bash
-pip install git+https://github.com/{YOUR_GITHUB_USERNAME}/bentoml@{YOUR_REVISION}
+pip install git+https://github.com/{YOUR_GITHUB_USERNAME}/VTSSERVING@{YOUR_REVISION}
 ```
 
-And in your BentoML projects' `bentofile.yaml`, force the Bento to install this distribution, e.g.:
+And in your VTSSERVING projects' `vtsfile.yaml`, force the Bento to install this distribution, e.g.:
 
 ```yaml
 service: "service:svc"
@@ -272,7 +272,7 @@ include:
 python:
   packages:
     - pandas
-    - git+https://github.com/{YOUR_GITHUB_USERNAME}/bentoml@{YOUR_REVISION}
+    - git+https://github.com/{YOUR_GITHUB_USERNAME}/VTSSERVING@{YOUR_REVISION}
 docker:
   system_packages:
     - git
@@ -286,10 +286,10 @@ Make sure to install all test dependencies:
 pip install -r requirements/tests-requirements.txt
 ```
 
-BentoML tests come with a Pytest plugin. Export `PYTEST_PLUGINS`:
+VTSSERVING tests come with a Pytest plugin. Export `PYTEST_PLUGINS`:
 
 ```bash
-export PYTEST_PLUGINS=bentoml.testing.pytest.plugin
+export PYTEST_PLUGINS=vtsserving.testing.pytest.plugin
 ```
 
 ### Unit tests
@@ -316,7 +316,7 @@ pytest tests/integration/frameworks/test_frameworks.py --framework pytorch
 
 ```bash
 # example: run e2e tests to check for http general features
-pytest tests/e2e/bento_server_grpc
+pytest tests/e2e/vts_server_grpc
 ```
 
 ### Adding new test suite
@@ -329,11 +329,11 @@ Add a new job for your new framework under [framework.yml](./.github/workflows/f
 
 ## Python tools ecosystem
 
-Currently, BentoML is [PEP518](https://www.python.org/dev/peps/pep-0518/) compatible. We define package configuration via [`pyproject.toml`][https://github.com/bentoml/bentoml/blob/main/pyproject.toml].
+Currently, VTSSERVING is [PEP518](https://www.python.org/dev/peps/pep-0518/) compatible. We define package configuration via [`pyproject.toml`][https://github.com/VTSSERVING/VTSSERVING/blob/main/pyproject.toml].
 
 ## Benchmark
 
-BentoML has moved its benchmark to [`bentoml/benchmark`](https://github.com/bentoml/benchmark).
+VTSSERVING has moved its benchmark to [`VTSSERVING/benchmark`](https://github.com/VTSSERVING/benchmark).
 
 ## Creating Pull Requests on GitHub
 
@@ -357,11 +357,11 @@ specification](https://www.conventionalcommits.org/en/v1.0.0/#summary)
 - revert: (reverts a previous commit)
 
 Once your pull request is created, an automated test run will be triggered on
-your branch and the BentoML authors will be notified to review your code
+your branch and the VTSSERVING authors will be notified to review your code
 changes. Once tests are passed and a reviewer has signed off, we will merge
 your pull request.
 
 ## Documentations
 
-Refer to [BentoML Documentation Guide](./docs/README.md) for how to build and write
+Refer to [VTSSERVING Documentation Guide](./docs/README.md) for how to build and write
 docs.

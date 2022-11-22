@@ -1,17 +1,17 @@
-# MLFlow + PyTorch + BentoML Example
+# MLFlow + PyTorch + VtsServing Example
 
 This example is built on https://github.com/mlflow/mlflow/tree/master/examples/pytorch
 
-Train a PyTorch mnist example model, log the model to mlflow and import MLFlow model to BentoML for serving.
+Train a PyTorch mnist example model, log the model to mlflow and import MLFlow model to VtsServing for serving.
 
 ```bash
 python mnist.py
 ```
 
-Start the prediction service defined with BentoML in `service.py`, using the imported MLflow model:
+Start the prediction service defined with VtsServing in `service.py`, using the imported MLflow model:
 
 ```bash
-bentoml serve service.py:svc
+vtsserving serve service.py:svc
 ```
 
 Test out the serving endpoint:
@@ -25,7 +25,7 @@ curl -X POST -H "Content-Type:application/json" \
 Build Bento and containerize BentoServier for deployment:
 
 ```bash
-bentoml build
+vtsserving build
 
-bentoml containerize mlflow_pytorch_mnist_demo:latest
+vtsserving containerize mlflow_pytorch_mnist_demo:latest
 ```

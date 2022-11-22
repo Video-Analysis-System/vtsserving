@@ -4,15 +4,15 @@ ONNX
 
 .. admonition:: About this page
 
-   This is an API reference for ONNX in BentoML. Please refer to
+   This is an API reference for ONNX in VtsServing. Please refer to
    :doc:`</frameworks/onnx>` for more
-   information about how to use ONNX in BentoML.
+   information about how to use ONNX in VtsServing.
 
 
-.. currentmodule:: bentoml.onnx
+.. currentmodule:: vtsserving.onnx
 
-.. autofunction:: bentoml.onnx.save_model
+.. autofunction:: vtsserving.onnx.save_model
 
-.. autofunction:: bentoml.onnx.load_model
+.. autofunction:: vtsserving.onnx.load_model
 
-.. autofunction:: bentoml.onnx.get
+.. autofunction:: vtsserving.onnx.get

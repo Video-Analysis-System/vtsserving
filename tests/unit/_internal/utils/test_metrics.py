@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import math
 
-from bentoml._internal.utils.metrics import INF
-from bentoml._internal.utils.metrics import metric_name
-from bentoml._internal.utils.metrics import linear_buckets
-from bentoml._internal.utils.metrics import exponential_buckets
+from vtsserving._internal.utils.metrics import INF
+from vtsserving._internal.utils.metrics import metric_name
+from vtsserving._internal.utils.metrics import linear_buckets
+from vtsserving._internal.utils.metrics import exponential_buckets
 
 
 def _assert_equal(actual: tuple[float, ...], expected: tuple[float, ...]):

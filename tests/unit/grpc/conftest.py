@@ -6,13 +6,13 @@ from unittest.mock import PropertyMock
 
 import pytest
 
-from bentoml._internal.utils.lazy_loader import LazyLoader
+from vtsserving._internal.utils.lazy_loader import LazyLoader
 
 if TYPE_CHECKING:
     import grpc
     from grpc import aio
 else:
-    from bentoml.grpc.utils import import_grpc
+    from vtsserving.grpc.utils import import_grpc
 
     grpc, _ = import_grpc()
 

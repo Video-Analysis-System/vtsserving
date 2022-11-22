@@ -9,17 +9,17 @@ import tensorflow as tf
 import keras.layers
 import keras.optimizers
 
-import bentoml
+import vtsserving
 
 from . import FrameworkTestModel
 from . import FrameworkTestModelInput as Input
 from . import FrameworkTestModelConfiguration as Config
 
 if TYPE_CHECKING:
-    from bentoml._internal import external_typing as ext
-    from bentoml._internal.external_typing import tensorflow as tf_ext
+    from vtsserving._internal import external_typing as ext
+    from vtsserving._internal.external_typing import tensorflow as tf_ext
 
-framework = bentoml.keras
+framework = vtsserving.keras
 
 backward_compatible = True
 

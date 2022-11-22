@@ -7,26 +7,26 @@ from unittest.mock import Mock
 import grpc
 import pytest
 
-from bentoml.exceptions import BadInput
-from bentoml.exceptions import InvalidArgument
-from bentoml.exceptions import BentoMLException
-from bentoml.grpc.utils import MethodName
-from bentoml.grpc.utils import to_http_status
-from bentoml.grpc.utils import grpc_status_code
-from bentoml.grpc.utils import wrap_rpc_handler
-from bentoml.grpc.utils import parse_method_name
+from vtsserving.exceptions import BadInput
+from vtsserving.exceptions import InvalidArgument
+from vtsserving.exceptions import VtsServingException
+from vtsserving.grpc.utils import MethodName
+from vtsserving.grpc.utils import to_http_status
+from vtsserving.grpc.utils import grpc_status_code
+from vtsserving.grpc.utils import wrap_rpc_handler
+from vtsserving.grpc.utils import parse_method_name
 
 
 @pytest.mark.parametrize(
     "exception,expected",
     [
-        (BentoMLException, grpc.StatusCode.INTERNAL),
+        (VtsServingException, grpc.StatusCode.INTERNAL),
         (InvalidArgument, grpc.StatusCode.INVALID_ARGUMENT),
         (BadInput, grpc.StatusCode.INVALID_ARGUMENT),
         (
             type(
                 "UnknownException",
-                (BentoMLException,),
+                (VtsServingException,),
                 {"error_code": HTTPStatus.ALREADY_REPORTED},
             ),
             grpc.StatusCode.UNKNOWN,
@@ -34,7 +34,7 @@ from bentoml.grpc.utils import parse_method_name
     ],
 )
 def test_exception_to_grpc_status(
-    exception: t.Type[BentoMLException], expected: grpc.StatusCode
+    exception: t.Type[VtsServingException], expected: grpc.StatusCode
 ):
     assert grpc_status_code(exception("something")) == expected
 

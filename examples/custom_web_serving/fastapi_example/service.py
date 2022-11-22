@@ -3,9 +3,9 @@ import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-import bentoml
-from bentoml.io import JSON
-from bentoml.io import NumpyNdarray
+import vtsserving
+from vtsserving.io import JSON
+from vtsserving.io import NumpyNdarray
 
 
 class IrisFeatures(BaseModel):
@@ -15,14 +15,14 @@ class IrisFeatures(BaseModel):
     petal_width: float
 
 
-bento_model = bentoml.sklearn.get("iris_clf_with_feature_names:latest")
-iris_clf_runner = bento_model.to_runner()
+vts_model = vtsserving.sklearn.get("iris_clf_with_feature_names:latest")
+iris_clf_runner = vts_model.to_runner()
 
-svc = bentoml.Service("iris_fastapi_demo", runners=[iris_clf_runner])
+svc = vtsserving.Service("iris_fastapi_demo", runners=[iris_clf_runner])
 
 
 @svc.api(input=JSON(pydantic_model=IrisFeatures), output=NumpyNdarray())
-async def predict_bentoml(input_data: IrisFeatures) -> np.ndarray:
+async def predict_vtsserving(input_data: IrisFeatures) -> np.ndarray:
     input_df = pd.DataFrame([input_data.dict()])
     return await iris_clf_runner.predict.async_run(input_df)
 
@@ -33,7 +33,7 @@ svc.mount_asgi_app(fastapi_app)
 
 @fastapi_app.get("/metadata")
 def metadata():
-    return {"name": bento_model.tag.name, "version": bento_model.tag.version}
+    return {"name": vts_model.tag.name, "version": vts_model.tag.version}
 
 
 # For demo purpose, here's an identical inference endpoint implemented via FastAPI

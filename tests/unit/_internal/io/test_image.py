@@ -5,18 +5,18 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from bentoml.io import Image
-from bentoml.exceptions import BadInput
-from bentoml.exceptions import InvalidArgument
+from vtsserving.io import Image
+from vtsserving.exceptions import BadInput
+from vtsserving.exceptions import InvalidArgument
 
 if TYPE_CHECKING:
     import numpy as np
     import PIL.Image as PILImage
 
-    from bentoml.grpc.v1 import service_pb2 as pb
+    from vtsserving.grpc.v1 import service_pb2 as pb
 else:
-    from bentoml.grpc.utils import import_generated_stubs
-    from bentoml._internal.utils import LazyLoader
+    from vtsserving.grpc.utils import import_generated_stubs
+    from vtsserving._internal.utils import LazyLoader
 
     pb, _ = import_generated_stubs()
     np = LazyLoader("np", globals(), "numpy")
@@ -25,7 +25,7 @@ else:
 
 def test_invalid_init():
     with pytest.raises(InvalidArgument) as exc_info:
-        Image(mime_type="application/vnd.bentoml+json")
+        Image(mime_type="application/vnd.vtsserving+json")
     assert "Invalid Image mime_type" in str(exc_info.value)
     with pytest.raises(InvalidArgument) as exc_info:
         Image(pilmode="asdf")

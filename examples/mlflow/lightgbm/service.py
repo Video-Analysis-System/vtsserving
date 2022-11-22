@@ -1,11 +1,11 @@
 import numpy as np
 
-import bentoml
-from bentoml.io import NumpyNdarray
+import vtsserving
+from vtsserving.io import NumpyNdarray
 
-lgb_iris_runner = bentoml.mlflow.get("lgb_iris:latest").to_runner()
+lgb_iris_runner = vtsserving.mlflow.get("lgb_iris:latest").to_runner()
 
-svc = bentoml.Service("lgb_iris_service", runners=[lgb_iris_runner])
+svc = vtsserving.Service("lgb_iris_service", runners=[lgb_iris_runner])
 
 input_spec = NumpyNdarray(
     dtype="float64",

@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn import svm
 from sklearn import datasets
 
-import bentoml
+import vtsserving
 
 logging.basicConfig(level=logging.WARN)
 
@@ -21,6 +21,6 @@ if __name__ == "__main__":
     clf = svm.SVC()
     clf.fit(X, y)
 
-    # Save model to BentoML local model store
-    saved_model = bentoml.sklearn.save_model("iris_clf_with_feature_names", clf)
+    # Save model to VtsServing local model store
+    saved_model = vtsserving.sklearn.save_model("iris_clf_with_feature_names", clf)
     print(f"Model saved: {saved_model}")

@@ -2,44 +2,44 @@
 Bento Server
 ============
 
-BentoML Server runs the Service API in an `ASGI <https://asgi.readthedocs.io/en/latest/>`_
-web serving layer and puts Runners in a separate worker process pool managed by BentoML. The ASGI web
+VtsServing Server runs the Service API in an `ASGI <https://asgi.readthedocs.io/en/latest/>`_
+web serving layer and puts Runners in a separate worker process pool managed by VtsServing. The ASGI web
 serving layer will expose REST endpoints for inference APIs, such as ``POST /predict`` and common
 infrastructure APIs, such as ``GET /metrics`` for monitoring.
 
-BentoML offers a number of ways to customize the behaviors of the web serving layer to meet the needs of the consumers.
+VtsServing offers a number of ways to customize the behaviors of the web serving layer to meet the needs of the consumers.
 
 
 Custom Endpoint URL
 -------------------
 
 By default, the inference APIs are generated from the ``@api`` defined within a
-``bentoml.Service``. The URL route for the inference API is determined by the function
+``vtsserving.Service``. The URL route for the inference API is determined by the function
 name. Take the sample service from our tutorial for example, the function name ``classify``
 will be used as the REST API URL ``/classify``:
 
 .. code-block:: python
 
-    svc = bentoml.Service("iris_classifier", runners=[iris_clf_runner])
+    svc = vtsserving.Service("iris_classifier", runners=[iris_clf_runner])
 
     @svc.api(input=NumpyNdarray(), output=NumpyNdarray())
     def classify(input_arr):
         ...
 
 However, user can customize this URL endpoint via the ``route`` option in the
-``bentoml.Service#api`` decorator. For example, the following code will assign the
+``vtsserving.Service#api`` decorator. For example, the following code will assign the
 endpoint with URL ``/v1/models/iris_classifier/predict``, regardless of the API function name:
 
 
 .. code-block:: python
 
     import numpy as np
-    import bentoml
-    from bentoml.io import NumpyNdarray
+    import vtsserving
+    from vtsserving.io import NumpyNdarray
 
-    iris_clf_runner = bentoml.sklearn.get("iris_clf:latest").to_runner()
+    iris_clf_runner = vtsserving.sklearn.get("iris_clf:latest").to_runner()
 
-    svc = bentoml.Service("iris_classifier", runners=[iris_clf_runner])
+    svc = vtsserving.Service("iris_classifier", runners=[iris_clf_runner])
 
     @svc.api(
         input=NumpyNdarray(),
@@ -56,7 +56,7 @@ ASGI Middleware
 ---------------
 
 Since the web serving layer is built with the Python ASGI protocol, users can use the
-:code:`bentoml.Service#add_asgi_middleware` API to mount arbitrary
+:code:`vtsserving.Service#add_asgi_middleware` API to mount arbitrary
 `ASGI middleware <https://asgi.readthedocs.io/en/latest/specs/main.html>`_ to change
 anything they may need to customize in the HTTP request to response lifecycle, such as
 manipulating the request headers, modifying the response status code, or authorizing access to an endpoint.
@@ -74,7 +74,7 @@ For example, you can add do:
     from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
     from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-    svc = bentoml.Service('my_service', runners=[...])
+    svc = vtsserving.Service('my_service', runners=[...])
 
     svc.add_asgi_middleware(TrustedHostMiddleware, allowed_hosts=['example.com', '*.example.com'])
     svc.add_asgi_middleware(HTTPSRedirectMiddleware)
@@ -83,7 +83,7 @@ For example, you can add do:
 Fully Customized Endpoints
 --------------------------
 
-BentoML provides first-class support for mounting existing WSGI or ASGI apps onto the
+VtsServing provides first-class support for mounting existing WSGI or ASGI apps onto the
 web serving layer, to enable common use cases such as serving existing Python web applications alongside
 the models, performing custom authentication and authorization, handling GET requests and web UIs, or
 providing streaming capabilities.
@@ -93,17 +93,17 @@ providing streaming capabilities.
 Bundle ASGI app (e.g. FastAPI)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-BentoML's web serving layer is ASGI native, existing ASGI apps can be mounted directly
-to and serving side-by-side with your BentoML Service.
+VtsServing's web serving layer is ASGI native, existing ASGI apps can be mounted directly
+to and serving side-by-side with your VtsServing Service.
 
-Here’s an example of mounting BentoML Service with an ASGI app built with FastAPI:
+Here’s an example of mounting VtsServing Service with an ASGI app built with FastAPI:
 
 .. code-block:: python
 
     import numpy as np
     import pandas as pd
-    import bentoml
-    from bentoml.io import NumpyNdarray, JSON
+    import vtsserving
+    from vtsserving.io import NumpyNdarray, JSON
     from pydantic import BaseModel
     from fastapi import FastAPI
 
@@ -113,13 +113,13 @@ Here’s an example of mounting BentoML Service with an ASGI app built with Fast
         petal_len: float
         petal_width: float
 
-    bento_model = bentoml.sklearn.get("iris_clf_with_feature_names:latest")
-    iris_clf_runner = bento_model.to_runner()
+    vts_model = vtsserving.sklearn.get("iris_clf_with_feature_names:latest")
+    iris_clf_runner = vts_model.to_runner()
 
-    svc = bentoml.Service("iris_fastapi_demo", runners=[iris_clf_runner])
+    svc = vtsserving.Service("iris_fastapi_demo", runners=[iris_clf_runner])
 
     @svc.api(input=JSON(pydantic_model=IrisFeatures), output=NumpyNdarray())
-    def predict_bentoml(input_data: IrisFeatures) -> np.ndarray:
+    def predict_vtsserving(input_data: IrisFeatures) -> np.ndarray:
         input_df = pd.DataFrame([input_data.dict()])
         return iris_clf_runner.predict.run(input_df)
 
@@ -128,7 +128,7 @@ Here’s an example of mounting BentoML Service with an ASGI app built with Fast
 
     @fastapi_app.get("/metadata")
     def metadata():
-        return {"name": bento_model.tag.name, "version": bento_model.tag.version}
+        return {"name": vts_model.tag.name, "version": vts_model.tag.version}
 
     # For demo purpose, here's an identical inference endpoint implemented via FastAPI
     @fastapi_app.post("/predict_fastapi")
@@ -137,7 +137,7 @@ Here’s an example of mounting BentoML Service with an ASGI app built with Fast
         results = iris_clf_runner.predict.run(input_df)
         return { "prediction": results.tolist()[0] }
 
-    # BentoML Runner's async API is recommended for async endpoints
+    # VtsServing Runner's async API is recommended for async endpoints
     @fastapi_app.post("/predict_fastapi_async")
     async def predict_async(features: IrisFeatures):
         input_df = pd.DataFrame([features.dict()])
@@ -150,27 +150,27 @@ In addition to FastAPI, application mounting is supported for any ASGI web appli
 Bundle WSGI app (e.g. Flask)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For WSGI web apps, such as a Flask app, BentoML provides a different API ``mount_wsgi_app``
+For WSGI web apps, such as a Flask app, VtsServing provides a different API ``mount_wsgi_app``
 which will internally convert the provided WSGI app into an ASGI app and serve side-by-side
-with your BentoML Service.
+with your VtsServing Service.
 
-Here’s an example of mounting BentoML Service with an WSGI app built with Flask:
+Here’s an example of mounting VtsServing Service with an WSGI app built with Flask:
 
 .. code-block:: python
 
     import numpy as np
-    import bentoml
-    from bentoml.io import NumpyNdarray
+    import vtsserving
+    from vtsserving.io import NumpyNdarray
     from flask import Flask, request, jsonify
 
-    bento_model = bentoml.sklearn.get("iris_clf:latest")
-    iris_clf_runner = bento_model.to_runner()
+    vts_model = vtsserving.sklearn.get("iris_clf:latest")
+    iris_clf_runner = vts_model.to_runner()
 
-    svc = bentoml.Service("iris_flask_demo", runners=[iris_clf_runner])
+    svc = vtsserving.Service("iris_flask_demo", runners=[iris_clf_runner])
 
 
     @svc.api(input=NumpyNdarray(), output=NumpyNdarray())
-    def predict_bentoml(input_series: np.ndarray) -> np.ndarray:
+    def predict_vtsserving(input_series: np.ndarray) -> np.ndarray:
         return iris_clf_runner.predict.run(input_series)
 
     flask_app = Flask(__name__)
@@ -178,7 +178,7 @@ Here’s an example of mounting BentoML Service with an WSGI app built with Flas
 
     @flask_app.route("/metadata")
     def metadata():
-        return {"name": bento_model.tag.name, "version": bento_model.tag.version}
+        return {"name": vts_model.tag.name, "version": vts_model.tag.version}
 
     # For demo purpose, here's an identical inference endpoint implemented via FastAPI
     @flask_app.route("/predict_flask", methods=["POST"])

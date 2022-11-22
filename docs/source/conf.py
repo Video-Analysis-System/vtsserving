@@ -1,12 +1,12 @@
 from datetime import datetime
 
-from bentoml import __version__
+from vtsserving import __version__
 
 # -- Project information -----------------------------------------------------
 
-project = "BentoML"
-copyright = f"2022-{datetime.now().year}, bentoml.com"
-author = "bentoml.com"
+project = "VtsServing"
+copyright = f"2022-{datetime.now().year}, vtsserving.com"
+author = "vtsserving.com"
 
 version = __version__
 
@@ -83,12 +83,12 @@ autodoc_typehints_description_target = "documented"
 autosectionlabel_prefix_document = True
 autosectionlabel_maxdepth = 10
 
-ogp_site_url = "http://docs.bentoml.org"
-ogp_image = "https://docs.bentoml.org/en/latest/_images/bentoml-banner.png"
-ogp_site_name = "BentoML Documentation"
+ogp_site_url = "http://docs.vtsserving.org"
+ogp_image = "https://docs.vtsserving.org/en/latest/_images/vtsserving-banner.png"
+ogp_site_name = "VtsServing Documentation"
 ogp_use_first_image = True
 
-issues_default_group_project = "bentoml/bentoml"
+issues_default_group_project = "vtsserving/vtsserving"
 
 todo_include_todos = True
 
@@ -119,20 +119,20 @@ html_theme_options = {
         "color-brand-primary": "#c9378a ",
         "color-brand-content": "#c9378a ",
     },
-    "source_repository": "https://github.com/bentoml/bentoml/",
+    "source_repository": "https://github.com/vtsserving/vtsserving/",
     "source_branch": "main",
     "source_directory": "docs/source/",
     "footer_icons": [
         {
             "name": "GitHub",
-            "url": "https://github.com/bentoml/bentoml",
+            "url": "https://github.com/vtsserving/vtsserving",
             "html": " 🍱 ",
             "class": "",
         },
     ],
 }
 
-html_title = "BentoML"
+html_title = "VtsServing"
 html_logo = "_static/img/logo.svg"
 html_static_path = ["_static"]
 html_css_files = ["css/custom.css"]
@@ -141,7 +141,7 @@ html_show_sphinx = False
 html_favicon = "_static/img/favicon-96x96.ico"
 
 # Private dictionary for spell checker
-spelling_word_list_filename = ["bentoml_wordlist.txt"]
+spelling_word_list_filename = ["vtsserving_wordlist.txt"]
 
 # mock any heavy imports, eg: imports from frameworks library
 autodoc_mock_imports = [
@@ -168,5 +168,5 @@ autodoc_mock_imports = [
     "xgboost",
     "catboost",
     "prometheus_client",
-    "bentoml._internal.models.model.ModelSignatureDict",
+    "vtsserving._internal.models.model.ModelSignatureDict",
 ]

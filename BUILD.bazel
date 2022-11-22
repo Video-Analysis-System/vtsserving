@@ -14,7 +14,7 @@ buildifier(
 
 proto_library(
     name = "service_v1alpha1_proto",
-    srcs = ["src/bentoml/grpc/v1alpha1/service.proto"],
+    srcs = ["src/vtsserving/grpc/v1alpha1/service.proto"],
     visibility = ["//grpc-client:__subpackages__"],
     deps = [
         "@com_google_protobuf//:struct_proto",
@@ -24,7 +24,7 @@ proto_library(
 
 proto_library(
     name = "service_v1_proto",
-    srcs = ["src/bentoml/grpc/v1/service.proto"],
+    srcs = ["src/vtsserving/grpc/v1/service.proto"],
     visibility = ["//grpc-client:__subpackages__"],
     deps = [
         "@com_google_protobuf//:struct_proto",

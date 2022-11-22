@@ -8,4 +8,4 @@ dependencies:
       - mlflow>=1.6.0
       - matplotlib
       - lightgbm
-      - bentoml>=1.0.0rc3
+      - vtsserving>=1.0.0rc3

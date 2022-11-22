@@ -1,18 +1,18 @@
 blank_issues_enabled: true
 version: 2.1
 contact_links:
-  - name: BentoML's Documentation
-    url: https://docs.bentoml.org/en/latest/
-    about: For more information about BentoML's tutorials, guides, API references and architectures deep-dive.
-  - name: BentoML Discussions
-    url: https://github.com/bentoml/BentoML/discussions
+  - name: VtsServing's Documentation
+    url: https://docs.vtsserving.org/en/latest/
+    about: For more information about VtsServing's tutorials, guides, API references and architectures deep-dive.
+  - name: VtsServing Discussions
+    url: https://github.com/vtsserving/VtsServing/discussions
     about: Please ask general questions here.
-  - name: BentoML Slack Community
-    url: https://join.slack.bentoml.org
+  - name: VtsServing Slack Community
+    url: https://join.slack.vtsserving.org
     about: For connecting with others in the community.
-  - name: BentoML Enterprise Support
-    url: contact@bentoml.ai
-    about: Contact the BentoML team for support.
-  - name: BentoML Blog
+  - name: VtsServing Enterprise Support
+    url: contact@vtsserving.ai
+    about: Contact the VtsServing team for support.
+  - name: VtsServing Blog
     url: modelserving.com
-    about: Read the latest blogs/updates from community and the BentoML team. 
+    about: Read the latest blogs/updates from community and the VtsServing team. 

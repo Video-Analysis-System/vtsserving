@@ -4,15 +4,15 @@ fast.ai
 
 .. admonition:: About this page
 
-   This is an API reference for using FastAI in BentoML. Please refer to
+   This is an API reference for using FastAI in VtsServing. Please refer to
    :doc:`fastai guide </frameworks/fastai>` for more information about how to use FastAI
-   in BentoML.
+   in VtsServing.
 
 
-.. currentmodule:: bentoml.fastai
+.. currentmodule:: vtsserving.fastai
 
-.. autofunction:: bentoml.fastai.save_model
+.. autofunction:: vtsserving.fastai.save_model
 
-.. autofunction:: bentoml.fastai.load_model
+.. autofunction:: vtsserving.fastai.load_model
 
-.. autofunction:: bentoml.fastai.get
+.. autofunction:: vtsserving.fastai.get

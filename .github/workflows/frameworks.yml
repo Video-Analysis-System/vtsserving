@@ -49,83 +49,83 @@ jobs:
               - .github/workflows/frameworks.yml
               - tests/integration/frameworks/conftest.py
               - tests/integration/frameworks/test_frameworks.py
-              - src/bentoml/_internal/runner/**
-              - src/bentoml/_internal/models/**
+              - src/vtsserving/_internal/runner/**
+              - src/vtsserving/_internal/models/**
             catboost:
               - *related
-              - src/bentoml/catboost.py
-              - src/bentoml/_internal/frameworks/catboost.py
+              - src/vtsserving/catboost.py
+              - src/vtsserving/_internal/frameworks/catboost.py
               - tests/integration/frameworks/models/catboost.py
             lightgbm:
               - *related
-              - src/bentoml/lightgbm.py
-              - src/bentoml/_internal/frameworks/lightgbm.py
+              - src/vtsserving/lightgbm.py
+              - src/vtsserving/_internal/frameworks/lightgbm.py
               - tests/integration/frameworks/models/lightgbm.py
             mlflow:
               - *related
-              - src/bentoml/mlflow.py
-              - src/bentoml/_internal/frameworks/mlflow.py
+              - src/vtsserving/mlflow.py
+              - src/vtsserving/_internal/frameworks/mlflow.py
               - tests/integration/frameworks/mlflow
             fastai:
               - *related
-              - src/bentoml/fastai.py
-              - src/bentoml/_internal/frameworks/fastai.py
-              - src/bentoml/_internal/frameworks/common/pytorch.py
+              - src/vtsserving/fastai.py
+              - src/vtsserving/_internal/frameworks/fastai.py
+              - src/vtsserving/_internal/frameworks/common/pytorch.py
               - tests/integration/frameworks/test_fastai_unit.py
             onnx:
               - *related
-              - src/bentoml/onnx.py
-              - src/bentoml/_internal/frameworks/onnx.py
+              - src/vtsserving/onnx.py
+              - src/vtsserving/_internal/frameworks/onnx.py
               - tests/integration/frameworks/models/onnx.py
             picklable_model:
               - *related
-              - src/bentoml/picklable_model.py
-              - src/bentoml/_internal/frameworks/picklable_model.py
+              - src/vtsserving/picklable_model.py
+              - src/vtsserving/_internal/frameworks/picklable_model.py
               - tests/integration/frameworks/models/picklable_model.py
             pytorch:
               - *related
-              - src/bentoml/pytorch.py
-              - src/bentoml/_internal/frameworks/pytorch.py
-              - src/bentoml/_internal/frameworks/common/pytorch.py
+              - src/vtsserving/pytorch.py
+              - src/vtsserving/_internal/frameworks/pytorch.py
+              - src/vtsserving/_internal/frameworks/common/pytorch.py
               - tests/integration/frameworks/test_pytorch_unit.py
             torchscript:
               - *related
-              - src/bentoml/torchscript.py
-              - src/bentoml/_internal/frameworks/common/pytorch.py
-              - src/bentoml/_internal/frameworks/torchscript.py
+              - src/vtsserving/torchscript.py
+              - src/vtsserving/_internal/frameworks/common/pytorch.py
+              - src/vtsserving/_internal/frameworks/torchscript.py
             pytorch_lightning:
               - *related
-              - src/bentoml/pytorch.py
-              - src/bentoml/pytorch_lightning.py
-              - src/bentoml/_internal/frameworks/common/pytorch.py
-              - src/bentoml/_internal/frameworks/torchscript.py
-              - src/bentoml/_internal/frameworks/pytorch_lightning.py
+              - src/vtsserving/pytorch.py
+              - src/vtsserving/pytorch_lightning.py
+              - src/vtsserving/_internal/frameworks/common/pytorch.py
+              - src/vtsserving/_internal/frameworks/torchscript.py
+              - src/vtsserving/_internal/frameworks/pytorch_lightning.py
             sklearn:
               - *related
-              - src/bentoml/sklearn.py
-              - src/bentoml/_internal/frameworks/sklearn.py
+              - src/vtsserving/sklearn.py
+              - src/vtsserving/_internal/frameworks/sklearn.py
               - tests/integration/frameworks/models/sklearn.py
             tensorflow: &tensorflow
               - *related
-              - src/bentoml/tensorflow.py
-              - src/bentoml/_internal/frameworks/tensorflow_v2.py
+              - src/vtsserving/tensorflow.py
+              - src/vtsserving/_internal/frameworks/tensorflow_v2.py
               - tests/integration/frameworks/models/tensorflow.py
               - tests/integration/frameworks/test_tensorflow_unit.py
             keras:
               - *related
               - *tensorflow
-              - src/bentoml/keras.py
-              - src/bentoml/_internal/frameworks/keras.py
+              - src/vtsserving/keras.py
+              - src/vtsserving/_internal/frameworks/keras.py
               - tests/integration/frameworks/models/keras.py
             transformers:
               - *related
-              - src/bentoml/transformers.py
-              - src/bentoml/_internal/frameworks/transformers.py
+              - src/vtsserving/transformers.py
+              - src/vtsserving/_internal/frameworks/transformers.py
               - tests/integration/frameworks/test_transformers_unit.py
             xgboost:
               - *related
-              - src/bentoml/xgboost.py
-              - src/bentoml/_internal/frameworks/xgboost.py
+              - src/vtsserving/xgboost.py
+              - src/vtsserving/_internal/frameworks/xgboost.py
               - tests/integration/frameworks/models/xgboost.py
 
   catboost_integration_tests:
@@ -161,7 +161,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append --framework catboost)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append --framework catboost)
           coverage run -m pytest tests/integration/frameworks/test_frameworks.py "${OPTS[@]}"
 
       - name: Generate coverage
@@ -206,7 +206,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append --framework fastai)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append --framework fastai)
           coverage run -m pytest tests/integration/frameworks/test_frameworks.py tests/integration/frameworks/test_fastai_unit.py "${OPTS[@]}"
 
       - name: Generate coverage
@@ -251,7 +251,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append --framework keras)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append --framework keras)
           coverage run -m pytest tests/integration/frameworks/test_frameworks.py "${OPTS[@]}"
 
       - name: Generate coverage
@@ -296,7 +296,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append --framework lightgbm)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append --framework lightgbm)
           coverage run -m pytest tests/integration/frameworks/test_frameworks.py "${OPTS[@]}"
 
       - name: Generate coverage
@@ -341,7 +341,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append)
           coverage run -m pytest tests/integration/frameworks/mlflow "${OPTS[@]}"
 
       - name: Generate coverage
@@ -386,7 +386,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append --framework onnx)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append --framework onnx)
           coverage run -m pytest tests/integration/frameworks/test_frameworks.py "${OPTS[@]}"
 
       - name: Generate coverage
@@ -430,7 +430,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append --framework picklable_model)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append --framework picklable_model)
           coverage run -m pytest tests/integration/frameworks/test_frameworks.py "${OPTS[@]}"
 
       - name: Generate coverage
@@ -475,7 +475,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append --framework pytorch)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append --framework pytorch)
           coverage run -m pytest tests/integration/frameworks/test_frameworks.py tests/integration/frameworks/test_pytorch_unit.py "${OPTS[@]}"
 
       - name: Generate coverage
@@ -520,7 +520,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append --framework pytorch_lightning)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append --framework pytorch_lightning)
           coverage run -m pytest tests/integration/frameworks/test_frameworks.py "${OPTS[@]}"
 
       - name: Generate coverage
@@ -565,7 +565,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append --framework torchscript)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append --framework torchscript)
           coverage run -m pytest tests/integration/frameworks/test_frameworks.py "${OPTS[@]}"
 
       - name: Generate coverage
@@ -610,7 +610,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append --framework sklearn)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append --framework sklearn)
           coverage run -m pytest tests/integration/frameworks/test_frameworks.py "${OPTS[@]}"
 
       - name: Generate coverage
@@ -655,7 +655,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append --framework tensorflow)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append --framework tensorflow)
           coverage run -m pytest tests/integration/frameworks/test_frameworks.py tests/integration/frameworks/test_tensorflow_unit.py "${OPTS[@]}"
 
       - name: Generate coverage
@@ -663,7 +663,7 @@ jobs:
 
       - name: Run tests for no eager execution
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append --disable-tf-eager-execution --cov-report=xml:no_eager_execution.xml)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append --disable-tf-eager-execution --cov-report=xml:no_eager_execution.xml)
           coverage run -m pytest tests/integration/frameworks/test_tensorflow_unit.py "${OPTS[@]}"
 
       - name: Upload test coverage to Codecov
@@ -705,7 +705,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append --framework transformers)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append --framework transformers)
           coverage run -m pytest tests/integration/frameworks/test_frameworks.py tests/integration/frameworks/test_transformers_unit.py "${OPTS[@]}"
 
       - name: Generate coverage
@@ -750,7 +750,7 @@ jobs:
 
       - name: Run tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov src/bentoml --cov-append --framework xgboost)
+          OPTS=(--cov-config pyproject.toml --cov src/vtsserving --cov-append --framework xgboost)
           coverage run -m pytest tests/integration/frameworks/test_frameworks.py "${OPTS[@]}"
 
       - name: Generate coverage

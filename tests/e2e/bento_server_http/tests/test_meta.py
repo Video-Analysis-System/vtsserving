@@ -8,8 +8,8 @@ from pathlib import Path
 
 import pytest
 
-import bentoml
-from bentoml.testing.utils import async_request
+import vtsserving
+from vtsserving.testing.utils import async_request
 
 
 @pytest.mark.asyncio
@@ -49,7 +49,7 @@ async def test_runner_readiness(host: str) -> None:
 
 @pytest.mark.asyncio
 async def test_cors(host: str, server_config_file: str) -> None:
-    ORIGIN = "http://bentoml.ai"
+    ORIGIN = "http://vtsserving.ai"
 
     status, headers, body = await async_request(
         "OPTIONS",
@@ -89,29 +89,29 @@ async def test_cors(host: str, server_config_file: str) -> None:
 
 
 def test_service_init_checks():
-    py_model1 = bentoml.picklable_model.get("py_model.case-1.http.e2e").to_runner(
+    py_model1 = vtsserving.picklable_model.get("py_model.case-1.http.e2e").to_runner(
         name="invalid"
     )
-    py_model2 = bentoml.picklable_model.get("py_model.case-1.http.e2e").to_runner(
+    py_model2 = vtsserving.picklable_model.get("py_model.case-1.http.e2e").to_runner(
         name="invalid"
     )
     with pytest.raises(ValueError) as excinfo:
-        _ = bentoml.Service(name="duplicates_runners", runners=[py_model1, py_model2])
+        _ = vtsserving.Service(name="duplicates_runners", runners=[py_model1, py_model2])
     assert "Found duplicate name" in str(excinfo.value)
 
     with pytest.raises(AssertionError) as excinfo:
-        _ = bentoml.Service(name="invalid_model_type", models=[1])
+        _ = vtsserving.Service(name="invalid_model_type", models=[1])
     assert "Service models list can only" in str(excinfo.value)
 
 
 def test_dunder_string():
-    runner = bentoml.picklable_model.get("py_model.case-1.http.e2e").to_runner()
+    runner = vtsserving.picklable_model.get("py_model.case-1.http.e2e").to_runner()
 
-    svc = bentoml.Service(name="dunder_string", runners=[runner])
+    svc = vtsserving.Service(name="dunder_string", runners=[runner])
 
     assert (
         str(svc)
-        == 'bentoml.Service(name="dunder_string", runners=[py_model.case-1.http.e2e])'
+        == 'vtsserving.Service(name="dunder_string", runners=[py_model.case-1.http.e2e])'
     )
 
 

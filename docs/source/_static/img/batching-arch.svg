@@ -17,25 +17,25 @@
 <g id="clust2" class="cluster">
 <title>cluster_m</title>
 <polygon fill="none" stroke="#000000" points="180,-20 180,-288 453.0946,-288 453.0946,-20 180,-20"/>
-<text text-anchor="middle" x="316.5473" y="-272.8" font-family="Times,serif" font-size="14.00" fill="#000000">bento</text>
+<text text-anchor="middle" x="316.5473" y="-272.8" font-family="Times,serif" font-size="14.00" fill="#000000">vts</text>
 <text text-anchor="middle" x="316.5473" y="-257.8" font-family="Times,serif" font-size="14.00" fill="#000000"> batching service</text>
 </g>
 <g id="clust3" class="cluster">
 <title>cluster_b</title>
 <polygon fill="none" stroke="#000000" points="514.6946,-208 514.6946,-310 826.6946,-310 826.6946,-208 514.6946,-208"/>
-<text text-anchor="middle" x="670.6946" y="-294.8" font-family="Times,serif" font-size="14.00" fill="#000000">bento </text>
+<text text-anchor="middle" x="670.6946" y="-294.8" font-family="Times,serif" font-size="14.00" fill="#000000">vts </text>
 <text text-anchor="middle" x="670.6946" y="-279.8" font-family="Times,serif" font-size="14.00" fill="#000000">model service</text>
 </g>
 <g id="clust4" class="cluster">
 <title>cluster_b2</title>
 <polygon fill="none" stroke="#000000" points="514.6946,-108 514.6946,-200 826.6946,-200 826.6946,-108 514.6946,-108"/>
-<text text-anchor="middle" x="670.6946" y="-184.8" font-family="Times,serif" font-size="14.00" fill="#000000">bento </text>
+<text text-anchor="middle" x="670.6946" y="-184.8" font-family="Times,serif" font-size="14.00" fill="#000000">vts </text>
 <text text-anchor="middle" x="670.6946" y="-169.8" font-family="Times,serif" font-size="14.00" fill="#000000">model service</text>
 </g>
 <g id="clust5" class="cluster">
 <title>cluster_b3</title>
 <polygon fill="none" stroke="#000000" points="514.6946,-8 514.6946,-100 826.6946,-100 826.6946,-8 514.6946,-8"/>
-<text text-anchor="middle" x="670.6946" y="-84.8" font-family="Times,serif" font-size="14.00" fill="#000000">bento </text>
+<text text-anchor="middle" x="670.6946" y="-84.8" font-family="Times,serif" font-size="14.00" fill="#000000">vts </text>
 <text text-anchor="middle" x="670.6946" y="-69.8" font-family="Times,serif" font-size="14.00" fill="#000000">model service</text>
 </g>
 <!-- user1 -->

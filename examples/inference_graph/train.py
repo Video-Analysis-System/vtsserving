@@ -2,7 +2,7 @@ import logging
 
 import transformers
 
-import bentoml
+import vtsserving
 
 logging.basicConfig(level=logging.WARN)
 
@@ -28,13 +28,13 @@ if __name__ == "__main__":
         tokenizer="bert-base-uncased",
     )
 
-    # Save models to BentoML local model store
-    m0 = bentoml.transformers.save_model("gpt2-generation", generation_pipeline_1)
-    m1 = bentoml.transformers.save_model("distilgpt2-generation", generation_pipeline_2)
-    m2 = bentoml.transformers.save_model(
+    # Save models to VtsServing local model store
+    m0 = vtsserving.transformers.save_model("gpt2-generation", generation_pipeline_1)
+    m1 = vtsserving.transformers.save_model("distilgpt2-generation", generation_pipeline_2)
+    m2 = vtsserving.transformers.save_model(
         "gpt2-medium-generation", generation_pipeline_2
     )
-    m3 = bentoml.transformers.save_model(
+    m3 = vtsserving.transformers.save_model(
         "bert-base-uncased-classification", classification_pipeline
     )
 

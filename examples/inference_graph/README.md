@@ -1,6 +1,6 @@
-# BentoML Inference Graph Tutorial
+# VtsServing Inference Graph Tutorial
 
-This is a sample project demonstrating model inference graph of [BentoML](https://github.com/bentoml) 
+This is a sample project demonstrating model inference graph of [VtsServing](https://github.com/vtsserving) 
 with Huggingface Transformers.
 
 In this project, we will download and save three pretrained text generation models and a pretrained text classification model
@@ -20,7 +20,7 @@ pip install -r ./requirements.txt
 Create and save three text generation models and one text classification model.
 
 ```bash
-import bentoml
+import vtsserving
 import transformers
 
 
@@ -45,47 +45,47 @@ if __name__ == "__main__":
         tokenizer="bert-base-uncased",
     )
 
-    # Save models to BentoML local model store
-    m0 = bentoml.transformers.save_model("gpt2-generation", generation_pipeline_1)
-    m1 = bentoml.transformers.save_model("distilgpt2-generation", generation_pipeline_2)
-    m2 = bentoml.transformers.save_model(
+    # Save models to VtsServing local model store
+    m0 = vtsserving.transformers.save_model("gpt2-generation", generation_pipeline_1)
+    m1 = vtsserving.transformers.save_model("distilgpt2-generation", generation_pipeline_2)
+    m2 = vtsserving.transformers.save_model(
         "gpt2-medium-generation", generation_pipeline_2
     )
-    m3 = bentoml.transformers.save_model(
+    m3 = vtsserving.transformers.save_model(
         "bert-base-uncased-classification", classification_pipeline
     )
 ```
 
-This will save the models in the BentoML local model store, new version tags are automatically
-generated when the models are saved. You can see all model revisions from CLI via `bentoml models`
+This will save the models in the VtsServing local model store, new version tags are automatically
+generated when the models are saved. You can see all model revisions from CLI via `vtsserving models`
 commands:
 
 ```bash
-bentoml models list
+vtsserving models list
 
-bentoml models --help
+vtsserving models --help
 ```
 
 To verify that the saved model can be loaded correctly, run the following:
 
 ```python
-import bentoml
+import vtsserving
 
-pipeline = bentoml.transformers.load_model("gpt2-generation:latest")
+pipeline = vtsserving.transformers.load_model("gpt2-generation:latest")
 
 pipeline("I have an idea!")
 ```
 
-In BentoML, the recommended way of running ML model inference in serving is via Runners, which 
-gives BentoML more flexibility in scheduling the inference computation, batching inference requests, 
+In VtsServing, the recommended way of running ML model inference in serving is via Runners, which 
+gives VtsServing more flexibility in scheduling the inference computation, batching inference requests, 
 and taking advantage of hardware resoureces available. Saved models can be loaded as Runner instance as 
 shown below:
 
 ```python
-import bentoml
+import vtsserving
 
 # Create a Runner instance:
-bert_runner = bentoml.transformers.get("gpt2-generation:latest").to_runner()
+bert_runner = vtsserving.transformers.get("gpt2-generation:latest").to_runner()
 
 # Runner#init_local initializes the model in current process, this is meant for development and testing only:
 bert_runner.init_local()
@@ -100,7 +100,7 @@ bert_runner.run("I have an idea!")
 The service definition below achieves the inference graph logic described above.
 
 First, the we create three text generation runners and one text classification runners with the `to_runner` function
-from the models we previously saved. Second, we create a `bentoml.Service` named "inference_graph" with pass in 
+from the models we previously saved. Second, we create a `vtsserving.Service` named "inference_graph" with pass in 
 the four runners instances. Lastly, we create an async `@svc.api` that accepts a `Text` input and `JSON` output. The API
 passes the input simultaneously to all three text generation models through `asyncio.gather` and iteratively passes
 the generated paragraphs to the text classification model. The API returns all three generated paragraphs and their
@@ -109,22 +109,22 @@ corresponding classification scores as a dictionary.
 ```python
 import asyncio
 
-import bentoml
-from bentoml.io import JSON
-from bentoml.io import Text
+import vtsserving
+from vtsserving.io import JSON
+from vtsserving.io import Text
 
-gpt2_generator = bentoml.transformers.get("gpt2-generation:latest").to_runner()
-distilgpt2_generator = bentoml.transformers.get(
+gpt2_generator = vtsserving.transformers.get("gpt2-generation:latest").to_runner()
+distilgpt2_generator = vtsserving.transformers.get(
     "distilgpt2-generation:latest"
 ).to_runner()
-distilbegpt2_medium_generator = bentoml.transformers.get(
+distilbegpt2_medium_generator = vtsserving.transformers.get(
     "gpt2-medium-generation:latest"
 ).to_runner()
-bert_base_uncased_classifier = bentoml.transformers.get(
+bert_base_uncased_classifier = vtsserving.transformers.get(
     "bert-base-uncased-classification:latest"
 ).to_runner()
 
-svc = bentoml.Service(
+svc = vtsserving.Service(
     "inference_graph",
     runners=[
         gpt2_generator,
@@ -176,7 +176,7 @@ async def classify_generated_texts(original_sentence: str) -> dict:
 ```
 
 ```bash
-bentoml serve --reload
+vtsserving serve --reload
 ```
 
 Open your web browser at http://127.0.0.1:3000 to view the Bento UI for sending test requests.
@@ -196,16 +196,16 @@ curl -X 'POST' \
 
 ### Build Bento for deployment
 
-Bento is the distribution format in BentoML which captures all the source code, model files, config
+Bento is the distribution format in VtsServing which captures all the source code, model files, config
 files and dependency specifications required for running the service for production deployment. Think 
 of it as Docker/Container designed for machine learning models.
 
-To begin with building Bento, create a `bentofile.yaml` under your project directory:
+To begin with building Bento, create a `vtsfile.yaml` under your project directory:
 
 ```yaml
 service: "service.py:svc"
 labels:
-  owner: bentoml-team
+  owner: vtsserving-team
   project: gallery
 include:
 - "*.py"
@@ -215,13 +215,13 @@ python:
     - torch
 ```
 
-Next, run `bentoml build` from current directory to start the Bento build:
+Next, run `vtsserving build` from current directory to start the Bento build:
 
 ```
-> bentoml build
+> vtsserving build
 
 Jax version 0.2.19, Flax version 0.3.4 available.
-Building BentoML service "inference_graph:owljo4hna25nblg6" from build context "/Users/ssheng/github/gallery/inference_graph"
+Building VtsServing service "inference_graph:owljo4hna25nblg6" from build context "/Users/ssheng/github/gallery/inference_graph"
 Packing model "prosusai-finbert:pomvfgxm7kh4rlg6"
 Successfully saved Model(tag="prosusai-finbert:pomvfgxm7kh4rlg6")
 Packing model "distilbert-base-uncased-finetuned-sst-2-english:pm7gbexm7kh4rlg6"
@@ -241,14 +241,14 @@ Successfully built Bento(tag="inference_graph:owljo4hna25nblg6")
 ```
 
 A new Bento is now built and saved to local Bento store. You can view and manage it via 
-`bentoml list`,`bentoml get` and `bentoml delete` CLI command.
+`vtsserving list`,`vtsserving get` and `vtsserving delete` CLI command.
 
 
 ### Containerize and Deployment
 
 Bento is designed to be deployed to run efficiently in a variety of different environments.
-And there are lots of deployment options and tools as part of the BentoML eco-system, such as 
-[Yatai](https://github.com/bentoml/Yatai) and [bentoctl](https://github.com/bentoml/bentoctl) for
+And there are lots of deployment options and tools as part of the VtsServing eco-system, such as 
+[Yatai](https://github.com/vtsserving/Yatai) and [vtsctl](https://github.com/vtsserving/vtsctl) for
 direct deployment to cloud platforms.
 
 In this guide, we will show you the most basic way of deploying a Bento, which is converting a Bento
@@ -257,7 +257,7 @@ into a Docker image containing the HTTP model server.
 Make sure you have docker installed and docker deamon running, and run the following commnand:
 
 ```bash
-bentoml containerize inference_graph:latest
+vtsserving containerize inference_graph:latest
 ```
 
 This will build a new docker image with all source code, model files and dependencies in place,
@@ -270,9 +270,9 @@ docker run -p 3000:3000 inference_graph:invwzzsw7li6zckb2ie5eubhd
 ## What's Next?
 
 - 👉 [Pop into our Slack community!](https://l.linklyhq.com/l/ktO8) We're happy to help with any issue you face or even just to meet you and hear what you're working on.
-- Dive deeper into the [Core Concepts](https://docs.bentoml.org/en/latest/concepts/index.html) in BentoML
-- Learn how to use BentoML with other ML Frameworks at [Frameworks Guide](https://docs.bentoml.org/en/latest/frameworks/index.html) or check out other [gallery projects](https://github.com/bentoml/BentoML/tree/main/examples)
+- Dive deeper into the [Core Concepts](https://docs.vtsserving.org/en/latest/concepts/index.html) in VtsServing
+- Learn how to use VtsServing with other ML Frameworks at [Frameworks Guide](https://docs.vtsserving.org/en/latest/frameworks/index.html) or check out other [gallery projects](https://github.com/vtsserving/VtsServing/tree/main/examples)
 - Learn more about model deployment options for Bento:
-  - [🦄️ Yatai](https://github.com/bentoml/Yatai): Model Deployment at scale on Kubernetes
-  - [🚀 bentoctl](https://github.com/bentoml/bentoctl): Fast model deployment on any cloud platform
+  - [🦄️ Yatai](https://github.com/vtsserving/Yatai): Model Deployment at scale on Kubernetes
+  - [🚀 vtsctl](https://github.com/vtsserving/vtsctl): Fast model deployment on any cloud platform
 

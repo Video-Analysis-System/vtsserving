@@ -2,12 +2,12 @@
 LightGBM
 ========
 
-Users can now use LightGBM with BentoML with the following API: :code:`load_model`,
+Users can now use LightGBM with VtsServing with the following API: :code:`load_model`,
 :code:`save_model`, and :code:`get` as follow:
 
 .. code-block:: python
 
-   import bentoml
+   import vtsserving
    import lightgbm as lgb
    import pandas as pd
 
@@ -39,22 +39,22 @@ Users can now use LightGBM with BentoML with the following API: :code:`load_mode
    )
 
    # `save` a given classifier and retrieve coresponding tag:
-   bentoml.lightgbm.save_model("my_lightgbm_model", gbm, booster_params=params)
+   vtsserving.lightgbm.save_model("my_lightgbm_model", gbm, booster_params=params)
 
-   # retrieve metadata with `bentoml.models.get`:
-   bento_model = bentoml.models.get("my_lightgbm_model:latest")
+   # retrieve metadata with `vtsserving.models.get`:
+   vts_model = vtsserving.models.get("my_lightgbm_model:latest")
 
    # `load` the model back in memory:
-   loaded_model = bentoml.lightgbm.load_model("my_lightgbm_model")
+   loaded_model = vtsserving.lightgbm.load_model("my_lightgbm_model")
 
    # Run a given model under `Runner` abstraction with `to_runner`
    input_data = pd.from_csv("/path/to/csv")
-   runner = bentoml.lightgbm.get("my_lightgbm_model:latest").to_runner()
+   runner = vtsserving.lightgbm.get("my_lightgbm_model:latest").to_runner()
    runner.init_local()
    runner.run(input_data)
 
 .. note::
 
-   You can find more examples for **LightGBM** in our `bentoml/examples <https://github.com/bentoml/BentoML/tree/main/examples>`_ repo.
+   You can find more examples for **LightGBM** in our `vtsserving/examples <https://github.com/vtsserving/VtsServing/tree/main/examples>`_ repo.
 
 

@@ -9,8 +9,8 @@ import pandas as pd
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
-    from bentoml._internal.types import FileLike
-    from bentoml._internal.types import JSONSerializable
+    from vtsserving._internal.types import FileLike
+    from vtsserving._internal.types import JSONSerializable
 
 
 class PythonFunction:

@@ -4,7 +4,7 @@ metadata:
   name: inference-graph-demo
   namespace: yatai
 spec:
-  bento_tag: inference_graph:wpobdpxnuwqkvuqj
+  vts_tag: inference_graph:wpobdpxnuwqkvuqj
   ingress:
     enabled: true
   resources:

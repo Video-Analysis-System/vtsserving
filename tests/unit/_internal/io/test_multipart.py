@@ -5,10 +5,10 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from bentoml.io import JSON
-from bentoml.io import Image
-from bentoml.io import Multipart
-from bentoml.exceptions import InvalidArgument
+from vtsserving.io import JSON
+from vtsserving.io import Image
+from vtsserving.io import Multipart
+from vtsserving.exceptions import InvalidArgument
 
 example = Multipart(arg1=JSON(), arg2=Image(mime_type="image/bmp", pilmode="RGB"))
 
@@ -17,10 +17,10 @@ if TYPE_CHECKING:
     from google.protobuf import struct_pb2
     from google.protobuf import wrappers_pb2
 
-    from bentoml.grpc.v1 import service_pb2 as pb
+    from vtsserving.grpc.v1 import service_pb2 as pb
 else:
-    from bentoml.grpc.utils import import_generated_stubs
-    from bentoml._internal.utils import LazyLoader
+    from vtsserving.grpc.utils import import_generated_stubs
+    from vtsserving._internal.utils import LazyLoader
 
     pb, _ = import_generated_stubs()
     np = LazyLoader("np", globals(), "numpy")

@@ -2,9 +2,9 @@
 Metrics API
 ===========
 
-BentoML provides metrics API that uses `Prometheus <https://prometheus.io/>`_ under the hood.
+VtsServing provides metrics API that uses `Prometheus <https://prometheus.io/>`_ under the hood.
 
-BentoML's ``bentoml.metrics`` is a drop-in replacement for ``prometheus_client`` that should be used in BentoML services:
+VtsServing's ``vtsserving.metrics`` is a drop-in replacement for ``prometheus_client`` that should be used in VtsServing services:
 
 .. code-block:: diff
 
@@ -14,7 +14,7 @@ BentoML's ``bentoml.metrics`` is a drop-in replacement for ``prometheus_client``
    +++ b/service.py
    @@ -1,11 +1,10 @@
    -from prometheus_client import Summary
-   +from bentoml.metrics import Summary
+   +from vtsserving.metrics import Summary
     import random
     import time
 
@@ -24,28 +24,28 @@ BentoML's ``bentoml.metrics`` is a drop-in replacement for ``prometheus_client``
    def process_request(t):
        """A function that takes some time."""
 
-While ``bentoml.metrics`` contains all API that is offered by ``prometheus_client``,
-users should always use ``bentoml.metrics`` instead of ``prometheus_client`` in your service definition.
+While ``vtsserving.metrics`` contains all API that is offered by ``prometheus_client``,
+users should always use ``vtsserving.metrics`` instead of ``prometheus_client`` in your service definition.
 
-The reason is that BentoML's ``bentoml.metrics`` will construct metrics lazily and
+The reason is that VtsServing's ``vtsserving.metrics`` will construct metrics lazily and
 ensure `multiprocessing mode <https://github.com/prometheus/client_python#multiprocess-mode-eg-gunicorn>`_. are correctly configured.
 
 .. note::
 
-   ``prometheus_client`` shouldn't be imported in BentoML services, otherwise it will
+   ``prometheus_client`` shouldn't be imported in VtsServing services, otherwise it will
    break multiprocessing mode.
 
 .. note::
 
-   All metrics from ``bentoml.metrics`` will set up ``registry`` to handle multiprocess mode,
+   All metrics from ``vtsserving.metrics`` will set up ``registry`` to handle multiprocess mode,
    which means you **SHOULD NOT** pass in ``registry`` argument to metrics initialization:
 
    .. code-block:: python
       :caption: service.py
 
       # THIS WILL NOT WORK
-      from bentoml.metrics import Summary, CollectorRegistry
-      from bentoml.metrics import multiprocess
+      from vtsserving.metrics import Summary, CollectorRegistry
+      from vtsserving.metrics import multiprocess
 
       registry = CollectorRegistry()
       multiprocess.MultiProcessCollector(registry)
@@ -59,25 +59,25 @@ ensure `multiprocessing mode <https://github.com/prometheus/client_python#multip
       :caption: service.py
 
       # THIS WILL WORK
-      from bentoml.metrics import Summary
+      from vtsserving.metrics import Summary
 
       REQUEST_TIME = Summary("request_processing_seconds", "Time spent processing request")
 
 -----
 
 The following section will go over the most commonly used metrics API in
-``bentoml.metrics``:
+``vtsserving.metrics``:
 
-.. currentmodule:: bentoml.metrics
+.. currentmodule:: vtsserving.metrics
 
-.. autofunction:: bentoml.metrics.generate_latest
+.. autofunction:: vtsserving.metrics.generate_latest
 
-.. autofunction:: bentoml.metrics.text_string_to_metric_families
+.. autofunction:: vtsserving.metrics.text_string_to_metric_families
 
-.. autofunction:: bentoml.metrics.Histogram
+.. autofunction:: vtsserving.metrics.Histogram
 
-.. autofunction:: bentoml.metrics.Counter
+.. autofunction:: vtsserving.metrics.Counter
 
-.. autofunction:: bentoml.metrics.Summary
+.. autofunction:: vtsserving.metrics.Summary
 
-.. autofunction:: bentoml.metrics.Gauge
+.. autofunction:: vtsserving.metrics.Gauge

@@ -1,11 +1,11 @@
-class NLTKSentimentAnalysisRunnable(bentoml.Runnable):
+class NLTKSentimentAnalysisRunnable(vtsserving.Runnable):
     SUPPORTED_RESOURCES = ("cpu",)
     SUPPORTS_CPU_MULTI_THREADING = False
 
     def __init__(self):
         self.sia = SentimentIntensityAnalyzer()
 
-    @bentoml.Runnable.method(batchable=False)
+    @vtsserving.Runnable.method(batchable=False)
     def is_positive(self, input_text: str) -> bool:
         start = time.perf_counter()
         scores = [

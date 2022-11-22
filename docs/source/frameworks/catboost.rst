@@ -6,7 +6,7 @@ CatBoost
 CatBoost is a machine learning algorithm that uses gradient boosting on decision trees. It is available as an open source library.
 To learn more about CatBoost, visit their `documentation <https://catboost.ai/en/docs/>`_.
 
-BentoML provides native support for `CatBoost <https://github.com/catboost/catboost>`_, and this guide provides an overview of how to use BentoML with CatBoost.
+VtsServing provides native support for `CatBoost <https://github.com/catboost/catboost>`_, and this guide provides an overview of how to use VtsServing with CatBoost.
 
 Saving a trained CatBoost model
 --------------------------------
@@ -15,7 +15,7 @@ In this example, we will train a new model using UCI's `breast cancer dataset <h
 
 .. code-block:: python
 
-   import bentoml
+   import vtsserving
 
    import catboost as cbt
 
@@ -38,18 +38,18 @@ In this example, we will train a new model using UCI's `breast cancer dataset <h
    model.fit(X, y)
 
 
-Use :obj:`~bentoml.catboost.save_model` to save the model instance to BentoML model store:
+Use :obj:`~vtsserving.catboost.save_model` to save the model instance to VtsServing model store:
 
 .. code-block:: python
 
-   bento_model = bentoml.catboost.save_model("catboost_cancer_clf", model)
+   vts_model = vtsserving.catboost.save_model("catboost_cancer_clf", model)
 
 
 To verify that the saved learner can be loaded properly:
 
 .. code-block:: python
 
-   model = bentoml.catboost.load_model("catboost_cancer_clf:latest")
+   model = vtsserving.catboost.load_model("catboost_cancer_clf:latest")
 
    model.predict(cbt.Pool([[1.308e+01, 1.571e+01, 8.563e+01, 5.200e+02, 1.075e-01, 1.270e-01,
        4.568e-02, 3.110e-02, 1.967e-01, 6.811e-02, 1.852e-01, 7.477e-01,
@@ -63,19 +63,19 @@ Building a Service using CatBoost
 
 .. seealso::
 
-   :ref:`Building a Service <concepts/service:Service and APIs>`: more information on creating a prediction service with BentoML.
+   :ref:`Building a Service <concepts/service:Service and APIs>`: more information on creating a prediction service with VtsServing.
 
 .. code-block:: python
 
-   import bentoml
+   import vtsserving
 
    import numpy as np
 
-   from bentoml.io import NumpyNdarray
+   from vtsserving.io import NumpyNdarray
 
-   runner = bentoml.catboost.get("catboost_cancer_clf:latest").to_runner()
+   runner = vtsserving.catboost.get("catboost_cancer_clf:latest").to_runner()
 
-   svc = bentoml.Service("cancer_clf", runners=[runner])
+   svc = vtsserving.Service("cancer_clf", runners=[runner])
 
 
    @svc.api(input=NumpyNdarray(), output=NumpyNdarray())
@@ -85,7 +85,7 @@ Building a Service using CatBoost
       return res
 
 
-When constructing a :ref:`bentofile.yaml <concepts/bento:Bento Build Options>`,
+When constructing a :ref:`vtsfile.yaml <concepts/vts:Bento Build Options>`,
 there are two ways to include CatBoost as a dependency, via ``python`` or
 ``conda``:
 
@@ -117,28 +117,28 @@ Using Runners
 
    See :ref:`concepts/runner:Using Runners` doc for a general introduction to the Runner concept and its usage.
 
-A CatBoost :obj:`~bentoml.Runner` can be created as follows:
+A CatBoost :obj:`~vtsserving.Runner` can be created as follows:
 
 .. code-block:: python
 
-   runner = bentoml.catboost.get("model_name:model_version").to_runner()
+   runner = vtsserving.catboost.get("model_name:model_version").to_runner()
 
 ``runner.predict.run`` is generally a drop-in replacement for ``model.predict``.
 
-While a `Pool <https://catboost.ai/en/docs/concepts/python-reference_pool>`_ can be passed to a CatBoost Runner, BentoML does not support adaptive batching for ``Pool`` objects.
+While a `Pool <https://catboost.ai/en/docs/concepts/python-reference_pool>`_ can be passed to a CatBoost Runner, VtsServing does not support adaptive batching for ``Pool`` objects.
 
-To use adaptive batching feature from BentoML, we recommend our users to use either NumPy ``ndarray`` or Pandas ``DataFrame`` instead.
+To use adaptive batching feature from VtsServing, we recommend our users to use either NumPy ``ndarray`` or Pandas ``DataFrame`` instead.
 
 .. note::
 
-   Currently ``staged_predict`` callback is not yet supported with :code:`bentoml.catboost`.
+   Currently ``staged_predict`` callback is not yet supported with :code:`vtsserving.catboost`.
 
 Using GPU
 ---------
 
 CatBoost Runners will automatically use ``task_type=GPU`` if a GPU is detected.
 
-This behavior can be disabled using the :ref:`BentoML configuration file<guides/configuration:Configuration>`:
+This behavior can be disabled using the :ref:`VtsServing configuration file<guides/configuration:Configuration>`:
 
 access:
 
@@ -158,18 +158,18 @@ Adaptive batching
 
 .. seealso::
 
-   :ref:`guides/batching:Adaptive Batching`: a general introduction to adaptive batching in BentoML.
+   :ref:`guides/batching:Adaptive Batching`: a general introduction to adaptive batching in VtsServing.
 
 CatBoost's ``model.predict`` supports taking batch input for inference. This is disabled by
 default, but can be enabled using the appropriate signature when saving your model.
 
 .. note::
 
-   BentoML does not currently support adaptive batching for ``Pool`` input. In order to enable
+   VtsServing does not currently support adaptive batching for ``Pool`` input. In order to enable
    batching, use either a NumPy ``ndarray`` or a Pandas ``DataFrame`` instead.
 
 .. code-block:: python
 
-   bento_model = bentoml.catboost.save_model(
+   vts_model = vtsserving.catboost.save_model(
     "catboost_cancer_clf", model, signatures={"predict": {"batchable": True}}
     )

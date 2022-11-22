@@ -1,2 +1,2 @@
-bentoml>=1.0.0
+vtsserving>=1.0.0
 scikit-learn

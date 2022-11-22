@@ -7,7 +7,7 @@ import asyncio
 import numpy as np
 import pytest
 
-from bentoml.testing.utils import async_request
+from vtsserving.testing.utils import async_request
 
 
 @pytest.fixture()

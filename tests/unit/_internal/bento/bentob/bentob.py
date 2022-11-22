@@ -1,3 +1,3 @@
-import bentoml
+import vtsserving
 
-svc = bentoml.Service("test.bentob")
+svc = vtsserving.Service("test.vtsb")

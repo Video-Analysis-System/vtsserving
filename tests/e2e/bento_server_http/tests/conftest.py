@@ -45,19 +45,19 @@ def fixture_server_config_file(request: FixtureRequest) -> str:
 @pytest.mark.usefixtures("change_test_dir")
 @pytest.fixture(scope="session")
 def host(
-    bentoml_home: str,
+    vtsserving_home: str,
     deployment_mode: t.Literal["container", "distributed", "standalone"],
     server_config_file: str,
     clean_context: ExitStack,
 ) -> t.Generator[str, None, None]:
-    from bentoml.testing.server import host_bento
+    from vtsserving.testing.server import host_vts
 
-    with host_bento(
+    with host_vts(
         "service:svc",
         config_file=server_config_file,
         project_path=PROJECT_DIR,
         deployment_mode=deployment_mode,
-        bentoml_home=bentoml_home,
+        vtsserving_home=vtsserving_home,
         clean_context=clean_context,
     ) as _host:
         yield _host

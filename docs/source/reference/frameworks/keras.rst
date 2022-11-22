@@ -4,15 +4,15 @@ Keras
 
 .. admonition:: About this page
 
-   This is an API reference for Keras in BentoML. Please refer to
+   This is an API reference for Keras in VtsServing. Please refer to
    :doc:`</frameworks/keras>` for more information about how to use
-   Keras in BentoML.
+   Keras in VtsServing.
 
 
-.. currentmodule:: bentoml.keras
+.. currentmodule:: vtsserving.keras
 
-.. autofunction:: bentoml.keras.save_model
+.. autofunction:: vtsserving.keras.save_model
 
-.. autofunction:: bentoml.keras.load_model
+.. autofunction:: vtsserving.keras.load_model
 
-.. autofunction:: bentoml.keras.get
+.. autofunction:: vtsserving.keras.get

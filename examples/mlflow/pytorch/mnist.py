@@ -9,7 +9,7 @@
 #
 # Code based on https://github.com/lanpa/tensorboard-pytorch-examples/blob/master/mnist/main.py.
 #
-# BentoML example is based on https://github.com/mlflow/mlflow/blob/master/examples/pytorch/mnist_tensorboard_artifact.py
+# VtsServing example is based on https://github.com/mlflow/mlflow/blob/master/examples/pytorch/mnist_tensorboard_artifact.py
 #
 import os
 import argparse
@@ -23,7 +23,7 @@ import torch.nn.functional as F
 from torchvision import datasets
 from torchvision import transforms
 
-import bentoml
+import vtsserving
 
 # Command-line arguments
 parser = argparse.ArgumentParser(description="PyTorch MNIST Example")
@@ -215,14 +215,14 @@ if __name__ == "__main__":
             % os.path.join(mlflow.get_artifact_uri(), "pytorch-model")
         )
 
-        # Option 1: Save pytorch model directly with BentoML
-        bento_model_1 = bentoml.pytorch.save_model(
+        # Option 1: Save pytorch model directly with VtsServing
+        vts_model_1 = vtsserving.pytorch.save_model(
             "pytorch-mnist", model, signatures={"__call__": {"batchable": True}}
         )
-        print("Pytorch Model saved with BentoML: %s" % bento_model_1)
+        print("Pytorch Model saved with VtsServing: %s" % vts_model_1)
 
-        # make predictions with BentoML runner
-        model_runner_1 = bentoml.pytorch.get("pytorch-mnist:latest").to_runner()
+        # make predictions with VtsServing runner
+        model_runner_1 = vtsserving.pytorch.get("pytorch-mnist:latest").to_runner()
         model_runner_1.init_local()
 
         # Extract a few examples from the test dataset to evaluate on
@@ -236,17 +236,17 @@ if __name__ == "__main__":
                 template.format(index, eval_labels[index], predictions.argmax(1)[index])
             )
 
-        # Option 2: Import logged mlflow model to BentoML for serving:
+        # Option 2: Import logged mlflow model to VtsServing for serving:
         model_uri = mlflow.get_artifact_uri("pytorch-model")
-        bento_model_2 = bentoml.mlflow.import_model(
+        vts_model_2 = vtsserving.mlflow.import_model(
             "mlflow_pytorch_mnist",
             model_uri,
             signatures={"predict": {"batchable": True}},
         )
-        print("Model imported to BentoML: %s" % bento_model_2)
+        print("Model imported to VtsServing: %s" % vts_model_2)
 
-        # make predictions with BentoML runner
-        model_runner_2 = bentoml.mlflow.get("mlflow_pytorch_mnist:latest").to_runner()
+        # make predictions with VtsServing runner
+        model_runner_2 = vtsserving.mlflow.get("mlflow_pytorch_mnist:latest").to_runner()
         model_runner_2.init_local()
 
         # Extract a few examples from the test dataset to evaluate on

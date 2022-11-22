@@ -2,21 +2,21 @@
 TensorFlow
 ==========
 
-TensorFlow is an open source machine learning library focusing on deep neural networks. BentoML provides native support for 
+TensorFlow is an open source machine learning library focusing on deep neural networks. VtsServing provides native support for 
 serving and deploying models trained from TensorFlow.
 
 Preface
 -------
 
-Even though ``bentoml.tensorflow`` supports Keras model, we recommend our users to use :ref:`bentoml.keras <frameworks/keras>` for better development experience. 
+Even though ``vtsserving.tensorflow`` supports Keras model, we recommend our users to use :ref:`vtsserving.keras <frameworks/keras>` for better development experience. 
 
 If you must use TensorFlow for your Keras model, make sure that your Keras model inference callback (such as ``predict``) is decorated with :obj:`~tf.function`.
 
 .. note::
 
-    - Keras is not optimized for production inferencing. There are `known reports <https://github.com/tensorflow/tensorflow/issues?q=is%3Aissue+sort%3Aupdated-desc+keras+memory+leak>`_ of memory leaks during serving at the time of BentoML 1.0 release. The same issue applies to ``bentoml.keras`` as it heavily relies on the Keras APIs.
-    - Running Inference with :obj:`~bentoml.tensorflow` usually halves the time comparing with using ``bentoml.keras``.
-    - ``bentoml.keras`` performs input casting that resembles the original Keras model input signatures.
+    - Keras is not optimized for production inferencing. There are `known reports <https://github.com/tensorflow/tensorflow/issues?q=is%3Aissue+sort%3Aupdated-desc+keras+memory+leak>`_ of memory leaks during serving at the time of VtsServing 1.0 release. The same issue applies to ``vtsserving.keras`` as it heavily relies on the Keras APIs.
+    - Running Inference with :obj:`~vtsserving.tensorflow` usually halves the time comparing with using ``vtsserving.keras``.
+    - ``vtsserving.keras`` performs input casting that resembles the original Keras model input signatures.
 
 .. note::
 
@@ -25,13 +25,13 @@ If you must use TensorFlow for your Keras model, make sure that your Keras model
 Compatibility
 -------------
 
-BentoML requires TensorFlow version 2.0 or higher. For TensorFlow version 1.0, consider using a :ref:`concepts/runner:Custom Runner`.
+VtsServing requires TensorFlow version 2.0 or higher. For TensorFlow version 1.0, consider using a :ref:`concepts/runner:Custom Runner`.
 
 
 Saving a Trained Model
 ----------------------
 
-``bentoml.tensorflow`` supports saving ``tf.Module``, ``keras.models.Sequential``, and ``keras.Model``.
+``vtsserving.tensorflow`` supports saving ``tf.Module``, ``keras.models.Sequential``, and ``keras.Model``.
 
 .. tab-set::
 
@@ -70,7 +70,7 @@ Saving a Trained Model
             gradients = tape.gradient(loss, model.trainable_variables)
             optimizer.apply_gradients(zip(gradients, model.trainable_variables))
 
-        bentoml.tensorflow.save(
+        vtsserving.tensorflow.save(
             model,
             "my_tf_model",
             signatures={"__call__": {"batchable": True, "batch_dim": 0}}
@@ -98,7 +98,7 @@ Saving a Trained Model
         model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
         model.fit(train_x, train_y, epochs=10)
 
-        bentoml.tensorflow.save(
+        vtsserving.tensorflow.save(
             model,
             "my_keras_model",
             signatures={"__call__": {"batchable": True, "batch_dim": 0}}
@@ -125,7 +125,7 @@ Saving a Trained Model
         model.compile(optimizer=opt, loss="binary_crossentropy", metrics=["accuracy"])
         model.fit(train_x, train_y, epochs=10)
 
-        bentoml.tensorflow.save(
+        vtsserving.tensorflow.save(
             model,
             "my_keras_model",
             signatures={"__call__": {"batchable": True, "batch_dim": 0}}
@@ -147,13 +147,13 @@ Saving a Trained Model
         model.compile(optimizer=opt, loss="binary_crossentropy", metrics=["accuracy"])
         model.fit(train_x, train_y, epochs=10)
 
-        bentoml.tensorflow.save(
+        vtsserving.tensorflow.save(
             model,
             "my_keras_model",
             signatures={"__call__": {"batchable": True, "batch_dim": 0}}
         )
 
-``bentoml.tensorflow`` also supports saving models that take multiple tensors as input:
+``vtsserving.tensorflow`` also supports saving models that take multiple tensors as input:
 
 .. code-block:: python
    :caption: `train.py`
@@ -175,7 +175,7 @@ Saving a Trained Model
    model = MultiInputModel()
    ... # training
 
-   bentoml.tensorflow.save(
+   vtsserving.tensorflow.save(
        model,
        "my_tf_model",
        signatures={"__call__": {"batchable": True, "batch_dim": 0}}
@@ -183,9 +183,9 @@ Saving a Trained Model
 
 .. note::
 
-    :obj:`~bentoml.tensorflow.save_model` has two parameters: ``tf_signature`` and ``signatures``.
+    :obj:`~vtsserving.tensorflow.save_model` has two parameters: ``tf_signature`` and ``signatures``.
 
-    Use the following arguments to define the model signatures to ensure consistent model behaviors in a Python session and from the BentoML model store:
+    Use the following arguments to define the model signatures to ensure consistent model behaviors in a Python session and from the VtsServing model store:
 
     - ``tf_signatures`` is an alias to `tf.saved_model.save <https://www.tensorflow.org/api_docs/python/tf/saved_model/save>`_ *signatures* field. This optional signatures controls which methods in a given `obj <https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/trackable/base.py#L281>`_ will be available to programs that consume `SavedModel's <https://www.tensorflow.org/guide/saved_model>`_, for example, serving APIs. Read more about TensorFlow's signatures behavior `from their API documentation <https://www.tensorflow.org/api_docs/python/tf/saved_model/save>`_.
 
@@ -193,27 +193,27 @@ Saving a Trained Model
 
 :bdg-info:`Note:` The signatures used for creating a Runner is ``{"__call__": {"batchable": False}}``.
 
-This means BentoML’s :ref:`Adaptive Batching <guides/batching:Adaptive Batching>` is disabled when using :obj:`~bentoml.tensorflow.save_model()`.
+This means VtsServing’s :ref:`Adaptive Batching <guides/batching:Adaptive Batching>` is disabled when using :obj:`~vtsserving.tensorflow.save_model()`.
 
 If you want to utilize adaptive batching behavior and know your model's dynamic batching dimension, make sure to pass in ``signatures`` as follow: 
 
 
 .. code-block:: python
 
-    bentoml.tensorflow.save(model, "my_model", signatures={"__call__": {"batch_dim": 0, "batchable": True}})
+    vtsserving.tensorflow.save(model, "my_model", signatures={"__call__": {"batch_dim": 0, "batchable": True}})
 
 
 Building a Service
 ------------------
 
-Create a BentoML service with the previously saved `my_tf_model` pipeline using the :obj:`~bentoml.tensorflow` framework APIs.
+Create a VtsServing service with the previously saved `my_tf_model` pipeline using the :obj:`~vtsserving.tensorflow` framework APIs.
 
 .. code-block:: python
     :caption: `service.py`
 
-    runner = bentoml.tensorflow.get("my_tf_model").to_runner()
+    runner = vtsserving.tensorflow.get("my_tf_model").to_runner()
 
-    svc = bentoml.Service(name="test_service", runners=[runner])
+    svc = vtsserving.Service(name="test_service", runners=[runner])
 
     @svc.api(input=JSON(), output=JSON())
     async def predict(json_obj: JSONSerializable) -> JSONSerializable:
@@ -253,7 +253,7 @@ Enable adaptive batching by overriding ``signatures`` argument with the method n
    index 3b4bf11f..2d0ea09c 100644
    --- a/train.py
    +++ b/train_batched.py
-   @@ -3,15 +3,24 @@ import bentoml
+   @@ -3,15 +3,24 @@ import vtsserving
    class NativeModel(tf.Module):
        @tf.function(
            input_signature=[
@@ -265,14 +265,14 @@ Enable adaptive batching by overriding ``signatures`` argument with the method n
            ...
 
    model = NativeModel()
-   -bentoml.tensorflow.save(model, "test_model")
-   +bentoml.tensorflow.save(
+   -vtsserving.tensorflow.save(model, "test_model")
+   +vtsserving.tensorflow.save(
    +    model,
    +    "test_model",
    +    signatures={"__call__": {"batchable": True, "batch_dim": 0}},
    +)
 
-   runner = bentoml.tensorflow.get("test_model")
+   runner = vtsserving.tensorflow.get("test_model")
    runner.init_local()
    +
    +#client 1
@@ -282,15 +282,15 @@ Enable adaptive batching by overriding ``signatures`` argument with the method n
    +runner.run([[6,7,8,9,0]])
 
 From the diff above, when multiple clients send requests to a given server running this
-model, BentoML will automatically batched inbound request and invoke ``model([[1,2,3,4,5], [6,7,8,9,0]])``
+model, VtsServing will automatically batched inbound request and invoke ``model([[1,2,3,4,5], [6,7,8,9,0]])``
 
 .. seealso::
 
    See :ref:`Adaptive Batching <guides/batching:Adaptive Batching>` to learn more about
-   the adaptive batching feature in BentoML.
+   the adaptive batching feature in VtsServing.
 
 .. note::
 
-   You can find more examples for **TensorFlow** in our :github:`bentoml/examples <bentoml/BentoML/tree/main/examples>` directory.
+   You can find more examples for **TensorFlow** in our :github:`vtsserving/examples <vtsserving/VtsServing/tree/main/examples>` directory.
 
-.. currentmodule:: bentoml.tensorflow
+.. currentmodule:: vtsserving.tensorflow

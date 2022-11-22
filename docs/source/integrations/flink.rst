@@ -5,14 +5,14 @@ Apache Flink
 Apache Flink DataStream
 -----------------------
 
-BentoML support stream model inferencing in 
+VtsServing support stream model inferencing in 
 `Apache Flink DataStream API <https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/overview/>`_ 
 through either embedded runners or remote calls to a separated deployed Bento Service. This guide assumes prior knowledge 
 on using runners and service APIs.
 
 Embedded Model Runners
 ^^^^^^^^^^^^^^^^^^^^^^
-In BentoML, a :ref:`Runner <concepts/runner:Using Runners>` 
+In VtsServing, a :ref:`Runner <concepts/runner:Using Runners>` 
 represents a unit of computation, such as model inferencing, that can executed on either a remote runner process or an 
 embedded runner instance. If available system resources allow loading the ML model in memory, invoking runners as embedded 
 instances can typically achieve a better performance by avoiding the overhead incurred in the interprocess communication.
@@ -22,9 +22,9 @@ can be invoked on the runners.
 
 .. code:: python
 
-    import bentoml
+    import vtsserving
 
-    iris_runner = bentoml.transformers.get("text-classification:latest")).to_runner()
+    iris_runner = vtsserving.transformers.get("text-classification:latest")).to_runner()
     iris_runner.init_local()
     iris_runner.predict.run(INPUT_TEXT)
 
@@ -34,14 +34,14 @@ To integrate with Flink DataRunners API, runners can be used in `ProcessWindowFu
 
 .. code:: python
 
-    import bentoml
+    import vtsserving
 
     from pyflink.datastream import StreamExecutionEnvironment
     from pyflink.datastream.functions import RuntimeContext, MapFunction
 
     class ClassifyFunction(MapFunction):
         def open(self, runtime_context: RuntimeContext):
-            self.runner = bentoml.transformers.get(
+            self.runner = vtsserving.transformers.get(
                 "text-classification:latest"
             ).to_runner()
             self.runner.init_local()
@@ -55,7 +55,7 @@ For simplicity, the input stream and output sink are abstracted out using in-mem
 
 .. code:: python
 
-    import bentoml
+    import vtsserving
     import logging
     import sys
 
@@ -65,7 +65,7 @@ For simplicity, the input stream and output sink are abstracted out using in-mem
 
     class ClassifyFunction(MapFunction):
         def open(self, runtime_context: RuntimeContext):
-            self.runner = bentoml.transformers.get("text-classification:latest").to_runner()
+            self.runner = vtsserving.transformers.get("text-classification:latest").to_runner()
             self.runner.init_local()
 
         def map(self, data):
@@ -81,11 +81,11 @@ For simplicity, the input stream and output sink are abstracted out using in-mem
         # Create source DataStream, e.g. Kafka, Table, etc. Example uses data collection for simplicity.
         ds = env.from_collection(
             collection=[
-                (1, "BentoML: Create an ML Powered Prediction Service in Minutes via @TDataScience https://buff.ly/3srhTw9 #Python #MachineLearning #BentoML"),
-                (2, "Top MLOps Serving frameworks — 2021 https://link.medium.com/5Elq6Aw52ib #mlops #TritonInferenceServer #opensource #nvidia #machincelearning  #serving #tensorflow #PyTorch #Bodywork #BentoML #KFServing #kubeflow #Cortex #Seldon #Sagify #Syndicai"),
-                (3, "#MLFlow provides components for experimentation management, ML project management. #BentoML only focuses on serving and deploying trained models"),
-                (4, "2000 and beyond #OpenSource #bentoml"),
-                (5, "Model Serving Made Easy https://github.com/bentoml/BentoML ⭐ 1.1K #Python #Bentoml #BentoML #Modelserving #Modeldeployment #Modelmanagement #Mlplatform #Mlinfrastructure #Ml #Ai #Machinelearning #Awssagemaker #Awslambda #Azureml #Mlops #Aiops #Machinelearningoperations #Turn")
+                (1, "VtsServing: Create an ML Powered Prediction Service in Minutes via @TDataScience https://buff.ly/3srhTw9 #Python #MachineLearning #VtsServing"),
+                (2, "Top MLOps Serving frameworks — 2021 https://link.medium.com/5Elq6Aw52ib #mlops #TritonInferenceServer #opensource #nvidia #machincelearning  #serving #tensorflow #PyTorch #Bodywork #VtsServing #KFServing #kubeflow #Cortex #Seldon #Sagify #Syndicai"),
+                (3, "#MLFlow provides components for experimentation management, ML project management. #VtsServing only focuses on serving and deploying trained models"),
+                (4, "2000 and beyond #OpenSource #vtsserving"),
+                (5, "Model Serving Made Easy https://github.com/vtsserving/VtsServing ⭐ 1.1K #Python #Bentoml #VtsServing #Modelserving #Modeldeployment #Modelmanagement #Mlplatform #Mlinfrastructure #Ml #Ai #Machinelearning #Awssagemaker #Awslambda #Azureml #Mlops #Aiops #Machinelearningoperations #Turn")
             ]
         )
 

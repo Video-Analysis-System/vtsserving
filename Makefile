@@ -19,9 +19,9 @@ format: ## Running code formatter: black and isort
 	isort .
 format-proto: ## Running proto formatter: buf
 	@echo "Formatting proto files..."
-	docker run --init --rm --volume $(GIT_ROOT)/src:/workspace --workdir /workspace bufbuild/buf format --config "/workspace/bentoml/grpc/buf.yaml" -w bentoml/grpc
+	docker run --init --rm --volume $(GIT_ROOT)/src:/workspace --workdir /workspace bufbuild/buf format --config "/workspace/vtsserving/grpc/buf.yaml" -w vtsserving/grpc
 lint: ## Running lint checker: pylint
-	@echo "(pylint) Linting bentoml..."
+	@echo "(pylint) Linting vtsserving..."
 	@pylint --rcfile=pyproject.toml --fail-under 9.5 src
 	@echo "(pylint) Linting examples..."
 	@pylint --rcfile=pyproject.toml --fail-under 9.5 examples
@@ -29,7 +29,7 @@ lint: ## Running lint checker: pylint
 	@pylint --rcfile=pyproject.toml --fail-under 9.5 tests
 lint-proto: ## Running proto lint checker: buf
 	@echo "Linting proto files..."
-	docker run --init --rm --volume $(GIT_ROOT)/src:/workspace --workdir /workspace bufbuild/buf lint --config "/workspace/bentoml/grpc/buf.yaml" --error-format msvs bentoml/grpc
+	docker run --init --rm --volume $(GIT_ROOT)/src:/workspace --workdir /workspace bufbuild/buf lint --config "/workspace/vtsserving/grpc/buf.yaml" --error-format msvs vtsserving/grpc
 type: ## Running type checker: pyright
 	@echo "(pyright) Typechecking codebase..."
 	@pyright -p src -w

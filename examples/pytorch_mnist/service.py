@@ -6,16 +6,16 @@ from typing import TYPE_CHECKING
 import numpy as np
 from PIL.Image import Image as PILImage
 
-import bentoml
-from bentoml.io import Image
-from bentoml.io import NumpyNdarray
+import vtsserving
+from vtsserving.io import Image
+from vtsserving.io import NumpyNdarray
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
-mnist_runner = bentoml.pytorch.get("pytorch_mnist").to_runner()
+mnist_runner = vtsserving.pytorch.get("pytorch_mnist").to_runner()
 
-svc = bentoml.Service(name="pytorch_mnist_demo", runners=[mnist_runner])
+svc = vtsserving.Service(name="pytorch_mnist_demo", runners=[mnist_runner])
 
 
 def to_numpy(tensor):

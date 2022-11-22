@@ -10,8 +10,8 @@ flake8:
       - W503
       - E501
     exclude:
-      - src/bentoml/_version.py
-      - src/bentoml/metrics.pyi
+      - src/vtsserving/_version.py
+      - src/vtsserving/metrics.pyi
       - examples
 
 

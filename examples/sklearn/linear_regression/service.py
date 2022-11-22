@@ -1,9 +1,9 @@
-import bentoml
-from bentoml.io import NumpyNdarray
+import vtsserving
+from vtsserving.io import NumpyNdarray
 
-reg_runner = bentoml.sklearn.get("linear_reg:latest").to_runner()
+reg_runner = vtsserving.sklearn.get("linear_reg:latest").to_runner()
 
-svc = bentoml.Service("linear_regression", runners=[reg_runner])
+svc = vtsserving.Service("linear_regression", runners=[reg_runner])
 
 input_spec = NumpyNdarray(dtype="int", shape=(-1, 2))
 

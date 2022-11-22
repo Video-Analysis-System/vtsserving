@@ -1,12 +1,12 @@
-# BentoML PyTorch MNIST Tutorial
+# VtsServing PyTorch MNIST Tutorial
 
-This is a sample project demonstrating basic usage of BentoML, the machine learning model serving library.
+This is a sample project demonstrating basic usage of VtsServing, the machine learning model serving library.
 
 In this project, we will train a digit recognition model using PyTorch on the MNIST dataset, build
 an ML service for the model, serve the model behind an HTTP endpoint, and containerize the model
 server as a docker image for production deployment.
 
-This project is also available to run from a notebook: https://github.com/bentoml/BentoML/blob/main/examples/pytorch_mnist/pytorch_mnist_demo.ipynb
+This project is also available to run from a notebook: https://github.com/vtsserving/VtsServing/blob/main/examples/pytorch_mnist/pytorch_mnist_demo.ipynb
 
 ### Install Dependencies
 
@@ -18,16 +18,16 @@ pip install -r ./requirements.txt
 
 ### Model Training
 
-First step, train a digit recognition model with PyTorch using BentoML:
+First step, train a digit recognition model with PyTorch using VtsServing:
 
 ```bash
 python train.py
 ```
 
-This should save a new model in the BentoML local model store:
+This should save a new model in the VtsServing local model store:
 
 ```bash
-bentoml models list
+vtsserving models list
 ```
 
 Verify that the model can be loaded as runner from Python shell:
@@ -36,9 +36,9 @@ Verify that the model can be loaded as runner from Python shell:
 import numpy as np
 import PIL.Image
 
-import bentoml
+import vtsserving
 
-runner = bentoml.pytorch.load_runner("pytorch_mnist:latest")
+runner = vtsserving.pytorch.load_runner("pytorch_mnist:latest")
 
 img = PIL.Image.open("samples/0.png")
 arr = np.array(img) / 255.0
@@ -61,18 +61,18 @@ import numpy as np
 import PIL.Image
 from PIL.Image import Image as PILImage
 
-import bentoml
-from bentoml.io import Image
-from bentoml.io import NumpyNdarray
+import vtsserving
+from vtsserving.io import Image
+from vtsserving.io import NumpyNdarray
 
 
-mnist_runner = bentoml.pytorch.load_runner(
+mnist_runner = vtsserving.pytorch.load_runner(
     "pytorch_mnist",
     name="mnist_runner",
     predict_fn_name="predict",
 )
 
-svc = bentoml.Service(
+svc = vtsserving.Service(
     name="pytorch_mnist_demo",
     runners=[
         mnist_runner,
@@ -113,7 +113,7 @@ We defined two api endpoints `/predict_ndarray` and `/predict_image` with single
 Start an API server locally to test the service code above:
 
 ```bash
-bentoml serve service:svc --reload
+vtsserving serve service:svc --reload
 ```
 
 With the `--reload` flag, the API server will automatically restart when the source
@@ -133,14 +133,14 @@ locust --headless -u 100 -r 1000 --run-time 10m --host http://127.0.0.1:3000
 
 ### Build Bento for deployment
 
-A `bentofile` is already created in this directory for building a
+A `vtsfile` is already created in this directory for building a
 Bento for the service:
 
 ```yaml
 service: "service:svc"
 description: "file: ./README.md"
 labels:
-  owner: bentoml-team
+  owner: vtsserving-team
   stage: demo
 include:
   - "*.py"
@@ -153,19 +153,19 @@ python:
     - Pillow
 ```
 
-Note that we exclude `tests/` from the bento using `exclude`.
+Note that we exclude `tests/` from the vts using `exclude`.
 
-Simply run `bentoml build` from current directory to build a Bento with the latest
+Simply run `vtsserving build` from current directory to build a Bento with the latest
 version of the `pytorch_mnist` model. This may take a while when running for the first
-time for BentoML to resolve all dependency versions:
+time for VtsServing to resolve all dependency versions:
 
 ```
-> bentoml build
+> vtsserving build
 
-[01:14:04 AM] INFO     Building BentoML service "pytorch_mnist_demo:bmygukdtzpy6zlc5vcqvsoywq" from build context
+[01:14:04 AM] INFO     Building VtsServing service "pytorch_mnist_demo:bmygukdtzpy6zlc5vcqvsoywq" from build context
                        "/home/chef/workspace/gallery/pytorch"
               INFO     Packing model "pytorch_mnist_demo:xm6jsddtu3y6zluuvcqvsoywq" from
-                       "/home/chef/bentoml/models/pytorch_mnist_demo/xm6jsddtu3y6zluuvcqvsoywq"
+                       "/home/chef/vtsserving/models/pytorch_mnist_demo/xm6jsddtu3y6zluuvcqvsoywq"
               INFO     Locking PyPI package versions..
 [01:14:05 AM] INFO
                        ██████╗░███████╗███╗░░██╗████████╗░█████╗░███╗░░░███╗██╗░░░░░
@@ -176,27 +176,27 @@ time for BentoML to resolve all dependency versions:
                        ╚═════╝░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚════╝░╚═╝░░░░░╚═╝╚══════╝
 
               INFO     Successfully built Bento(tag="pytorch_mnist_demo:bmygukdtzpy6zlc5vcqvsoywq") at
-                       "/home/chef/bentoml/bentos/pytorch_mnist_demo/bmygukdtzpy6zlc5vcqvsoywq/"
+                       "/home/chef/vtsserving/vtss/pytorch_mnist_demo/bmygukdtzpy6zlc5vcqvsoywq/"
 ```
 
 This Bento can now be loaded for serving:
 
 ```bash
-bentoml serve pytorch_mnist_demo:latest --production
+vtsserving serve pytorch_mnist_demo:latest --production
 ```
 
 The Bento directory contains all code, files, models and configs required for running this service.
-BentoML standarlizes this file structure which enables serving runtimes and deployment tools to be
-built on top of it. By default, Bentos are managed under the `~/bentoml/bentos` directory:
+VtsServing standarlizes this file structure which enables serving runtimes and deployment tools to be
+built on top of it. By default, Bentos are managed under the `~/vtsserving/vtss` directory:
 
 ```
-> cd ~/bentoml/bentos/pytorch_mnist_demo && cd $(cat latest)
+> cd ~/vtsserving/vtss/pytorch_mnist_demo && cd $(cat latest)
 
 > tree
 .
 ├── apis
 │   └── openapi.yaml
-├── bento.yaml
+├── vts.yaml
 ├── env
 │   ├── conda
 │   ├── docker
@@ -229,7 +229,7 @@ will use your local docker environment to build a new docker image, containing t
 server configured from this Bento:
 
 ```bash
-bentoml containerize pytorch_mnist_demo:latest
+vtsserving containerize pytorch_mnist_demo:latest
 ```
 
 Test out the docker image built:

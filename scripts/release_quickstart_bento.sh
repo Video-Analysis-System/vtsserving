@@ -3,23 +3,23 @@
 if [ "$#" -eq 1 ]; then
 	VTSSERVING_VERSION=$1
 else
-	VTSSERVING_VERSION=$(python -c "import bentoml; print(bentoml.__version__)")
-	echo "Releasing with current BentoML Version $VTSSERVING_VERSION"
+	VTSSERVING_VERSION=$(python -c "import vtsserving; print(vtsserving.__version__)")
+	echo "Releasing with current VtsServing Version $VTSSERVING_VERSION"
 fi
 
 GIT_ROOT=$(git rev-parse --show-toplevel)
 cd "$GIT_ROOT" || exit 1
 
 docker run --platform=linux/amd64 \
-	-v $GIT_ROOT:/bentoml \
+	-v $GIT_ROOT:/vtsserving \
 	-v $HOME/.aws:/root/.aws \
 	python:3.8-slim /bin/bash -c """\
 pip install -U pip
-pip install "bentoml[grpc]==$VTSSERVING_VERSION"
-cd /bentoml/examples/quickstart
+pip install "vtsserving[grpc]==$VTSSERVING_VERSION"
+cd /vtsserving/examples/quickstart
 pip install -r ./requirements.txt
 python train.py
-bentoml build
+vtsserving build
 pip install fs-s3fs
-bentoml export iris_classifier:latest s3://bentoml.com/quickstart/iris_classifier.bento
+vtsserving export iris_classifier:latest s3://vtsserving.com/quickstart/iris_classifier.vts
 """

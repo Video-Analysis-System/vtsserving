@@ -9,7 +9,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 
-import bentoml
+import vtsserving
 
 # Display progress logs on stdout
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
@@ -75,7 +75,7 @@ best_parameters = {
 }
 print(f"Best parameters set: {best_parameters}")
 
-bento_model = bentoml.sklearn.save_model(
+vts_model = vtsserving.sklearn.save_model(
     "20_news_group",
     grid_search.best_estimator_,
     signatures={
@@ -87,10 +87,10 @@ bento_model = bentoml.sklearn.save_model(
     },
     metadata=best_parameters,
 )
-print(f"Model saved: {bento_model}")
+print(f"Model saved: {vts_model}")
 
-# Test running inference with BentoML runner
-test_runner = bentoml.sklearn.get("20_news_group:latest").to_runner()
+# Test running inference with VtsServing runner
+test_runner = vtsserving.sklearn.get("20_news_group:latest").to_runner()
 test_runner.init_local()
 assert test_runner.predict.run(["hello"]) == grid_search.best_estimator_.predict(
     ["hello"]

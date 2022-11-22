@@ -4,15 +4,15 @@ Scikit-Learn
 
 .. admonition:: About this page
 
-   This is an API reference for using Scikit-Learn in BentoML. Please refer to
+   This is an API reference for using Scikit-Learn in VtsServing. Please refer to
    :doc:`Scikit-Learn Guide </frameworks/sklearn>` for more information about how to use
-   Scikit-learn in BentoML.
+   Scikit-learn in VtsServing.
 
 
-.. currentmodule:: bentoml.sklearn
+.. currentmodule:: vtsserving.sklearn
 
-.. autofunction:: bentoml.sklearn.save_model
+.. autofunction:: vtsserving.sklearn.save_model
 
-.. autofunction:: bentoml.sklearn.load_model
+.. autofunction:: vtsserving.sklearn.load_model
 
-.. autofunction:: bentoml.sklearn.get
+.. autofunction:: vtsserving.sklearn.get

@@ -15,7 +15,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.datasets import reuters
 from tensorflow.keras.preprocessing.text import Tokenizer
 
-import bentoml
+import vtsserving
 
 mlflow.keras.autolog()
 
@@ -76,28 +76,28 @@ run_id = mlflow.last_active_run().info.run_id
 artifact_path = "model"
 model_uri = f"runs:/{run_id}/{artifact_path}"
 
-# Option 1: directly save trained model to BentoML
-bento_model_1 = bentoml.keras.save_model("keras_native", model)
-print("\nBentoML: model imported as native keras model: %s" % bento_model_1)
+# Option 1: directly save trained model to VtsServing
+vts_model_1 = vtsserving.keras.save_model("keras_native", model)
+print("\nVtsServing: model imported as native keras model: %s" % vts_model_1)
 
-# Option 2: Import logged MLFlow model to BentoML
-bento_model_2 = bentoml.mlflow.import_model("mlflow_keras", model_uri)
-print("\nBentoML: model imported as MLFlow pyfunc model: %s" % bento_model_2)
+# Option 2: Import logged MLFlow model to VtsServing
+vts_model_2 = vtsserving.mlflow.import_model("mlflow_keras", model_uri)
+print("\nVtsServing: model imported as MLFlow pyfunc model: %s" % vts_model_2)
 
-# Option 3: loaded keras model from MLFlow artifact and save with bentoml.keras natively
+# Option 3: loaded keras model from MLFlow artifact and save with vtsserving.keras natively
 loaded_keras_model = mlflow.keras.load_model(model_uri)
-bento_model_3 = bentoml.keras.save_model("keras_native", loaded_keras_model)
+vts_model_3 = vtsserving.keras.save_model("keras_native", loaded_keras_model)
 print(
-    "\nBentoML: import native keras model loaded from MLflow artifact: %s"
-    % bento_model_3
+    "\nVtsServing: import native keras model loaded from MLflow artifact: %s"
+    % vts_model_3
 )
 
-# Test loading model from BentoML model store:
-for bento_model in [
-    bentoml.keras.get(bento_model_1.tag),
-    bentoml.mlflow.get(bento_model_2.tag),
-    bentoml.keras.get(bento_model_3.tag),
+# Test loading model from VtsServing model store:
+for vts_model in [
+    vtsserving.keras.get(vts_model_1.tag),
+    vtsserving.mlflow.get(vts_model_2.tag),
+    vtsserving.keras.get(vts_model_3.tag),
 ]:
-    test_runner = bento_model.to_runner()
+    test_runner = vts_model.to_runner()
     test_runner.init_local()
     assert np.allclose(test_runner.predict.run(x_test), model.predict(x_test))

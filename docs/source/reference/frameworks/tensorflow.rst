@@ -4,19 +4,19 @@ TensorFlow
 
 .. admonition:: About this page
 
-   This is an API reference for TensorFlow in BentoML. Please refer to
+   This is an API reference for TensorFlow in VtsServing. Please refer to
    :doc:`/frameworks/tensorflow` for more information about how to use TensorFlow
-   in BentoML.
+   in VtsServing.
 
 
 .. note::
 
-   You can find more examples for **TensorFlow** in our `bentoml/examples https://github.com/bentoml/BentoML/tree/main/examples`_ directory.
+   You can find more examples for **TensorFlow** in our `vtsserving/examples https://github.com/vtsserving/VtsServing/tree/main/examples`_ directory.
 
-.. currentmodule:: bentoml.tensorflow
+.. currentmodule:: vtsserving.tensorflow
 
-.. autofunction:: bentoml.tensorflow.save_model
+.. autofunction:: vtsserving.tensorflow.save_model
 
-.. autofunction:: bentoml.tensorflow.load_model
+.. autofunction:: vtsserving.tensorflow.load_model
 
-.. autofunction:: bentoml.tensorflow.get
+.. autofunction:: vtsserving.tensorflow.get

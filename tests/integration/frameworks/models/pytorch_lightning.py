@@ -4,13 +4,13 @@ import torch
 import torch.nn
 import pytorch_lightning as pl
 
-import bentoml
+import vtsserving
 
 from . import FrameworkTestModel
 from . import FrameworkTestModelInput as Input
 from . import FrameworkTestModelConfiguration as Config
 
-framework = bentoml.pytorch_lightning
+framework = vtsserving.pytorch_lightning
 
 backward_compatible = True
 

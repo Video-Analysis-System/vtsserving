@@ -8,7 +8,7 @@ Securing Endpoint Access
 Server Side Authentication
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To enable authentication for a given BentoServer endpoint, An authentication middleware can be added to :code:`bentoml.Service`'s via :code:`add_asgi_middleware` API. This API supports mounting
+To enable authentication for a given BentoServer endpoint, An authentication middleware can be added to :code:`vtsserving.Service`'s via :code:`add_asgi_middleware` API. This API supports mounting
 any ASGI middleware to the BentoServer endpoints. And many of the middlewares built by
 the Python community, provides authentication or security functionality.
 
@@ -19,7 +19,7 @@ For example, you may apply HTTPS redirect and set trusted host URLs this way:
     from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
     from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-    svc = bentoml.Service('my_service', runners=[...])
+    svc = vtsserving.Service('my_service', runners=[...])
 
     svc.add_asgi_middleware(TrustedHostMiddleware, allowed_hosts=['example.com', '*.example.com'])
     svc.add_asgi_middleware(HTTPSRedirectMiddleware)
@@ -33,7 +33,7 @@ Here's an example with starlette-authlib:
 
     from starlette_authlib.middleware import AuthlibMiddleware as SessionMiddleware
 
-    svc = bentoml.Service('my_service', runners=[...])
+    svc = vtsserving.Service('my_service', runners=[...])
 
     svc.add_asgi_middleware(SessionMiddleware, secret_key='you_secret')
 
@@ -41,12 +41,12 @@ Here's an example with starlette-authlib:
 Certificates
 ^^^^^^^^^^^^
 
-BentoML supports HTTPS with self-signed certificates. To enable HTTPS, you can to provide SSL certificate and key files as arguments
-to the :code:`bentoml serve` command. Use :code:`bentoml serve --help` to see the full list of options.
+VtsServing supports HTTPS with self-signed certificates. To enable HTTPS, you can to provide SSL certificate and key files as arguments
+to the :code:`vtsserving serve` command. Use :code:`vtsserving serve --help` to see the full list of options.
 
 .. code::
     
-    bentoml serve iris_classifier:latest --ssl-certfile /path/to/cert.pem --ssl-keyfile /path/to/key.pem
+    vtsserving serve iris_classifier:latest --ssl-certfile /path/to/cert.pem --ssl-keyfile /path/to/key.pem
 
 
 Reverse Proxy
@@ -59,7 +59,7 @@ Service Mesh
 ^^^^^^^^^^^^
 
 For Kubernetes users looking for advanced authentication, access control, and routing
-policies, we recommend you to deploy Bentos with `Yatai <https://github.com/bentoml/Yatai>`_
+policies, we recommend you to deploy Bentos with `Yatai <https://github.com/vtsserving/Yatai>`_
 and use Yatai's `Istio <https://istio.io/>`_ integration.
 
 
@@ -67,9 +67,9 @@ and use Yatai's `Istio <https://istio.io/>`_ integration.
 Security Policy
 ---------------
 
-To report a vulnerability, we kindly ask you not to share it publicly on GitHub or in the community slack channel. Instead, contact the BentoML team directly at contact@bentoml.ai
+To report a vulnerability, we kindly ask you not to share it publicly on GitHub or in the community slack channel. Instead, contact the VtsServing team directly at contact@vtsserving.ai
 
-View the full BentoML’s security policy `here <https://github.com/bentoml/BentoML/security/policy>`_.
+View the full VtsServing’s security policy `here <https://github.com/vtsserving/VtsServing/security/policy>`_.
 
 
 

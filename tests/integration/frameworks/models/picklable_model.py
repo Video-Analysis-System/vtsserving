@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import numpy as np
 
-import bentoml
+import vtsserving
 
 from . import FrameworkTestModel
 from . import FrameworkTestModelInput as Input
 from . import FrameworkTestModelConfiguration as Config
 
-framework = bentoml.picklable_model
+framework = vtsserving.picklable_model
 
 
 class PredictModel:

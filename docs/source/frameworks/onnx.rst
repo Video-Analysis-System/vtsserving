@@ -28,8 +28,8 @@ Due to its high interoperability among frameworks, we recommend you to check out
 Compatibility
 -------------
 
-BentoML currently only support `ONNX Runtime
-<https://onnxruntime.ai>`_ as ONNX backend. BentoML requires either
+VtsServing currently only support `ONNX Runtime
+<https://onnxruntime.ai>`_ as ONNX backend. VtsServing requires either
 ``onnxruntime>=1.9`` or ``onnxruntime-gpu>=1.9`` to be installed.
 
 
@@ -216,13 +216,13 @@ Converting model frameworks to ONNX format
       dimension can accept arbitrary input size:
 
 
-Saving ONNX model with BentoML
+Saving ONNX model with VtsServing
 ------------------------------
 
-To quickly save any given ONNX model to BentoML's :ref:`Model
+To quickly save any given ONNX model to VtsServing's :ref:`Model
 Store<concepts/model:Managing Models>`, use ``onnx.load`` to
 load the exported ONNX model back into the Python session,
-then call BentoML's :obj:`~bentoml.onnx.save_model()`:
+then call VtsServing's :obj:`~vtsserving.onnx.save_model()`:
 
 
 .. tab-set::
@@ -236,13 +236,13 @@ then call BentoML's :obj:`~bentoml.onnx.save_model()`:
 	 signatures = {
 	     "run": {"batchable": True},
 	 }
-	 bentoml.onnx.save_model("onnx_super_resolution", onnx_model, signatures=signatures)
+	 vtsserving.onnx.save_model("onnx_super_resolution", onnx_model, signatures=signatures)
 
       which will result:
 
       .. code-block:: bash
 
-	 Model(tag="onnx_super_resolution:lwqr7ah5ocv3rea3", path="~/bentoml/models/onnx_super_resolution/lwqr7ah5ocv3rea3/")
+	 Model(tag="onnx_super_resolution:lwqr7ah5ocv3rea3", path="~/vtsserving/models/onnx_super_resolution/lwqr7ah5ocv3rea3/")
 
    .. tab-item:: TensorFlow
       :sync: tensorflow
@@ -253,13 +253,13 @@ then call BentoML's :obj:`~bentoml.onnx.save_model()`:
 	 signatures = {
 	     "run": {"batchable": True},
 	 }
-	 bentoml.onnx.save_model("onnx_resnet50", onnx_model, signatures=signatures)
+	 vtsserving.onnx.save_model("onnx_resnet50", onnx_model, signatures=signatures)
 
       which will result:
 
       .. code-block:: bash
 
-	 Model(tag="onnx_resnet50:zavavxh6w2v3rea3", path="~/bentoml/models/onnx_resnet50/zavavxh6w2v3rea3/")
+	 Model(tag="onnx_resnet50:zavavxh6w2v3rea3", path="~/vtsserving/models/onnx_resnet50/zavavxh6w2v3rea3/")
 
    .. tab-item:: scikit-learn
       :sync: sklearn
@@ -270,18 +270,18 @@ then call BentoML's :obj:`~bentoml.onnx.save_model()`:
 	 signatures = {
 	     "run": {"batchable": True},
 	 }
-	 bentoml.onnx.save_model("onnx_iris", model_proto, signatures=signatures)
+	 vtsserving.onnx.save_model("onnx_iris", model_proto, signatures=signatures)
 
       which will result:
 
       .. code-block:: bash
 
-	 Model(tag="onnx_iris:sqixlaqf76vv7ea3", path="~/bentoml/models/onnx_iris/sqixlaqf76vv7ea3/")
+	 Model(tag="onnx_iris:sqixlaqf76vv7ea3", path="~/vtsserving/models/onnx_iris/sqixlaqf76vv7ea3/")
 
 
-The default signature for :obj:`~bentoml.onnx.save_model()` is set to ``{"run": {"batchable": False}}``.
+The default signature for :obj:`~vtsserving.onnx.save_model()` is set to ``{"run": {"batchable": False}}``.
 
-This means by default, BentoML's :ref:`guides/batching:Adaptive Batching` is disabled when saving ONNX model.
+This means by default, VtsServing's :ref:`guides/batching:Adaptive Batching` is disabled when saving ONNX model.
 If you want to enable adaptive batching, provide a signature similar to the
 aboved example.
 
@@ -294,7 +294,7 @@ Building a Service for **ONNX**
 .. seealso::
 
    :ref:`Building a Service <concepts/service:Service and APIs>` for how to
-   create a prediction service with BentoML.
+   create a prediction service with VtsServing.
 
 .. tab-set::
 
@@ -304,16 +304,16 @@ Building a Service for **ONNX**
       .. code-block:: python
 	 :caption: `service.py`
 
-	 import bentoml
+	 import vtsserving
 
 	 import numpy as np
 	 from PIL import Image as PIL_Image
 	 from PIL import ImageOps
-	 from bentoml.io import Image
+	 from vtsserving.io import Image
 
-	 runner = bentoml.onnx.get("onnx_super_resolution:latest").to_runner()
+	 runner = vtsserving.onnx.get("onnx_super_resolution:latest").to_runner()
 
-	 svc = bentoml.Service("onnx_super_resolution", runners=[runner])
+	 svc = vtsserving.Service("onnx_super_resolution", runners=[runner])
 
 	 # for output, we set image io descriptor's pilmode to "L" to denote
 	 # the output is a gray scale image
@@ -335,15 +335,15 @@ Building a Service for **ONNX**
       .. code-block:: python
 	 :caption: `service.py`
 
-	 import bentoml
+	 import vtsserving
 
 	 import numpy as np
-	 from bentoml.io import Image
-	 from bentoml.io import JSON
+	 from vtsserving.io import Image
+	 from vtsserving.io import JSON
 
-	 runner = bentoml.onnx.get("onnx_resnet50:latest").to_runner()
+	 runner = vtsserving.onnx.get("onnx_resnet50:latest").to_runner()
 
-	 svc = bentoml.Service("onnx_resnet50", runners=[runner])
+	 svc = vtsserving.Service("onnx_resnet50", runners=[runner])
 
 	 @svc.api(input=Image(), output=JSON())
 	 async def predict(img):
@@ -364,14 +364,14 @@ Building a Service for **ONNX**
       .. code-block:: python
 	 :caption: `service.py`
 
-	 import bentoml
+	 import vtsserving
 
-	 from bentoml.io import JSON
-	 from bentoml.io import NumpyNdarray
+	 from vtsserving.io import JSON
+	 from vtsserving.io import NumpyNdarray
 
-	 runner = bentoml.onnx.get("onnx_iris:latest").to_runner()
+	 runner = vtsserving.onnx.get("onnx_iris:latest").to_runner()
 
-	 svc = bentoml.Service("onnx_iris", runners=[runner])
+	 svc = vtsserving.Service("onnx_iris", runners=[runner])
 
 	 @svc.api(input=NumpyNdarray(), output=JSON())
 	 async def classify(input_array):
@@ -383,10 +383,10 @@ Building a Service for **ONNX**
    In the aboved example, notice there are both ``run`` and ``async_run``  in ``runner.run.async_run(input_data)`` inside inference code. The distinction between ``run`` and ``async_run`` is as follow:
 
    1.  The ``run`` refers  to `onnxruntime.InferenceSession <https://github.com/microsoft/onnxruntime/blob/master/onnxruntime/core/session/inference_session.cc>`_'s ``run`` method, which is ONNX Runtime API to run `inference <https://onnxruntime.ai/docs/api/python/api_summary.html#data-inputs-and-outputs>`_.
-   2. The ``async_run`` refers to BentoML's runner inference API for invoking a model's signature. In the case of ONNX, it happens to have a similar name like the ``InferenceSession`` endpoint.
+   2. The ``async_run`` refers to VtsServing's runner inference API for invoking a model's signature. In the case of ONNX, it happens to have a similar name like the ``InferenceSession`` endpoint.
 
 
-When constructing a :ref:`bentofile.yaml <concepts/bento:Bento Build
+When constructing a :ref:`vtsfile.yaml <concepts/vts:Bento Build
 Options>`, there are two ways to include ONNX as a dependency, via
 ``python`` (if using pip) or ``conda``:
 
@@ -428,7 +428,7 @@ convert it to a runner object:
 
    test_input = np.random.randn(2, 1, 244, 244)
 
-   runner = bentoml.onnx.get("onnx_super_resolution").to_runner()
+   runner = vtsserving.onnx.get("onnx_super_resolution").to_runner()
 
    runner.init_local()
 
@@ -445,25 +445,25 @@ Similar to ``load_model``, you can customize ``providers`` and ``session_options
 
    providers=["TensorrtExecutionProvider", "CUDAExecutionProvider", "CPUExecutionProvider"]
 
-   bento_model = bentoml.onnx.get("onnx_super_resolution")
+   vts_model = vtsserving.onnx.get("onnx_super_resolution")
 
-   runner = bento_model.with_options(providers=providers).to_runner()
+   runner = vts_model.with_options(providers=providers).to_runner()
 
    runner.init_local()
 
 
-Loading an ONNX model with BentoML for local testing
+Loading an ONNX model with VtsServing for local testing
 ----------------------------------------------------
 
 Use ``load_model`` to verify that the saved model can be loaded properly:
 
 .. code-block:: python
 
-   ort_session = bentoml.onnx.load_model("onnx_super_resolution")
+   ort_session = vtsserving.onnx.load_model("onnx_super_resolution")
 
 .. note::
 
-   BentoML will load an ONNX model back as an
+   VtsServing will load an ONNX model back as an
    ``onnxruntime.InferenceSession`` object which is ready to do
    inference
 
@@ -477,7 +477,7 @@ Use ``load_model`` to verify that the saved model can be loaded properly:
    In the above snippet, we need explicitly convert input ndarray to
    float32 since ``onnxruntime.InferenceSession`` expects only single floats.
 
-   However, BentoML will automatically cast the input data automatically via Runners.
+   However, VtsServing will automatically cast the input data automatically via Runners.
 
 
 Dynamic Batch Size
@@ -485,7 +485,7 @@ Dynamic Batch Size
 
 .. seealso::
 
-   :ref:`guides/batching:Adaptive Batching`: a general introduction to adaptive batching in BentoML.
+   :ref:`guides/batching:Adaptive Batching`: a general introduction to adaptive batching in VtsServing.
 
 When :ref:`guides/batching:Adaptive Batching` is enabled, the exported
 ONNX model is **REQUIRED** to accept dynamic batch size.
@@ -548,7 +548,7 @@ Therefore, dynamic batch axes needs to be specified when the model is exported t
 Default Execution Providers Settings
 ------------------------------------
 
-When a CUDA-compatible GPU is available, BentoML runner will use ``["CUDAExecutionProvider", "CPUExecutionProvider"]`` as the de facto execution providers.
+When a CUDA-compatible GPU is available, VtsServing runner will use ``["CUDAExecutionProvider", "CPUExecutionProvider"]`` as the de facto execution providers.
 
 Otherwise, Runner will use ``["CPUExecutionProvider"]`` as the default providers.
 
@@ -559,9 +559,9 @@ override the default setting using ``with_options`` when creating a runner:
 
    providers = ["TensorrtExecutionProvider", "CUDAExecutionProvider", "CPUExecutionProvider"]
 
-   bento_model = bentoml.onnx.get("onnx_super_resolution")
+   vts_model = vtsserving.onnx.get("onnx_super_resolution")
 
-   runner = bento_model.with_options(providers=providers).to_runner()
+   runner = vts_model.with_options(providers=providers).to_runner()
 
 .. seealso::
 

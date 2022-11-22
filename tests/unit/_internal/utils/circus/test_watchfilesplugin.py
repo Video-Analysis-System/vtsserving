@@ -11,8 +11,8 @@ from unittest.mock import patch
 import pytest
 from circus.tests.support import TestCircus
 
-from bentoml._internal.utils.pkg import source_locations
-from bentoml._internal.utils.circus.watchfilesplugin import ServiceReloaderPlugin
+from vtsserving._internal.utils.pkg import source_locations
+from vtsserving._internal.utils.circus.watchfilesplugin import ServiceReloaderPlugin
 
 if TYPE_CHECKING:
     from unittest import TestCase
@@ -36,16 +36,16 @@ class TestServiceReloaderPlugin(TestCircus):
     def setUp(self) -> None:
         super().setUp()
         self.plugin_kwargs: dict[str, t.Any] = {
-            "bento_identifier": ".",
+            "vts_identifier": ".",
             "working_dir": self.reload_directory.__fspath__(),
-            "bentoml_home": self.reload_directory.__fspath__(),
+            "vtsserving_home": self.reload_directory.__fspath__(),
         }
-        self.mock_bentoml_install_from_source()
-        self.mock_bentoml_component_context()
-        self.mock_bentoml_server_logging()
+        self.mock_vtsserving_install_from_source()
+        self.mock_vtsserving_component_context()
+        self.mock_vtsserving_server_logging()
 
     def test_logging_info(self) -> None:
-        with self.assertLogs("bentoml", level=logging.INFO) as log:
+        with self.assertLogs("vtsserving", level=logging.INFO) as log:
             self.make_plugin(ServiceReloaderPlugin, **self.plugin_kwargs)
             self.assertIn("adding source root", log.output[0])
             self.assertIn("Watching directories", log.output[1])
@@ -53,27 +53,27 @@ class TestServiceReloaderPlugin(TestCircus):
     def test_reloader_params_is_required(self) -> None:
         self.assertRaises(AssertionError, self.make_plugin, ServiceReloaderPlugin)  # type: ignore (unfinished circus type)
 
-    def mock_bentoml_install_from_source(self) -> MagicMock:
+    def mock_vtsserving_install_from_source(self) -> MagicMock:
         patcher = patch(
-            "bentoml._internal.utils.circus.watchfilesplugin.is_pypi_installed_bentoml"
+            "vtsserving._internal.utils.circus.watchfilesplugin.is_pypi_installed_vtsserving"
         )
         mock = patcher.start()
         mock.return_value = False
         self.addCleanup(patcher.stop)
 
-    def mock_bentoml_component_context(self) -> MagicMock:
-        from bentoml._internal.context import _ComponentContext
+    def mock_vtsserving_component_context(self) -> MagicMock:
+        from vtsserving._internal.context import _ComponentContext
 
         # prevent error from double setting component name
         _ComponentContext.component_name = None
 
-    def mock_bentoml_server_logging(self) -> MagicMock:
+    def mock_vtsserving_server_logging(self) -> MagicMock:
         patcher = patch(
-            "bentoml._internal.utils.circus.watchfilesplugin.configure_server_logging"
+            "vtsserving._internal.utils.circus.watchfilesplugin.configure_server_logging"
         )
         patcher.start()
         self.addCleanup(patcher.stop)
-        import bentoml._internal.log as log
+        import vtsserving._internal.log as log
 
         log.configure_server_logging = lambda: None
 
@@ -107,7 +107,7 @@ class TestServiceReloaderPlugin(TestCircus):
         plugin = self.make_plugin(ServiceReloaderPlugin, **self.plugin_kwargs)
         Path(file).touch()
 
-        with self.assertLogs("bentoml", level=logging.WARNING) as log:
+        with self.assertLogs("vtsserving", level=logging.WARNING) as log:
             plugin.look_after()
             call_mock.assert_called_with("restart", name="*")
             self.assertIn("ADDED", log.output[0])
@@ -122,7 +122,7 @@ class TestServiceReloaderPlugin(TestCircus):
         plugin = self.make_plugin(ServiceReloaderPlugin, **self.plugin_kwargs)
         os.remove(file)
 
-        with self.assertLogs("bentoml", level=logging.WARNING) as log:
+        with self.assertLogs("vtsserving", level=logging.WARNING) as log:
             plugin.look_after()
             call_mock.assert_called_with("restart", name="*")
             self.assertIn("DELETED", log.output[0])

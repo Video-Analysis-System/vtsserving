@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 GIT_ROOT=$(git rev-parse --show-toplevel)
-STUBS_GENERATOR="bentoml/stubs-generator"
+STUBS_GENERATOR="vtsserving/stubs-generator"
 
 cd "$GIT_ROOT/src" || exit 1
 
@@ -39,7 +39,7 @@ EOF
 	fi
 
 	echo "Generating gRPC stubs..."
-	find "bentoml/grpc/$VERSION" -type f -name "*.proto" -exec docker run --rm -it -v "$GIT_ROOT/src":/workspace --platform=linux/amd64 "$STUBS_GENERATOR" python -m grpc_tools.protoc -I. --grpc_python_out=. --python_out=. --mypy_out=. --mypy_grpc_out=. "{}" \;
+	find "vtsserving/grpc/$VERSION" -type f -name "*.proto" -exec docker run --rm -it -v "$GIT_ROOT/src":/workspace --platform=linux/amd64 "$STUBS_GENERATOR" python -m grpc_tools.protoc -I. --grpc_python_out=. --python_out=. --mypy_out=. --mypy_grpc_out=. "{}" \;
 	pushd "$GIT_ROOT" &>/dev/null
 	find "tests/proto" -type f -name "*.proto" -exec docker run --rm -it -v "$GIT_ROOT":/workspace --platform=linux/amd64 "$STUBS_GENERATOR" python -m grpc_tools.protoc -I. --grpc_python_out=. --python_out=. --mypy_out=. --mypy_grpc_out=. "{}" \;
 	popd &>/dev/null

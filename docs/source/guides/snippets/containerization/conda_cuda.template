@@ -1,5 +1,5 @@
 {% import '_macros.j2' as common %}
-{% extends bento_base_template %}
+{% extends vts_base_template %}
 {# Make sure to change the correct python_version and conda version accordingly. #}
 {# example: py38_4.10.3 #}
 {# refers to https://repo.anaconda.com/miniconda/ for miniconda3 base #}
@@ -73,5 +73,5 @@ RUN set -ex && \
 
 SHELL [ "/bin/bash", "-eo", "pipefail", "-c" ]
 {{ super() }}
-{{ common.setup_conda(__python_version__, bento__path, conda_path=conda_path) }}
+{{ common.setup_conda(__python_version__, vts__path, conda_path=conda_path) }}
 {% endblock %}

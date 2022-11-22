@@ -9,4 +9,4 @@ dependencies:
     - torchvision==0.9.1
     - mlflow>=1.0
     - protobuf<4.0.0
-    - bentoml>=1.0.0rc3
+    - vtsserving>=1.0.0rc3

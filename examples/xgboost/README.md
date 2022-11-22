@@ -1,6 +1,6 @@
-# BentoML XGBoost Demo
+# VtsServing XGBoost Demo
 
-This is a sample project demonstrating basic usage of BentoML with XGBoost.
+This is a sample project demonstrating basic usage of VtsServing with XGBoost.
 
 ### Install Dependencies
 
@@ -13,24 +13,24 @@ pip install -r ./requirements.txt
 ### Model Training
 
 First step, train a classification model with the UCI Machine Learning Repository Agaricus mushroom
-dataset and save the model with BentoML:
+dataset and save the model with VtsServing:
 
 ```bash
 python train.py
 ```
 
-This should save a new model in the BentoML local model store:
+This should save a new model in the VtsServing local model store:
 
 ```bash
-bentoml models list agaricus
+vtsserving models list agaricus
 ```
 
 Verify that the model can be loaded as runner from Python shell:
 
 ```python
-import bentoml
+import vtsserving
 
-runner = bentoml.xgboost.load_runner("agaricus:latest")
+runner = vtsserving.xgboost.load_runner("agaricus:latest")
 
 runner.run([0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
             0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0,
@@ -48,16 +48,16 @@ The ML Service code is defined in the `agaricus.py` file:
 # agaricus.py
 import typing
 
-import bentoml
+import vtsserving
 import xgboost
-from bentoml.io import NumpyNdarray, File
+from vtsserving.io import NumpyNdarray, File
 
 if typing.TYPE_CHECKING:
     import numpy as np
 
-agaricus_runner = bentoml.xgboost.load_runner("agaricus:latest")
+agaricus_runner = vtsserving.xgboost.load_runner("agaricus:latest")
 
-svc = bentoml.Service("agaricus", runners=[agaricus_runner])
+svc = vtsserving.Service("agaricus", runners=[agaricus_runner])
 
 
 @svc.api(input=NumpyNdarray(), output=NumpyNdarray())
@@ -68,7 +68,7 @@ def classify(input_data: "np.ndarray") -> "np.ndarray":
 Start an API server locally to test the service code above:
 
 ```bash
-bentoml serve agaricus:svc --reload
+vtsserving serve agaricus:svc --reload
 ```
 
 With the `--reload` flag, the API server will automatically restart when the source
@@ -82,13 +82,13 @@ curl -X POST -H "content-type: application/json" --data "[[0, 0, 1, 0, 0, 0, 0, 
 
 ### Build Bento for deployment
 
-A `bentofile` for the agaricus service is also contained in this directory:
+A `vtsfile` for the agaricus service is also contained in this directory:
 
 ```yaml
 service: "agaricus:svc"
 description: "file: ./README.md"
 labels:
-  owner: bentoml-team
+  owner: vtsserving-team
   stage: demo
 include:
   - "*.py"
@@ -99,17 +99,17 @@ python:
     - xgboost
 ```
 
-Simply run `bentoml build` from this directory to build a Bento with the latest version of the
-`agaricus` model. This may take a while when running for the first time, as BentoML needs to resolve
+Simply run `vtsserving build` from this directory to build a Bento with the latest version of the
+`agaricus` model. This may take a while when running for the first time, as VtsServing needs to resolve
 all dependency versions:
 
 ```
-> bentoml build
+> vtsserving build
 
-03/07/2022 12:25:16 PM INFO     [cli] Building BentoML service "agaricus:uvkv7d46cgnvgeb5" from build context "/home/user/devel/gallery/xgboost"
-03/07/2022 12:25:16 PM INFO     [cli] Packing model "agaricus:3t4533c6ufi6zcz2ca6rzl235" from "/home/user/bentoml/models/agaricus/3t4533c6ufi6zcz2ca6rzl235"
+03/07/2022 12:25:16 PM INFO     [cli] Building VtsServing service "agaricus:uvkv7d46cgnvgeb5" from build context "/home/user/devel/gallery/xgboost"
+03/07/2022 12:25:16 PM INFO     [cli] Packing model "agaricus:3t4533c6ufi6zcz2ca6rzl235" from "/home/user/vtsserving/models/agaricus/3t4533c6ufi6zcz2ca6rzl235"
 03/07/2022 12:25:16 PM INFO     [cli] Successfully saved Model(tag="agaricus:3t4533c6ufi6zcz2ca6rzl235",
-                                path="/run/user/1000/tmpw8lyba_sbentoml_bento_agaricus/models/agaricus/3t4533c6ufi6zcz2ca6rzl235/")
+                                path="/run/user/1000/tmpw8lyba_svtsserving_vts_agaricus/models/agaricus/3t4533c6ufi6zcz2ca6rzl235/")
 03/07/2022 12:25:16 PM INFO     [cli] Locking PyPI package versions..
 03/07/2022 12:25:17 PM INFO     [cli]
                                 ██████╗░███████╗███╗░░██╗████████╗░█████╗░███╗░░░███╗██╗░░░░░
@@ -119,27 +119,27 @@ all dependency versions:
                                 ██████╦╝███████╗██║░╚███║░░░██║░░░╚█████╔╝██║░╚═╝░██║███████╗
                                 ╚═════╝░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚════╝░╚═╝░░░░░╚═╝╚══════╝
 
-03/07/2022 12:25:17 PM INFO     [cli] Successfully built Bento(tag="agaricus:uvkv7d46cgnvgeb5") at "/home/user/bentoml/bentos/agaricus/uvkv7d46cgnvgeb5/"
+03/07/2022 12:25:17 PM INFO     [cli] Successfully built Bento(tag="agaricus:uvkv7d46cgnvgeb5") at "/home/user/vtsserving/vtss/agaricus/uvkv7d46cgnvgeb5/"
 ```
 
 This Bento can now be served:
 
 ```bash
-bentoml serve agaricus:latest --production
+vtsserving serve agaricus:latest --production
 ```
 
 The Bento directory contains all code, files, models and configuration required to run this service.
-BentoML standarizes this file structure, enabling serving runtimes and deployment tools to be built
-on top of it. By default, Bentos are managed under the `~/bentoml/bentos` directory:
+VtsServing standarizes this file structure, enabling serving runtimes and deployment tools to be built
+on top of it. By default, Bentos are managed under the `~/vtsserving/vtss` directory:
 
 ```
-> cd $(bentoml get agaricus:latest -o path)
+> cd $(vtsserving get agaricus:latest -o path)
 
 > tree
 .
 ├── apis
 │   └── openapi.yaml
-├── bento.yaml
+├── vts.yaml
 ├── env
 │   ├── conda
 │   ├── docker
@@ -170,11 +170,11 @@ Make sure you have docker installed and the docker daemon is running. The follow
 your local docker environment to build a new docker image containing the Bento:
 
 ```bash
-bentoml containerize agaricus:latest
+vtsserving containerize agaricus:latest
 ```
 
 To test out the newly created docker image:
 
 ```bash
-docker run agaricus:<bento tag output> -p 3000:3000
+docker run agaricus:<vts tag output> -p 3000:3000
 ```

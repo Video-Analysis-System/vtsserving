@@ -1,4 +1,4 @@
-# BentoML 🤝 FastAPI Demo Project
+# VtsServing 🤝 FastAPI Demo Project
 
 0. Install dependencies:
 
@@ -15,15 +15,15 @@ python ./train.py
 2. Run the service:
 
 ```bash
-bentoml serve service.py:svc
+vtsserving serve service.py:svc
 ```
 
 3. Send test request
 
-Test the `/predict_bentoml` endpoint:
+Test the `/predict_vtsserving` endpoint:
 
 ```bash
-$ curl -X POST -H "content-type: application/json" --data '{"sepal_len": 7.2, "sepal_width": 3.2, "petal_len": 5.2, "petal_width": 2.2}' http://127.0.0.1:3000/predict_bentoml
+$ curl -X POST -H "content-type: application/json" --data '{"sepal_len": 7.2, "sepal_width": 3.2, "petal_len": 5.2, "petal_width": 2.2}' http://127.0.0.1:3000/predict_vtsserving
 
 [2]%
 ```
@@ -58,11 +58,11 @@ $ curl http://127.0.0.1:3000/metadata
 4. Build Bento
 
 ```
-bentoml build
+vtsserving build
 ```
 
 5. Build docker image
 
 ```
-bentoml containerize iris_fastapi_demo:latest
+vtsserving containerize iris_fastapi_demo:latest
 ```

@@ -6,7 +6,7 @@ from sklearn import datasets
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
-import bentoml
+import vtsserving
 
 
 def main():
@@ -29,8 +29,8 @@ def main():
     accuracy = accuracy_score(y_test, y_pred)
     print("Accuracy:", accuracy)
 
-    # Save model with BentoML
-    saved_model = bentoml.picklable_model.save_model(
+    # Save model with VtsServing
+    saved_model = vtsserving.picklable_model.save_model(
         "iris_clf_lda",
         lda,
         signatures={"predict": {"batchable": True}},

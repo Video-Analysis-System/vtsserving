@@ -4,15 +4,15 @@ LightGBM
 
 .. admonition:: About this page
 
-   This is an API reference for using LightGBM in BentoML. Please refer to
+   This is an API reference for using LightGBM in VtsServing. Please refer to
    :doc:`/frameworks/lightgbm` for more information about how to use
-   LightGBM in BentoML.
+   LightGBM in VtsServing.
 
 
-.. currentmodule:: bentoml.lightgbm
+.. currentmodule:: vtsserving.lightgbm
 
-.. autofunction:: bentoml.lightgbm.save_model
+.. autofunction:: vtsserving.lightgbm.save_model
 
-.. autofunction:: bentoml.lightgbm.load_model
+.. autofunction:: vtsserving.lightgbm.load_model
 
-.. autofunction:: bentoml.lightgbm.get
+.. autofunction:: vtsserving.lightgbm.get

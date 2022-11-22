@@ -2,56 +2,56 @@
 Core Components
 ===============
 
-bentoml.Service
+vtsserving.Service
 ---------------
 
-.. autoclass:: bentoml.Service
+.. autoclass:: vtsserving.Service
     :members: api, runners, apis, mount_asgi_app, mount_wsgi_app, add_asgi_middleware
     :undoc-members:
 
-.. autofunction:: bentoml.load
+.. autofunction:: vtsserving.load
 
 .. TODO::
     Add docstring to the following classes/functions
 
-bentoml.build
+vtsserving.build
 -------------
 
-.. autofunction:: bentoml.bentos.build
+.. autofunction:: vtsserving.vtss.build
 
-.. autofunction:: bentoml.bentos.build_bentofile
+.. autofunction:: vtsserving.vtss.build_vtsfile
 
-.. autofunction:: bentoml.bentos.containerize
+.. autofunction:: vtsserving.vtss.containerize
 
 
-bentoml.Bento
+vtsserving.Bento
 -------------
 
-.. autoclass:: bentoml.Bento
+.. autoclass:: vtsserving.Bento
     :members: tag, info, path, path_of, doc
     :undoc-members:
 
-bentoml.Runner
+vtsserving.Runner
 --------------
 
-.. autoclass:: bentoml.Runner
+.. autoclass:: vtsserving.Runner
 
-bentoml.Runnable
+vtsserving.Runnable
 ----------------
 
-.. autoclass:: bentoml.Runnable
+.. autoclass:: vtsserving.Runnable
     :members: method
     :undoc-members:
 
 Tag
 ---
 
-.. autoclass:: bentoml.Tag
+.. autoclass:: vtsserving.Tag
 
 Model
 -----
 
-.. autoclass:: bentoml.Model
+.. autoclass:: vtsserving.Model
     :members: to_runner, to_runnable, info, path, path_of, with_options
     :undoc-members:
 
@@ -59,4 +59,4 @@ Model
 YataiClient
 -----------
 
-.. autoclass:: bentoml.YataiClient
+.. autoclass:: vtsserving.YataiClient

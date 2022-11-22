@@ -8,13 +8,13 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-import bentoml
-from bentoml.exceptions import NotFound
-from bentoml._internal.models.model import ModelContext
-from bentoml._internal.models.model import ModelSignature
-from bentoml._internal.runner.runner import Runner
-from bentoml._internal.runner.strategy import DefaultStrategy
-from bentoml._internal.runner.runner_handle.local import LocalRunnerRef
+import vtsserving
+from vtsserving.exceptions import NotFound
+from vtsserving._internal.models.model import ModelContext
+from vtsserving._internal.models.model import ModelSignature
+from vtsserving._internal.runner.runner import Runner
+from vtsserving._internal.runner.strategy import DefaultStrategy
+from vtsserving._internal.runner.runner_handle.local import LocalRunnerRef
 
 from .models import FrameworkTestModel
 
@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 @pytest.fixture(name="saved_model")
 def fixture_saved_model(
     framework: types.ModuleType, test_model: FrameworkTestModel
-) -> bentoml.Model:
+) -> vtsserving.Model:
     return framework.save_model(
         test_model.name, test_model.model, **test_model.save_kwargs
     )
@@ -35,7 +35,7 @@ def test_backward_warnings(
     framework: types.ModuleType,
     test_model: FrameworkTestModel,
     caplog: LogCaptureFixture,
-    saved_model: bentoml.Model,
+    saved_model: vtsserving.Model,
 ):
     # We want to cover the cases where the user is using the old API
     # and we want to make sure that the warning is raised.
@@ -79,7 +79,7 @@ def test_backward_warnings(
 
 
 def test_wrong_module_load_exc(framework: types.ModuleType):
-    with bentoml.models.create(
+    with vtsserving.models.create(
         "wrong_module",
         module=__name__,
         context=ModelContext("wrong_module", {"wrong_module": "1.0.0"}),
@@ -150,57 +150,57 @@ def test_generic_arguments(framework: types.ModuleType, test_model: FrameworkTes
         "pytest-metadata-vSW4": [0, 9, 2],
         "pytest-metadata-qJJ3": "Wy5M",
     }
-    bento_model = framework.save_model(
+    vts_model = framework.save_model(
         test_model.name,
         test_model.model,
         **kwargs,
     )
 
     for meth in meths:
-        assert bento_model.info.signatures[meth] == ModelSignature.from_dict(kwargs["signatures"][meth])  # type: ignore
+        assert vts_model.info.signatures[meth] == ModelSignature.from_dict(kwargs["signatures"][meth])  # type: ignore
 
-    assert bento_model.info.labels == kwargs["labels"]
-    assert bento_model.custom_objects["pytest-custom-object-r7BU"].mean_[0] == 5.5
-    assert bento_model.custom_objects["pytest-custom-object-r7BU"].var_[0] == 4.75
-    assert bento_model.info.metadata == kwargs["metadata"]
+    assert vts_model.info.labels == kwargs["labels"]
+    assert vts_model.custom_objects["pytest-custom-object-r7BU"].mean_[0] == 5.5
+    assert vts_model.custom_objects["pytest-custom-object-r7BU"].var_[0] == 4.75
+    assert vts_model.info.metadata == kwargs["metadata"]
 
 
 def test_get(
     framework: types.ModuleType,
     test_model: FrameworkTestModel,
-    saved_model: bentoml.Model,
+    saved_model: vtsserving.Model,
 ):
     # test that the generic get API works
-    bento_model = framework.get(saved_model.tag)
+    vts_model = framework.get(saved_model.tag)
 
-    assert bento_model == saved_model
-    assert bento_model.info.name == test_model.name
+    assert vts_model == saved_model
+    assert vts_model.info.name == test_model.name
 
-    bento_model_from_str = framework.get(str(saved_model.tag))
-    assert bento_model == bento_model_from_str
+    vts_model_from_str = framework.get(str(saved_model.tag))
+    assert vts_model == vts_model_from_str
 
 
 def test_get_runnable(
     framework: types.ModuleType,
-    saved_model: bentoml.Model,
+    saved_model: vtsserving.Model,
 ):
     runnable = framework.get_runnable(saved_model)
 
     assert isinstance(
         runnable, t.Type
-    ), "get_runnable for {bento_model.info.name} does not return a type"
+    ), "get_runnable for {vts_model.info.name} does not return a type"
     assert issubclass(
-        runnable, bentoml.Runnable
-    ), "get_runnable for {bento_model.info.name} doesn't return a subclass of bentoml.Runnable"
+        runnable, vtsserving.Runnable
+    ), "get_runnable for {vts_model.info.name} doesn't return a subclass of vtsserving.Runnable"
     assert (
-        len(runnable.bentoml_runnable_methods__) > 0
-    ), "get_runnable for {bento_model.info.name} gives a runnable with no methods"
+        len(runnable.vtsserving_runnable_methods__) > 0
+    ), "get_runnable for {vts_model.info.name} gives a runnable with no methods"
 
 
 def test_load(
     framework: types.ModuleType,
     test_model: FrameworkTestModel,
-    saved_model: bentoml.Model,
+    saved_model: vtsserving.Model,
 ):
     for configuration in test_model.configurations:
         model = framework.load_model(saved_model)
@@ -209,7 +209,7 @@ def test_load(
 
 def test_runnable(
     test_model: FrameworkTestModel,
-    saved_model: bentoml.Model,
+    saved_model: vtsserving.Model,
 ):
     for config in test_model.configurations:
         runner = saved_model.with_options(**config.load_kwargs).to_runner()
@@ -222,11 +222,11 @@ def test_runnable(
 
 def test_runner_batching(
     test_model: FrameworkTestModel,
-    saved_model: bentoml.Model,
+    saved_model: vtsserving.Model,
 ):
-    from bentoml._internal.runner.utils import Params
-    from bentoml._internal.runner.utils import payload_paramss_to_batch_params
-    from bentoml._internal.runner.container import AutoContainer
+    from vtsserving._internal.runner.utils import Params
+    from vtsserving._internal.runner.utils import payload_paramss_to_batch_params
+    from vtsserving._internal.runner.container import AutoContainer
 
     ran_tests = False
 
@@ -271,14 +271,14 @@ def test_runner_batching(
 def test_runner_cpu_multi_threading(
     framework: types.ModuleType,
     test_model: FrameworkTestModel,
-    saved_model: bentoml.Model,
+    saved_model: vtsserving.Model,
 ):
     resource_cfg = {"cpu": 2.0}
     ran_tests = False
     for config in test_model.configurations:
         model_with_options = saved_model.with_options(**config.load_kwargs)
 
-        runnable: t.Type[bentoml.Runnable] = framework.get_runnable(model_with_options)
+        runnable: t.Type[vtsserving.Runnable] = framework.get_runnable(model_with_options)
         if "cpu" not in runnable.SUPPORTED_RESOURCES:
             continue
 
@@ -316,7 +316,7 @@ def test_runner_cpu_multi_threading(
 def test_runner_cpu(
     framework: types.ModuleType,
     test_model: FrameworkTestModel,
-    saved_model: bentoml.Model,
+    saved_model: vtsserving.Model,
 ):
     resource_cfg = {"cpu": 1.0}
 
@@ -324,7 +324,7 @@ def test_runner_cpu(
     for config in test_model.configurations:
         model_with_options = saved_model.with_options(**config.load_kwargs)
 
-        runnable: t.Type[bentoml.Runnable] = framework.get_runnable(model_with_options)
+        runnable: t.Type[vtsserving.Runnable] = framework.get_runnable(model_with_options)
         if not runnable.SUPPORTS_CPU_MULTI_THREADING:
             continue
 
@@ -364,7 +364,7 @@ def test_runner_cpu(
 def test_runner_nvidia_gpu(
     framework: types.ModuleType,
     test_model: FrameworkTestModel,
-    saved_model: bentoml.Model,
+    saved_model: vtsserving.Model,
 ):
     resource_cfg = {"nvidia.com/gpu": 1}
 
@@ -372,7 +372,7 @@ def test_runner_nvidia_gpu(
     for config in test_model.configurations:
         model_with_options = saved_model.with_options(**config.load_kwargs)
 
-        runnable: t.Type[bentoml.Runnable] = framework.get_runnable(model_with_options)
+        runnable: t.Type[vtsserving.Runnable] = framework.get_runnable(model_with_options)
         if "nvidia.com/gpu" not in runnable.SUPPORTED_RESOURCES:
             continue
 

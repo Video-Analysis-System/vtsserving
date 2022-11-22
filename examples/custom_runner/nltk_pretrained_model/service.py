@@ -9,18 +9,18 @@ import nltk
 from utils import exponential_buckets
 from nltk.sentiment import SentimentIntensityAnalyzer
 
-import bentoml
-from bentoml.io import JSON
-from bentoml.io import Text
+import vtsserving
+from vtsserving.io import JSON
+from vtsserving.io import Text
 
 if TYPE_CHECKING:
-    from bentoml._internal.runner.runner import RunnerMethod
+    from vtsserving._internal.runner.runner import RunnerMethod
 
-    class RunnerImpl(bentoml.Runner):
+    class RunnerImpl(vtsserving.Runner):
         is_positive: RunnerMethod
 
 
-inference_duration = bentoml.metrics.Histogram(
+inference_duration = vtsserving.metrics.Histogram(
     name="inference_duration",
     documentation="Duration of inference",
     labelnames=["nltk_version", "sentiment_cls"],
@@ -43,21 +43,21 @@ inference_duration = bentoml.metrics.Histogram(
     ),
 )
 
-polarity_counter = bentoml.metrics.Counter(
+polarity_counter = vtsserving.metrics.Counter(
     name="polarity_total",
     documentation="Count total number of analysis by polarity scores",
     labelnames=["polarity"],
 )
 
 
-class NLTKSentimentAnalysisRunnable(bentoml.Runnable):
+class NLTKSentimentAnalysisRunnable(vtsserving.Runnable):
     SUPPORTED_RESOURCES = ("cpu",)
     SUPPORTS_CPU_MULTI_THREADING = False
 
     def __init__(self):
         self.sia = SentimentIntensityAnalyzer()
 
-    @bentoml.Runnable.method(batchable=False)
+    @vtsserving.Runnable.method(batchable=False)
     def is_positive(self, input_text: str) -> bool:
         start = time.perf_counter()
         scores = [
@@ -71,10 +71,10 @@ class NLTKSentimentAnalysisRunnable(bentoml.Runnable):
 
 
 nltk_runner = t.cast(
-    "RunnerImpl", bentoml.Runner(NLTKSentimentAnalysisRunnable, name="nltk_sentiment")
+    "RunnerImpl", vtsserving.Runner(NLTKSentimentAnalysisRunnable, name="nltk_sentiment")
 )
 
-svc = bentoml.Service("sentiment_analyzer", runners=[nltk_runner])
+svc = vtsserving.Service("sentiment_analyzer", runners=[nltk_runner])
 
 
 @svc.api(input=Text(), output=JSON())

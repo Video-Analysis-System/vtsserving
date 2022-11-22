@@ -1,11 +1,11 @@
-import bentoml
+import vtsserving
 
-# import bentoml.sklearn
-# from bentoml.io import NumpyNdarray
+# import vtsserving.sklearn
+# from vtsserving.io import NumpyNdarray
 
-# iris_model_runner = bentoml.sklearn.get('iris_classifier:latest').to_runner()
-svc = bentoml.Service(
-    "test.simplebento",
+# iris_model_runner = vtsserving.sklearn.get('iris_classifier:latest').to_runner()
+svc = vtsserving.Service(
+    "test.simplevts",
     # runners=[iris_model_runner]
 )
 
@@ -14,6 +14,6 @@ svc = bentoml.Service(
 #     return iris_model_runner.predict(request_data)
 
 # For simple use cases, only models list is required:
-# svc.bento_options.models = []
-# svc.bento_files.include = ["*"]
-# svc.bento_env.pip_install = "./requirements.txt"
+# svc.vts_options.models = []
+# svc.vts_files.include = ["*"]
+# svc.vts_env.pip_install = "./requirements.txt"

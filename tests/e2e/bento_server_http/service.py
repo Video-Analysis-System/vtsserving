@@ -10,13 +10,13 @@ from PIL.Image import Image as PILImage
 from PIL.Image import fromarray
 from starlette.requests import Request
 
-import bentoml
-from bentoml.io import File
-from bentoml.io import JSON
-from bentoml.io import Image
-from bentoml.io import Multipart
-from bentoml.io import NumpyNdarray
-from bentoml.io import PandasDataFrame
+import vtsserving
+from vtsserving.io import File
+from vtsserving.io import JSON
+from vtsserving.io import Image
+from vtsserving.io import Multipart
+from vtsserving.io import NumpyNdarray
+from vtsserving.io import PandasDataFrame
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
@@ -25,32 +25,32 @@ if TYPE_CHECKING:
     from starlette.types import ASGIApp
     from starlette.types import Receive
 
-    from bentoml._internal.types import FileLike
-    from bentoml._internal.types import JSONSerializable
+    from vtsserving._internal.types import FileLike
+    from vtsserving._internal.types import JSONSerializable
 
 
-py_model = bentoml.picklable_model.get("py_model.case-1.http.e2e").to_runner()
+py_model = vtsserving.picklable_model.get("py_model.case-1.http.e2e").to_runner()
 
 
-svc = bentoml.Service(name="general_http_service.case-1.e2e", runners=[py_model])
+svc = vtsserving.Service(name="general_http_service.case-1.e2e", runners=[py_model])
 
 
-metric_test = bentoml.metrics.Counter(
+metric_test = vtsserving.metrics.Counter(
     name="test_metrics", documentation="Counter test metric"
 )
 
 
-@svc.api(input=bentoml.io.Text(), output=bentoml.io.Text())
+@svc.api(input=vtsserving.io.Text(), output=vtsserving.io.Text())
 def echo_data_metric(data: str) -> str:
     metric_test.inc()
     return data
 
 
-@svc.api(input=bentoml.io.Text(), output=bentoml.io.Text())
+@svc.api(input=vtsserving.io.Text(), output=vtsserving.io.Text())
 def ensure_metrics_are_registered(data: str) -> str:  # pylint: disable=unused-argument
     counters = [
         m.name
-        for m in bentoml.metrics.text_string_to_metric_families()
+        for m in vtsserving.metrics.text_string_to_metric_families()
         if m.type == "counter"
     ]
     assert "test_metrics" in counters

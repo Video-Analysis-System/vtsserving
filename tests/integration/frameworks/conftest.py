@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from .models import FrameworkTestModel
 
 
-logger = logging.getLogger("bentoml.tests")
+logger = logging.getLogger("vtsserving.tests")
 
 
 def pytest_addoption(parser: Parser):

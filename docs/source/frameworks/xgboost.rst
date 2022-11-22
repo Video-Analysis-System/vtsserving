@@ -2,12 +2,12 @@
 XGBoost
 =======
 
-XGBoost is an optimized distributed gradient boosting library designed to be highly efficient, flexible and portable. This guide provides an overview of using `XGBoost <https://xgboost.readthedocs.io/en/stable/>`_ with BentoML.
+XGBoost is an optimized distributed gradient boosting library designed to be highly efficient, flexible and portable. This guide provides an overview of using `XGBoost <https://xgboost.readthedocs.io/en/stable/>`_ with VtsServing.
 
 Compatibility
 ~~~~~~~~~~~~~
 
-BentoML has been validated to work with XGBoost version 0.7post3 and higher.
+VtsServing has been validated to work with XGBoost version 0.7post3 and higher.
 
 Saving a Trained Booster
 ------------------------
@@ -33,20 +33,20 @@ If you've already saved a model using XGBoost, simply load it back into Python u
    bst = xgb.train(param, dt)
 
 
-After training, use :obj:`~bentoml.xgboost.save_model()` to save the Booster instance to BentoML model store. XGBoost has no
+After training, use :obj:`~vtsserving.xgboost.save_model()` to save the Booster instance to VtsServing model store. XGBoost has no
 framework-specific save options.
 
 .. code-block:: python
 
-   import bentoml
-   bento_model = bentoml.xgboost.save_model("booster_tree", bst)
+   import vtsserving
+   vts_model = vtsserving.xgboost.save_model("booster_tree", bst)
 
 To verify that the saved learner can be loaded properly:
 
 .. code-block:: python
 
-   import bentoml
-   booster = bentoml.xgboost.load_model("booster_tree:latest")
+   import vtsserving
+   booster = vtsserving.xgboost.load_model("booster_tree:latest")
    booster.predict(xgb.DMatrix([[1.308e+01, 1.571e+01, 8.563e+01, 5.200e+02, 1.075e-01, 1.270e-01,
        4.568e-02, 3.110e-02, 1.967e-01, 6.811e-02, 1.852e-01, 7.477e-01,
        1.383e+00, 1.467e+01, 4.097e-03, 1.898e-02, 1.698e-02, 6.490e-03,
@@ -55,7 +55,7 @@ To verify that the saved learner can be loaded properly:
 
 .. note::
    ``load_model`` should only be used when the booster object itself is required. When using a saved
-   booster in a BentoML service, use :obj:`~bentoml.xgboost.get` and create a runner as described
+   booster in a VtsServing service, use :obj:`~vtsserving.xgboost.get` and create a runner as described
    below.
 
 Building a Service
@@ -64,24 +64,24 @@ Building a Service
 .. seealso::
 
    :ref:`Building a Service <concepts/service:Service and APIs>`: more information on creating a
-   prediction service with BentoML.
+   prediction service with VtsServing.
 
 Create a ``service.py`` file separate from your training code that will be used to define the
-BentoML service:
+VtsServing service:
 
 .. code-block:: python
 
-   import bentoml
-   from bentoml.io import NumpyNdarray
+   import vtsserving
+   from vtsserving.io import NumpyNdarray
    import numpy as np
 
    # create a runner from the saved Booster
-   runner = bentoml.xgboost.get("booster_tree:latest").to_runner()
+   runner = vtsserving.xgboost.get("booster_tree:latest").to_runner()
 
-   # create a BentoML service
-   svc = bentoml.Service("cancer_classifier", runners=[runner])
+   # create a VtsServing service
+   svc = vtsserving.Service("cancer_classifier", runners=[runner])
 
-   # define a new endpoint on the BentoML service
+   # define a new endpoint on the VtsServing service
    @svc.api(input=NumpyNdarray(), output=NumpyNdarray())
    async def classify_tumor(input: np.ndarray) -> np.ndarray:
        # use 'runner.predict.run(input)' instead of 'booster.predict'
@@ -90,7 +90,7 @@ BentoML service:
 
 Take note of the name of the service (``svc`` in this example) and the name of the file.
 
-You should also have a ``bentofile.yaml`` alongside the service file that specifies that
+You should also have a ``vtsfile.yaml`` alongside the service file that specifies that
 information, as well as the fact that it depends on XGBoost. This can be done using either
 ``python`` (if using pip), or ``conda``:
 
@@ -127,16 +127,16 @@ A runner for a Booster is created like so:
 
 .. code-block:: python
 
-   bentoml.xgboost.get("model_name:model_version").to_runner()
+   vtsserving.xgboost.get("model_name:model_version").to_runner()
 
 ``runner.predict.run`` is generally a drop-in replacement for ``booster.predict``. However, while it
-is possible to pass a ``DMatrix`` as input, BentoML does not support adaptive batching in that case.
+is possible to pass a ``DMatrix`` as input, VtsServing does not support adaptive batching in that case.
 It is therefore recommended to use a NumPy ``ndarray`` or Pandas ``DataFrame`` as input instead.
 
 There are no special options for loading XGBoost.
 
-Runners must to be initialized in order for their ``run`` methods to work. This is done by BentoML
-internally when you serve a bento with ``bentoml serve``. See the :ref:`runner debugging guide
+Runners must to be initialized in order for their ``run`` methods to work. This is done by VtsServing
+internally when you serve a vts with ``vtsserving serve``. See the :ref:`runner debugging guide
 <concepts/service:Debugging Runners>` for more information about initializing runners locally.
 
 
@@ -145,7 +145,7 @@ GPU Inference
 
 If there is a GPU available, the XGBoost Runner will automatically use ``gpu_predictor`` by default.
 This can be disabled by using the
-:ref:`BentoML configuration file <guides/configuration:Configuration>` to disable Runner GPU
+:ref:`VtsServing configuration file <guides/configuration:Configuration>` to disable Runner GPU
 access:
 
 .. code-block:: yaml
@@ -165,16 +165,16 @@ Adaptive Batching
 
 .. seealso::
 
-   :ref:`guides/batching:Adaptive Batching`: a general introduction to adaptive batching in BentoML.
+   :ref:`guides/batching:Adaptive Batching`: a general introduction to adaptive batching in VtsServing.
 
 XGBoost's ``booster.predict`` supports taking batch input for inference. This is disabled by
 default, but can be enabled using the appropriate signature when saving your booster.
 
 .. note
 
-   BentoML does not currently support adaptive batching for ``DMatrix`` input. In order to enable
+   VtsServing does not currently support adaptive batching for ``DMatrix`` input. In order to enable
    batching, use either a NumPy ``ndarray`` or a Pandas ``DataFrame`` instead.
 
 .. code-block:: python
 
-   bento_model = bentoml.xgboost.save_model("booster_tree", booster, signatures={"predict": {"batchable": True}})
+   vts_model = vtsserving.xgboost.save_model("booster_tree", booster, signatures={"predict": {"batchable": True}})

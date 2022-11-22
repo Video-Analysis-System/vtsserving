@@ -8,12 +8,12 @@ from typing import TYPE_CHECKING
 from grpc import aio
 
 if TYPE_CHECKING:
-    from bentoml.grpc.types import Request
-    from bentoml.grpc.types import Response
-    from bentoml.grpc.types import RpcMethodHandler
-    from bentoml.grpc.types import AsyncHandlerMethod
-    from bentoml.grpc.types import HandlerCallDetails
-    from bentoml.grpc.types import BentoServicerContext
+    from vtsserving.grpc.types import Request
+    from vtsserving.grpc.types import Response
+    from vtsserving.grpc.types import RpcMethodHandler
+    from vtsserving.grpc.types import AsyncHandlerMethod
+    from vtsserving.grpc.types import HandlerCallDetails
+    from vtsserving.grpc.types import BentoServicerContext
 
 
 @dataclasses.dataclass
@@ -32,7 +32,7 @@ class AsyncContextInterceptor(aio.ServerInterceptor):
         continuation: t.Callable[[HandlerCallDetails], t.Awaitable[RpcMethodHandler]],
         handler_call_details: HandlerCallDetails,
     ) -> RpcMethodHandler:
-        from bentoml.grpc.utils import wrap_rpc_handler
+        from vtsserving.grpc.utils import wrap_rpc_handler
 
         handler = await continuation(handler_call_details)
 

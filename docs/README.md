@@ -1,17 +1,17 @@
-# BentoML Documentation
+# VtsServing Documentation
 
 ## A guide for docs contributors
 
-The `docs` directory contains the sphinx source text for BentoML docs, visit
-http://docs.bentoml.org/ to read the full documentation.
+The `docs` directory contains the sphinx source text for VtsServing docs, visit
+http://docs.vtsserving.org/ to read the full documentation.
 
-This guide is made for anyone who's interested in running BentoML documentation locally,
-making changes to it and make contributions. BentoML is made by the thriving community
+This guide is made for anyone who's interested in running VtsServing documentation locally,
+making changes to it and make contributions. VtsServing is made by the thriving community
 behind it, and you're always welcome to make contributions to the project and the 
 documentation. 
 
 Before starting to make a contribution to the docs, make sure to check the 
-[issues page](https://github.com/bentoml/BentoML/issues) and the `#bentoml-contributors` 
+[issues page](https://github.com/vtsserving/VtsServing/issues) and the `#vtsserving-contributors` 
 channel in the [community slack](https://l.linklyhq.com/l/ktOX), to make sure no one 
 else is working on the same thing and to get feedback from the community for larger 
 proposals.
@@ -21,10 +21,10 @@ proposals.
 
 ## Build Docs
 
-If you haven't already, clone the BentoML Github repo to a local directory:
+If you haven't already, clone the VtsServing Github repo to a local directory:
 
 ```bash
-git clone https://github.com/bentoml/BentoML.git && cd BentoML
+git clone https://github.com/vtsserving/VtsServing.git && cd VtsServing
 ```
 
 Install all dependencies required for building docs (mainly `sphinx` and its extension):
@@ -68,7 +68,7 @@ server, that rebuilds the documentation and refreshes any open pages automatical
 changes are saved. This enables a much shorter feedback loop which can help boost 
 productivity when writing documentation.
 
-Simply run the following command from BentoML project's root directory: 
+Simply run the following command from VtsServing project's root directory: 
 
 ```bash
 sphinx-autobuild docs/source docs/build/html
@@ -84,14 +84,14 @@ make watch-docs
 ## Writing Documentation
 
 
-### Writing .rst (ReStructuredText) in BentoML docs
+### Writing .rst (ReStructuredText) in VtsServing docs
 
-BentoML docs is built with Sphinx, which natively supports [ReStructuredText](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html).
+VtsServing docs is built with Sphinx, which natively supports [ReStructuredText](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html).
 
 #### Document titles and section headers
 
 In reStructuredText, there are no heading levels assigned to certain characters as the 
-structure is determined from the succession of headings. However in BentoML docs, we
+structure is determined from the succession of headings. However in VtsServing docs, we
 follow the following convention:
 
 ```rst
@@ -184,7 +184,7 @@ seen in https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#liter
 
 #### Tabs
 
-For most scenarios in BentoML docs, use the tabs view provided by `sphinx-design`:
+For most scenarios in VtsServing docs, use the tabs view provided by `sphinx-design`:
 https://sphinx-design.readthedocs.io/en/furo-theme/tabs.html
 
 ```rst
@@ -201,29 +201,29 @@ https://sphinx-design.readthedocs.io/en/furo-theme/tabs.html
 
 ### Documenting Source Code
 
-BentoML docs relies heavily on the Python docstrings defined together with the source
+VtsServing docs relies heavily on the Python docstrings defined together with the source
 code. We ask our contributors to document every public facing APIs and CLIs, including
 their signatures, options, and example usage. Sphinx can then use these inline docs to
 generate API References pages. 
 
-BentoML uses the [sphinx.ext.autodoc](https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html)
+VtsServing uses the [sphinx.ext.autodoc](https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html)
 extension to include documentation from docstring. For example, a `.rst` document can 
 create a section made from a Python Class's docstring, using the following syntax:
 
 ```rst
-.. autoclass:: bentoml.Service
+.. autoclass:: vtsserving.Service
     :members: api
 ```
 
 Similarly, for functions:
 
 ```rst
-.. autofunction:: bentoml.models.list
+.. autofunction:: vtsserving.models.list
 ```
 
 Learn more about this syntax [here](https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html).
 
-BentoML codebase follows the [Google's docstring style](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings)
+VtsServing codebase follows the [Google's docstring style](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings)
 for writing inline docstring. Below are some examples.
 
 #### Define arguments in a method
@@ -233,10 +233,10 @@ its type, a new indentation for description of given field. Each argument should
 
 ```markdown
     Args:
-        bento_name (:code:`str`):
-            :class:`~bentoml.BentoService` identifier with name format :obj:`NAME:VERSION`.
-            ``NAME`` can be accessed via :meth:`~bentoml.BentoService.name` and ``VERSION`` can
-            be accessed via :meth:`~bentoml.BentoService.version`
+        vts_name (:code:`str`):
+            :class:`~vtsserving.BentoService` identifier with name format :obj:`NAME:VERSION`.
+            ``NAME`` can be accessed via :meth:`~vtsserving.BentoService.name` and ``VERSION`` can
+            be accessed via :meth:`~vtsserving.BentoService.version`
 ```
 
 For optional arguments, follow the following syntax. For example a function ```func()``` with following signature:
@@ -275,5 +275,5 @@ should be the type of the return, followed by a line return. An example for a re
 
 ```markdown
     Returns:
-        :obj:`Dict[str,str]` with keys are :class:`~bentoml.BentoService` nametag following with saved bundle path.
+        :obj:`Dict[str,str]` with keys are :class:`~vtsserving.BentoService` nametag following with saved bundle path.
 ```

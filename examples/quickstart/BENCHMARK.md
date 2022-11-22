@@ -2,8 +2,8 @@ Run the iris_classifier service in production mode:
 
 | Protocol | Command                                                  |
 | -------- | -------------------------------------------------------- |
-| HTTP     | `bentoml serve-http iris_classifier:latest --production` |
-| gRPC     | `bentoml serve-grpc iris_classifier:latest --production` |
+| HTTP     | `vtsserving serve-http iris_classifier:latest --production` |
+| gRPC     | `vtsserving serve-grpc iris_classifier:latest --production` |
 
 Start locust testing client:
 

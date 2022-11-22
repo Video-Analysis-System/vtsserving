@@ -2,7 +2,7 @@
 Serving with gRPC
 =================
 
-This guide will demonstrate advanced features that BentoML offers for you to get started
+This guide will demonstrate advanced features that VtsServing offers for you to get started
 with `gRPC <https://grpc.io/>`_:
 
 - First-class support for :ref:`custom gRPC Servicer <guides/grpc:Mounting Servicer>`, :ref:`custom interceptors <guides/grpc:Mounting gRPC Interceptors>`, handlers.
@@ -16,30 +16,30 @@ familar with gRPC, you can start with gRPC `quick start guide <https://grpc.io/d
 
 .. seealso::
 
-   For quick introduction to serving with gRPC, see :ref:`Intro to BentoML <tutorial:Tutorial: Intro to BentoML>`
+   For quick introduction to serving with gRPC, see :ref:`Intro to VtsServing <tutorial:Tutorial: Intro to VtsServing>`
 
-Get started with gRPC in BentoML
+Get started with gRPC in VtsServing
 --------------------------------
 
-We will be using the example from :ref:`the quickstart<tutorial:Tutorial: Intro to BentoML>` to
-demonstrate BentoML capabilities with gRPC.
+We will be using the example from :ref:`the quickstart<tutorial:Tutorial: Intro to VtsServing>` to
+demonstrate VtsServing capabilities with gRPC.
 
 Requirements
 ~~~~~~~~~~~~
 
-BentoML supports for gRPC are introduced in version 1.0.6 and above.
+VtsServing supports for gRPC are introduced in version 1.0.6 and above.
 
-Install BentoML with gRPC support with :pypi:`pip`:
-
-.. code-block:: bash
-
-   » pip install -U "bentoml[grpc]"
-
-Thats it! You can now serve your Bento with gRPC via :ref:`bentoml serve-grpc <reference/cli:serve-grpc>` without having to modify your current service definition 😃.
+Install VtsServing with gRPC support with :pypi:`pip`:
 
 .. code-block:: bash
 
-   » bentoml serve-grpc iris_classifier:latest --production
+   » pip install -U "vtsserving[grpc]"
+
+Thats it! You can now serve your Bento with gRPC via :ref:`vtsserving serve-grpc <reference/cli:serve-grpc>` without having to modify your current service definition 😃.
+
+.. code-block:: bash
+
+   » vtsserving serve-grpc iris_classifier:latest --production
 
 Using your gRPC BentoService
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,7 +52,7 @@ There are two ways to interact with your gRPC BentoService:
 
    .. code-block:: bash
 
-      » bentoml serve-grpc iris_classifier:latest --production --enable-reflection
+      » vtsserving serve-grpc iris_classifier:latest --production --enable-reflection
 
    .. include:: ./snippets/grpc/grpc_tools.rst
 
@@ -77,7 +77,7 @@ Client Implementation
 
 .. note::
 
-   All of the following client implementations are :github:`available on GitHub <bentoml/BentoML/tree/main/grpc-client/>`.
+   All of the following client implementations are :github:`available on GitHub <vtsserving/VtsServing/tree/main/grpc-client/>`.
 
 :raw-html:`<br />`
 
@@ -156,9 +156,9 @@ gRPC server:
 
             .. code-block:: go
 
-               require github.com/bentoml/bentoml/grpc/v1 v0.0.0-unpublished
+               require github.com/vtsserving/vtsserving/grpc/v1 v0.0.0-unpublished
 
-               replace github.com/bentoml/bentoml/grpc/v1 v0.0.0-unpublished => ./github.com/bentoml/bentoml/grpc/v1
+               replace github.com/vtsserving/vtsserving/grpc/v1 v0.0.0-unpublished => ./github.com/vtsserving/vtsserving/grpc/v1
 
             By using `replace directive <https://go.dev/ref/mod#go-mod-file-replace>`_, we
             ensure that Go will know where our generated stubs to be imported from. (since we don't host the generate gRPC stubs on `pkg.go.dev` 😄)
@@ -172,13 +172,13 @@ gRPC server:
                » protoc -I. -I thirdparty/protobuf/src  \
                         --go_out=. --go_opt=paths=import \
                         --go-grpc_out=. --go-grpc_opt=paths=import \
-                        bentoml/grpc/v1/service.proto
+                        vtsserving/grpc/v1/service.proto
 
             Then run the following to make sure the generated stubs are importable:
 
             .. code-block:: bash
 
-               » pushd github.com/bentoml/bentoml/grpc/v1
+               » pushd github.com/vtsserving/vtsserving/grpc/v1
                » go mod init v1 && go mod tidy
                » popd
 
@@ -233,7 +233,7 @@ gRPC server:
                » protoc -I . -I ./thirdparty/protobuf/src \
                         --cpp_out=. --grpc_out=. \
                         --plugin=protoc-gen-grpc=$(which grpc_cpp_plugin) \
-                        bentoml/grpc/v1/service.proto
+                        vtsserving/grpc/v1/service.proto
 
       Create a ``client.cpp`` file with the following content:
 
@@ -331,7 +331,7 @@ gRPC server:
                      -I ./thirdparty/protobuf/src \
                      --java_out=./src/main/java \
                      --grpc-java_out=./src/main/java \
-                     bentoml/grpc/v1/service.proto
+                     vtsserving/grpc/v1/service.proto
 
    .. tab-item:: Kotlin
       :sync: kotlin
@@ -414,7 +414,7 @@ gRPC server:
                      --kotlin_out ./kotlin/src/main/kotlin/ \
                      --grpc-kotlin_out ./kotlin/src/main/kotlin \
                      --plugin=protoc-gen-grpc-kotlin=$(which protoc-gen-grpc-kotlin) \
-                     bentoml/grpc/v1/service.proto
+                     vtsserving/grpc/v1/service.proto
 
    .. tab-item:: Node.js
       :sync: nodejs
@@ -459,7 +459,7 @@ gRPC server:
                   -I . -I ./thirdparty/protobuf/src \
                   --js_out=import_style=commonjs,binary:. \
                   --grpc_out=grpc_js:js \
-                  bentoml/grpc/v1/service.proto
+                  vtsserving/grpc/v1/service.proto
 
       Proceed to create a ``client.js`` file with the following content:
 
@@ -501,7 +501,7 @@ gRPC server:
                   --swift_out=Sources --swift_opt=Visibility=Public \
                   --grpc-swift_out=Sources --grpc-swift_opt=Visibility=Public \
                   --plugin=protoc-gen-grpc-swift=$(which protoc-gen-grpc-swift) \
-                  bentoml/grpc/v1/service.proto
+                  vtsserving/grpc/v1/service.proto
 
       Proceed to create a ``Sources/BentoServiceClient/main.swift`` file with the following content:
 
@@ -549,7 +549,7 @@ gRPC server:
                   --php_out=. \
                   --grpc_out=. \
                   --plugin=protoc-gen-grpc=$(which grpc_php_plugin) \
-                  bentoml/grpc/v1/service.proto
+                  vtsserving/grpc/v1/service.proto
 
       Proceed to create a ``BentoServiceClient.php`` file with the following content:
 
@@ -612,7 +612,7 @@ Then you can proceed to run the client scripts:
 
       .. note::
 
-         See the :github:`instructions on GitHub <bentoml/BentoML/tree/main/grpc-client/README.md>` for working C++ client.
+         See the :github:`instructions on GitHub <vtsserving/VtsServing/tree/main/grpc-client/README.md>` for working C++ client.
 
    .. tab-item:: Java
       :sync: java
@@ -634,11 +634,11 @@ Then you can proceed to run the client scripts:
             .. code-block:: bash
 
                » ./gradlew build && \
-                  ./build/tmp/scripts/bentoServiceClient/bento-service-client
+                  ./build/tmp/scripts/vtsServiceClient/vts-service-client
 
       .. note::
 
-         See the :github:`instructions on GitHub <bentoml/BentoML/tree/main/grpc-client/README.md>` for working Java client.
+         See the :github:`instructions on GitHub <vtsserving/VtsServing/tree/main/grpc-client/README.md>` for working Java client.
 
    .. tab-item:: Kotlin
       :sync: kotlin
@@ -660,11 +660,11 @@ Then you can proceed to run the client scripts:
             .. code-block:: bash
 
                » ./gradlew build && \
-                  ./build/tmp/scripts/bentoServiceClient/bento-service-client
+                  ./build/tmp/scripts/vtsServiceClient/vts-service-client
 
       .. note::
 
-         See the :github:`instructions on GitHub <bentoml/BentoML/tree/main/grpc-client/README.md>` for working Kotlin client.
+         See the :github:`instructions on GitHub <vtsserving/VtsServing/tree/main/grpc-client/README.md>` for working Kotlin client.
 
    .. tab-item:: Node.js
       :sync: nodejs
@@ -715,11 +715,11 @@ Then you can proceed to run the client scripts:
          :bdg-primary:`Note:` Currently there are no official gRPC Rust client implementation. Please check out the :github:`tikv/grpc-rs` as one of the unofficial implementation.
 
 
-After successfully running the client, proceed to build the bento as usual:
+After successfully running the client, proceed to build the vts as usual:
 
 .. code-block:: bash
 
-   » bentoml build
+   » vtsserving build
 
 :raw-html:`<br />`
 
@@ -727,14 +727,14 @@ Containerize your Bento 🍱 with gRPC support
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To containerize the Bento with gRPC features, pass in ``--enable-features=grpc`` to
-:ref:`bentoml containerize <reference/cli:containerize>` to add additional gRPC
+:ref:`vtsserving containerize <reference/cli:containerize>` to add additional gRPC
 dependencies to your Bento
 
 .. code-block:: bash
 
-   » bentoml containerize iris_classifier:latest --enable-features=grpc
+   » vtsserving containerize iris_classifier:latest --enable-features=grpc
 
-``--enable-features`` allows users to containerize any of the existing Bentos with :ref:`additional features <concepts/bento:Enable features for your Bento>` that BentoML provides without having to rebuild the Bento.
+``--enable-features`` allows users to containerize any of the existing Bentos with :ref:`additional features <concepts/vts:Enable features for your Bento>` that VtsServing provides without having to rebuild the Bento.
 
 .. note::
 
@@ -752,10 +752,10 @@ Congratulations! You have successfully served, containerized and tested your Ben
 
 -------------
 
-Using gRPC in BentoML
+Using gRPC in VtsServing
 ---------------------
 
-We will dive into some of the details of how gRPC is implemented in BentoML.
+We will dive into some of the details of how gRPC is implemented in VtsServing.
 
 Protobuf definition
 ~~~~~~~~~~~~~~~~~~~
@@ -775,12 +775,12 @@ Let's take a quick look at `protobuf <https://developers.google.com/protocol-buf
 
       .. tab-item:: v1
 
-         .. literalinclude:: ../../../src/bentoml/grpc/v1/service.proto
+         .. literalinclude:: ../../../src/vtsserving/grpc/v1/service.proto
             :language: protobuf
 
       .. tab-item:: v1alpha1
 
-         .. literalinclude:: ../../../src/bentoml/grpc/v1alpha1/service.proto
+         .. literalinclude:: ../../../src/vtsserving/grpc/v1alpha1/service.proto
             :language: protobuf
 
 As you can see, BentoService defines a `simple rpc` ``Call`` that sends a ``Request`` message and returns a ``Response`` message.
@@ -793,19 +793,19 @@ A ``Request`` message takes in:
 +------------------------------------------------------------------+-------------------------------------------------------------------------------------------+
 | Protobuf definition                                              | IO Descriptor                                                                             |
 +------------------------------------------------------------------+-------------------------------------------------------------------------------------------+
-| :ref:`guides/grpc:Array representation via ``NDArray```          | :ref:`bentoml.io.NumpyNdarray <reference/api_io_descriptors:NumPy \`\`ndarray\`\`>`       |
+| :ref:`guides/grpc:Array representation via ``NDArray```          | :ref:`vtsserving.io.NumpyNdarray <reference/api_io_descriptors:NumPy \`\`ndarray\`\`>`       |
 +------------------------------------------------------------------+-------------------------------------------------------------------------------------------+
-| :ref:`guides/grpc:Tabular data representation via ``DataFrame``` | :ref:`bentoml.io.PandasDataFrame <reference/api_io_descriptors:Tabular Data with Pandas>` |
+| :ref:`guides/grpc:Tabular data representation via ``DataFrame``` | :ref:`vtsserving.io.PandasDataFrame <reference/api_io_descriptors:Tabular Data with Pandas>` |
 +------------------------------------------------------------------+-------------------------------------------------------------------------------------------+
-| :ref:`guides/grpc:Series representation via ``Series```          | :ref:`bentoml.io.PandasDataFrame <reference/api_io_descriptors:Tabular Data with Pandas>` |
+| :ref:`guides/grpc:Series representation via ``Series```          | :ref:`vtsserving.io.PandasDataFrame <reference/api_io_descriptors:Tabular Data with Pandas>` |
 +------------------------------------------------------------------+-------------------------------------------------------------------------------------------+
-| :ref:`guides/grpc:File-like object via ``File```                 | :ref:`bentoml.io.File <reference/api_io_descriptors:Files>`                               |
+| :ref:`guides/grpc:File-like object via ``File```                 | :ref:`vtsserving.io.File <reference/api_io_descriptors:Files>`                               |
 +------------------------------------------------------------------+-------------------------------------------------------------------------------------------+
-| |google_protobuf_string_value|_                                  | :ref:`bentoml.io.Text <reference/api_io_descriptors:Texts>`                               |
+| |google_protobuf_string_value|_                                  | :ref:`vtsserving.io.Text <reference/api_io_descriptors:Texts>`                               |
 +------------------------------------------------------------------+-------------------------------------------------------------------------------------------+
-| |google_protobuf_value|_                                         | :ref:`bentoml.io.JSON <reference/api_io_descriptors:Structured Data with JSON>`           |
+| |google_protobuf_value|_                                         | :ref:`vtsserving.io.JSON <reference/api_io_descriptors:Structured Data with JSON>`           |
 +------------------------------------------------------------------+-------------------------------------------------------------------------------------------+
-| :ref:`guides/grpc:Complex payload via ``Multipart```             | :ref:`bentoml.io.Multipart <reference/api_io_descriptors:Multipart Payloads>`             |
+| :ref:`guides/grpc:Complex payload via ``Multipart```             | :ref:`vtsserving.io.Multipart <reference/api_io_descriptors:Multipart Payloads>`             |
 +------------------------------------------------------------------+-------------------------------------------------------------------------------------------+
 | :ref:`guides/grpc:Compact data format via ``serialized_bytes```  | (See below)                                                                               |
 +------------------------------------------------------------------+-------------------------------------------------------------------------------------------+
@@ -826,7 +826,7 @@ The ``Response`` message will then return one of the aforementioned types as res
 
 :raw-html:`<br />`
 
-:bdg-info:`Example:` In the :ref:`quickstart guide<tutorial:Creating a Service>`, we defined a ``classify`` API that takes in a :ref:`bentoml.io.NumpyNdarray <reference/api_io_descriptors:NumPy \`\`ndarray\`\`>`.
+:bdg-info:`Example:` In the :ref:`quickstart guide<tutorial:Creating a Service>`, we defined a ``classify`` API that takes in a :ref:`vtsserving.io.NumpyNdarray <reference/api_io_descriptors:NumPy \`\`ndarray\`\`>`.
 
 Therefore, our ``Request`` message would have the following structure:
 
@@ -909,11 +909,11 @@ Array representation via ``NDArray``
 
 * `shape`
 
-  A list of `int32` that represents the shape of the flattened array. the :ref:`bentoml.io.NumpyNdarray <reference/api_io_descriptors:NumPy \`\`ndarray\`\`>` will
+  A list of `int32` that represents the shape of the flattened array. the :ref:`vtsserving.io.NumpyNdarray <reference/api_io_descriptors:NumPy \`\`ndarray\`\`>` will
   then reshape the given payload into expected shape.
 
-  Note that this value will always takes precendence over the ``shape`` field in the :ref:`bentoml.io.NumpyNdarray <reference/api_io_descriptors:NumPy \`\`ndarray\`\`>` descriptor,
-  meaning the array will be reshaped to this value first if given. Refer to :meth:`bentoml.io.NumpyNdarray.from_proto` for implementation details.
+  Note that this value will always takes precendence over the ``shape`` field in the :ref:`vtsserving.io.NumpyNdarray <reference/api_io_descriptors:NumPy \`\`ndarray\`\`>` descriptor,
+  meaning the array will be reshaped to this value first if given. Refer to :meth:`vtsserving.io.NumpyNdarray.from_proto` for implementation details.
 
 * `string_values`, `float_values`, `double_values`, `bool_values`, `int32_values`, `int64_values`, `uint32_values`, `unit64_values`
 
@@ -980,7 +980,7 @@ Array representation via ``NDArray``
          }
 
 
-:bdg-primary:`API reference:` :meth:`bentoml.io.NumpyNdarray.from_proto`
+:bdg-primary:`API reference:` :meth:`vtsserving.io.NumpyNdarray.from_proto`
 
 :raw-html:`<br />`
 
@@ -1040,7 +1040,7 @@ It accepts the following fields:
            }
          }
 
-:bdg-primary:`API reference:` :meth:`bentoml.io.PandasDataFrame.from_proto`
+:bdg-primary:`API reference:` :meth:`vtsserving.io.PandasDataFrame.from_proto`
 
 Series representation via ``Series``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1086,7 +1086,7 @@ It accepts the following fields:
          }
 
 
-:bdg-primary:`API reference:` :meth:`bentoml.io.PandasSeries.from_proto`
+:bdg-primary:`API reference:` :meth:`vtsserving.io.PandasSeries.from_proto`
 
 :raw-html:`<br />`
 
@@ -1098,7 +1098,7 @@ to send in any file type, including images, videos, audio, etc.
 
 .. note::
 
-   Currently both :class:`bentoml.io.File` and :class:`bentoml.io.Image` are using
+   Currently both :class:`vtsserving.io.File` and :class:`vtsserving.io.Image` are using
    ``pb.File``
 
 It accepts the following fields:
@@ -1110,7 +1110,7 @@ It accepts the following fields:
 * `kind`
 
   An optional `string` field that represents the file type. If specified, it will raise an error if
-  ``mime_type`` specified in :ref:`bentoml.io.File <reference/api_io_descriptors:Files>` is not matched.
+  ``mime_type`` specified in :ref:`vtsserving.io.File <reference/api_io_descriptors:Files>` is not matched.
 
 .. grid:: 2
 
@@ -1130,7 +1130,7 @@ It accepts the following fields:
          }
 
 
-:ref:`bentoml.io.Image <reference/api_io_descriptors:Images>` will also be using ``pb.File``.
+:ref:`vtsserving.io.Image <reference/api_io_descriptors:Images>` will also be using ``pb.File``.
 
 .. grid:: 2
 
@@ -1155,7 +1155,7 @@ Complex payload via ``Multipart``
 
 :bdg-info:`Description:` ``Multipart`` represents a complex payload that can contain
 multiple different fields. It takes a ``fields``, which is a dictionary of input name to
-its coresponding :class:`bentoml.io.IODescriptor`
+its coresponding :class:`vtsserving.io.IODescriptor`
 
 .. grid:: 2
 
@@ -1200,14 +1200,14 @@ its coresponding :class:`bentoml.io.IODescriptor`
             }
          }
 
-:bdg-primary:`API reference:` :meth:`bentoml.io.Multipart.from_proto`
+:bdg-primary:`API reference:` :meth:`vtsserving.io.Multipart.from_proto`
 
 Compact data format via ``serialized_bytes``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``serialized_bytes`` field in both ``Request`` and ``Response``  is reserved for pre-established protocol encoding between client and server.
 
-BentoML leverages the field to improve serialization performance between BentoML client and server. Thus the field is not **recommended** for use directly.
+VtsServing leverages the field to improve serialization performance between VtsServing client and server. Thus the field is not **recommended** for use directly.
 
 Mounting Servicer
 ~~~~~~~~~~~~~~~~~
@@ -1223,7 +1223,7 @@ and serve them under the same port.
    import route_guide_pb2_grpc
    from servicer_impl import RouteGuideServicer
 
-   svc = bentoml.Service("iris_classifier", runners=[iris_clf_runner])
+   svc = vtsserving.Service("iris_classifier", runners=[iris_clf_runner])
 
    services_name = [
        v.full_name for v in route_guide_pb2.DESCRIPTOR.services_by_name.values()
@@ -1234,18 +1234,18 @@ and serve them under the same port.
        service_names=services_name,
    )
 
-Serve your service with :ref:`bentoml serve-grpc <reference/cli:serve-grpc>` command:
+Serve your service with :ref:`vtsserving serve-grpc <reference/cli:serve-grpc>` command:
 
 .. code-block:: bash
 
-   » bentoml serve-grpc service.py:svc --reload --enable-reflection
+   » vtsserving serve-grpc service.py:svc --reload --enable-reflection
 
 Now your ``RouteGuide`` service can also be accessed through ``localhost:3000``.
 
 .. note::
 
    ``service_names`` is **REQUIRED** here, as this will be used for :github:`server reflection <grpc/grpc/blob/master/doc/server-reflection.md>`
-   when ``--enable-reflection`` is passed to ``bentoml serve-grpc``.
+   when ``--enable-reflection`` is passed to ``vtsserving serve-grpc``.
 
 Mounting gRPC Interceptors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1257,7 +1257,7 @@ sent/received by client/server.
 Interceptors to gRPC is what middleware is to HTTP. The most common use-case for interceptors
 are authentication, :ref:`tracing <guides/tracing:Tracing>`, access logs, and more.
 
-BentoML comes with a sets of built-in *async interceptors* to provide support for access logs,
+VtsServing comes with a sets of built-in *async interceptors* to provide support for access logs,
 `OpenTelemetry <https://opentelemetry.io/>`_, and `Prometheus <https://prometheus.io/>`_.
 
 The following diagrams demonstrates the flow of a gRPC request from client to server:
@@ -1269,8 +1269,8 @@ Since interceptors are executed in the order they are added, users interceptors 
 
    Users interceptors shouldn't modify the existing headers and data of the incoming ``Request``.
 
-BentoML currently only support **async interceptors** (via `grpc.aio.ServerInterceptor <https://grpc.github.io/grpc/python/grpc_asyncio.html#grpc.aio.ServerInterceptor>`_, as opposed to `grpc.ServerInterceptor <https://grpc.github.io/grpc/python/grpc_asyncio.html#grpc.aio.ServerInterceptor>`_). This is
-because BentoML gRPC server is an async implementation of gRPC server.
+VtsServing currently only support **async interceptors** (via `grpc.aio.ServerInterceptor <https://grpc.github.io/grpc/python/grpc_asyncio.html#grpc.aio.ServerInterceptor>`_, as opposed to `grpc.ServerInterceptor <https://grpc.github.io/grpc/python/grpc_asyncio.html#grpc.aio.ServerInterceptor>`_). This is
+because VtsServing gRPC server is an async implementation of gRPC server.
 
 .. note::
 
@@ -1294,12 +1294,12 @@ because BentoML gRPC server is an async implementation of gRPC server.
       from grpc import aio
 
       if TYPE_CHECKING:
-          from bentoml.grpc.types import Request
-          from bentoml.grpc.types import Response
-          from bentoml.grpc.types import RpcMethodHandler
-          from bentoml.grpc.types import AsyncHandlerMethod
-          from bentoml.grpc.types import HandlerCallDetails
-          from bentoml.grpc.types import BentoServicerContext
+          from vtsserving.grpc.types import Request
+          from vtsserving.grpc.types import Response
+          from vtsserving.grpc.types import RpcMethodHandler
+          from vtsserving.grpc.types import AsyncHandlerMethod
+          from vtsserving.grpc.types import HandlerCallDetails
+          from vtsserving.grpc.types import BentoServicerContext
 
 
       @dataclasses.dataclass
@@ -1318,7 +1318,7 @@ because BentoML gRPC server is an async implementation of gRPC server.
                continuation: t.Callable[[HandlerCallDetails], t.Awaitable[RpcMethodHandler]],
                handler_call_details: HandlerCallDetails,
            ) -> RpcMethodHandler:
-               from bentoml.grpc.utils import wrap_rpc_handler
+               from vtsserving.grpc.utils import wrap_rpc_handler
 
                handler = await continuation(handler_call_details)
 
@@ -1452,12 +1452,12 @@ faster go-to-market strategy.
 Performance tuning
 ~~~~~~~~~~~~~~~~~~
 
-BentoML allows user to tune the performance of gRPC via :ref:`bentoml_configuration.yaml <guides/configuration:Configuration>` via ``api_server.grpc``.
+VtsServing allows user to tune the performance of gRPC via :ref:`vtsserving_configuration.yaml <guides/configuration:Configuration>` via ``api_server.grpc``.
 
 A quick overview of the available configuration for gRPC:
 
 .. code-block:: yaml
-   :caption: `bentoml_configuration.yaml`
+   :caption: `vtsserving_configuration.yaml`
 
    api_server:
      grpc:

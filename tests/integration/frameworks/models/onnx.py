@@ -22,16 +22,16 @@ from skl2onnx.common.data_types import FloatTensorType
 from skl2onnx.common.data_types import Int64TensorType
 from skl2onnx.common.data_types import StringTensorType
 
-import bentoml
+import vtsserving
 
 from . import FrameworkTestModel
 from . import FrameworkTestModelInput as Input
 from . import FrameworkTestModelConfiguration as Config
 
 if TYPE_CHECKING:
-    import bentoml._internal.external_typing as ext
+    import vtsserving._internal.external_typing as ext
 
-framework = bentoml.onnx
+framework = vtsserving.onnx
 
 backward_compatible = True
 
@@ -62,8 +62,8 @@ def method_caller(
     return out
 
 
-def check_model(model: bentoml.Model, resource_cfg: dict[str, t.Any]):
-    from bentoml._internal.resource import get_resource
+def check_model(model: vtsserving.Model, resource_cfg: dict[str, t.Any]):
+    from vtsserving._internal.resource import get_resource
 
     if get_resource(resource_cfg, "nvidia.com/gpu"):
         pass
@@ -178,7 +178,7 @@ def make_rf_onnx_model() -> tuple[
 
 # the output of onnxruntime has a different format from the output of
 # the original model, we need generate a function to adapt the outputs
-# of onnxruntime (also the BentoML runner) to the outputs of original
+# of onnxruntime (also the VtsServing runner) to the outputs of original
 # model
 def gen_rf_output_checker(
     expected_output: tuple[ext.NpNDArray, ext.NpNDArray]

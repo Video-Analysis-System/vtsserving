@@ -1,7 +1,7 @@
-# Serving YOLOv5 model with BentoML 
+# Serving YOLOv5 model with VtsServing 
 
 This project demonstrate how to use pretrained YOLOv5 model from Torch hub, and use
-it to build a prediction service in BentoML.
+it to build a prediction service in VtsServing.
 
 The model used in this example is built upon https://github.com/ultralytics/yolov5
 
@@ -27,7 +27,7 @@ Now you should have a `yolov5s.pt` file created in current directory.
 Launch the service locally:
 
 ```bash
-bentoml serve service.py:svc
+vtsserving serve service.py:svc
 ```
 
 
@@ -74,14 +74,14 @@ Sample result:
 
 ## Build Bento
 
-The `bentofile.yaml` have configured all required system packages and python dependencies. 
+The `vtsfile.yaml` have configured all required system packages and python dependencies. 
 
 ```bash
-bentoml build
+vtsserving build
 ```
 
 Once the Bento is built, containerize it as a Docker image for deployment:
 
 ```bash
-bentoml containerize yolo_v5_demo:latest
+vtsserving containerize yolo_v5_demo:latest
 ```

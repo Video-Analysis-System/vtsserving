@@ -1,8 +1,8 @@
-#include "bentoml/grpc/v1/service.pb.h"
+#include "vtsserving/grpc/v1/service.pb.h"
 
-using bentoml::grpc::v1::BentoService;
-using bentoml::grpc::v1::NDArray;
-using bentoml::grpc::v1::Request;
+using vtsserving::grpc::v1::BentoService;
+using vtsserving::grpc::v1::NDArray;
+using vtsserving::grpc::v1::Request;
 
 std::vector<float> data = {3.5, 2.4, 7.8, 5.1};
 std::vector<int> shape = {1, 4};

@@ -5,13 +5,13 @@ import pandas as pd
 import lightgbm as lgb
 from sklearn.datasets import load_breast_cancer
 
-import bentoml
+import vtsserving
 
 from . import FrameworkTestModel
 from . import FrameworkTestModelInput as Input
 from . import FrameworkTestModelConfiguration as Config
 
-framework = bentoml.lightgbm
+framework = vtsserving.lightgbm
 
 backward_compatible = True
 

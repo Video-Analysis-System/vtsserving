@@ -16,13 +16,13 @@ from transformers.trainer_utils import set_seed
 from transformers.pipelines.base import Pipeline
 from transformers.pipelines.base import GenericTensor
 
-import bentoml
+import vtsserving
 
 from . import FrameworkTestModel
 from . import FrameworkTestModelInput as Input
 from . import FrameworkTestModelConfiguration as Config
 
-framework = bentoml.transformers
+framework = vtsserving.transformers
 
 backward_compatible = True
 
@@ -30,7 +30,7 @@ if TYPE_CHECKING:
     from transformers.utils.generic import ModelOutput
     from transformers.tokenization_utils_base import BatchEncoding
 
-    from bentoml._internal.external_typing import transformers as transformers_ext
+    from vtsserving._internal.external_typing import transformers as transformers_ext
 
     AnyDict = dict[str, t.Any]
     AnyList = list[t.Any]
@@ -137,7 +137,7 @@ batched_pipeline: list[FrameworkTestModel] = [
                 test_inputs={
                     "__call__": [
                         Input(
-                            input_args=[["A bento box is"]],
+                            input_args=[["A vts box is"]],
                             expected=expected_equal(
                                 [{"label": "LABEL_0", "score": 0.5035}]
                             ),

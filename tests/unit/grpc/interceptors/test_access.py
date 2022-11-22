@@ -10,17 +10,17 @@ import pytest
 
 from tests.proto import service_test_pb2 as pb_test
 from tests.proto import service_test_pb2_grpc as services_test
-from bentoml.grpc.utils import import_grpc
-from bentoml.grpc.utils import wrap_rpc_handler
-from bentoml.grpc.utils import import_generated_stubs
-from bentoml.testing.grpc import create_channel
-from bentoml.testing.grpc import async_client_call
-from bentoml.testing.grpc import create_bento_servicer
-from bentoml.testing.grpc import make_standalone_server
-from bentoml._internal.utils import LazyLoader
+from vtsserving.grpc.utils import import_grpc
+from vtsserving.grpc.utils import wrap_rpc_handler
+from vtsserving.grpc.utils import import_generated_stubs
+from vtsserving.testing.grpc import create_channel
+from vtsserving.testing.grpc import async_client_call
+from vtsserving.testing.grpc import create_vts_servicer
+from vtsserving.testing.grpc import make_standalone_server
+from vtsserving._internal.utils import LazyLoader
 from tests.unit.grpc.conftest import TestServiceServicer
-from bentoml.grpc.interceptors.access import AccessLogServerInterceptor
-from bentoml.grpc.interceptors.opentelemetry import AsyncOpenTelemetryServerInterceptor
+from vtsserving.grpc.interceptors.access import AccessLogServerInterceptor
+from vtsserving.grpc.interceptors.opentelemetry import AsyncOpenTelemetryServerInterceptor
 
 if TYPE_CHECKING:
     import grpc
@@ -28,14 +28,14 @@ if TYPE_CHECKING:
     from _pytest.logging import LogCaptureFixture
     from google.protobuf import wrappers_pb2
 
-    from bentoml import Service
-    from bentoml.grpc.v1 import service_pb2_grpc as services
-    from bentoml.grpc.types import Request
-    from bentoml.grpc.types import Response
-    from bentoml.grpc.types import RpcMethodHandler
-    from bentoml.grpc.types import AsyncHandlerMethod
-    from bentoml.grpc.types import HandlerCallDetails
-    from bentoml.grpc.types import BentoServicerContext
+    from vtsserving import Service
+    from vtsserving.grpc.v1 import service_pb2_grpc as services
+    from vtsserving.grpc.types import Request
+    from vtsserving.grpc.types import Response
+    from vtsserving.grpc.types import RpcMethodHandler
+    from vtsserving.grpc.types import AsyncHandlerMethod
+    from vtsserving.grpc.types import HandlerCallDetails
+    from vtsserving.grpc.types import BentoServicerContext
 else:
     _, services = import_generated_stubs()
     grpc, aio = import_grpc()
@@ -84,10 +84,10 @@ async def test_success_logs(caplog: LogCaptureFixture):
                 TestServiceServicer(), server
             )
             await server.start()
-            with caplog.at_level(logging.INFO, "bentoml.access"):
+            with caplog.at_level(logging.INFO, "vtsserving.access"):
                 async with create_channel(host_url) as channel:
                     stub = services_test.TestServiceStub(channel)
-                    await stub.Execute(pb_test.ExecuteRequest(input="BentoML"))
+                    await stub.Execute(pb_test.ExecuteRequest(input="VtsServing"))
             assert (
                 "(scheme=http,path=/tests.proto.TestService/Execute,type=application/grpc,size=9) (http_status=200,grpc_status=0,type=application/grpc,size=17)"
                 in caplog.text
@@ -114,10 +114,10 @@ async def test_trailing_metadata(caplog: LogCaptureFixture):
                 TestServiceServicer(), server
             )
             await server.start()
-            with caplog.at_level(logging.INFO, "bentoml.access"):
+            with caplog.at_level(logging.INFO, "vtsserving.access"):
                 async with create_channel(host_url) as channel:
                     stub = services_test.TestServiceStub(channel)
-                    await stub.Execute(pb_test.ExecuteRequest(input="BentoML"))
+                    await stub.Execute(pb_test.ExecuteRequest(input="VtsServing"))
             assert "type=application/grpc+python" in caplog.text
         finally:
             await server.stop(None)
@@ -135,7 +135,7 @@ async def test_access_log_exception(caplog: LogCaptureFixture, simple_service: S
         ]
     ) as (server, host_url):
         services.add_BentoServiceServicer_to_server(
-            create_bento_servicer(simple_service), server
+            create_vts_servicer(simple_service), server
         )
         try:
             await server.start()
@@ -148,7 +148,7 @@ async def test_access_log_exception(caplog: LogCaptureFixture, simple_service: S
                         assert_code=grpc.StatusCode.INTERNAL,
                     )
             assert (
-                "(scheme=http,path=/bentoml.grpc.v1.BentoService/Call,type=application/grpc,size=17) (http_status=500,grpc_status=13,type=application/grpc,size=0)"
+                "(scheme=http,path=/vtsserving.grpc.v1.BentoService/Call,type=application/grpc,size=17) (http_status=500,grpc_status=13,type=application/grpc,size=0)"
                 in caplog.text
             )
         finally:

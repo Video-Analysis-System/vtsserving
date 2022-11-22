@@ -3,27 +3,27 @@ Advanced Containerization
 =========================
 
 This guide describes advanced containerization options 
-provided by BentoML:
+provided by VtsServing:
 
 - :ref:`Using base image <guides/containerization:Custom Base Image>`
 - :ref:`Using dockerfile template <guides/containerization:Dockerfile Template>`
 
-This is an advanced feature for user to customize container environment that are not directly supported in BentoML.
-For basic containerizing options, see :ref:`Docker Options <concepts/bento:Docker Options>`.
+This is an advanced feature for user to customize container environment that are not directly supported in VtsServing.
+For basic containerizing options, see :ref:`Docker Options <concepts/vts:Docker Options>`.
 
 Why you may need this?
 ----------------------
 
 - If you want to customize the containerization process of your Bento.
 - If you need a certain tools, configs, prebuilt binaries that is available across all your Bento generated container images.
-- A big difference with :ref:`base image <concepts/bento:Docker Options Table>` features is that you don't have to setup a custom base image and then push it to a remote registry.
+- A big difference with :ref:`base image <concepts/vts:Docker Options Table>` features is that you don't have to setup a custom base image and then push it to a remote registry.
 
 Custom Base Image
 -----------------
 
 If none of the provided distros work for your use case, e.g. if your infrastructure
 requires all docker images to be derived from the same base image with certain security
-fixes and libraries, you can config BentoML to use your base image instead:
+fixes and libraries, you can config VtsServing to use your base image instead:
 
 .. code:: yaml
 
@@ -31,7 +31,7 @@ fixes and libraries, you can config BentoML to use your base image instead:
         base_image: "my_custom_image:latest"
 
 When a :code:`base_image` is provided, **all other docker options will be ignored**,
-(distro, cuda_version, system_packages, python_version). :code:`bentoml containerize`
+(distro, cuda_version, system_packages, python_version). :code:`vtsserving containerize`
 will build a new image on top of the base_image with the following steps:
 
 - setup env vars
@@ -56,16 +56,16 @@ will build a new image on top of the base_image with the following steps:
 
 .. warning::
 
-    By default, BentoML supports multi-platform docker image build out-of-the-box.
+    By default, VtsServing supports multi-platform docker image build out-of-the-box.
     However, when a custom :code:`base_image` is provided, the generated Dockerfile can
     only be used for building linux/amd64 platform docker images.
 
-    If you are running BentoML from an Apple M1 device or an ARM based computer, make
+    If you are running VtsServing from an Apple M1 device or an ARM based computer, make
     sure to pass the :code:`--platform` parameter when containerizing a Bento. e.g.:
 
     .. code:: bash
 
-        bentoml containerize iris_classifier:latest --platform=linux/amd64
+        vtsserving containerize iris_classifier:latest --platform=linux/amd64
 
 
 Dockerfile Template
@@ -73,33 +73,33 @@ Dockerfile Template
 
 The :code:`dockerfile_template` field gives the user full control over how the
 :code:`Dockerfile` is generated for a Bento by extending the template used by
-BentoML.
+VtsServing.
 
-First, create a :code:`Dockerfile.template` file next to your :code:`bentofile.yaml`
+First, create a :code:`Dockerfile.template` file next to your :code:`vtsfile.yaml`
 build file. This file should follow the
 `Jinja2 <https://jinja.palletsprojects.com/en/3.1.x/>`_ template language, and extend
-BentoML's base template and blocks. The template should render a valid
+VtsServing's base template and blocks. The template should render a valid
 `Dockerfile <https://docs.docker.com/engine/reference/builder/>`_. For example:
 
 .. code-block:: jinja
 
-   {% extends bento_base_template %}
+   {% extends vts_base_template %}
    {% block SETUP_VTS_COMPONENTS %}
    {{ super() }}
-   RUN echo "We are running this during bentoml containerize!"
+   RUN echo "We are running this during vtsserving containerize!"
    {% endblock %}
 
 Then add the path to your template file to the :code:`dockerfile_template` field in
-your :code: `bentofile.yaml`:
+your :code: `vtsfile.yaml`:
 
 .. code:: yaml
 
     docker:
         dockerfile_template: "./Dockerfile.template"
 
-Now run :code:`bentoml build` to build a new Bento. It will contain a Dockerfile
+Now run :code:`vtsserving build` to build a new Bento. It will contain a Dockerfile
 generated with the custom template. To confirm the generated Dockerfile works as
-expected, run :code:`bentoml containerize <bento>` to build a docker image with it.
+expected, run :code:`vtsserving containerize <vts>` to build a docker image with it.
 
 .. dropdown:: View the generated Dockerfile content
     :icon: code
@@ -109,7 +109,7 @@ expected, run :code:`bentoml containerize <bento>` to build a docker image with 
 
     .. code-block:: bash
 
-        cat "$(bentoml get <bento>:<tag> -o path)/env/docker/Dockerfile"
+        cat "$(vtsserving get <vts>:<tag> -o path)/env/docker/Dockerfile"
 
 Examples
 --------
@@ -134,7 +134,7 @@ Define the following :code:`Dockerfile.template`:
    :caption: `Dockerfile.template`
 
 
-Then add the following to your :code:`bentofile.yaml`:
+Then add the following to your :code:`vtsfile.yaml`:
 
 .. code-block:: yaml
 
@@ -146,13 +146,13 @@ Then add the following to your :code:`bentofile.yaml`:
    docker:
      dockerfile_template: ./Dockerfile.template
 
-Proceed to build your Bento with :code:`bentoml build` and containerize with :code:`bentoml containerize`:
+Proceed to build your Bento with :code:`vtsserving build` and containerize with :code:`vtsserving containerize`:
 
 .. code-block:: bash
 
-   bentoml build
+   vtsserving build
 
-   bentoml containerize <bento>:<tag>
+   vtsserving containerize <vts>:<tag>
 
 .. tip:: 
 
@@ -161,7 +161,7 @@ Proceed to build your Bento with :code:`bentoml build` and containerize with :co
 
    .. code-block:: yaml
 
-      bentoml containerize --progress plain <bento>:<tag>
+      vtsserving containerize --progress plain <vts>:<tag>
 
 Access AWS credentials during image build
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -177,10 +177,10 @@ We will now demonstrate how to provide AWS credentials to a Bento via two approa
    to use the second option (:ref:`guides/containerization:Mount credentials from host`)
    as it prevents any securities leak.
 
-   By default BentoML uses the latest `dockerfile frontend <https://hub.docker.com/r/docker/dockerfile>`_ which
+   By default VtsServing uses the latest `dockerfile frontend <https://hub.docker.com/r/docker/dockerfile>`_ which
    allows mounting secrets to container.
 
-For both examples, you will need to add the following to your :code:`bentofile.yaml`:
+For both examples, you will need to add the following to your :code:`vtsfile.yaml`:
 
 .. code-block:: yaml
 
@@ -198,7 +198,7 @@ Define the following :code:`Dockerfile.template`:
 
 .. code-block:: jinja
 
-   {% extends bento_base_template %}
+   {% extends vts_base_template %}
    {% block SETUP_VTS_BASE_IMAGE %}
    ARG AWS_SECRET_ACCESS_KEY
    ARG AWS_ACCESS_KEY_ID
@@ -213,18 +213,18 @@ Define the following :code:`Dockerfile.template`:
    {% block SETUP_VTS_COMPONENTS %}
    {{ super() }}
 
-   RUN aws s3 cp s3://path/to/file {{ bento__path }}
+   RUN aws s3 cp s3://path/to/file {{ vts__path }}
 
    {% endblock %}
 
-After building the bento with :code:`bentoml build`, you can then
-pass :code:`AWS_SECRET_ACCESS_KEY` and :code:`AWS_ACCESS_KEY_ID` as arguments to :code:`bentoml containerize`:
+After building the vts with :code:`vtsserving build`, you can then
+pass :code:`AWS_SECRET_ACCESS_KEY` and :code:`AWS_ACCESS_KEY_ID` as arguments to :code:`vtsserving containerize`:
 
 .. code-block:: bash
 
-   bentoml containerize --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+   vtsserving containerize --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
                         --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-                        <bento>:<tag>
+                        <vts>:<tag>
 
 Mount credentials from host
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -233,24 +233,24 @@ Define the following :code:`Dockerfile.template`:
 
 .. code-block:: jinja
 
-   {% extends bento_base_template %}
+   {% extends vts_base_template %}
    {% block SETUP_VTS_COMPONENTS %}
    {{ super() }}
    
    RUN --mount=type=secret,id=aws,target=/root/.aws/credentials \
-        aws s3 cp s3://path/to/file {{ bento__path }}
+        aws s3 cp s3://path/to/file {{ vts__path }}
 
    {% endblock %}
 
-Follow the above addition to :code:`bentofile.yaml` to include ``awscli`` and
+Follow the above addition to :code:`vtsfile.yaml` to include ``awscli`` and
 the custom dockerfile template.
 
-To pass in secrets to the Bento, pass it via :code:`--secret` to :code:`bentoml
+To pass in secrets to the Bento, pass it via :code:`--secret` to :code:`vtsserving
 containerize`:
 
 .. code-block:: bash
 
-   bentoml containerize --secret id=aws,src=$HOME/.aws/credentials <bento>:<tag>
+   vtsserving containerize --secret id=aws,src=$HOME/.aws/credentials <vts>:<tag>
 
 .. seealso::
 
@@ -259,11 +259,11 @@ containerize`:
 Writing :code:`dockerfile_template`
 -----------------------------------
 
-BentoML utilize `Jinja2 <https://jinja.palletsprojects.com/en/3.1.x/>`_ to
+VtsServing utilize `Jinja2 <https://jinja.palletsprojects.com/en/3.1.x/>`_ to
 structure a :code:`Dockerfile.template`.
 
 The Dockerfile template is a mix between :code:`Jinja2` syntax and :code:`Dockerfile`
-syntax. BentoML set both `trim_blocks` and `lstrip_blocks` in Jinja
+syntax. VtsServing set both `trim_blocks` and `lstrip_blocks` in Jinja
 templates environment to :code:`True`. 
 
 .. note::
@@ -280,7 +280,7 @@ isolate the installation of a local library :code:`mypackage`:
 
 .. code-block:: jinja
 
-   {% extends bento_base_template %}
+   {% extends vts_base_template %}
    {% block SETUP_VTS_BASE_IMAGE %}
    FROM --platform=$BUILDPLATFORM python:3.7-slim as buildstage
    RUN mkdir /tmp/mypackage
@@ -307,7 +307,7 @@ Jinja templates
 ~~~~~~~~~~~~~~~
 
 One of the powerful features Jinja offers is its `template inheritance <https://jinja.palletsprojects.com/en/3.1.x/templates/#template-inheritance>`_.
-This allows BentoML to enable users to fully customize how to structure a Bento's Dockerfile.
+This allows VtsServing to enable users to fully customize how to structure a Bento's Dockerfile.
 
 .. note::
 
@@ -321,17 +321,17 @@ This allows BentoML to enable users to fully customize how to structure a Bento'
    For any advanced features from on Jinja2, please refers to their `Templates Design Documentation <https://jinja.palletsprojects.com/en/3.1.x/templates/>`_.
 
 
-To construct a custom :code:`Dockerfile` template, users have to provide an `extends block <https://jinja.palletsprojects.com/en/3.1.x/templates/#extends>`_ at the beginning of the Dockerfile template :code:`Dockerfile.template` followed by the given base template name :code:`bento_base_template`:
+To construct a custom :code:`Dockerfile` template, users have to provide an `extends block <https://jinja.palletsprojects.com/en/3.1.x/templates/#extends>`_ at the beginning of the Dockerfile template :code:`Dockerfile.template` followed by the given base template name :code:`vts_base_template`:
 
 .. code-block:: jinja
 
-   {% extends bento_base_template %}
+   {% extends vts_base_template %}
 
 .. tip::
 
-   :bdg-warning:`Warning:` If you pass in a generic :code:`Dockerfile` file, and then run :code:`bentoml build` to build a Bento and it doesn't throw any errors.
+   :bdg-warning:`Warning:` If you pass in a generic :code:`Dockerfile` file, and then run :code:`vtsserving build` to build a Bento and it doesn't throw any errors.
 
-   However, when you try to run :code:`bentoml containerize`, this won't work.
+   However, when you try to run :code:`vtsserving containerize`, this won't work.
 
    This is an expected behaviour from Jinja2, where Jinja2 accepts **any file** as a template.
 
@@ -343,7 +343,7 @@ To construct a custom :code:`Dockerfile` template, users have to provide an `ext
 
 As you can notice throughout this guides, we use a special function :code:`{{ super() }}`. This is a Jinja
 features that allow users to call content of `parent block <https://jinja.palletsprojects.com/en/3.1.x/templates/#super-blocks>`_. This 
-enables users to fully extend base templates provided by BentoML to ensure that
+enables users to fully extend base templates provided by VtsServing to ensure that
 the result Bentos can be containerized.
 
 .. seealso::
@@ -357,7 +357,7 @@ the result Bentos can be containerized.
 Blocks
 ^^^^^^
 
-BentoML defines a sets of `Blocks <https://jinja.palletsprojects.com/en/3.1.x/templates/#base-template>`_ under the object :code:`bento_base_template`.
+VtsServing defines a sets of `Blocks <https://jinja.palletsprojects.com/en/3.1.x/templates/#base-template>`_ under the object :code:`vts_base_template`.
 
 All exported blocks that users can use to extend are as follow:
 
@@ -366,11 +366,11 @@ All exported blocks that users can use to extend are as follow:
 +=================================+==================================================================================================================================+
 | :code:`SETUP_VTS_BASE_IMAGE`  | Instructions to set up multi architecture supports, base images as well as installing system packages that is defined by users.  |
 +---------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
-| :code:`SETUP_VTS_USER`        | Setup bento users with correct UID, GID and directory for a 🍱.                                                                  |
+| :code:`SETUP_VTS_USER`        | Setup vts users with correct UID, GID and directory for a 🍱.                                                                  |
 +---------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
-| :code:`SETUP_VTS_ENVARS`      | Add users environment variables (if specified) and other required variables from BentoML.                                        |
+| :code:`SETUP_VTS_ENVARS`      | Add users environment variables (if specified) and other required variables from VtsServing.                                        |
 +---------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
-| :code:`SETUP_VTS_COMPONENTS`  | Setup components for a 🍱 , including installing pip packages, running setup scripts, installing bentoml, etc.                   |
+| :code:`SETUP_VTS_COMPONENTS`  | Setup components for a 🍱 , including installing pip packages, running setup scripts, installing vtsserving, etc.                   |
 +---------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
 | :code:`SETUP_VTS_ENTRYPOINT`  | Finalize ports and set :code:`ENTRYPOINT` and :code:`CMD` for the 🍱.                                                            |
 +---------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
@@ -378,7 +378,7 @@ All exported blocks that users can use to extend are as follow:
 .. note::
 
    All the defined blocks are prefixed with :code:`SETUP_VTS_*`. This is to
-   ensure that users can extend blocks defined by BentoML without sacrificing
+   ensure that users can extend blocks defined by VtsServing without sacrificing
    the flexibility of a Jinja template.
 
 To extend any given block, users can do so by adding :code:`{{ super() }}` at
@@ -403,9 +403,9 @@ The use of the following instructions can be **potentially harmful**. They shoul
 +================+===========================================================================================================================================================================================================================================================+
 | :code:`FROM`   | Since the containerized Bento is a multi-stage builds container, adding :code:`FROM` statement will result in failure to containerize the given Bento.                                                                                                    |
 +----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| :code:`SHELL`  | BentoML uses `heredoc syntax <https://github.com/moby/buildkit/blob/master/frontend/dockerfile/docs/syntax.md#user-content-here-documents>`_ and using :code:`bash` in our containerization process. Hence changing :code:`SHELL` will result in failure. |
+| :code:`SHELL`  | VtsServing uses `heredoc syntax <https://github.com/moby/buildkit/blob/master/frontend/dockerfile/docs/syntax.md#user-content-here-documents>`_ and using :code:`bash` in our containerization process. Hence changing :code:`SHELL` will result in failure. |
 +----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| :code:`CMD`    | Changing :code:`CMD` will inherently modify the behaviour of the bento container where docker won't be able to run the bento inside the container. More :ref:`below <guides/containerization:\:code\:\`entrypoint\`>`                                     |
+| :code:`CMD`    | Changing :code:`CMD` will inherently modify the behaviour of the vts container where docker won't be able to run the vts inside the container. More :ref:`below <guides/containerization:\:code\:\`entrypoint\`>`                                     |
 +----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 The following instructions should be **used with caution**:
@@ -445,28 +445,28 @@ By default, a Bento sets:
 
 .. code-block:: jinja
 
-    ENTRYPOINT [ "{{ bento__entrypoint }}" ]
+    ENTRYPOINT [ "{{ vts__entrypoint }}" ]
 
-    CMD ["bentoml", "serve", "{{ bento__path }}", "--production"]
+    CMD ["vtsserving", "serve", "{{ vts__path }}", "--production"]
 
-This aboved instructions ensure that whenever :code:`docker run` is invoked on the 🍱 container, :code:`bentoml` is called correctly. 
+This aboved instructions ensure that whenever :code:`docker run` is invoked on the 🍱 container, :code:`vtsserving` is called correctly. 
 
 In scenarios where one needs to setup a custom :code:`ENTRYPOINT`, make sure to use
 the :code:`ENTRYPOINT` instruction under the :code:`SETUP_VTS_ENTRYPOINT` block as follows:
 
 .. code-block:: jinja
 
-    {% extends bento_base_template %}
+    {% extends vts_base_template %}
     {% block SETUP_VTS_ENTRYPOINT %}
     {{ super() }}
 
     ...
-    ENTRYPOINT [ "{{ bento__entrypoint }}", "python", "-m", "awslambdaric" ]
+    ENTRYPOINT [ "{{ vts__entrypoint }}", "python", "-m", "awslambdaric" ]
     {% endblock %}
 
 .. tip::
 
-    :code:`{{ bento__entrypoint }}` is the path the BentoML entrypoint,
+    :code:`{{ vts__entrypoint }}` is the path the VtsServing entrypoint,
     nothinig special here 😏.
 
 Read more about :code:`CMD` and :code:`ENTRYPOINT` interaction `here <https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact>`_.
@@ -480,20 +480,20 @@ comfortable with using it.
 Dockerfile variables
 ~~~~~~~~~~~~~~~~~~~~
 
-BentoML does expose some variables that user can modify to fit their needs.
+VtsServing does expose some variables that user can modify to fit their needs.
 
 The following are the variables that users can set in their custom Dockerfile template:
 
 +-------------------------+---------------------------------------------------------------------+
 | Variables               | Description                                                         |
 +=========================+=====================================================================+
-| :code:`bento__home`     | Setup bento home, default to :code:`/home/{{ bento__user }}`        |
+| :code:`vts__home`     | Setup vts home, default to :code:`/home/{{ vts__user }}`        |
 +-------------------------+---------------------------------------------------------------------+
-| :code:`bento__user`     | Setup bento user, default to :code:`bentoml`                        |
+| :code:`vts__user`     | Setup vts user, default to :code:`vtsserving`                        |
 +-------------------------+---------------------------------------------------------------------+
-| :code:`bento__uid_gid`  | Setup UID and GID for the user, default to :code:`1034:1034`        |
+| :code:`vts__uid_gid`  | Setup UID and GID for the user, default to :code:`1034:1034`        |
 +-------------------------+---------------------------------------------------------------------+
-| :code:`bento__path`     | Setup bento path, default to :code:`/home/{{ bento__user }}/bento`  |
+| :code:`vts__path`     | Setup vts path, default to :code:`/home/{{ vts__user }}/vts`  |
 +-------------------------+---------------------------------------------------------------------+
 
 If any of the aforementioned fields are set with :code:`{% set ... %}`, then we

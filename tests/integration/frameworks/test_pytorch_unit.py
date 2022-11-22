@@ -3,8 +3,8 @@ from __future__ import annotations
 import torch
 import pytest
 
-from bentoml._internal.runner.container import AutoContainer
-from bentoml._internal.frameworks.pytorch import PyTorchTensorContainer
+from vtsserving._internal.runner.container import AutoContainer
+from vtsserving._internal.frameworks.pytorch import PyTorchTensorContainer
 
 
 @pytest.mark.parametrize("batch_axis", [0, 1])

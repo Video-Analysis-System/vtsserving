@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.245.0/containers/docker-from-docker
 {
-  "name": "BentoML",
+  "name": "VtsServing",
   "dockerFile": "Dockerfile",
   "context": "..",
   "containerEnv": {
@@ -62,6 +62,6 @@
   },
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [3000, 3001],
-  // install BentoML and tools
+  // install VtsServing and tools
   "postStartCommand": "bash ./.devcontainer/lifecycle/post-start"
 }

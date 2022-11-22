@@ -4,15 +4,15 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from bentoml.grpc.utils import import_generated_stubs
-from bentoml.testing.grpc import create_channel
-from bentoml.testing.grpc import async_client_call
-from bentoml._internal.utils import LazyLoader
+from vtsserving.grpc.utils import import_generated_stubs
+from vtsserving.testing.grpc import create_channel
+from vtsserving.testing.grpc import async_client_call
+from vtsserving._internal.utils import LazyLoader
 
 if TYPE_CHECKING:
     from google.protobuf import wrappers_pb2
 
-    from bentoml.grpc.v1 import service_pb2 as pb
+    from vtsserving.grpc.v1 import service_pb2 as pb
 else:
     wrappers_pb2 = LazyLoader("wrappers_pb2", globals(), "google.protobuf.wrappers_pb2")
     pb, _ = import_generated_stubs()

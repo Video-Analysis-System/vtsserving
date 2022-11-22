@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.datasets import load_iris
 from sklearn.ensemble import RandomForestClassifier
 
-import bentoml
+import vtsserving
 
 from . import FrameworkTestModel
 from . import FrameworkTestModelInput as Input
@@ -16,13 +16,13 @@ from . import FrameworkTestModelConfiguration as Config
 if TYPE_CHECKING:
     from sklearn.utils import Bunch
 
-    from bentoml._internal import external_typing as ext
+    from vtsserving._internal import external_typing as ext
 
 iris = t.cast("Bunch", load_iris())
 X: ext.NpNDArray = iris.data[:, :4]
 y: ext.NpNDArray = iris.target
 
-framework = bentoml.sklearn
+framework = vtsserving.sklearn
 
 # fmt: off
 res = np.array(

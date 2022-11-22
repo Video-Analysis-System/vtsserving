@@ -51,13 +51,13 @@ tasks.register<JavaExec>("BentoServiceClient") {
     mainClass.set("com.client.BentoServiceClientKt")
 }
 
-val bentoServiceClientStartScripts = tasks.register<CreateStartScripts>("bentoServiceClientStartScripts") {
+val vtsServiceClientStartScripts = tasks.register<CreateStartScripts>("vtsServiceClientStartScripts") {
     mainClass.set("com.client.BentoServiceClientKt")
-    applicationName = "bento-service-client"
+    applicationName = "vts-service-client"
     outputDir = tasks.named<CreateStartScripts>("startScripts").get().outputDir
     classpath = tasks.named<CreateStartScripts>("startScripts").get().classpath
 }
 
 tasks.named("startScripts") {
-    dependsOn(bentoServiceClientStartScripts)
+    dependsOn(vtsServiceClientStartScripts)
 }

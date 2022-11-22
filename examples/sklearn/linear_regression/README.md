@@ -1,4 +1,4 @@
-# BentoML Sklearn Example: Linear Regression
+# VtsServing Sklearn Example: Linear Regression
 
 0. Install dependencies:
 
@@ -15,7 +15,7 @@ python ./train.py
 2. Run the service:
 
 ```bash
-bentoml serve service.py:svc
+vtsserving serve service.py:svc
 ```
 
 3. Send test request
@@ -27,13 +27,13 @@ curl -X POST -H "content-type: application/json" --data "[[5, 3]]" http://127.0.
 4. Build Bento
 
 ```
-bentoml build
+vtsserving build
 ```
 
 5. Build docker image
 
 ```
-bentoml containerize linear_regression:latest
+vtsserving containerize linear_regression:latest
 ```
 
 

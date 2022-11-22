@@ -1,6 +1,6 @@
 service: "service.py:svc"
 labels:
-  owner: bentoml-team
+  owner: vtsserving-team
   project: gallery
 include:
 - "*.py"

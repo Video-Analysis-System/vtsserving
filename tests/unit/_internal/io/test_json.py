@@ -14,21 +14,21 @@ import pandas as pd
 import pytest
 import pydantic
 
-from bentoml.io import JSON
-from bentoml.exceptions import BadInput
-from bentoml.exceptions import UnprocessableEntity
-from bentoml._internal.utils.pkg import pkg_version_info
-from bentoml._internal.io_descriptors.json import DefaultJsonEncoder
+from vtsserving.io import JSON
+from vtsserving.exceptions import BadInput
+from vtsserving.exceptions import UnprocessableEntity
+from vtsserving._internal.utils.pkg import pkg_version_info
+from vtsserving._internal.io_descriptors.json import DefaultJsonEncoder
 
 if TYPE_CHECKING:
     from _pytest.logging import LogCaptureFixture
     from google.protobuf import struct_pb2
 
-    from bentoml.grpc.v1 import service_pb2 as pb
-    from bentoml._internal.service.openapi.specification import Schema
+    from vtsserving.grpc.v1 import service_pb2 as pb
+    from vtsserving._internal.service.openapi.specification import Schema
 else:
-    from bentoml.grpc.utils import import_generated_stubs
-    from bentoml._internal.utils import LazyLoader
+    from vtsserving.grpc.utils import import_generated_stubs
+    from vtsserving._internal.utils import LazyLoader
 
     pb, _ = import_generated_stubs()
     struct_pb2 = LazyLoader("struct_pb2", globals(), "google.protobuf.struct_pb2")
@@ -82,7 +82,7 @@ dumps = partial(
 
 
 @pytest.mark.skipif(
-    pkg_version_info("pydantic")[0] < 2 and pkg_version_info("bentoml")[:2] <= (1, 1),
+    pkg_version_info("pydantic")[0] < 2 and pkg_version_info("vtsserving")[:2] <= (1, 1),
     reason="Pydantic 2.x is not yet supported until official releases of Pydantic.",
 )
 def test_not_yet_supported_pydantic():

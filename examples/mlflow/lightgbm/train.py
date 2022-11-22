@@ -9,7 +9,7 @@ from sklearn.metrics import log_loss
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
-import bentoml
+import vtsserving
 
 mpl.use("Agg")
 
@@ -83,12 +83,12 @@ def main():
         # log metrics
         mlflow.log_metrics({"log_loss": loss, "accuracy": acc})
 
-        # Import logged mlflow model to BentoML model store for serving:
+        # Import logged mlflow model to VtsServing model store for serving:
         model_uri = mlflow.get_artifact_uri("model")
-        bento_model = bentoml.mlflow.import_model(
+        vts_model = vtsserving.mlflow.import_model(
             "lgb_iris", model_uri, signatures={"predict": {"batchable": True}}
         )
-        print("Model imported to BentoML: %s" % bento_model)
+        print("Model imported to VtsServing: %s" % vts_model)
 
 
 if __name__ == "__main__":

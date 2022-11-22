@@ -11,7 +11,7 @@ from torchvision import transforms
 from torchvision.datasets import MNIST
 from sklearn.model_selection import KFold
 
-import bentoml
+import vtsserving
 
 K_FOLDS = 5
 NUM_EPOCHS = 3
@@ -160,7 +160,7 @@ def train(dataset, epochs=NUM_EPOCHS, device="cpu"):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description="BentoML PyTorch MNIST Example")
+    parser = argparse.ArgumentParser(description="VtsServing PyTorch MNIST Example")
     parser.add_argument(
         "--epochs",
         type=int,
@@ -214,7 +214,7 @@ if __name__ == "__main__":
 
     signatures = {"predict": {"batchable": True}}
 
-    saved_model = bentoml.pytorch.save_model(
+    saved_model = vtsserving.pytorch.save_model(
         args.model_name,
         trained_model,
         signatures=signatures,

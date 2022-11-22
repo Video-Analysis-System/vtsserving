@@ -8,15 +8,15 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-import bentoml
-from bentoml.io import Text
-from bentoml.exceptions import BentoMLException
+import vtsserving
+from vtsserving.io import Text
+from vtsserving.exceptions import VtsServingException
 
 if TYPE_CHECKING:
     from _pytest.logging import LogCaptureFixture
 
 
-svc = bentoml.Service(name="general_features_routes")
+svc = vtsserving.Service(name="general_features_routes")
 
 
 @svc.api(input=Text(), output=Text(), route="api/v1/test_without_prefix")
@@ -34,13 +34,13 @@ def test_routes_prefix():
 
 
 def test_invalid_api_naming():
-    svc = bentoml.Service(name="invalid_api_naming")
+    svc = vtsserving.Service(name="invalid_api_naming")
 
     @svc.api(name="similar", input=Text(), output=Text())
     def r1(obj: str) -> int:
         return 1
 
-    with pytest.raises(BentoMLException) as excinfo:
+    with pytest.raises(VtsServingException) as excinfo:
 
         @svc.api(name="similar", input=Text(), output=Text())
         def r2(obj: str) -> int:
@@ -50,7 +50,7 @@ def test_invalid_api_naming():
 
 
 def test_get_valid_service_name(caplog: LogCaptureFixture):
-    from bentoml._internal.service.service import get_valid_service_name
+    from vtsserving._internal.service.service import get_valid_service_name
 
     with caplog.at_level(logging.WARNING):
         get_valid_service_name("NOT_LOWER")

@@ -1,4 +1,4 @@
-# BentoML 🤝 Flask Demo Project
+# VtsServing 🤝 Flask Demo Project
 
 0. Install dependencies:
 
@@ -15,15 +15,15 @@ python ./train.py
 2. Run the service:
 
 ```bash
-bentoml serve service.py:svc
+vtsserving serve service.py:svc
 ```
 
 3. Send test request
 
-Test the `/predict_bentoml` endpoint:
+Test the `/predict_vtsserving` endpoint:
 
 ```bash
-$ curl -X POST -H "content-type: application/json" --data "[[5.9, 3, 5.1, 1.8]]" http://127.0.0.1:3000/predict_bentoml
+$ curl -X POST -H "content-type: application/json" --data "[[5.9, 3, 5.1, 1.8]]" http://127.0.0.1:3000/predict_vtsserving
 
 [2]%
 ```
@@ -49,11 +49,11 @@ $ curl -X POST -H "content-type: application/json" --data "[[5.9, 3, 5.1, 1.8]]"
 4. Build Bento
 
 ```
-bentoml build
+vtsserving build
 ```
 
 5. Build docker image
 
 ```
-bentoml containerize iris_flask_demo:latest
+vtsserving containerize iris_flask_demo:latest
 ```

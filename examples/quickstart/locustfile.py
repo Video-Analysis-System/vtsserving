@@ -8,8 +8,8 @@ from locust import between
 from locust import HttpUser
 from sklearn import datasets
 
-from bentoml.grpc.v1 import service_pb2 as pb
-from bentoml.grpc.v1 import service_pb2_grpc as services
+from vtsserving.grpc.v1 import service_pb2 as pb
+from vtsserving.grpc.v1 import service_pb2_grpc as services
 
 test_data = datasets.load_iris().data
 num_of_rows = test_data.shape[0]
@@ -21,7 +21,7 @@ class IrisHttpUser(HttpUser):
     Usage:
         Run the iris_classifier service in production mode:
 
-            bentoml serve-http iris_classifier:latest --production
+            vtsserving serve-http iris_classifier:latest --production
 
         Start locust load testing client with:
 
@@ -63,7 +63,7 @@ class IrisGrpcUser(GrpcUser):
     Usage:
         Run the iris_classifier service in production mode:
 
-            bentoml serve-grpc iris_classifier:latest --production
+            vtsserving serve-grpc iris_classifier:latest --production
 
         Start locust load testing client with:
 

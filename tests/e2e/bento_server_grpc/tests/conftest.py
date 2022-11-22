@@ -33,19 +33,19 @@ def pytest_collection_modifyitems(
 @pytest.mark.usefixtures("change_test_dir")
 @pytest.fixture(scope="module")
 def host(
-    bentoml_home: str,
+    vtsserving_home: str,
     deployment_mode: t.Literal["container", "distributed", "standalone"],
     clean_context: ExitStack,
 ) -> t.Generator[str, None, None]:
-    from bentoml.testing.server import host_bento
+    from vtsserving.testing.server import host_vts
 
     if psutil.WINDOWS:
         pytest.skip("gRPC is not supported on Windows.")
-    with host_bento(
+    with host_vts(
         "service:svc",
         deployment_mode=deployment_mode,
         project_path=PROJECT_DIR,
-        bentoml_home=bentoml_home,
+        vtsserving_home=vtsserving_home,
         clean_context=clean_context,
         use_grpc=True,
     ) as _host:

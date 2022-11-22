@@ -8,17 +8,17 @@ from catboost import CatBoostClassifier
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 
-import bentoml
+import vtsserving
 
 from . import FrameworkTestModel
 from . import FrameworkTestModelInput as Input
 from . import FrameworkTestModelConfiguration as Config
 
 if TYPE_CHECKING:
-    import bentoml._internal.external_typing as ext
+    import vtsserving._internal.external_typing as ext
 
 
-framework = bentoml.catboost
+framework = vtsserving.catboost
 
 backward_compatible = False
 
@@ -56,7 +56,7 @@ classification_model = FrameworkTestModel(
     save_kwargs={
         "signatures": {
             "predict": {"batchable": False},
-            # TODO: staged_predict is not supported by bentoml.catboost yet
+            # TODO: staged_predict is not supported by vtsserving.catboost yet
         }
     },
     model=CatBoostClassifier().fit(X_train, y_train),
@@ -69,7 +69,7 @@ classification_model = FrameworkTestModel(
                         expected=accurate_to(y_test, 0.9466),
                     ),
                 ],
-                # TODO: staged_predict is not supported by bentoml.catboost yet
+                # TODO: staged_predict is not supported by vtsserving.catboost yet
             },
         ),
     ],

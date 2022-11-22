@@ -2,20 +2,20 @@
 Bento Client
 ============
 
-BentoML provides a client implementation that can be used to make requests to a BentoML server.
+VtsServing provides a client implementation that can be used to make requests to a VtsServing server.
 
 .. note:: This feature is only available if both the client and server are running version 1.0.8 of
-   BentoML or newer.
+   VtsServing or newer.
 
-After starting your server, you can initialize a BentoML client by using :obj:`~bentoml.client.Client.from_url`:
+After starting your server, you can initialize a VtsServing client by using :obj:`~vtsserving.client.Client.from_url`:
 
 .. code-block:: python
 
-    from bentoml.client import Client
+    from vtsserving.client import Client
 
     client = Client.from_url("http://localhost:3000")
 
-The client can then be used to make requests to the BentoML server using the api name associated
+The client can then be used to make requests to the VtsServing server using the api name associated
 with the function. For example, for the quickstart service endpoint ``classify``:
 
 .. code-block:: python

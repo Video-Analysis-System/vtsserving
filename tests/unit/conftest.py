@@ -9,8 +9,8 @@ import yaml
 import pytest
 import cloudpickle
 
-import bentoml
-from bentoml.testing.pytest import TEST_MODEL_CONTEXT
+import vtsserving
+from vtsserving.testing.pytest import TEST_MODEL_CONTEXT
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -23,10 +23,10 @@ def reload_directory(
     request: FixtureRequest, tmp_path_factory: pytest.TempPathFactory
 ) -> t.Generator[Path, None, None]:
     """
-    This fixture will create an example bentoml working file directory
+    This fixture will create an example vtsserving working file directory
     and yield the results directory
     ./
-    ├── models/  # mock default bentoml home models directory
+    ├── models/  # mock default vtsserving home models directory
     ├── [fdir, fdir_one, fdir_two]/
     │   ├── README.md
         ├── subdir/
@@ -35,15 +35,15 @@ def reload_directory(
     │   ├── somerust.rs
     │   └── app.py
     ├── README.md
-    ├── .bentoignore
-    ├── bentofile.yaml
+    ├── .vtsignore
+    ├── vtsfile.yaml
     ├── fname.ipynb
     ├── requirements.txt
     ├── service.py
     └── train.py
     """
-    from bentoml._internal.utils import bentoml_cattr
-    from bentoml._internal.bento.build_config import BentoBuildConfig
+    from vtsserving._internal.utils import vtsserving_cattr
+    from vtsserving._internal.vts.build_config import BentoBuildConfig
 
     root = tmp_path_factory.mktemp("reload_directory")
     # create a models directory
@@ -69,10 +69,10 @@ def reload_directory(
         description="A mock service",
         exclude=["*.rs"],
     ).with_defaults()
-    bentofile = root / "bentofile.yaml"
-    bentofile.touch()
-    with bentofile.open("w", encoding="utf-8") as f:
-        yaml.safe_dump(bentoml_cattr.unstructure(build_config), f)
+    vtsfile = root / "vtsfile.yaml"
+    vtsfile.touch()
+    with vtsfile.open("w", encoding="utf-8") as f:
+        yaml.safe_dump(vtsserving_cattr.unstructure(build_config), f)
 
     custom_library = ["fdir", "fdir_one", "fdir_two"]
     for app in custom_library:
@@ -99,20 +99,20 @@ def reload_directory(
 
 
 @pytest.fixture(scope="session")
-def simple_service() -> bentoml.Service:
+def simple_service() -> vtsserving.Service:
     """
     This fixture create a simple service implementation that implements a noop runnable with two APIs:
 
     - noop_sync: sync API that returns the input.
     - invalid: an invalid API that can be used to test error handling.
     """
-    from bentoml.io import Text
+    from vtsserving.io import Text
 
     class NoopModel:
         def predict(self, data: t.Any) -> t.Any:
             return data
 
-    with bentoml.models.create(
+    with vtsserving.models.create(
         "python_function",
         context=TEST_MODEL_CONTEXT,
         module=__name__,
@@ -121,22 +121,22 @@ def simple_service() -> bentoml.Service:
         with open(model.path_of("test.pkl"), "wb") as f:
             cloudpickle.dump(NoopModel(), f)
 
-    model_ref = bentoml.models.get("python_function")
+    model_ref = vtsserving.models.get("python_function")
 
-    class NoopRunnable(bentoml.Runnable):
+    class NoopRunnable(vtsserving.Runnable):
         SUPPORTED_RESOURCES = ("cpu",)
         SUPPORTS_CPU_MULTI_THREADING = True
 
         def __init__(self):
-            self._model: NoopModel = bentoml.picklable_model.load_model(model_ref)
+            self._model: NoopModel = vtsserving.picklable_model.load_model(model_ref)
 
-        @bentoml.Runnable.method(batchable=True)
+        @vtsserving.Runnable.method(batchable=True)
         def predict(self, data: t.Any) -> t.Any:
             return self._model.predict(data)
 
-    svc = bentoml.Service(
+    svc = vtsserving.Service(
         name="simple_service",
-        runners=[bentoml.Runner(NoopRunnable, models=[model_ref])],
+        runners=[vtsserving.Runner(NoopRunnable, models=[model_ref])],
     )
 
     @svc.api(input=Text(), output=Text())
@@ -152,8 +152,8 @@ def simple_service() -> bentoml.Service:
 
 @pytest.fixture(scope="function", name="propagate_logs")
 def fixture_propagate_logs() -> t.Generator[None, None, None]:
-    """BentoML sets propagate to False by default, hence this fixture enable log propagation."""
-    logger = logging.getLogger("bentoml")
+    """VtsServing sets propagate to False by default, hence this fixture enable log propagation."""
+    logger = logging.getLogger("vtsserving")
     logger.propagate = True
     yield
     # restore propagate to False after tests

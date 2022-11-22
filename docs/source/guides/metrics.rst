@@ -2,9 +2,9 @@
 Metrics
 =======
 
-Metrics are measurements of statistics about your service, which can provide information about the usage and performance of your bentos in production.
+Metrics are measurements of statistics about your service, which can provide information about the usage and performance of your vtss in production.
 
-BentoML allows users to define custom metrics with `Prometheus <https://prometheus.io/docs/introduction/overview/>`_ to easily enable monitoring for their Bentos.
+VtsServing allows users to define custom metrics with `Prometheus <https://prometheus.io/docs/introduction/overview/>`_ to easily enable monitoring for their Bentos.
  
 This article will dive into the default metrics and how to add custom metrics for
 either a :ref:`concepts/runner:Custom Runner` or :ref:`Service <concepts/service:Service and APIs>`.
@@ -14,17 +14,17 @@ Having a `Prometheus server <https://prometheus.io/docs/prometheus/latest/gettin
 .. note::
 
    This article assumes that you have a base understanding of a BentoService. If you
-   are new to BentoML, please start with :ref:`the quickstart tutorial <tutorial:Tutorial: Intro to BentoML>`.
+   are new to VtsServing, please start with :ref:`the quickstart tutorial <tutorial:Tutorial: Intro to VtsServing>`.
 
 .. seealso::
 
-   All `metrics types <https://prometheus.io/docs/concepts/metric_types/>`_ supported by Prometheus are supported in BentoML. See :ref:`reference/metrics:Metrics API` for more information on ``bentoml.metrics``.
+   All `metrics types <https://prometheus.io/docs/concepts/metric_types/>`_ supported by Prometheus are supported in VtsServing. See :ref:`reference/metrics:Metrics API` for more information on ``vtsserving.metrics``.
 
 
 Default Metrics
 ~~~~~~~~~~~~~~~
 
-BentoML automatically collects the following metrics for all API Server and Runners by default across the following dimensions.
+VtsServing automatically collects the following metrics for all API Server and Runners by default across the following dimensions.
 
 .. list-table::
    :header-rows: 1
@@ -34,31 +34,31 @@ BentoML automatically collects the following metrics for all API Server and Runn
      - Metric Type
      - Dimensions
    * - API Server request in progress
-     - ``bentoml_api_server_request_in_progress``
+     - ``vtsserving_api_server_request_in_progress``
      - Gauge
      - ``endpoint``, ``service_name``, ``service_version``
    * - Runner request in progress
-     - ``bentoml_runner_request_in_progress``
+     - ``vtsserving_runner_request_in_progress``
      - Gauge
      - ``endpoint``, ``runner_name``, ``service_name``, ``service_version``
    * - API Server request total
-     - ``bentoml_api_server_request_total``
+     - ``vtsserving_api_server_request_total``
      - Counter
      - ``endpoint``, ``service_name``, ``service_version``, ``http_response_code``
    * - Runner request total
-     - ``bentoml_runner_request_total``
+     - ``vtsserving_runner_request_total``
      - Counter
      - ``endpoint``, ``service_name``, ``runner_name``, ``service_version``, ``http_response_code``
    * - API Server request duration in seconds
-     - ``bentoml_api_server_request_duration_seconds_sum``, ``bentoml_api_server_request_duration_seconds_count``, ``bentoml_api_server_request_duration_seconds_bucket``
+     - ``vtsserving_api_server_request_duration_seconds_sum``, ``vtsserving_api_server_request_duration_seconds_count``, ``vtsserving_api_server_request_duration_seconds_bucket``
      - Histogram
      - ``endpoint``, ``service_name``, ``service_version``, ``http_response_code``
    * - Runner request duration in seconds
-     - ``bentoml_runner_request_duration_seconds_sum``, ``bentoml_runner_request_duration_seconds_count``, ``bentoml_runner_request_duration_seconds_bucket``
+     - ``vtsserving_runner_request_duration_seconds_sum``, ``vtsserving_runner_request_duration_seconds_count``, ``vtsserving_runner_request_duration_seconds_bucket``
      - Histogram
      - ``endpoint``, ``service_name``, ``runner_name``, ``service_version``, ``http_response_code``
    * - Runner adaptive batch size
-     - ``bentoml_runner_adaptive_batch_size_sum``, ``bentoml_runner_adaptive_batch_size_count``, ``bentoml_runner_adaptive_batch_size_bucket``
+     - ``vtsserving_runner_adaptive_batch_size_sum``, ``vtsserving_runner_adaptive_batch_size_count``, ``vtsserving_runner_adaptive_batch_size_bucket``
      - Histogram
      - ``method_name``, ``service_name``, ``runner_name``, ``worker_index``
 
@@ -75,7 +75,7 @@ per-second over the last 1 minute for the ``/classify`` endpoint on the ``iris_c
 
 .. code-block:: text
 
-   rate(bentoml_api_server_request_total{service_name="iris_classifier", endpoint="/classify"}[1m])
+   rate(vtsserving_api_server_request_total{service_name="iris_classifier", endpoint="/classify"}[1m])
 
 Request Duration
 ^^^^^^^^^^^^^^^^
@@ -86,7 +86,7 @@ configuration can be used to update the buckets configuration for the request du
 the expected range of request duration to be tracked. The configuration key ``factor`` controls the granularity of the buckets and is used as
 the exponential factor to generate the buckets. For example, the configuration below will generate the following buckets
 ``(0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 5.0, inf)``. See the :ref:`configuration <guides/configuration:Configuration>` guide for more information on
-how to configure BentoML.
+how to configure VtsServing.
 
 .. code-block:: yaml
    :caption: ⚙️ `configuration.yml`
@@ -103,7 +103,7 @@ on the ``iris_classifier`` service.
 
 .. code-block:: text
 
-   histogram_quantile(0.99, rate(bentoml_api_server_request_duration_seconds_bucket{service_name="iris_classifier", endpoint="/classify"}[1m]))
+   histogram_quantile(0.99, rate(vtsserving_api_server_request_duration_seconds_bucket{service_name="iris_classifier", endpoint="/classify"}[1m]))
 
 Adaptive Batch Size
 ^^^^^^^^^^^^^^^^^^^
@@ -113,7 +113,7 @@ The following PromQL expression returns the 75th percentile of the batch size ov
 
 .. code-block:: text
 
-   histogram_quantile(0.75, rate(bentoml_runner_adaptive_batch_size_bucket{service_name="iris_classifier"}[1m]))
+   histogram_quantile(0.75, rate(vtsserving_runner_adaptive_batch_size_bucket{service_name="iris_classifier"}[1m]))
 
 
 Custom Metrics
@@ -124,7 +124,7 @@ counter to measure the total amount of time our endpoint is invoked.
 
 .. note::
 
-   The source code for this custom runner is :github:`available on GitHub <bentoml/BentoML/tree/main/examples/custom_runner/nltk_pretrained_model>`.
+   The source code for this custom runner is :github:`available on GitHub <vtsserving/VtsServing/tree/main/examples/custom_runner/nltk_pretrained_model>`.
 
 Initialize our metrics as follow:
 
@@ -132,16 +132,16 @@ Initialize our metrics as follow:
    :language: python
    :caption: `service.py`
 
-``inference_duration`` is a :meth:`bentoml.metrics.Histogram`, which tracks how long it
+``inference_duration`` is a :meth:`vtsserving.metrics.Histogram`, which tracks how long it
 takes for our model to run inference.
-The :attr:`bentoml.metrics.Histogram.buckets` argument is used to determine the granularity of histogram tracking. The range of the buckets should cover the range of values the histogram is expected track. Number of buckets is positively correlated to the the granularity of tracking. The last value of the bucket should always be the positive infinity. See Prometheus documentation on `Histogram <https://prometheus.io/docs/practices/histograms/>`_ for more details.
+The :attr:`vtsserving.metrics.Histogram.buckets` argument is used to determine the granularity of histogram tracking. The range of the buckets should cover the range of values the histogram is expected track. Number of buckets is positively correlated to the the granularity of tracking. The last value of the bucket should always be the positive infinity. See Prometheus documentation on `Histogram <https://prometheus.io/docs/practices/histograms/>`_ for more details.
 
-``polarity_counter`` is a :meth:`bentoml.metrics.Counter`, which tracks the total number
+``polarity_counter`` is a :meth:`vtsserving.metrics.Counter`, which tracks the total number
 of analysis by the polarity scores.
 
 .. epigraph::
 
-   :bdg-info:`Note:` This also applies to any other metric type, including :meth:`bentoml.metrics.Gauge` and :meth:`bentoml.metrics.Summary`.
+   :bdg-info:`Note:` This also applies to any other metric type, including :meth:`vtsserving.metrics.Gauge` and :meth:`vtsserving.metrics.Summary`.
 
 Create our NLTK custom runner:
 
@@ -157,13 +157,13 @@ Initialize our NLTK runner, and add it to the service:
 .. code-block:: python
 
    nltk_runner = t.cast(
-      "RunnerImpl", bentoml.Runner(NLTKSentimentAnalysisRunnable, name="nltk_sentiment")
+      "RunnerImpl", vtsserving.Runner(NLTKSentimentAnalysisRunnable, name="nltk_sentiment")
    )
 
-   svc = bentoml.Service("sentiment_analyzer", runners=[nltk_runner])
+   svc = vtsserving.Service("sentiment_analyzer", runners=[nltk_runner])
 
 
-   @svc.api(input=bentoml.io.Text(), output=bentoml.io.JSON())
+   @svc.api(input=vtsserving.io.Text(), output=vtsserving.io.JSON())
    async def analysis(input_text: str) -> dict[str, bool]:
        is_positive = await nltk_runner.is_positive.async_run(input_text)
        polarity_counter.labels(polarity=is_positive).inc()
@@ -181,7 +181,7 @@ invocation for ``analysis`` by polarity scores.
 
        .. code-block:: bash
 
-          » bentoml serve-http --production
+          » vtsserving serve-http --production
 
        Use the following ``prometheus.yml`` config:
 
@@ -209,7 +209,7 @@ invocation for ``analysis`` by polarity scores.
 
        .. code-block:: bash
 
-          » bentoml serve-grpc --production --enable-reflection
+          » vtsserving serve-grpc --production --enable-reflection
 
        Use the following ``prometheus.yml`` config:
 
@@ -227,7 +227,7 @@ invocation for ``analysis`` by polarity scores.
 
        .. code-block:: bash
 
-          » grpcurl -d @ -plaintext 0.0.0.0:3000 bentoml.grpc.v1.BentoService/Call <<EOT
+          » grpcurl -d @ -plaintext 0.0.0.0:3000 vtsserving.grpc.v1.BentoService/Call <<EOT
             {
               "apiName": "predict",
               "serializedBytes": "..."
@@ -250,8 +250,8 @@ Visit `http://localhost:9090/graph <http://localhost:9090/graph>`_ and use the f
 
     Found an issue or a TODO item? You're always welcome to make contributions to the
     project and its documentation. Check out the
-    `BentoML development guide <https://github.com/bentoml/BentoML/blob/main/DEVELOPMENT.md>`_
-    and `documentation guide <https://github.com/bentoml/BentoML/blob/main/docs/README.md>`_
+    `VtsServing development guide <https://github.com/vtsserving/VtsServing/blob/main/DEVELOPMENT.md>`_
+    and `documentation guide <https://github.com/vtsserving/VtsServing/blob/main/docs/README.md>`_
     to get started.
 
 

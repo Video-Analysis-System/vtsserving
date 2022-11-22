@@ -2,12 +2,12 @@
 PyTorch
 =======
 
-BentoML provides native support for serving and deploying models trained from PyTorch. For more in-depth tutorials about PyTorch, please visit `PyTorch's official documentation <https://pytorch.org/tutorials/>`_
+VtsServing provides native support for serving and deploying models trained from PyTorch. For more in-depth tutorials about PyTorch, please visit `PyTorch's official documentation <https://pytorch.org/tutorials/>`_
 
 Preface
 -------
 
-If you have already compiled your PyTorch model to TorchScript, you might consider to use :doc:`bentoml.torchscript </reference/frameworks/torchscript>`. BentoML provides first-class support for TorchScript, hence using ``bentoml.torchscript`` is less prone to compatibility issues during production.
+If you have already compiled your PyTorch model to TorchScript, you might consider to use :doc:`vtsserving.torchscript </reference/frameworks/torchscript>`. VtsServing provides first-class support for TorchScript, hence using ``vtsserving.torchscript`` is less prone to compatibility issues during production.
 
 .. note::
 
@@ -22,7 +22,7 @@ For common PyTorch models with single input:
 .. code-block:: python
     :caption: `train.py`
 
-    import bentoml
+    import vtsserving
     import torch
     import torch.nn as nn
     import torch.nn.functional as F
@@ -94,14 +94,14 @@ For common PyTorch models with single input:
             # print statistics
             print('Epoch: %d, Step: %d, Loss: %.4f' % (epoch, i, loss.item()))
 
-    bentoml.pytorch.save(
+    vtsserving.pytorch.save(
         model,
         "my_torch_model",
         signatures={"__call__": {"batchable": True, "batch_dim": 0}},
     )
 
 
-``bentoml.pytorch`` also supports saving models that take multiple tensors as input:
+``vtsserving.pytorch`` also supports saving models that take multiple tensors as input:
 
 .. code-block:: python
     :caption: `train.py`
@@ -123,7 +123,7 @@ For common PyTorch models with single input:
     model = Net()
     ... # training
 
-    bentoml.pytorch.save(
+    vtsserving.pytorch.save(
         model,
         "my_torch_model",
         signatures={"__call__": {"batchable": True, "batch_dim": 0}},
@@ -131,7 +131,7 @@ For common PyTorch models with single input:
 
 .. note::
 
-    :bdg-info:`Remarks:` External python classes or utility functions required by the model must be referenced in ``<module>.<class>`` format, and such modules should be passed to ``bentoml.pytorch.save`` via ``external_modules``. For example:
+    :bdg-info:`Remarks:` External python classes or utility functions required by the model must be referenced in ``<module>.<class>`` format, and such modules should be passed to ``vtsserving.pytorch.save`` via ``external_modules``. For example:
 
     .. code-block:: python
        :caption: `train.py`
@@ -140,7 +140,7 @@ For common PyTorch models with single input:
        import my_models
 
        model = my_models.MyModel()
-       bentoml.pytorch.save(
+       vtsserving.pytorch.save(
            model,
            "my_torch_model",
            signatures={"__call__": {"batchable": True, "batch_dim": 0}},
@@ -153,30 +153,30 @@ For common PyTorch models with single input:
 
 .. note::
 
-    :code:`bentoml.pytorch.save_model` has parameter ``signatures``.
-    The ``signatures`` argument of type :ref:`Model Signatures <concepts/model:Model Signatures>` in :obj:`bentoml.pytorch.save_model` is used to determine which methods will be used for inference and exposed in the Runner. The signatures dictionary will then be used during the creation process of a Runner instance.
+    :code:`vtsserving.pytorch.save_model` has parameter ``signatures``.
+    The ``signatures`` argument of type :ref:`Model Signatures <concepts/model:Model Signatures>` in :obj:`vtsserving.pytorch.save_model` is used to determine which methods will be used for inference and exposed in the Runner. The signatures dictionary will then be used during the creation process of a Runner instance.
 
-The signatures used for creating a Runner is ``{"__call__": {"batchable": False}}``. This means by default, BentoML’s `Adaptive Batching <guides/batching:Adaptive Batching>`_ is disabled when using :obj:`~bentoml.pytorch.save_model()`. If you want to utilize adaptive batching behavior and know your model's dynamic batching dimension, make sure to pass in ``signatures`` as follow: 
+The signatures used for creating a Runner is ``{"__call__": {"batchable": False}}``. This means by default, VtsServing’s `Adaptive Batching <guides/batching:Adaptive Batching>`_ is disabled when using :obj:`~vtsserving.pytorch.save_model()`. If you want to utilize adaptive batching behavior and know your model's dynamic batching dimension, make sure to pass in ``signatures`` as follow: 
 
 
 
 .. code-block:: python
 
-    bentoml.pytorch.save(model, "my_model", signatures={"__call__": {"batch_dim": 0, "batchable": True}})
+    vtsserving.pytorch.save(model, "my_model", signatures={"__call__": {"batch_dim": 0, "batchable": True}})
 
 
 
 Building a Service
 ------------------
 
-Create a BentoML service with the previously saved `my_torch_model` pipeline using the :code:`bentoml.pytorch` framework APIs.
+Create a VtsServing service with the previously saved `my_torch_model` pipeline using the :code:`vtsserving.pytorch` framework APIs.
 
 .. code-block:: python
     :caption: `service.py`
 
-    runner = bentoml.pytorch.get("my_torch_model").to_runner()
+    runner = vtsserving.pytorch.get("my_torch_model").to_runner()
 
-    svc = bentoml.Service(name="test_service", runners=[runner])
+    svc = vtsserving.Service(name="test_service", runners=[runner])
 
     @svc.api(input=JSON(), output=JSON())
     async def predict(json_obj: JSONSerializable) -> JSONSerializable:
@@ -205,6 +205,6 @@ argument with the method name and providing :code:`batchable` and :code:`batch_d
 
 .. note::
 
-   You can find more examples for **PyTorch** in our `bentoml/examples <https://github.com/bentoml/BentoML/tree/main/examples>`_ directory.
+   You can find more examples for **PyTorch** in our `vtsserving/examples <https://github.com/vtsserving/VtsServing/tree/main/examples>`_ directory.
 
-.. currentmodule:: bentoml.pytorch
+.. currentmodule:: vtsserving.pytorch

@@ -11,23 +11,23 @@ import pytest
 
 from tests.proto import service_test_pb2 as pb_test
 from tests.proto import service_test_pb2_grpc as services_test
-from bentoml.grpc.utils import import_grpc
-from bentoml.grpc.utils import import_generated_stubs
-from bentoml.testing.grpc import create_channel
-from bentoml.testing.grpc import async_client_call
-from bentoml.testing.grpc import create_bento_servicer
-from bentoml.testing.grpc import make_standalone_server
-from bentoml._internal.utils import LazyLoader
+from vtsserving.grpc.utils import import_grpc
+from vtsserving.grpc.utils import import_generated_stubs
+from vtsserving.testing.grpc import create_channel
+from vtsserving.testing.grpc import async_client_call
+from vtsserving.testing.grpc import create_vts_servicer
+from vtsserving.testing.grpc import make_standalone_server
+from vtsserving._internal.utils import LazyLoader
 from tests.unit.grpc.conftest import TestServiceServicer
-from bentoml.grpc.interceptors.prometheus import PrometheusServerInterceptor
-from bentoml._internal.configuration.containers import BentoMLContainer
+from vtsserving.grpc.interceptors.prometheus import PrometheusServerInterceptor
+from vtsserving._internal.configuration.containers import VtsServingContainer
 
 if TYPE_CHECKING:
     import grpc
     from google.protobuf import wrappers_pb2
 
-    from bentoml import Service
-    from bentoml.grpc.v1 import service_pb2_grpc as services
+    from vtsserving import Service
+    from vtsserving.grpc.v1 import service_pb2_grpc as services
 else:
 
     _, services = import_generated_stubs()
@@ -35,7 +35,7 @@ else:
     grpc, aio = import_grpc()
 
 prom_dir = tempfile.mkdtemp("prometheus-multiproc")
-BentoMLContainer.prometheus_multiproc_dir.set(prom_dir)
+VtsServingContainer.prometheus_multiproc_dir.set(prom_dir)
 interceptor = PrometheusServerInterceptor()
 
 if "prometheus_client" in sys.modules:
@@ -62,7 +62,7 @@ async def test_metrics_invocation(mock_unary_unary_handler: MagicMock):
 
 @pytest.mark.asyncio
 async def test_empty_metrics():
-    metrics_client = BentoMLContainer.metrics_client.get()
+    metrics_client = VtsServingContainer.metrics_client.get()
     # This test a branch where we change inside the handler whether or not the incoming
     # handler contains pb.Request
     # if it isn't a pb.Request, then we just pass the handler, hence metrics should be empty
@@ -83,7 +83,7 @@ async def test_empty_metrics():
                 )
                 resp = t.cast(
                     t.Awaitable[pb_test.ExecuteResponse],
-                    Execute(pb_test.ExecuteRequest(input="BentoML")),
+                    Execute(pb_test.ExecuteRequest(input="VtsServing")),
                 )
                 await resp
                 assert metrics_client.generate_latest() == b""
@@ -111,14 +111,14 @@ async def test_metrics_interceptors(
     metric_type: str,
     parent_set: list[str],
 ):
-    metrics_client = BentoMLContainer.metrics_client.get()
+    metrics_client = VtsServingContainer.metrics_client.get()
 
     with make_standalone_server(interceptors=[interceptor]) as (
         server,
         host_url,
     ):
         services.add_BentoServiceServicer_to_server(
-            create_bento_servicer(simple_service), server
+            create_vts_servicer(simple_service), server
         )
         try:
             await server.start()
@@ -126,7 +126,7 @@ async def test_metrics_interceptors(
                 await async_client_call(
                     "noop_sync",
                     channel=channel,
-                    data={"text": wrappers_pb2.StringValue(value="BentoML")},
+                    data={"text": wrappers_pb2.StringValue(value="VtsServing")},
                 )
             for m in metrics_client.text_string_to_metric_families():
                 for sample in m.samples:

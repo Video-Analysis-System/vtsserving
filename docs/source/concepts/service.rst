@@ -4,25 +4,25 @@ Service and APIs
 
 The service definition is the manifestation of the
 `Service Oriented Architecture <https://en.wikipedia.org/wiki/Service-oriented_architecture>`_
-and the core building block in BentoML where users define the model serving logic. This
+and the core building block in VtsServing where users define the model serving logic. This
 guide will dissect and explain the key components in the service definition.
 
 
 Creating a Service
 ------------------
 
-A BentoML service is composed of Runners and APIs. Consider the following service
+A VtsServing service is composed of Runners and APIs. Consider the following service
 definition from the :doc:`tutorial </tutorial>`:
 
 .. code-block:: python
 
     import numpy as np
-    import bentoml
-    from bentoml.io import NumpyNdarray
+    import vtsserving
+    from vtsserving.io import NumpyNdarray
 
-    iris_clf_runner = bentoml.sklearn.get("iris_clf:latest").to_runner()
+    iris_clf_runner = vtsserving.sklearn.get("iris_clf:latest").to_runner()
 
-    svc = bentoml.Service("iris_classifier", runners=[iris_clf_runner])
+    svc = vtsserving.Service("iris_classifier", runners=[iris_clf_runner])
 
     @svc.api(input=NumpyNdarray(), output=NumpyNdarray())
     def classify(input_series: np.ndarray) -> np.ndarray:
@@ -30,13 +30,13 @@ definition from the :doc:`tutorial </tutorial>`:
         return result
 
 
-Services are initialized through ``bentoml.Service()`` call, with the service name and a
+Services are initialized through ``vtsserving.Service()`` call, with the service name and a
 list of :doc:`Runners </concepts/runner>` required in the service:
 
 .. code-block:: python
 
     # Create the iris_classifier_service with the ScikitLearn runner
-    svc = bentoml.Service("iris_classifier", runners=[iris_clf_runner])
+    svc = vtsserving.Service("iris_classifier", runners=[iris_clf_runner])
 
 .. note::
     The service name will become the name of the Bento.
@@ -58,11 +58,11 @@ Runners
 Runners represent a unit of serving logic that can be scaled horizontally to maximize
 throughput and resource utilization.
 
-BentoML provides a convenient way of creating Runner instance from a saved model:
+VtsServing provides a convenient way of creating Runner instance from a saved model:
 
 .. code-block:: python
 
-    runner = bentoml.sklearn.get("iris_clf:latest").to_runner()
+    runner = vtsserving.sklearn.get("iris_clf:latest").to_runner()
 
 .. tip::
     Users can also create custom Runners via the :doc:`Runner and Runnable interface <concepts/runner>`.
@@ -72,8 +72,8 @@ Runner created from a model will automatically choose the most optimal Runner
 configurations specific for the target ML framework.
 
 For example, if an ML framework releases the Python GIL and supports concurrent access
-natively, BentoML will create a single global instance of the runner worker and route
-all API requests to the global instance; otherwise, BentoML will create multiple
+natively, VtsServing will create a single global instance of the runner worker and route
+all API requests to the global instance; otherwise, VtsServing will create multiple
 instances of runners based on the available system resources. We also let advanced users
 to customize the runtime configurations to fine tune the runner performance. To learn
 more, please see the :doc:`concepts/runner` guide.
@@ -81,10 +81,10 @@ more, please see the :doc:`concepts/runner` guide.
 Debugging Runners
 ^^^^^^^^^^^^^^^^^
 
-Runners must be initialized in order to function. Normally, this is handled by BentoML internally
-when ``bentoml serve`` is called.
+Runners must be initialized in order to function. Normally, this is handled by VtsServing internally
+when ``vtsserving serve`` is called.
 
-If you want to import and run a service without using BentoML, this must be done manually. For
+If you want to import and run a service without using VtsServing, this must be done manually. For
 example, to debug a service called ``svc`` in ``service.py``:
 
 .. code-block:: python
@@ -119,7 +119,7 @@ invoked when this API is called. The API function is a great place for defining 
 serving logic, such as feature fetching, pre and post processing, and model inferences 
 via Runners.
 
-When running ``bentoml serve`` with the example above, this API function is
+When running ``vtsserving serve`` with the example above, this API function is
 transformed into an HTTP endpoint, ``/predict``, that takes in a ``np.ndarray`` as 
 input, and returns a ``np.ndarray`` as output. The endpoint can be called with the following
 ``curl`` command:
@@ -134,7 +134,7 @@ input, and returns a ``np.ndarray`` as output. The endpoint can be called with t
     "[0]"
 
 .. tip::
-    BentoML also plan to support translating the same Service API definition into a gRPC
+    VtsServing also plan to support translating the same Service API definition into a gRPC
     server endpoint, in addition to the default HTTP server. See :issue:`703`.
 
 Route
@@ -155,13 +155,13 @@ this URL via the ``route`` option, e.g.:
 
 
 .. note::
-    BentoML aims to parallelize API logic by starting multiple instances of the API
+    VtsServing aims to parallelize API logic by starting multiple instances of the API
     server based on available system resources.
 
 Inference Context
 ^^^^^^^^^^^^^^^^^
 
-The context of an inference call can be accessed through the additional ``bentoml.Context``
+The context of an inference call can be accessed through the additional ``vtsserving.Context``
 argument added to the service API function. Both the request and response contexts can be 
 accessed through the inference context for getting and setting the headers, cookies, and
 status codes.
@@ -172,7 +172,7 @@ status codes.
         input=NumpyNdarray(),
         output=NumpyNdarray(),
     )
-    def predict(input_array: np.ndarray, ctx: bentoml.Context) -> np.ndarray:
+    def predict(input_array: np.ndarray, ctx: vtsserving.Context) -> np.ndarray:
         # get request headers
         request_headers = ctx.request.headers
 
@@ -181,7 +181,7 @@ status codes.
         # set response headers, cookies, and status code 
         ctx.response.status_code = 202
         ctx.response.cookies = [
-            bentoml.Cookie(
+            vtsserving.Cookie(
                 key="key",
                 value="value",
                 max_age=None,
@@ -209,19 +209,19 @@ decorator method.
 
 Recall the API we created in the :doc:`tutorial </tutorial>`. The ``classify`` API both accepts
 arguments and returns results in the type of
-:ref:`bentoml.io.NumpyNdarray <reference/api_io_descriptors:NumPy \`\`ndarray\`\`>`:
+:ref:`vtsserving.io.NumpyNdarray <reference/api_io_descriptors:NumPy \`\`ndarray\`\`>`:
 
 .. code-block:: python
 
     import numpy as np
-    from bentoml.io import NumpyNdarray
+    from vtsserving.io import NumpyNdarray
 
     @svc.api(input=NumpyNdarray(), output=NumpyNdarray())
     def classify(input_array: np.ndarray) -> np.ndarray:
         ...
 
 
-Besides the ``NumpyNdarray`` IO descriptor, BentoML supports a variety of IO
+Besides the ``NumpyNdarray`` IO descriptor, VtsServing supports a variety of IO
 descriptors including ``PandasDataFrame``, ``JSON``, ``String``,
 ``Image``, ``Text``, and ``File``. For detailed documentation on how to
 declare and invoke these descriptors please see the
@@ -249,9 +249,9 @@ based the specified data type and shape. To learn more, see IO descrptor referen
 
     import numpy as np
 
-    from bentoml.io import NumpyNdarray
+    from vtsserving.io import NumpyNdarray
 
-    svc = bentoml.Service("iris_classifier")
+    svc = vtsserving.Service("iris_classifier")
 
     # Define IO descriptors through samples
     output_descriptor = NumpyNdarray.from_sample(np.array([[1.0, 2.0, 3.0, 4.0]]))
@@ -281,9 +281,9 @@ based the specified data type and shape. To learn more, see IO descrptor referen
 
     import pandas as pd
 
-    from bentoml.io import PandasDataFrame
+    from vtsserving.io import PandasDataFrame
 
-    svc = bentoml.Service("iris_classifier")
+    svc = vtsserving.Service("iris_classifier")
 
     # Define IO descriptors through samples
     output_descriptor = PandasDataFrame.from_sample(pd.DataFrame([[5,4,3,2]]))
@@ -314,7 +314,7 @@ model and return. To learn more, see IO descrptor reference for
     from typing import Dict, Any
     from pydantic import BaseModel
 
-    svc = bentoml.Service("iris_classifier")
+    svc = vtsserving.Service("iris_classifier")
 
     class IrisFeatures(BaseModel):
         sepal_length: float
@@ -335,8 +335,8 @@ model and return. To learn more, see IO descrptor reference for
 Built-in Types
 ^^^^^^^^^^^^^^
 
-Beside ``NumpyNdarray``, BentoML supports a variety of other built-in IO descriptor
-types under the :doc:`bentoml.io <reference/api_io_descriptors>` module. Each type comes
+Beside ``NumpyNdarray``, VtsServing supports a variety of other built-in IO descriptor
+types under the :doc:`vtsserving.io <reference/api_io_descriptors>` module. Each type comes
 with support of type validation and OpenAPI specification generation. For example:
 
 +-----------------+---------------------+---------------------+-------------------------+
@@ -371,7 +371,7 @@ logic:
     import numpy as np
     from pydantic import BaseModel
 
-    from bentoml.io import NumpyNdarray, Json
+    from vtsserving.io import NumpyNdarray, Json
 
     class FooModel(BaseModel):
         field1: int
@@ -395,7 +395,7 @@ Sync vs Async APIs
 ------------------
 
 APIs can be defined as either synchronous function or asynchronous coroutines in Python.
-The API we created in the :doc:`tutorial </tutorial>` was a synchronous API. BentoML will
+The API we created in the :doc:`tutorial </tutorial>` was a synchronous API. VtsServing will
 intelligently create an optimally sized pool of workers to execute the synchronous
 logic. Synchronous APIs are simple and capable of getting the job done for most model
 serving scenarios.
@@ -420,8 +420,8 @@ result.
 
     # Load two runners for two different versions of the ScikitLearn
     # Iris Classifier models we saved before
-    runner1 = bentoml.sklearn.get("iris_clf:yftvuwkbbbi6zc").to_runner()
-    runner2 = bentoml.sklearn.get("iris_clf:edq3adsfhzi6zg").to_runner()
+    runner1 = vtsserving.sklearn.get("iris_clf:yftvuwkbbbi6zc").to_runner()
+    runner2 = vtsserving.sklearn.get("iris_clf:edq3adsfhzi6zg").to_runner()
 
     @svc.api(input=NumpyNdarray(), output=NumpyNdarray())
     async def predict(input_array: np.ndarray) -> np.ndarray:
@@ -439,7 +439,7 @@ result.
 
 The asynchronous API implementation is more efficient because when an asynchronous
 method is invoked, the event loop is released to service other requests while this
-request awaits the results of the method. In addition, BentoML will automatically
+request awaits the results of the method. In addition, VtsServing will automatically
 configure the ideal amount of parallelism based on the available number of CPU cores.
 Further tuning of event loop configuration is not needed under common use cases.
 
@@ -454,7 +454,7 @@ Further tuning of event loop configuration is not needed under common use cases.
 .. TODO:
 
     Running Server:
-        bentoml serve arguments
+        vtsserving serve arguments
         --reload
         --production
 

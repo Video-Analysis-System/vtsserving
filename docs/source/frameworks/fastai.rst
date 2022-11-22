@@ -5,14 +5,14 @@ fast.ai
 fastai is a popular deep learning library which provides high-level components for practioners to get state-of-the-art results in standard deep learning domains, as well as low-level components
 for researchers to build new approaches. To learn more about fastai, visit their `documentation <docs.fast.ai>`_.
 
-BentoML provides native support for `fastai <https://github.com/fastai/fastai>`_, and this guide provides an overview of how to use BentoML with fastai.
+VtsServing provides native support for `fastai <https://github.com/fastai/fastai>`_, and this guide provides an overview of how to use VtsServing with fastai.
 
 Compatibility 
 -------------
 
-BentoML requires fastai **version 2** or higher to be installed. 
+VtsServing requires fastai **version 2** or higher to be installed. 
 
-BentoML does not support fastai version 1. If you are using fastai version 1, consider using :ref:`concepts/runner:Custom Runner`.
+VtsServing does not support fastai version 1. If you are using fastai version 1, consider using :ref:`concepts/runner:Custom Runner`.
 
 Saving a trained fastai learner
 --------------------------------
@@ -63,11 +63,11 @@ This example is based on `Transfer Learning with text <https://docs.fast.ai/tuto
    # ('pos', TensorText(1), TensorText([0.1216, 0.8784]))
 
 
-After training, use :obj:`~bentoml.fastai.save_model` to save the `Learner <https://docs.fast.ai/learner.html#Learner>`_ instance to BentoML model store.
+After training, use :obj:`~vtsserving.fastai.save_model` to save the `Learner <https://docs.fast.ai/learner.html#Learner>`_ instance to VtsServing model store.
 
 .. code-block:: python
 
-   bentoml.fastai.save_model("fastai_sentiment", learner)
+   vtsserving.fastai.save_model("fastai_sentiment", learner)
 
 
 
@@ -75,7 +75,7 @@ To verify that the saved learner can be loaded properly:
 
 .. code-block:: python
 
-   learner = bentoml.fastai.load_model("fastai_sentiment:latest")
+   learner = vtsserving.fastai.load_model("fastai_sentiment:latest")
 
    learner.predict("I really liked that movie!")
 
@@ -85,20 +85,20 @@ Building a Service using fastai
 
 .. seealso::
 
-   :ref:`Building a Service <concepts/service:Service and APIs>`: more information on creating a prediction service with BentoML.
+   :ref:`Building a Service <concepts/service:Service and APIs>`: more information on creating a prediction service with VtsServing.
 
 .. code-block:: python
 
-   import bentoml
+   import vtsserving
 
    import numpy as np
 
-   from bentoml.io import Text
-   from bentoml.io import NumpyNdarray
+   from vtsserving.io import Text
+   from vtsserving.io import NumpyNdarray
 
-   runner = bentoml.fastai.get("fastai_sentiment:latest").to_runner()
+   runner = vtsserving.fastai.get("fastai_sentiment:latest").to_runner()
 
-   svc = bentoml.Service("fast_sentiment", runners=[runner])
+   svc = vtsserving.Service("fast_sentiment", runners=[runner])
 
 
    @svc.api(input=Text(), output=NumpyNdarray())
@@ -108,7 +108,7 @@ Building a Service using fastai
       return np.asarray(res[-1])
 
 
-When constructing a :ref:`bentofile.yaml <concepts/bento:Bento Build Options>`,
+When constructing a :ref:`vtsfile.yaml <concepts/vts:Bento Build Options>`,
 there are two ways to include fastai as a dependency, via ``python`` or
 ``conda``:
 
@@ -162,18 +162,18 @@ To get the PyTorch model, access it via ``learner.model``:
 
 .. code-block:: python
 
-   import bentoml
+   import vtsserving
 
-   bentoml.pytorch.save_model(
+   vtsserving.pytorch.save_model(
       "my_pytorch_model", learner.model, signatures={"__call__": {"batchable": True}}
    )
 
-Learn more about using PyTorch with BentoML :ref:`here <frameworks/pytorch:PyTorch>`.
+Learn more about using PyTorch with VtsServing :ref:`here <frameworks/pytorch:PyTorch>`.
 
 Using GPU
 ---------
 
-Since fastai doesn't support using GPU for inference, BentoML
+Since fastai doesn't support using GPU for inference, VtsServing
 can only support CPU inference with fastai models.
 
 Additionally, if the model uses ``mixed_precision``, then the loaded model will also be converted to FP32.
@@ -185,7 +185,7 @@ Adaptive batching
 ~~~~~~~~~~~~~~~~~
 
 fastai's ``Learner#predict`` does not support taking batch input for inference, hence
-the adaptive batching feature in BentoML is not available for fastai models.
+the adaptive batching feature in VtsServing is not available for fastai models.
 
 The default signature has :code:`batchable` set to :code:`False`.
 

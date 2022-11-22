@@ -5,13 +5,13 @@ import torch
 import pandas as pd
 import torch.nn
 
-import bentoml
+import vtsserving
 
 from . import FrameworkTestModel
 from . import FrameworkTestModelInput as Input
 from . import FrameworkTestModelConfiguration as Config
 
-framework = bentoml.torchscript
+framework = vtsserving.torchscript
 
 backward_compatible = True
 

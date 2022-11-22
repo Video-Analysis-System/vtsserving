@@ -13,10 +13,10 @@ def test_regression():
     This test will determine if our CLI are running in an efficient manner.
     CLI runtime are ~ 340ms via loading entrypoint.
     The bulk of the time lies in how Python3 resolves dependencies and imports the package.
-    The core runtime for loading bentoml library is around 170ms, and hence the threshold is set.
+    The core runtime for loading vtsserving library is around 170ms, and hence the threshold is set.
     This upper bound is loosely defined, but provide a good enough upper bound for the regression test.
     """
-    from bentoml_cli.cli import cli
+    from vtsserving_cli.cli import cli
 
     # note that this should only be run in a single process.
     with runner.isolation():

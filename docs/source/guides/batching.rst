@@ -15,7 +15,7 @@ As an optimization for a real-time service, batching works off of 2 main concept
 1. *Batching Window*: The maximum time that a service should wait to build a “batch” before releasing a batch for processing. This is essentially the max latency for processing in a low throughput system. It helps avoid the situation where if very few messages have been submitted (smaller than the max batch size) the batch must wait for a long time to be processed.
 2. *Batch Size*: The maximum size that a batch can reach before the batch is release for processing. It puts a cap on the size of the batch in which should optimize for maximum throughput. The concept only applies within the maximum wait time before the batch is released.
 
-BentoML’s adaptive batching works off of these 2 basic concepts and builds on them. Our adaptive batching adapts both the batching window and the max batch size based off of incoming traffic patterns at the time. The dispatching mechanism regresses the recent processing time, wait time and batch sizes to optimize for lowest latency.
+VtsServing’s adaptive batching works off of these 2 basic concepts and builds on them. Our adaptive batching adapts both the batching window and the max batch size based off of incoming traffic patterns at the time. The dispatching mechanism regresses the recent processing time, wait time and batch sizes to optimize for lowest latency.
 
 Architecture
 ------------
@@ -38,7 +38,7 @@ In addition to declaring model as batchable, batch dimensions can also be config
 .. code-block:: python
     :caption: `train.py`
 
-    bentoml.pytorch.save_model(
+    vtsserving.pytorch.save_model(
         name="mnist",
         model=model,
         signature={

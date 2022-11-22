@@ -8,17 +8,17 @@ from functools import partial
 import numpy as np
 import pytest
 
-from bentoml.io import NumpyNdarray
-from bentoml.exceptions import BadInput
-from bentoml.exceptions import BentoMLException
-from bentoml._internal.service.openapi.specification import Schema
+from vtsserving.io import NumpyNdarray
+from vtsserving.exceptions import BadInput
+from vtsserving.exceptions import VtsServingException
+from vtsserving._internal.service.openapi.specification import Schema
 
 if TYPE_CHECKING:
     from _pytest.logging import LogCaptureFixture
 
-    from bentoml.grpc.v1 import service_pb2 as pb
+    from vtsserving.grpc.v1 import service_pb2 as pb
 else:
-    from bentoml.grpc.utils import import_generated_stubs
+    from vtsserving.grpc.utils import import_generated_stubs
 
     pb, _ = import_generated_stubs()
 
@@ -32,12 +32,12 @@ from_example = NumpyNdarray.from_sample(example, enforce_dtype=True, enforce_sha
 
 
 def test_invalid_dtype():
-    with pytest.raises(BentoMLException) as e:
+    with pytest.raises(VtsServingException) as e:
         NumpyNdarray(dtype="asdf")
     assert "Invalid dtype" in str(e.value)
 
     generic = ExampleGeneric("asdf")
-    with pytest.raises(BentoMLException) as e:
+    with pytest.raises(VtsServingException) as e:
         _ = NumpyNdarray.from_sample(generic)  # type: ignore (test exception)
     assert "expects a 'numpy.array'" in str(e.value)
 
@@ -101,13 +101,13 @@ def test_numpy_openapi_example():
 
 
 def test_verify_numpy_ndarray(caplog: LogCaptureFixture):
-    partial_check = partial(from_example.validate_array, exception_cls=BentoMLException)
+    partial_check = partial(from_example.validate_array, exception_cls=VtsServingException)
 
-    with pytest.raises(BentoMLException) as ex:
+    with pytest.raises(VtsServingException) as ex:
         partial_check(np.array(["asdf"]))
     assert f'Expecting ndarray of dtype "{from_example._dtype}"' in str(ex.value)
 
-    with pytest.raises(BentoMLException) as e:
+    with pytest.raises(VtsServingException) as e:
         partial_check(np.array([[1]]))
     assert f'Expecting ndarray of shape "{from_example._shape}"' in str(e.value)
 
@@ -133,8 +133,8 @@ def generate_1d_array(dtype: pb.NDArray.DType.ValueType, length: int = 3):
     filter(lambda x: x > 0, [v.number for v in pb.NDArray.DType.DESCRIPTOR.values]),
 )
 async def test_from_proto(dtype: pb.NDArray.DType.ValueType) -> None:
-    from bentoml._internal.io_descriptors.numpy import dtypepb_to_fieldpb_map
-    from bentoml._internal.io_descriptors.numpy import dtypepb_to_npdtype_map
+    from vtsserving._internal.io_descriptors.numpy import dtypepb_to_fieldpb_map
+    from vtsserving._internal.io_descriptors.numpy import dtypepb_to_npdtype_map
 
     np.testing.assert_array_equal(
         await NumpyNdarray(dtype=example.dtype, shape=example.shape).from_proto(

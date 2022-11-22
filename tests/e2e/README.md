@@ -10,7 +10,7 @@ To create a new test suite (for simplicity let's call our test suite `qa`), do t
 
 ```bash
 .
-├── bentofile.yaml
+├── vtsfile.yaml
 ├── train.py
 ├── requirements.txt
 ...
@@ -31,9 +31,9 @@ To create a new test suite (for simplicity let's call our test suite `qa`), do t
 if __name__ == "__main__":
     import python_model
 
-    import bentoml
+    import vtsserving
 
-    bentoml.picklable_model.save_model(
+    vtsserving.picklable_model.save_model(
         "py_model.case-1.grpc.e2e",
         python_model.PythonFunction(),
         signatures={
@@ -57,7 +57,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from bentoml._internal.configuration.containers import BentoMLContainer
+from vtsserving._internal.configuration.containers import VtsServingContainer
 
 if TYPE_CHECKING:
     from contextlib import ExitStack
@@ -72,22 +72,22 @@ def pytest_collection_modifyitems(
 ) -> None:
     subprocess.check_call(
         [sys.executable, "-m", "train"],
-        env={"VTSSERVING_HOME": BentoMLContainer.bentoml_home.get()},
+        env={"VTSSERVING_HOME": VtsServingContainer.vtsserving_home.get()},
     )
 
 
 @pytest.fixture(scope="module")
 def host(
-    bentoml_home: str,
+    vtsserving_home: str,
     deployment_mode: str,
     clean_context: ExitStack,
 ) -> t.Generator[str, None, None]:
-    from bentoml.testing.server import host_bento
+    from vtsserving.testing.server import host_vts
 
-    with host_bento(
+    with host_vts(
         "service:svc",
         deployment_mode=deployment_mode,
-        bentoml_home=bentoml_home,
+        vtsserving_home=vtsserving_home,
         clean_context=clean_context,
         use_grpc=True,
     ) as _host:
@@ -100,7 +100,7 @@ def host(
 pip install -r tests/e2e/qa/requirements.txt
 ```
 
-5. To run the tests, navigate to `GIT_ROOT` (root directory of bentoml), and call:
+5. To run the tests, navigate to `GIT_ROOT` (root directory of vtsserving), and call:
 
 ```bash
 pytest tests/e2e/qa

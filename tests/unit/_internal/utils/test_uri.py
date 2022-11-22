@@ -26,8 +26,8 @@ def example_paths():
 def test_uri_path_conversion(
     example_paths: t.List[str],  # pylint: disable=redefined-outer-name
 ) -> None:
-    from bentoml._internal.utils.uri import path_to_uri
-    from bentoml._internal.utils.uri import uri_to_path
+    from vtsserving._internal.utils.uri import path_to_uri
+    from vtsserving._internal.utils.uri import uri_to_path
 
     for path in example_paths:
         restored = uri_to_path(path_to_uri(path))

@@ -4,7 +4,7 @@
   "description": "gRPC client in JavaScript",
   "main": "client.js",
   "keywords": [],
-  "author": "BentoML Team",
+  "author": "VtsServing Team",
   "license": "Apache-2.0",
   "dependencies": {
     "@grpc/grpc-js": "^1.7.1",

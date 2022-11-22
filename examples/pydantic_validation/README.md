@@ -1,4 +1,4 @@
-# BentoML Example: Using Pydantic for request validation
+# VtsServing Example: Using Pydantic for request validation
 
 0. Install dependencies:
 
@@ -15,7 +15,7 @@ python ./train.py
 2. Run the service:
 
 ```bash
-bentoml serve service.py:svc
+vtsserving serve service.py:svc
 ```
 
 3. Send test request
@@ -51,11 +51,11 @@ $ curl -X POST -H "content-type: application/json" --data '{"sepal_len": 6.2, "s
 4. Build Bento
 
 ```
-bentoml build
+vtsserving build
 ```
 
 5. Build docker image
 
 ```
-bentoml containerize iris_classifier_pydantic:latest
+vtsserving containerize iris_classifier_pydantic:latest
 ```

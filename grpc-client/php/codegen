@@ -5,7 +5,7 @@ set -e
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 pushd "$SCRIPT_DIR"/../.. >/dev/null
 
-# We will use BentoML tools/bazel.rc
+# We will use VtsServing tools/bazel.rc
 echo "Building shared C++ gRPC..."
 bazel build @com_github_grpc_grpc//:all
 bazel build @com_google_protobuf//:protoc
@@ -18,7 +18,7 @@ fi
 PLUGIN=protoc-gen-grpc=$(pwd)/bazel-bin/external/com_github_grpc_grpc/src/compiler/grpc_php_plugin
 
 echo "Generate PHP stubs."
-bazel run @com_google_protobuf//:protoc -- -I ./grpc-client -I ./grpc-client/thirdparty/protobuf/src --php_out=grpc-client/php --grpc_out=grpc-client/php --plugin="$PLUGIN" grpc-client/bentoml/grpc/v1alpha1/service.proto
-bazel run @com_google_protobuf//:protoc -- -I ./grpc-client -I ./grpc-client/thirdparty/protobuf/src --php_out=grpc-client/php --grpc_out=grpc-client/php --plugin="$PLUGIN" grpc-client/bentoml/grpc/v1/service.proto
+bazel run @com_google_protobuf//:protoc -- -I ./grpc-client -I ./grpc-client/thirdparty/protobuf/src --php_out=grpc-client/php --grpc_out=grpc-client/php --plugin="$PLUGIN" grpc-client/vtsserving/grpc/v1alpha1/service.proto
+bazel run @com_google_protobuf//:protoc -- -I ./grpc-client -I ./grpc-client/thirdparty/protobuf/src --php_out=grpc-client/php --grpc_out=grpc-client/php --plugin="$PLUGIN" grpc-client/vtsserving/grpc/v1/service.proto
 
 popd >/dev/null

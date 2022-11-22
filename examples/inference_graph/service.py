@@ -1,21 +1,21 @@
 import asyncio
 
-import bentoml
-from bentoml.io import JSON
-from bentoml.io import Text
+import vtsserving
+from vtsserving.io import JSON
+from vtsserving.io import Text
 
-gpt2_generator = bentoml.transformers.get("gpt2-generation:latest").to_runner()
-distilgpt2_generator = bentoml.transformers.get(
+gpt2_generator = vtsserving.transformers.get("gpt2-generation:latest").to_runner()
+distilgpt2_generator = vtsserving.transformers.get(
     "distilgpt2-generation:latest"
 ).to_runner()
-distilbegpt2_medium_generator = bentoml.transformers.get(
+distilbegpt2_medium_generator = vtsserving.transformers.get(
     "gpt2-medium-generation:latest"
 ).to_runner()
-bert_base_uncased_classifier = bentoml.transformers.get(
+bert_base_uncased_classifier = vtsserving.transformers.get(
     "bert-base-uncased-classification:latest"
 ).to_runner()
 
-svc = bentoml.Service(
+svc = vtsserving.Service(
     "inference_graph",
     runners=[
         gpt2_generator,

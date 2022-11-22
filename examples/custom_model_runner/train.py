@@ -151,9 +151,9 @@ def main():
         test(model, device, test_loader)
         scheduler.step()
 
-    import bentoml
+    import vtsserving
 
-    model = bentoml.pytorch.save_model(
+    model = vtsserving.pytorch.save_model(
         "mnist_cnn",
         model,
         signatures={"__call__": {"batchable": True}},

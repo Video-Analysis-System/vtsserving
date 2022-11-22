@@ -10,18 +10,18 @@ NumPy ``ndarray``
 
 .. note::
 
-   The :code:`numpy` package is required to use the :obj:`bentoml.io.NumpyNdarray`.
+   The :code:`numpy` package is required to use the :obj:`vtsserving.io.NumpyNdarray`.
 
-   Install it with ``pip install numpy`` and add it to your :code:`bentofile.yaml`'s under either Python or Conda packages list.
+   Install it with ``pip install numpy`` and add it to your :code:`vtsfile.yaml`'s under either Python or Conda packages list.
 
-   Refer to :ref:`Build Options <concepts/bento:Bento Build Options>`.
+   Refer to :ref:`Build Options <concepts/vts:Bento Build Options>`.
 
    .. tab-set::
 
       .. tab-item:: pip
 
          .. code-block:: yaml
-            :caption: `bentofile.yaml`
+            :caption: `vtsfile.yaml`
 
             ...
             python:
@@ -31,7 +31,7 @@ NumPy ``ndarray``
       .. tab-item:: conda
 
          .. code-block:: yaml
-            :caption: `bentofile.yaml`
+            :caption: `vtsfile.yaml`
 
             ...
             conda:
@@ -41,38 +41,38 @@ NumPy ``ndarray``
                 - numpy
 
 
-.. autoclass:: bentoml.io.NumpyNdarray
-.. automethod:: bentoml.io.NumpyNdarray.from_sample
-.. automethod:: bentoml.io.NumpyNdarray.from_proto
-.. automethod:: bentoml.io.NumpyNdarray.from_http_request
-.. automethod:: bentoml.io.NumpyNdarray.to_proto
-.. automethod:: bentoml.io.NumpyNdarray.to_http_response
+.. autoclass:: vtsserving.io.NumpyNdarray
+.. automethod:: vtsserving.io.NumpyNdarray.from_sample
+.. automethod:: vtsserving.io.NumpyNdarray.from_proto
+.. automethod:: vtsserving.io.NumpyNdarray.from_http_request
+.. automethod:: vtsserving.io.NumpyNdarray.to_proto
+.. automethod:: vtsserving.io.NumpyNdarray.to_http_response
 
 
 Tabular Data with Pandas
 ------------------------
 
-To use the IO descriptor, install bentoml with extra ``io-pandas`` dependency:
+To use the IO descriptor, install vtsserving with extra ``io-pandas`` dependency:
 
 .. code-block:: bash
 
-    pip install "bentoml[io-pandas]"
+    pip install "vtsserving[io-pandas]"
 
 .. note::
 
-   The :code:`pandas` package is required to use the :obj:`bentoml.io.PandasDataFrame`
-   or :obj:`bentoml.io.PandasSeries`. 
+   The :code:`pandas` package is required to use the :obj:`vtsserving.io.PandasDataFrame`
+   or :obj:`vtsserving.io.PandasSeries`. 
 
-   Install it with ``pip install pandas`` and add it to your :code:`bentofile.yaml`'s under either Python or Conda packages list.
+   Install it with ``pip install pandas`` and add it to your :code:`vtsfile.yaml`'s under either Python or Conda packages list.
 
-   Refer to :ref:`Build Options <concepts/bento:Bento Build Options>`.
+   Refer to :ref:`Build Options <concepts/vts:Bento Build Options>`.
 
    .. tab-set::
 
       .. tab-item:: pip
 
          .. code-block:: yaml
-            :caption: `bentofile.yaml`
+            :caption: `vtsfile.yaml`
 
             ...
             python:
@@ -82,7 +82,7 @@ To use the IO descriptor, install bentoml with extra ``io-pandas`` dependency:
       .. tab-item:: conda
 
          .. code-block:: yaml
-            :caption: `bentofile.yaml`
+            :caption: `vtsfile.yaml`
 
             ...
             conda:
@@ -91,18 +91,18 @@ To use the IO descriptor, install bentoml with extra ``io-pandas`` dependency:
               dependencies:
                 - pandas
 
-.. autoclass:: bentoml.io.PandasDataFrame
-.. automethod:: bentoml.io.PandasDataFrame.from_sample
-.. automethod:: bentoml.io.PandasDataFrame.from_proto
-.. automethod:: bentoml.io.PandasDataFrame.from_http_request
-.. automethod:: bentoml.io.PandasDataFrame.to_proto
-.. automethod:: bentoml.io.PandasDataFrame.to_http_response
-.. autoclass:: bentoml.io.PandasSeries
-.. automethod:: bentoml.io.PandasSeries.from_sample
-.. automethod:: bentoml.io.PandasSeries.from_proto
-.. automethod:: bentoml.io.PandasSeries.from_http_request
-.. automethod:: bentoml.io.PandasSeries.to_proto
-.. automethod:: bentoml.io.PandasSeries.to_http_response
+.. autoclass:: vtsserving.io.PandasDataFrame
+.. automethod:: vtsserving.io.PandasDataFrame.from_sample
+.. automethod:: vtsserving.io.PandasDataFrame.from_proto
+.. automethod:: vtsserving.io.PandasDataFrame.from_http_request
+.. automethod:: vtsserving.io.PandasDataFrame.to_proto
+.. automethod:: vtsserving.io.PandasDataFrame.to_http_response
+.. autoclass:: vtsserving.io.PandasSeries
+.. automethod:: vtsserving.io.PandasSeries.from_sample
+.. automethod:: vtsserving.io.PandasSeries.from_proto
+.. automethod:: vtsserving.io.PandasSeries.from_http_request
+.. automethod:: vtsserving.io.PandasSeries.to_proto
+.. automethod:: vtsserving.io.PandasSeries.to_http_response
 
 
 Structured Data with JSON
@@ -114,25 +114,25 @@ Structured Data with JSON
    `Pydantic <https://pydantic-docs.helpmanual.io/>`_ model, and use it to for data
    validation.
 
-   To use the IO descriptor with pydantic, install bentoml with extra ``io-json`` dependency:
+   To use the IO descriptor with pydantic, install vtsserving with extra ``io-json`` dependency:
 
    .. code-block:: bash
 
-      pip install "bentoml[io-json]"
+      pip install "vtsserving[io-json]"
 
-   This will include BentoML with `Pydantic <https://pydantic-docs.helpmanual.io/>`_
-   alongside with BentoML
+   This will include VtsServing with `Pydantic <https://pydantic-docs.helpmanual.io/>`_
+   alongside with VtsServing
 
-   Then proceed to add it to your :code:`bentofile.yaml`'s under either Python or Conda packages list.
+   Then proceed to add it to your :code:`vtsfile.yaml`'s under either Python or Conda packages list.
 
-   Refer to :ref:`Build Options <concepts/bento:Bento Build Options>`.
+   Refer to :ref:`Build Options <concepts/vts:Bento Build Options>`.
 
    .. tab-set::
 
       .. tab-item:: pip
 
          .. code-block:: yaml
-            :caption: `bentofile.yaml`
+            :caption: `vtsfile.yaml`
 
             ...
             python:
@@ -142,7 +142,7 @@ Structured Data with JSON
       .. tab-item:: conda
 
          .. code-block:: yaml
-            :caption: `bentofile.yaml`
+            :caption: `vtsfile.yaml`
 
             ...
             conda:
@@ -151,14 +151,14 @@ Structured Data with JSON
               dependencies:
                 - pydantic
 
-   Refers to :ref:`Build Options <concepts/bento:Bento Build Options>`.
+   Refers to :ref:`Build Options <concepts/vts:Bento Build Options>`.
 
    .. tab-set::
 
       .. tab-item:: pip
 
          .. code-block:: yaml
-            :caption: `bentofile.yaml`
+            :caption: `vtsfile.yaml`
 
             ...
             python:
@@ -168,7 +168,7 @@ Structured Data with JSON
       .. tab-item:: conda
 
          .. code-block:: yaml
-            :caption: `bentofile.yaml`
+            :caption: `vtsfile.yaml`
 
             ...
             conda:
@@ -177,47 +177,47 @@ Structured Data with JSON
               dependencies:
                 - pydantic
 
-.. autoclass:: bentoml.io.JSON
-.. automethod:: bentoml.io.JSON.from_sample
-.. automethod:: bentoml.io.JSON.from_proto
-.. automethod:: bentoml.io.JSON.from_http_request
-.. automethod:: bentoml.io.JSON.to_proto
-.. automethod:: bentoml.io.JSON.to_http_response
+.. autoclass:: vtsserving.io.JSON
+.. automethod:: vtsserving.io.JSON.from_sample
+.. automethod:: vtsserving.io.JSON.from_proto
+.. automethod:: vtsserving.io.JSON.from_http_request
+.. automethod:: vtsserving.io.JSON.to_proto
+.. automethod:: vtsserving.io.JSON.to_http_response
 
 Texts
 -----
-:code:`bentoml.io.Text` is commonly used for NLP Applications:
+:code:`vtsserving.io.Text` is commonly used for NLP Applications:
 
-.. autoclass:: bentoml.io.Text
-.. automethod:: bentoml.io.Text.from_proto
-.. automethod:: bentoml.io.Text.from_http_request
-.. automethod:: bentoml.io.Text.to_proto
-.. automethod:: bentoml.io.Text.to_http_response
+.. autoclass:: vtsserving.io.Text
+.. automethod:: vtsserving.io.Text.from_proto
+.. automethod:: vtsserving.io.Text.from_http_request
+.. automethod:: vtsserving.io.Text.to_proto
+.. automethod:: vtsserving.io.Text.to_http_response
 
 Images
 ------
 
-To use the IO descriptor, install bentoml with extra ``io-image`` dependency:
+To use the IO descriptor, install vtsserving with extra ``io-image`` dependency:
 
 
 .. code-block:: bash
 
-    pip install "bentoml[io-image]"
+    pip install "vtsserving[io-image]"
 
 .. note::
 
-   The :code:`Pillow` package is required to use the :obj:`bentoml.io.Image`.
+   The :code:`Pillow` package is required to use the :obj:`vtsserving.io.Image`.
 
-   Install it with ``pip install Pillow`` and add it to your :code:`bentofile.yaml`'s under either Python or Conda packages list.
+   Install it with ``pip install Pillow`` and add it to your :code:`vtsfile.yaml`'s under either Python or Conda packages list.
 
-   Refer to :ref:`Build Options <concepts/bento:Bento Build Options>`.
+   Refer to :ref:`Build Options <concepts/vts:Bento Build Options>`.
 
    .. tab-set::
 
       .. tab-item:: pip
 
          .. code-block:: yaml
-            :caption: `bentofile.yaml`
+            :caption: `vtsfile.yaml`
 
             ...
             python:
@@ -227,7 +227,7 @@ To use the IO descriptor, install bentoml with extra ``io-image`` dependency:
       .. tab-item:: conda
 
          .. code-block:: yaml
-            :caption: `bentofile.yaml`
+            :caption: `vtsfile.yaml`
 
             ...
             conda:
@@ -236,20 +236,20 @@ To use the IO descriptor, install bentoml with extra ``io-image`` dependency:
               dependencies:
                 - Pillow
 
-.. autoclass:: bentoml.io.Image
-.. automethod:: bentoml.io.Image.from_proto
-.. automethod:: bentoml.io.Image.from_http_request
-.. automethod:: bentoml.io.Image.to_proto
-.. automethod:: bentoml.io.Image.to_http_response
+.. autoclass:: vtsserving.io.Image
+.. automethod:: vtsserving.io.Image.from_proto
+.. automethod:: vtsserving.io.Image.from_http_request
+.. automethod:: vtsserving.io.Image.to_proto
+.. automethod:: vtsserving.io.Image.to_http_response
 
 Files
 -----
 
-.. autoclass:: bentoml.io.File
-.. automethod:: bentoml.io.File.from_proto
-.. automethod:: bentoml.io.File.from_http_request
-.. automethod:: bentoml.io.File.to_proto
-.. automethod:: bentoml.io.File.to_http_response
+.. autoclass:: vtsserving.io.File
+.. automethod:: vtsserving.io.File.from_proto
+.. automethod:: vtsserving.io.File.from_http_request
+.. automethod:: vtsserving.io.File.to_proto
+.. automethod:: vtsserving.io.File.to_http_response
 
 Multipart Payloads
 ------------------
@@ -259,11 +259,11 @@ Multipart Payloads
     other IO Descriptor instances. For example, you may create a Multipart input that
     contains a image file and additional metadata in JSON.
 
-.. autoclass:: bentoml.io.Multipart
-.. automethod:: bentoml.io.Multipart.from_proto
-.. automethod:: bentoml.io.Multipart.from_http_request
-.. automethod:: bentoml.io.Multipart.to_proto
-.. automethod:: bentoml.io.Multipart.to_http_response
+.. autoclass:: vtsserving.io.Multipart
+.. automethod:: vtsserving.io.Multipart.from_proto
+.. automethod:: vtsserving.io.Multipart.from_http_request
+.. automethod:: vtsserving.io.Multipart.to_proto
+.. automethod:: vtsserving.io.Multipart.to_http_response
 
 Custom IODescriptor
 -------------------
@@ -272,4 +272,4 @@ Custom IODescriptor
     The IODescriptor base class can be extended to support custom data format for your
     APIs, if the built-in descriptors does not fit your needs.
 
-.. autoclass:: bentoml.io.IODescriptor
+.. autoclass:: vtsserving.io.IODescriptor

@@ -6,7 +6,7 @@ import subprocess
 
 import pytest
 
-from bentoml.testing.server import host_bento
+from vtsserving.testing.server import host_vts
 
 
 def pytest_configure(config):  # pylint: disable=unused-argument
@@ -17,5 +17,5 @@ def pytest_configure(config):  # pylint: disable=unused-argument
 
 @pytest.fixture(scope="session")
 def host() -> t.Generator[str, None, None]:
-    with host_bento(bento="tensorflow_mnist_demo:latest") as host:
+    with host_vts(vts="tensorflow_mnist_demo:latest") as host:
         yield host

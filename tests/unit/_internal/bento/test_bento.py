@@ -10,27 +10,27 @@ from datetime import timezone
 import fs
 import pytest
 
-from bentoml import Tag
-from bentoml._internal.bento import Bento
-from bentoml._internal.models import ModelStore
-from bentoml._internal.bento.bento import BentoInfo
-from bentoml._internal.bento.bento import BentoApiInfo
-from bentoml._internal.bento.bento import BentoModelInfo
-from bentoml._internal.bento.bento import BentoRunnerInfo
-from bentoml._internal.configuration import VTSSERVING_VERSION
-from bentoml._internal.bento.build_config import BentoBuildConfig
+from vtsserving import Tag
+from vtsserving._internal.vts import Bento
+from vtsserving._internal.models import ModelStore
+from vtsserving._internal.vts.vts import BentoInfo
+from vtsserving._internal.vts.vts import BentoApiInfo
+from vtsserving._internal.vts.vts import BentoModelInfo
+from vtsserving._internal.vts.vts import BentoRunnerInfo
+from vtsserving._internal.configuration import VTSSERVING_VERSION
+from vtsserving._internal.vts.build_config import BentoBuildConfig
 
 if TYPE_CHECKING:
     from pathlib import Path
 
 
-def test_bento_info(tmpdir: Path):
+def test_vts_info(tmpdir: Path):
     start = datetime.now(timezone.utc)
-    bentoinfo_a = BentoInfo(tag=Tag("tag"), service="service")
+    vtsinfo_a = BentoInfo(tag=Tag("tag"), service="service")
     end = datetime.now(timezone.utc)
 
-    assert bentoinfo_a.bentoml_version == VTSSERVING_VERSION
-    assert start <= bentoinfo_a.creation_time <= end
+    assert vtsinfo_a.vtsserving_version == VTSSERVING_VERSION
+    assert start <= vtsinfo_a.creation_time <= end
     # validate should fail
 
     tag = Tag("test", "version")
@@ -62,7 +62,7 @@ def test_bento_info(tmpdir: Path):
     )
     apis = [api_predict]
 
-    bentoinfo_b = BentoInfo(
+    vtsinfo_b = BentoInfo(
         tag=tag,
         service=service,
         labels=labels,
@@ -71,15 +71,15 @@ def test_bento_info(tmpdir: Path):
         apis=apis,
     )
 
-    bento_yaml_b_filename = os.path.join(tmpdir, "b_dump.yml")
-    with open(bento_yaml_b_filename, "w", encoding="utf-8") as bento_yaml_b:
-        bentoinfo_b.dump(bento_yaml_b)
+    vts_yaml_b_filename = os.path.join(tmpdir, "b_dump.yml")
+    with open(vts_yaml_b_filename, "w", encoding="utf-8") as vts_yaml_b:
+        vtsinfo_b.dump(vts_yaml_b)
 
     expected_yaml = """\
 service: testservice
 name: test
 version: version
-bentoml_version: {bentoml_version}
+vtsserving_version: {vtsserving_version}
 creation_time: '{creation_time}'
 labels:
   label: stringvalue
@@ -128,24 +128,24 @@ conda:
   pip: null
 """
 
-    with open(bento_yaml_b_filename, encoding="utf-8") as bento_yaml_b:
-        assert bento_yaml_b.read() == expected_yaml.format(
-            bentoml_version=VTSSERVING_VERSION,
-            creation_time=bentoinfo_b.creation_time.isoformat(),
+    with open(vts_yaml_b_filename, encoding="utf-8") as vts_yaml_b:
+        assert vts_yaml_b.read() == expected_yaml.format(
+            vtsserving_version=VTSSERVING_VERSION,
+            creation_time=vtsinfo_b.creation_time.isoformat(),
             model_creation_time=model_creation_time.isoformat(),
             python_version=f"{version_info.major}.{version_info.minor}",
         )
 
-    with open(bento_yaml_b_filename, encoding="utf-8") as bento_yaml_b:
-        bentoinfo_b_from_yaml = BentoInfo.from_yaml_file(bento_yaml_b)
+    with open(vts_yaml_b_filename, encoding="utf-8") as vts_yaml_b:
+        vtsinfo_b_from_yaml = BentoInfo.from_yaml_file(vts_yaml_b)
 
-        assert bentoinfo_b_from_yaml == bentoinfo_b
+        assert vtsinfo_b_from_yaml == vtsinfo_b
 
 
-def build_test_bento() -> Bento:
-    bento_cfg = BentoBuildConfig(
-        "simplebento.py:svc",
-        include=["*.py", "config.json", "somefile", "*dir*", ".bentoignore"],
+def build_test_vts() -> Bento:
+    vts_cfg = BentoBuildConfig(
+        "simplevts.py:svc",
+        include=["*.py", "config.json", "somefile", "*dir*", ".vtsignore"],
         exclude=["*.storage", "/somefile", "/subdir2"],
         conda={
             "environment_yml": "./environment.yaml",
@@ -160,7 +160,7 @@ def build_test_bento() -> Bento:
         },
     )
 
-    return Bento.create(bento_cfg, version="1.0", build_ctx="./simplebento")
+    return Bento.create(vts_cfg, version="1.0", build_ctx="./simplevts")
 
 
 def fs_identical(fs1: fs.base.FS, fs2: fs.base.FS):
@@ -173,168 +173,168 @@ def fs_identical(fs1: fs.base.FS, fs2: fs.base.FS):
 
 
 @pytest.mark.usefixtures("change_test_dir")
-def test_bento_export(tmpdir: "Path", model_store: "ModelStore"):
+def test_vts_export(tmpdir: "Path", model_store: "ModelStore"):
     working_dir = os.getcwd()
 
-    testbento = build_test_bento()
+    testvts = build_test_vts()
     # Bento build will change working dir to the build_context, this will reset it
     os.chdir(working_dir)
 
-    cfg = BentoBuildConfig("bentoa.py:svc")
-    bentoa = Bento.create(cfg, build_ctx="./bentoa")
+    cfg = BentoBuildConfig("vtsa.py:svc")
+    vtsa = Bento.create(cfg, build_ctx="./vtsa")
     # Bento build will change working dir to the build_context, this will reset it
     os.chdir(working_dir)
 
-    bentoa1 = Bento.create(cfg, build_ctx="./bentoa1")
+    vtsa1 = Bento.create(cfg, build_ctx="./vtsa1")
     # Bento build will change working dir to the build_context, this will reset it
     os.chdir(working_dir)
 
-    cfg = BentoBuildConfig("bentob.py:svc")
-    bentob = Bento.create(cfg, build_ctx="./bentob")
+    cfg = BentoBuildConfig("vtsb.py:svc")
+    vtsb = Bento.create(cfg, build_ctx="./vtsb")
 
-    bento = testbento
-    path = os.path.join(tmpdir, "testbento")
-    export_path = bento.export(path)
-    assert export_path == path + ".bento"
+    vts = testvts
+    path = os.path.join(tmpdir, "testvts")
+    export_path = vts.export(path)
+    assert export_path == path + ".vts"
     assert os.path.isfile(export_path)
-    imported_bento = Bento.import_from(export_path)
-    assert imported_bento.tag == bento.tag
-    assert imported_bento.info == bento.info
-    del imported_bento
+    imported_vts = Bento.import_from(export_path)
+    assert imported_vts.tag == vts.tag
+    assert imported_vts.info == vts.info
+    del imported_vts
 
-    bento = bentoa
-    path = os.path.join(tmpdir, "bentoa")
-    export_path = bento.export(path)
-    assert export_path == path + ".bento"
+    vts = vtsa
+    path = os.path.join(tmpdir, "vtsa")
+    export_path = vts.export(path)
+    assert export_path == path + ".vts"
     assert os.path.isfile(export_path)
-    imported_bento = Bento.import_from(export_path)
-    assert imported_bento.tag == bento.tag
-    assert imported_bento.info == bento.info
-    del imported_bento
+    imported_vts = Bento.import_from(export_path)
+    assert imported_vts.tag == vts.tag
+    assert imported_vts.info == vts.info
+    del imported_vts
 
-    bento = bentoa1
-    path = os.path.join(tmpdir, "bentoa1")
-    export_path = bento.export(path)
-    assert export_path == path + ".bento"
+    vts = vtsa1
+    path = os.path.join(tmpdir, "vtsa1")
+    export_path = vts.export(path)
+    assert export_path == path + ".vts"
     assert os.path.isfile(export_path)
-    imported_bento = Bento.import_from(export_path)
-    assert imported_bento.tag == bento.tag
-    assert imported_bento.info == bento.info
-    del imported_bento
+    imported_vts = Bento.import_from(export_path)
+    assert imported_vts.tag == vts.tag
+    assert imported_vts.info == vts.info
+    del imported_vts
 
-    bento = bentob
-    path = os.path.join(tmpdir, "bentob")
-    export_path = bento.export(path)
-    assert export_path == path + ".bento"
+    vts = vtsb
+    path = os.path.join(tmpdir, "vtsb")
+    export_path = vts.export(path)
+    assert export_path == path + ".vts"
     assert os.path.isfile(export_path)
-    imported_bento = Bento.import_from(export_path)
-    assert imported_bento.tag == bento.tag
-    assert imported_bento.info == bento.info
-    del imported_bento
+    imported_vts = Bento.import_from(export_path)
+    assert imported_vts.tag == vts.tag
+    assert imported_vts.info == vts.info
+    del imported_vts
 
-    bento = testbento
-    path = os.path.join(tmpdir, "testbento.bento")
-    export_path = bento.export(path)
+    vts = testvts
+    path = os.path.join(tmpdir, "testvts.vts")
+    export_path = vts.export(path)
     assert export_path == path
     assert os.path.isfile(export_path)
-    imported_bento = Bento.import_from(path)
-    assert imported_bento.tag == bento.tag
-    assert imported_bento.info == bento.info
-    del imported_bento
+    imported_vts = Bento.import_from(path)
+    assert imported_vts.tag == vts.tag
+    assert imported_vts.info == vts.info
+    del imported_vts
 
-    path = os.path.join(tmpdir, "testbento-parent")
+    path = os.path.join(tmpdir, "testvts-parent")
     os.mkdir(path)
-    export_path = bento.export(path)
-    assert export_path == os.path.join(path, bento._export_name + ".bento")
+    export_path = vts.export(path)
+    assert export_path == os.path.join(path, vts._export_name + ".vts")
     assert os.path.isfile(export_path)
-    imported_bento = Bento.import_from(export_path)
-    assert imported_bento.tag == bento.tag
-    assert imported_bento.info == bento.info
-    del imported_bento
+    imported_vts = Bento.import_from(export_path)
+    assert imported_vts.tag == vts.tag
+    assert imported_vts.info == vts.info
+    del imported_vts
 
-    path = os.path.join(tmpdir, "testbento-parent-2/")
+    path = os.path.join(tmpdir, "testvts-parent-2/")
     with pytest.raises(ValueError):
-        export_path = bento.export(path)
+        export_path = vts.export(path)
 
-    path = os.path.join(tmpdir, "bento-dir")
+    path = os.path.join(tmpdir, "vts-dir")
     os.mkdir(path)
-    export_path = bento.export(path)
-    assert export_path == os.path.join(path, bento._export_name + ".bento")
+    export_path = vts.export(path)
+    assert export_path == os.path.join(path, vts._export_name + ".vts")
     assert os.path.isfile(export_path)
-    imported_bento = Bento.import_from(export_path)
-    assert imported_bento.tag == bento.tag
-    assert imported_bento.info == bento.info
-    del imported_bento
+    imported_vts = Bento.import_from(export_path)
+    assert imported_vts.tag == vts.tag
+    assert imported_vts.info == vts.info
+    del imported_vts
 
     path = "temp://pytest-some-temp"
-    export_path = bento.export(path)
+    export_path = vts.export(path)
     assert export_path.endswith(
-        os.path.join("pytest-some-temp", bento._export_name + ".bento")
+        os.path.join("pytest-some-temp", vts._export_name + ".vts")
     )
     # because this is a tempdir, it's cleaned up immediately after creation...
 
-    path = "osfs://" + fs.path.join(str(tmpdir), "testbento-by-url")
-    export_path = bento.export(path)
-    assert export_path == os.path.join(tmpdir, "testbento-by-url.bento")
+    path = "osfs://" + fs.path.join(str(tmpdir), "testvts-by-url")
+    export_path = vts.export(path)
+    assert export_path == os.path.join(tmpdir, "testvts-by-url.vts")
     assert os.path.isfile(export_path)
-    imported_bento = Bento.import_from(export_path)
-    assert imported_bento.tag == bento.tag
-    assert imported_bento.info == bento.info
-    del imported_bento
-    imported_bento = Bento.import_from(path + ".bento")
-    assert imported_bento.tag == bento.tag
-    assert imported_bento.info == bento.info
-    del imported_bento
+    imported_vts = Bento.import_from(export_path)
+    assert imported_vts.tag == vts.tag
+    assert imported_vts.info == vts.info
+    del imported_vts
+    imported_vts = Bento.import_from(path + ".vts")
+    assert imported_vts.tag == vts.tag
+    assert imported_vts.info == vts.info
+    del imported_vts
 
-    path = "osfs://" + fs.path.join(str(tmpdir), "testbento-by-url")
+    path = "osfs://" + fs.path.join(str(tmpdir), "testvts-by-url")
     with pytest.raises(ValueError):
-        bento.export(path, subpath="/badsubpath")
+        vts.export(path, subpath="/badsubpath")
 
-    path = "zip://" + fs.path.join(str(tmpdir), "testbento.zip")
-    export_path = bento.export(path)
+    path = "zip://" + fs.path.join(str(tmpdir), "testvts.zip")
+    export_path = vts.export(path)
     assert export_path == path
-    imported_bento = Bento.import_from(export_path)
-    assert imported_bento.tag == bento.tag
-    assert imported_bento.info == bento.info
-    del imported_bento
+    imported_vts = Bento.import_from(export_path)
+    assert imported_vts.tag == vts.tag
+    assert imported_vts.info == vts.info
+    del imported_vts
 
-    path = os.path.join(tmpdir, "testbento-gz")
+    path = os.path.join(tmpdir, "testvts-gz")
     os.mkdir(path)
-    export_path = bento.export(path, output_format="gz")
-    assert export_path == os.path.join(path, bento._export_name + ".gz")
+    export_path = vts.export(path, output_format="gz")
+    assert export_path == os.path.join(path, vts._export_name + ".gz")
     assert os.path.isfile(export_path)
-    imported_bento = Bento.import_from(export_path)
-    assert imported_bento.tag == bento.tag
-    assert imported_bento.info == bento.info
-    del imported_bento
+    imported_vts = Bento.import_from(export_path)
+    assert imported_vts.tag == vts.tag
+    assert imported_vts.info == vts.info
+    del imported_vts
 
-    path = os.path.join(tmpdir, "testbento-gz-1/")
+    path = os.path.join(tmpdir, "testvts-gz-1/")
     with pytest.raises(ValueError):
-        bento.export(path, output_format="gz")
+        vts.export(path, output_format="gz")
 
 
 @pytest.mark.usefixtures("change_test_dir")
-def test_bento(model_store: ModelStore):
+def test_vts(model_store: ModelStore):
     start = datetime.now(timezone.utc)
-    bento = build_test_bento()
+    vts = build_test_vts()
     end = datetime.now(timezone.utc)
 
-    assert bento.info.bentoml_version == VTSSERVING_VERSION
-    assert start <= bento.creation_time <= end
+    assert vts.info.vtsserving_version == VTSSERVING_VERSION
+    assert start <= vts.creation_time <= end
     # validate should fail
 
-    with bento._fs as bento_fs:  # type: ignore
-        assert set(bento_fs.listdir("/")) == {
-            "bento.yaml",
+    with vts._fs as vts_fs:  # type: ignore
+        assert set(vts_fs.listdir("/")) == {
+            "vts.yaml",
             "apis",
             "models",
             "README.md",
             "src",
             "env",
         }
-        assert set(bento_fs.listdir("src")) == {
-            "simplebento.py",
+        assert set(vts_fs.listdir("src")) == {
+            "simplevts.py",
             "subdir",
-            ".bentoignore",
+            ".vtsignore",
         }
-        assert set(bento_fs.listdir("src/subdir")) == {"somefile"}
+        assert set(vts_fs.listdir("src/subdir")) == {"somefile"}

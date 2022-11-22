@@ -4,16 +4,16 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from bentoml.io import Text
-from bentoml.exceptions import BentoMLException
+from vtsserving.io import Text
+from vtsserving.exceptions import VtsServingException
 
 if TYPE_CHECKING:
     from google.protobuf import wrappers_pb2
 
-    from bentoml.grpc.v1 import service_pb2 as pb
+    from vtsserving.grpc.v1 import service_pb2 as pb
 else:
-    from bentoml.grpc.utils import import_generated_stubs
-    from bentoml._internal.utils import LazyLoader
+    from vtsserving.grpc.utils import import_generated_stubs
+    from vtsserving._internal.utils import LazyLoader
 
     pb, _ = import_generated_stubs()
     wrappers_pb2 = LazyLoader("wrappers_pb2", globals(), "google.protobuf.wrappers_pb2")
@@ -24,7 +24,7 @@ def test_text_openapi_schema():
 
 
 def test_invalid_init():
-    with pytest.raises(BentoMLException):
+    with pytest.raises(VtsServingException):
         _ = Text(mime_type="asdf")
 
 

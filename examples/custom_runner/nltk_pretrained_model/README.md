@@ -36,7 +36,7 @@ python -m download_nltk_models
 <td>
 
 ```bash
-bentoml serve-http service.py:svc
+vtsserving serve-http service.py:svc
 ```
 
 </td>
@@ -46,7 +46,7 @@ bentoml serve-http service.py:svc
 <td>
 
 ```bash
-bentoml serve-grpc service.py:svc
+vtsserving serve-grpc service.py:svc
 ```
 
 </td>
@@ -64,7 +64,7 @@ bentoml serve-grpc service.py:svc
 <td>
 
 ```bash
-curl -X POST -H "content-type: application/text" --data "BentoML is great" http://127.0.0.1:3000/analysis
+curl -X POST -H "content-type: application/text" --data "VtsServing is great" http://127.0.0.1:3000/analysis
 ```
 
 </td>
@@ -74,10 +74,10 @@ curl -X POST -H "content-type: application/text" --data "BentoML is great" http:
 <td>
 
 ```bash
-grpcurl -d @ -plaintext 0.0.0.0:3000 bentoml.grpc.v1.BentoService/Call <<EOM
+grpcurl -d @ -plaintext 0.0.0.0:3000 vtsserving.grpc.v1.BentoService/Call <<EOM
 {
   "apiName": "classify",
-  "text": "BentoML is great"
+  "text": "VtsServing is great"
 }
 EOM
 ```
@@ -85,13 +85,13 @@ EOM
 4. Build Bento
 
 ```
-bentoml build
+vtsserving build
 ```
 
 5. Build docker image
 
 ```
-bentoml containerize sentiment_analyzer:latest
+vtsserving containerize sentiment_analyzer:latest
 ```
 
-[#custom-runner]: https://docs.bentoml.org/en/latest/concepts/runner.html#custom-runner
+[#custom-runner]: https://docs.vtsserving.org/en/latest/concepts/runner.html#custom-runner

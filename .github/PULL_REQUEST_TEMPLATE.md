@@ -22,7 +22,7 @@ Name your Pull Request with one of the following prefixes, e.g. "feat: add suppo
 
 Describe your changes in detail. Attach screenshots here if appropriate.
 
-Once you're done with this, someone from BentoML team or community member will help review your PR (see "Who can help review?" section for potential reviewers.). If no one has reviewed your PR after a week have passed, don't hesitate to post a new comment and ping @-the same person. Notifications sometimes get lost 🥲.
+Once you're done with this, someone from VtsServing team or community member will help review your PR (see "Who can help review?" section for potential reviewers.). If no one has reviewed your PR after a week have passed, don't hesitate to post a new comment and ping @-the same person. Notifications sometimes get lost 🥲.
 -->
 
 <!-- Remove if not applicable -->
@@ -37,8 +37,8 @@ Fixes #(issue)
 
 - [ ] Does the Pull Request follow [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/#summary) naming? Here are [GitHub's
       guide](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) on how to create a pull request.
-- [ ] Does the code follow BentoML's code style, both `make format` and `make lint` script have passed ([instructions](https://github.com/bentoml/BentoML/blob/main/DEVELOPMENT.md#style-check-auto-formatting-type-checking))?
-- [ ] Did you read through [contribution guidelines](https://github.com/bentoml/BentoML/blob/main/CONTRIBUTING.md#ways-to-contribute) and follow [development guidelines](https://github.com/bentoml/BentoML/blob/main/DEVELOPMENT.md#start-developing)?
+- [ ] Does the code follow VtsServing's code style, both `make format` and `make lint` script have passed ([instructions](https://github.com/vtsserving/VtsServing/blob/main/DEVELOPMENT.md#style-check-auto-formatting-type-checking))?
+- [ ] Did you read through [contribution guidelines](https://github.com/vtsserving/VtsServing/blob/main/CONTRIBUTING.md#ways-to-contribute) and follow [development guidelines](https://github.com/vtsserving/VtsServing/blob/main/DEVELOPMENT.md#start-developing)?
 - [ ] Did your changes require updates to the documentation? Have you updated
-      those accordingly? Here are [documentation guidelines](https://github.com/bentoml/BentoML/tree/main/docs) and [tips on writting docs](https://github.com/bentoml/BentoML/tree/main/docs#writing-documentation).
+      those accordingly? Here are [documentation guidelines](https://github.com/vtsserving/VtsServing/tree/main/docs) and [tips on writting docs](https://github.com/vtsserving/VtsServing/tree/main/docs#writing-documentation).
 - [ ] Did you write tests to cover your changes?

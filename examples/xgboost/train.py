@@ -1,6 +1,6 @@
 import xgboost
 
-import bentoml
+import vtsserving
 
 if __name__ == "__main__":
     # read in data
@@ -16,4 +16,4 @@ if __name__ == "__main__":
     num_round = 2
     bst = xgboost.train(param, dtrain, num_round)
 
-    bentoml.xgboost.save_model("agaricus", bst)
+    vtsserving.xgboost.save_model("agaricus", bst)

@@ -26,10 +26,10 @@ mlflow ui
 mlflow run . -P learning_rate=0.2 -P colsample_bytree=0.8 -P subsample=0.9
 ```
 
-## Serve the model with BentoML
+## Serve the model with VtsServing
 
 ```
-bentoml serve
+vtsserving serve
 ```
 
 ```
@@ -39,10 +39,10 @@ curl -X POST -H "content-type: application/json" --data "[[5.9, 3, 5.1, 1.8]]" h
 ## Build Bento for production deployment
 
 ```
-bentoml build
+vtsserving build
 ```
 
 Generate docker image from Bento:
 ```
-bentoml containerize lgb_iris_service:latest
+vtsserving containerize lgb_iris_service:latest
 ```

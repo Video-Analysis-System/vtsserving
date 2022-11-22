@@ -2,11 +2,11 @@
 Scikit-Learn
 ============
 
-Below is a simple example of using scikit-learn with BentoML:
+Below is a simple example of using scikit-learn with VtsServing:
 
 .. code:: python
 
-    import bentoml
+    import vtsserving
 
     from sklearn.datasets import load_iris
     from sklearn.neighbors import KNeighborsClassifier
@@ -18,19 +18,19 @@ Below is a simple example of using scikit-learn with BentoML:
     model.fit(X, Y)
 
     # `save` a given classifier and retrieve coresponding tag:
-    tag = bentoml.sklearn.save_model('kneighbors', model)
+    tag = vtsserving.sklearn.save_model('kneighbors', model)
 
-    # retrieve metadata with `bentoml.models.get`:
-    metadata = bentoml.models.get(tag)
+    # retrieve metadata with `vtsserving.models.get`:
+    metadata = vtsserving.models.get(tag)
 
     # load the model back:
-    loaded = bentoml.sklearn.load_model("kneighbors:latest")
+    loaded = vtsserving.sklearn.load_model("kneighbors:latest")
 
     # Run a given model under `Runner` abstraction with `to_runner`
-    runner = bentoml.sklearn.get(tag).to_runner()
+    runner = vtsserving.sklearn.get(tag).to_runner()
     runner.init_local()
     runner.run([[1,2,3,4,5]])
 
 .. note::
 
-   You can find more examples for **scikit-learn** in our `bentoml/examples https://github.com/bentoml/BentoML/tree/main/examples`_ directory.
+   You can find more examples for **scikit-learn** in our `vtsserving/examples https://github.com/vtsserving/VtsServing/tree/main/examples`_ directory.

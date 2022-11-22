@@ -7,17 +7,17 @@ from typing import TYPE_CHECKING
 from pydantic import BaseModel
 from context_server_interceptor import AsyncContextInterceptor
 
-import bentoml
-from bentoml.io import File
-from bentoml.io import JSON
-from bentoml.io import Text
-from bentoml.io import Image
-from bentoml.io import Multipart
-from bentoml.io import NumpyNdarray
-from bentoml.io import PandasSeries
-from bentoml.io import PandasDataFrame
-from bentoml._internal.utils import LazyLoader
-from bentoml._internal.utils.metrics import exponential_buckets
+import vtsserving
+from vtsserving.io import File
+from vtsserving.io import JSON
+from vtsserving.io import Text
+from vtsserving.io import Image
+from vtsserving.io import Multipart
+from vtsserving.io import NumpyNdarray
+from vtsserving.io import PandasSeries
+from vtsserving.io import PandasDataFrame
+from vtsserving._internal.utils import LazyLoader
+from vtsserving._internal.utils.metrics import exponential_buckets
 
 if TYPE_CHECKING:
     import numpy as np
@@ -25,14 +25,14 @@ if TYPE_CHECKING:
     import PIL.Image
     from numpy.typing import NDArray
 
-    from bentoml._internal.types import FileLike
-    from bentoml._internal.types import JSONSerializable
-    from bentoml.picklable_model import get_runnable
-    from bentoml._internal.runner.runner import RunnerMethod
+    from vtsserving._internal.types import FileLike
+    from vtsserving._internal.types import JSONSerializable
+    from vtsserving.picklable_model import get_runnable
+    from vtsserving._internal.runner.runner import RunnerMethod
 
-    RunnableImpl = get_runnable(bentoml.picklable_model.get("py_model.case-1.grpc.e2e"))
+    RunnableImpl = get_runnable(vtsserving.picklable_model.get("py_model.case-1.grpc.e2e"))
 
-    class PythonModelRunner(bentoml.Runner):
+    class PythonModelRunner(vtsserving.Runner):
         predict_file: RunnerMethod[RunnableImpl, [list[FileLike[bytes]]], list[bytes]]
         echo_json: RunnerMethod[
             RunnableImpl, [list[JSONSerializable]], list[JSONSerializable]
@@ -50,7 +50,7 @@ if TYPE_CHECKING:
         echo_dataframe: RunnerMethod[RunnableImpl, [pd.DataFrame], pd.DataFrame]
 
 else:
-    from bentoml.grpc.utils import import_generated_stubs
+    from vtsserving.grpc.utils import import_generated_stubs
 
     np = LazyLoader("np", globals(), "numpy")
     pd = LazyLoader("pd", globals(), "pandas")
@@ -60,10 +60,10 @@ else:
 
 py_model = t.cast(
     "PythonModelRunner",
-    bentoml.picklable_model.get("py_model.case-1.grpc.e2e").to_runner(),
+    vtsserving.picklable_model.get("py_model.case-1.grpc.e2e").to_runner(),
 )
 
-svc = bentoml.Service(name="general_grpc_service.case-1.e2e", runners=[py_model])
+svc = vtsserving.Service(name="general_grpc_service.case-1.e2e", runners=[py_model])
 
 svc.add_grpc_interceptor(AsyncContextInterceptor, usage="NLP", accuracy_score=0.8247)
 
@@ -173,7 +173,7 @@ async def echo_image(f: PIL.Image.Image) -> NDArray[t.Any]:
     return np.array(f)
 
 
-histogram = bentoml.metrics.Histogram(
+histogram = vtsserving.metrics.Histogram(
     name="inference_latency",
     documentation="Inference latency in seconds",
     labelnames=["model_name", "model_version"],
@@ -199,11 +199,11 @@ async def predict_multi_images(original: Image, compared: Image):
     return {"meta": "success", "result": img}
 
 
-@svc.api(input=bentoml.io.Text(), output=bentoml.io.Text())
+@svc.api(input=vtsserving.io.Text(), output=vtsserving.io.Text())
 def ensure_metrics_are_registered(data: str) -> str:  # pylint: disable=unused-argument
     histograms = [
         m.name
-        for m in bentoml.metrics.text_string_to_metric_families()
+        for m in vtsserving.metrics.text_string_to_metric_families()
         if m.type == "histogram"
     ]
     assert "inference_latency" in histograms

@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-import bentoml._internal.runner.container as c
+import vtsserving._internal.runner.container as c
 
 
 @pytest.mark.parametrize("batch_dim_exc", [AssertionError])

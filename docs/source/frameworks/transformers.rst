@@ -3,16 +3,16 @@ Transformers
 ============
 
 `🤗 Transformers <https://huggingface.co/docs/transformers/main/en/index>`_ is a library that helps download and fine-tune popular 
-pretrained models for common machine learning tasks. BentoML provides native support for serving and deploying models trained from 
+pretrained models for common machine learning tasks. VtsServing provides native support for serving and deploying models trained from 
 Transformers.
 
 Compatibility 
 -------------
 
-BentoML requires Transformers version 4 or above. For other versions of Transformers, consider using a 
+VtsServing requires Transformers version 4 or above. For other versions of Transformers, consider using a 
 :ref:`concepts/runner:Custom Runner`.
 
-When constructing a :ref:`bentofile.yaml <concepts/bento:Bento Build Options>`, include ``transformers`` and the machine learning 
+When constructing a :ref:`vtsfile.yaml <concepts/vts:Bento Build Options>`, include ``transformers`` and the machine learning 
 framework of the model, e.g. ``pytorch``, ``tensorflow``, or ``jax``.
 
 .. tab-set::
@@ -20,11 +20,11 @@ framework of the model, e.g. ``pytorch``, ``tensorflow``, or ``jax``.
    .. tab-item:: PyTorch
 
       .. code-block:: yaml
-         :caption: `bentofile.yaml`
+         :caption: `vtsfile.yaml`
 
          service: "service.py:svc"
          labels:
-         owner: bentoml-team
+         owner: vtsserving-team
          project: gallery
          include:
          - "*.py"
@@ -36,11 +36,11 @@ framework of the model, e.g. ``pytorch``, ``tensorflow``, or ``jax``.
    .. tab-item:: TensorFlow
 
       .. code-block:: yaml
-          :caption: `bentofile.yaml`
+          :caption: `vtsfile.yaml`
 
           service: "service.py:svc"
           labels:
-          owner: bentoml-team
+          owner: vtsserving-team
           project: gallery
           include:
           - "*.py"
@@ -92,42 +92,42 @@ Saving a Fine-tuned Model
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Once the model is fine-tuned, create a Transformers 
-`Pipeline <https://huggingface.co/docs/transformers/main/en/pipeline_tutorial>`_ with the model and save to the BentoML model 
-store. By design, only Pipelines can be saved with the BentoML Transformers framework APIs. Models, tokenizers, feature extractors, 
+`Pipeline <https://huggingface.co/docs/transformers/main/en/pipeline_tutorial>`_ with the model and save to the VtsServing model 
+store. By design, only Pipelines can be saved with the VtsServing Transformers framework APIs. Models, tokenizers, feature extractors, 
 and processors, need to be a part of the pipeline first before they can be saved. Transformers pipelines are callable objects therefore 
 the signatures of the model are saved as :code:`__call__` by default.
 
 .. code-block:: python
     :caption: `train.py`
 
-    import bentoml
+    import vtsserving
     from transformers import pipeline
 
     unmasker = pipeline('fill-mask', model=model, tokenizer=tokenizer)
 
-    bentoml.transformers.save_model(name="unmasker", pipeline=unmasker)
+    vtsserving.transformers.save_model(name="unmasker", pipeline=unmasker)
 
-To load the model for testing and debugging, use :code:`bentoml.transformers.load_model` with the :code:`unmasker:latest` tag.
+To load the model for testing and debugging, use :code:`vtsserving.transformers.load_model` with the :code:`unmasker:latest` tag.
 
 Serving a Fined-tuned Model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Create a BentoML service with the previously saved `unmasker` pipeline using the Transformers framework APIs.
+Create a VtsServing service with the previously saved `unmasker` pipeline using the Transformers framework APIs.
 
 .. seealso::
 
-   See :ref:`Building a Service <concepts/service:Service and APIs>` to learn more on creating a prediction service with BentoML.
+   See :ref:`Building a Service <concepts/service:Service and APIs>` to learn more on creating a prediction service with VtsServing.
 
 .. code-block:: python
     :caption: `service.py`
 
-    import bentoml
+    import vtsserving
 
-    from bentoml.io import Text, JSON
+    from vtsserving.io import Text, JSON
 
-    runner = bentoml.transformers.get("unmasker:latest").to_runner()
+    runner = vtsserving.transformers.get("unmasker:latest").to_runner()
 
-    svc = bentoml.Service("unmasker_service", runners=[runner])
+    svc = vtsserving.Service("unmasker_service", runners=[runner])
 
     @svc.api(input=Text(), output=JSON())
     async def unmask(input_series: str) -> list:
@@ -136,7 +136,7 @@ Create a BentoML service with the previously saved `unmasker` pipeline using the
 Pretrained Models
 -----------------
 
-Using pretrained models from the Hugging Face does not require saving the model first in the BentoML model store. A custom runner 
+Using pretrained models from the Hugging Face does not require saving the model first in the VtsServing model store. A custom runner 
 can be implemented to download and run pretrained models at runtime.
 
 .. seealso::
@@ -149,25 +149,25 @@ Serving a Pretrained Model
 .. code-block:: python
     :caption: `service.py`
 
-    import bentoml
+    import vtsserving
 
-    from bentoml.io import Text, JSON
+    from vtsserving.io import Text, JSON
     from transformers import pipeline
 
-    class PretrainedModelRunnable(bentoml.Runnable):
+    class PretrainedModelRunnable(vtsserving.Runnable):
         SUPPORTED_RESOURCES = ("cpu",)
         SUPPORTS_CPU_MULTI_THREADING = True
 
         def __init__(self):
             self.unmasker = pipeline(task="fill-mask", model="distilbert-base-uncased")
 
-        @bentoml.Runnable.method(batchable=False)
+        @vtsserving.Runnable.method(batchable=False)
         def __call__(self, input_text):
             return self.unmasker(input_text)
 
-    runner = bentoml.Runner(PretrainedModelRunnable, name="pretrained_unmasker")
+    runner = vtsserving.Runner(PretrainedModelRunnable, name="pretrained_unmasker")
 
-    svc = bentoml.Service('pretrained_unmasker_service', runners=[runner])
+    svc = vtsserving.Service('pretrained_unmasker_service', runners=[runner])
 
     @svc.api(input=Text(), output=JSON())
     async def unmask(input_series: str) -> list:
@@ -240,16 +240,16 @@ the Transformers :code:`pipeline` API.
         ),
     )
 
-Once a new pipeline is added to the Transformers supported tasks, it can be saved to the BentoML model store with the additional 
+Once a new pipeline is added to the Transformers supported tasks, it can be saved to the VtsServing model store with the additional 
 arguments of :code:`task_name` and :code:`task_definition`, the same arguments that were added to the Transformers :code:`SUPPORTED_TASKS` 
 when creating the pipeline. :code:`task_name` and :code:`task_definition` will be saved as model options alongside the model.
 
 .. code-block:: python
    :caption: `train.py`
     
-    import bentoml
+    import vtsserving
 
-    bentoml.transformers.save_model(
+    vtsserving.transformers.save_model(
         "my_classification_model",
         pipeline=classifier,
         task_name=TASK_NAME,
@@ -265,13 +265,13 @@ To serve a custom pipeline, simply create a runner and service with the previous
 .. code-block:: python
     :caption: `service.py`
     
-    import bentoml
+    import vtsserving
 
-    from bentoml.io import Text, JSON
+    from vtsserving.io import Text, JSON
 
-    runner = bentoml.transformers.get("my_classification_model:latest").to_runner()
+    runner = vtsserving.transformers.get("my_classification_model:latest").to_runner()
 
-    svc = bentoml.Service("my_classification_service", runners=[runner])
+    svc = vtsserving.Service("my_classification_service", runners=[runner])
 
     @svc.api(input=Text(), output=JSON())
     async def classify(input_series: str) -> list:
@@ -281,7 +281,7 @@ Adaptive Batching
 -----------------
 
 If the model supports batched interence, it is recommended to enable batching to take advantage of the adaptive batching capability 
-in BentoML by overriding the :code:`signatures` argument with the method name (:code:`__call__`), :code:`batchable`, and :code:`batch_dim` 
+in VtsServing by overriding the :code:`signatures` argument with the method name (:code:`__call__`), :code:`batchable`, and :code:`batch_dim` 
 configurations when saving the model to the model store . 
 
 .. seealso::
@@ -291,9 +291,9 @@ configurations when saving the model to the model store .
 .. code-block:: python
     :caption: `train.py`
 
-    import bentoml
+    import vtsserving
 
-    bentoml.transformers.save_model(
+    vtsserving.transformers.save_model(
         name="unmasker",
         pipeline=unmasker,
         signatures={
@@ -307,7 +307,7 @@ configurations when saving the model to the model store .
 .. Serving on GPU
 .. --------------
 
-.. BentoML Transformers framework will enable inference on GPU if the hardware is available.
+.. VtsServing Transformers framework will enable inference on GPU if the hardware is available.
 
 .. .. seealso::
 

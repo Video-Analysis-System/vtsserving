@@ -1,13 +1,13 @@
 import numpy as np
 from PIL.Image import Image as PILImage
 
-import bentoml
-from bentoml.io import Image
-from bentoml.io import NumpyNdarray
+import vtsserving
+from vtsserving.io import Image
+from vtsserving.io import NumpyNdarray
 
-mnist_runner = bentoml.tensorflow.get("tensorflow_mnist:latest").to_runner()
+mnist_runner = vtsserving.tensorflow.get("tensorflow_mnist:latest").to_runner()
 
-svc = bentoml.Service(
+svc = vtsserving.Service(
     name="tensorflow_mnist_demo",
     runners=[mnist_runner],
 )

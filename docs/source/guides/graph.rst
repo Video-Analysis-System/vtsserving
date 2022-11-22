@@ -2,10 +2,10 @@
 Inference Graph
 ===============
 
-Many ML problems require an ensemble of models to work together to solve. BentoML architecture can support any model inference graph natively in its
+Many ML problems require an ensemble of models to work together to solve. VtsServing architecture can support any model inference graph natively in its
 :ref:`Service APIs <concepts/service:Service and APIs>` definition. Users can define parallel and sequential inference graphs with any control flows
 by writing simple Python code. In this guide, we will build a text generation and classification service using model inference graph. The project
-source code can be found in the BentoML `inference graph <https://github.com/bentoml/BentoML/tree/main/examples/inference_graph>`_ example.
+source code can be found in the VtsServing `inference graph <https://github.com/vtsserving/VtsServing/tree/main/examples/inference_graph>`_ example.
 
 .. image:: ../_static/img/inference-graph-diagram.png
 
@@ -42,10 +42,10 @@ Create :ref:`Runners <concepts/runner:Using Runners>` for the three text generat
 
 .. code-block:: python
 
-    gpt2_generator = bentoml.transformers.get("gpt2-generation:latest").to_runner()
-    distilgpt2_generator = bentoml.transformers.get("distilgpt2-generation:latest").to_runner()
-    distilbegpt2_medium_generator = bentoml.transformers.get("gpt2-medium-generation:latest").to_runner()
-    bert_base_uncased_classifier = bentoml.transformers.get("bert-base-uncased-classification:latest").to_runner()
+    gpt2_generator = vtsserving.transformers.get("gpt2-generation:latest").to_runner()
+    distilgpt2_generator = vtsserving.transformers.get("distilgpt2-generation:latest").to_runner()
+    distilbegpt2_medium_generator = vtsserving.transformers.get("gpt2-medium-generation:latest").to_runner()
+    bert_base_uncased_classifier = vtsserving.transformers.get("bert-base-uncased-classification:latest").to_runner()
 
 
 Create Service
@@ -55,7 +55,7 @@ Create a :ref:`Service <concept/service:Service and APIs>` named ``inference_gra
 
 .. code-block:: python
 
-    svc = bentoml.Service(
+    svc = vtsserving.Service(
         "inference_graph",
         runners=[
             gpt2_generator,

@@ -1,9 +1,9 @@
 apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
-  name: bentoml-custom-model
+  name: vtsserving-custom-model
 spec:
   predictor:
     containers:
-      - name: bentoml-kserve-container
+      - name: vtsserving-kserve-container
         image: {username}/iris_classifier:latest

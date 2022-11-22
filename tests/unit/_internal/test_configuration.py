@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from bentoml.exceptions import BentoMLConfigException
-from bentoml._internal.configuration.containers import BentoMLConfiguration
+from vtsserving.exceptions import VtsServingConfigException
+from vtsserving._internal.configuration.containers import VtsServingConfiguration
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -21,7 +21,7 @@ def fixture_config_cls(tmp_path: Path) -> t.Callable[[str], ConfigDictType]:
     def inner(config: str) -> ConfigDictType:
         path = tmp_path / "configuration.yaml"
         path.write_text(config)
-        return BentoMLConfiguration(override_config_file=path.__fspath__()).as_dict()
+        return VtsServingConfiguration(override_config_file=path.__fspath__()).as_dict()
 
     return inner
 
@@ -37,13 +37,13 @@ api_server:
     host: 0.0.0.0
 """
     with caplog.at_level(logging.WARNING):
-        bentoml_cfg = config_cls(OLD_CONFIG)
+        vtsserving_cfg = config_cls(OLD_CONFIG)
     assert all(
-        i not in bentoml_cfg["api_server"] for i in ("max_request_size", "port", "host")
+        i not in vtsserving_cfg["api_server"] for i in ("max_request_size", "port", "host")
     )
-    assert "cors" not in bentoml_cfg["api_server"]
-    assert bentoml_cfg["api_server"]["http"]["host"] == "0.0.0.0"
-    assert bentoml_cfg["api_server"]["http"]["port"] == 5000
+    assert "cors" not in vtsserving_cfg["api_server"]
+    assert vtsserving_cfg["api_server"]["http"]["host"] == "0.0.0.0"
+    assert vtsserving_cfg["api_server"]["http"]["port"] == 5000
 
 
 @pytest.mark.usefixtures("config_cls")
@@ -53,7 +53,7 @@ api_server:
     host: localhost
 """
     with pytest.raises(
-        BentoMLConfigException, match="Invalid configuration file was given:*"
+        VtsServingConfigException, match="Invalid configuration file was given:*"
     ):
         config_cls(INVALID_CONFIG)
 
@@ -104,7 +104,7 @@ api_server:
 
 
 @pytest.mark.usefixtures("config_cls")
-def test_bentoml_configuration_runner_override(
+def test_vtsserving_configuration_runner_override(
     config_cls: t.Callable[[str], ConfigDictType]
 ):
     OVERRIDE_RUNNERS = """\
@@ -133,8 +133,8 @@ runners:
                 enabled: True
 """
 
-    bentoml_cfg = config_cls(OVERRIDE_RUNNERS)
-    runner_cfg = bentoml_cfg["runners"]
+    vtsserving_cfg = config_cls(OVERRIDE_RUNNERS)
+    runner_cfg = vtsserving_cfg["runners"]
 
     # test_runner_1
     test_runner_1 = runner_cfg["test_runner_1"]
@@ -173,17 +173,17 @@ runners:
     resources:
         nvidia.com/gpu: [1, 2, 4]
 """
-    bentoml_cfg = config_cls(GPU_INDEX)
-    assert bentoml_cfg["runners"]["resources"] == {"nvidia.com/gpu": [1, 2, 4]}
+    vtsserving_cfg = config_cls(GPU_INDEX)
+    assert vtsserving_cfg["runners"]["resources"] == {"nvidia.com/gpu": [1, 2, 4]}
 
     GPU_INDEX_WITH_STRING = """\
 runners:
     resources:
         nvidia.com/gpu: "[1, 2, 4]"
 """
-    bentoml_cfg = config_cls(GPU_INDEX_WITH_STRING)
+    vtsserving_cfg = config_cls(GPU_INDEX_WITH_STRING)
     # this behaviour can be confusing
-    assert bentoml_cfg["runners"]["resources"] == {"nvidia.com/gpu": "[1, 2, 4]"}
+    assert vtsserving_cfg["runners"]["resources"] == {"nvidia.com/gpu": "[1, 2, 4]"}
 
 
 @pytest.mark.usefixtures("config_cls")
@@ -196,8 +196,8 @@ runners:
     test_runner_2:
         resources: system
 """
-    bentoml_cfg = config_cls(RUNNER_TIMEOUTS)
-    runner_cfg = bentoml_cfg["runners"]
+    vtsserving_cfg = config_cls(RUNNER_TIMEOUTS)
+    runner_cfg = vtsserving_cfg["runners"]
     assert runner_cfg["timeout"] == 50
     assert runner_cfg["test_runner_1"]["timeout"] == 100
     assert runner_cfg["test_runner_2"]["timeout"] == 50

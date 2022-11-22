@@ -4,14 +4,14 @@ Serving with GPU
 
 Most popular deep learning frameworks (TensorFlow, PyTorch, ONNX, etc.) have supports
 for GPU, both for training and inference. This guide demonstrates how to serve models
-with BentoML on GPU.
+with VtsServing on GPU.
 
 
 Docker Images Options
 ---------------------
 
-See :ref:`concepts/bento:Docker Options` for all options related to setting up docker
-image options related to GPU. Here's a sample :code:`bentofile.yaml` config for serving
+See :ref:`concepts/vts:Docker Options` for all options related to setting up docker
+image options related to GPU. Here's a sample :code:`vtsfile.yaml` config for serving
 with GPU:
 
 .. code:: yaml
@@ -31,17 +31,17 @@ with GPU:
         python_version: "3.8.12"
         cuda_version: "11.6.2"
 
-When containerize a saved bento with a :code:`cuda_version` configured, BentoML will
+When containerize a saved vts with a :code:`cuda_version` configured, VtsServing will
 install the corresponding cuda version onto the docker image created:
 
 .. code-block:: bash
 
-    $ bentoml containerize MyTFService:latest -t tf_svc
+    $ vtsserving containerize MyTFService:latest -t tf_svc
 
-If the desired :code:`cuda_version` is not natively supported by BentoML, users can
+If the desired :code:`cuda_version` is not natively supported by VtsServing, users can
 still customize the installation of cuda driver and libraries via the
 :code:`system_packages`, :code:`setup_script`, or :code:`base_image` options under the
-:ref:`Bento build docker options<concepts/bento:Docker Options>`.
+:ref:`Bento build docker options<concepts/vts:Docker Options>`.
 
 
 Running Docker with GPU
@@ -51,7 +51,7 @@ The NVIDIA Container Toolkit is required for running docker containers with Nvid
 NVIDIA provides `detailed instructions <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker>`_
 for installing both :code:`Docker CE` and :code:`nvidia-docker`.
 
-Start bento generated image and check for GPU usages:
+Start vts generated image and check for GPU usages:
 
 .. code-block:: bash
 

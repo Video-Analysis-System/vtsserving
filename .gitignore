@@ -120,14 +120,14 @@ pyvenv.cfg
 
 # bazel generated files
 bazel-*
-grpc-client/cpp/bentoml
-grpc-client/go/bentoml
-grpc-client/node/bentoml
+grpc-client/cpp/vtsserving
+grpc-client/go/vtsserving
+grpc-client/node/vtsserving
 node_modules
 thirdparty
 
 # Swift-related
-**/*/Sources/bentoml
+**/*/Sources/vtsserving
 .DS_Store
 **/*/.build
 /Packages
@@ -140,8 +140,8 @@ DerivedData/
 Package.resolved
 
 # Java-Kotlin
-**/*/java/**/*/bentoml
-**/*/kotlin/**/*/bentoml
+**/*/java/**/*/vtsserving
+**/*/kotlin/**/*/vtsserving
 .gradle
 
 # PHP generated stubs

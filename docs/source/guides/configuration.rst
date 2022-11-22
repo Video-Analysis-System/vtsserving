@@ -2,24 +2,24 @@
 Configuration
 =============
 
-BentoML starts with an out-of-the-box configuration that works for common use cases. For advanced users, many
-features can be customized through configuration. Both BentoML CLI and Python APIs can be customized 
+VtsServing starts with an out-of-the-box configuration that works for common use cases. For advanced users, many
+features can be customized through configuration. Both VtsServing CLI and Python APIs can be customized 
 by the configuration. Configuration is best used for scenarios where the customizations can be specified once 
 and applied to the entire team.
 
-BentoML configuration is defined by a YAML file placed in a directory specified by the ``VTSSERVING_CONFIG`` 
-environment variable. The example below starts the bento server with configuration defined in ``~/bentoml_configuration.yaml``:
+VtsServing configuration is defined by a YAML file placed in a directory specified by the ``VTSSERVING_CONFIG`` 
+environment variable. The example below starts the vts server with configuration defined in ``~/vtsserving_configuration.yaml``:
 
 .. code-block:: shell
 
-    $ VTSSERVING_CONFIG=~/bentoml_configuration.yaml bentoml serve iris_classifier:latest
+    $ VTSSERVING_CONFIG=~/vtsserving_configuration.yaml vtsserving serve iris_classifier:latest
 
 Users only need to specify a partial configuration with only the properties they wish to customize instead 
 of a full configuration schema. In the example below, the microbatching workers count is overridden to 4.
 Remaining properties will take their defaults values.
 
 .. code-block:: yaml
-   :caption: `~/bentoml_configuration.yaml`
+   :caption: `~/vtsserving_configuration.yaml`
 
     api_server:
       workers: 4
@@ -27,9 +27,9 @@ Remaining properties will take their defaults values.
       http:
         port: 6000
 
-Throughout the BentoML documentation, features that are customizable through configuration are demonstrated 
+Throughout the VtsServing documentation, features that are customizable through configuration are demonstrated 
 like the example above. For a full configuration schema including all customizable properties, refer to
-the BentoML configuration template defined in :github:`default_configuration.yml <bentoml/BentoML/blob/main/src/bentoml/_internal/configuration/default_configuration.yaml>`.
+the VtsServing configuration template defined in :github:`default_configuration.yml <vtsserving/VtsServing/blob/main/src/vtsserving/_internal/configuration/default_configuration.yaml>`.
 
 
 
@@ -43,7 +43,7 @@ an oneline value of a "flat" JSON via ``VTSSERVING_CONFIG_OPTIONS``:
 .. code-block:: yaml
 
    $ VTSSERVING_CONFIG_OPTIONS='runners.pytorch_mnist.resources."nvidia.com/gpu"[0]=0 runners.pytorch_mnist.resources."nvidia.com/gpu"[1]=2' \
-            bentoml serve pytorch_mnist_demo:latest --production
+            vtsserving serve pytorch_mnist_demo:latest --production
 
 Which the override configuration will be intepreted as:
 
@@ -66,12 +66,12 @@ Which the override configuration will be intepreted as:
 Docker Deployment
 -----------------
 
-Configuration file can be mounted to the Docker container using the `-v` option and specified to the BentoML 
+Configuration file can be mounted to the Docker container using the `-v` option and specified to the VtsServing 
 runtime using the `-e` environment variable option.
 
 .. code-block:: shell
 
-    $ docker run -v /local/path/configuration.yml:/home/bentoml/configuration.yml -e VTSSERVING_CONFIG=/home/bentoml/configuration.yml
+    $ docker run -v /local/path/configuration.yml:/home/vtsserving/configuration.yml -e VTSSERVING_CONFIG=/home/vtsserving/configuration.yml
 
 
 .. spelling::

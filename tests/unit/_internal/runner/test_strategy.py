@@ -7,13 +7,13 @@ import pytest
 if t.TYPE_CHECKING:
     from _pytest.monkeypatch import MonkeyPatch
 
-import bentoml
-from bentoml._internal.runner import strategy
-from bentoml._internal.resource import get_resource
-from bentoml._internal.runner.strategy import DefaultStrategy
+import vtsserving
+from vtsserving._internal.runner import strategy
+from vtsserving._internal.resource import get_resource
+from vtsserving._internal.runner.strategy import DefaultStrategy
 
 
-class GPURunnable(bentoml.Runnable):
+class GPURunnable(vtsserving.Runnable):
     SUPPORTED_RESOURCES = ("nvidia.com/gpu",)
 
 

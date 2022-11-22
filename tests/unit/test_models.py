@@ -12,16 +12,16 @@ except ModuleNotFoundError:
 
 import pytest
 
-import bentoml
-from bentoml.exceptions import NotFound
-from bentoml._internal.models import ModelStore
-from bentoml._internal.models import ModelContext
+import vtsserving
+from vtsserving.exceptions import NotFound
+from vtsserving._internal.models import ModelStore
+from vtsserving._internal.models import ModelContext
 
 if TYPE_CHECKING:
     from pathlib import Path
 
 PYTHON_VERSION: str = f"{pyver.major}.{pyver.minor}.{pyver.micro}"
-VTSSERVING_VERSION: str = importlib_metadata.version("bentoml")
+VTSSERVING_VERSION: str = importlib_metadata.version("vtsserving")
 
 
 def createfile(filepath: str) -> str:
@@ -41,7 +41,7 @@ def test_models(tmpdir: "Path"):
     os.makedirs(os.path.join(tmpdir, "models"))
     store = ModelStore(os.path.join(tmpdir, "models"))
 
-    with bentoml.models.create(
+    with vtsserving.models.create(
         "testmodel",
         module=__name__,
         signatures={},
@@ -52,7 +52,7 @@ def test_models(tmpdir: "Path"):
 
     time.sleep(1)
 
-    with bentoml.models.create(
+    with vtsserving.models.create(
         "testmodel",
         module=__name__,
         signatures={},
@@ -63,7 +63,7 @@ def test_models(tmpdir: "Path"):
         testmodel_file_content = createfile(testmodel.path_of("file"))
         testmodel_infolder_content = createfile(testmodel.path_of("folder/file"))
 
-    with bentoml.models.create(
+    with vtsserving.models.create(
         "anothermodel",
         module=__name__,
         signatures={},
@@ -75,46 +75,46 @@ def test_models(tmpdir: "Path"):
         anothermodel_infolder_content = createfile(anothermodel.path_of("folder/file"))
 
     assert (
-        bentoml.models.get("testmodel:latest", _model_store=store).tag == testmodel2tag
+        vtsserving.models.get("testmodel:latest", _model_store=store).tag == testmodel2tag
     )
-    assert set([model.tag for model in bentoml.models.list(_model_store=store)]) == {
+    assert set([model.tag for model in vtsserving.models.list(_model_store=store)]) == {
         testmodel1tag,
         testmodel2tag,
         anothermodeltag,
     }
 
-    testmodel1 = bentoml.models.get(testmodel1tag, _model_store=store)
+    testmodel1 = vtsserving.models.get(testmodel1tag, _model_store=store)
     with pytest.raises(FileNotFoundError):
         open(testmodel1.path_of("file"), encoding="utf-8")
 
-    testmodel2 = bentoml.models.get(testmodel2tag, _model_store=store)
+    testmodel2 = vtsserving.models.get(testmodel2tag, _model_store=store)
     with open(testmodel2.path_of("file"), encoding="utf-8") as f:
         assert f.read() == testmodel_file_content
     with open(testmodel2.path_of("folder/file"), encoding="utf-8") as f:
         assert f.read() == testmodel_infolder_content
 
-    anothermodel = bentoml.models.get(anothermodeltag, _model_store=store)
+    anothermodel = vtsserving.models.get(anothermodeltag, _model_store=store)
     with open(anothermodel.path_of("file"), encoding="utf-8") as f:
         assert f.read() == anothermodel_file_content
     with open(anothermodel.path_of("folder/file"), encoding="utf-8") as f:
         assert f.read() == anothermodel_infolder_content
 
-    export_path = os.path.join(tmpdir, "testmodel2.bentomodel")
-    bentoml.models.export_model(testmodel2tag, export_path, _model_store=store)
-    bentoml.models.delete(testmodel2tag, _model_store=store)
+    export_path = os.path.join(tmpdir, "testmodel2.vtsmodel")
+    vtsserving.models.export_model(testmodel2tag, export_path, _model_store=store)
+    vtsserving.models.delete(testmodel2tag, _model_store=store)
 
     with pytest.raises(NotFound):
-        bentoml.models.delete(testmodel2tag, _model_store=store)
+        vtsserving.models.delete(testmodel2tag, _model_store=store)
 
-    assert set([model.tag for model in bentoml.models.list(_model_store=store)]) == {
+    assert set([model.tag for model in vtsserving.models.list(_model_store=store)]) == {
         testmodel1tag,
         anothermodeltag,
     }
 
-    retrieved_testmodel1 = bentoml.models.get("testmodel", _model_store=store)
+    retrieved_testmodel1 = vtsserving.models.get("testmodel", _model_store=store)
     assert retrieved_testmodel1.tag == testmodel1tag
     assert retrieved_testmodel1.info.context.python_version == PYTHON_VERSION
-    assert retrieved_testmodel1.info.context.bentoml_version == VTSSERVING_VERSION
+    assert retrieved_testmodel1.info.context.vtsserving_version == VTSSERVING_VERSION
     assert (
         retrieved_testmodel1.info.context.framework_name
         == TEST_MODEL_CONTEXT.framework_name
@@ -124,13 +124,13 @@ def test_models(tmpdir: "Path"):
         == TEST_MODEL_CONTEXT.framework_versions
     )
 
-    bentoml.models.import_model(export_path, _model_store=store)
+    vtsserving.models.import_model(export_path, _model_store=store)
 
-    assert bentoml.models.get("testmodel", _model_store=store).tag == testmodel2tag
+    assert vtsserving.models.get("testmodel", _model_store=store).tag == testmodel2tag
 
     export_path_2 = os.path.join(tmpdir, "testmodel1")
-    bentoml.models.export_model(testmodel1tag, export_path_2, _model_store=store)
-    bentoml.models.delete(testmodel1tag, _model_store=store)
-    bentoml.models.import_model(export_path_2 + ".bentomodel", _model_store=store)
+    vtsserving.models.export_model(testmodel1tag, export_path_2, _model_store=store)
+    vtsserving.models.delete(testmodel1tag, _model_store=store)
+    vtsserving.models.import_model(export_path_2 + ".vtsmodel", _model_store=store)
 
-    assert bentoml.models.get("testmodel", _model_store=store).tag == testmodel2tag
+    assert vtsserving.models.get("testmodel", _model_store=store).tag == testmodel2tag

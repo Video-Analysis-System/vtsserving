@@ -3,13 +3,13 @@ requires = ["setuptools>=63", "setuptools_scm[toml]>=6.2", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "bentoml"
-description = "BentoML: The Unified Model Serving Framework"
+name = "vtsserving"
+description = "VtsServing: The Unified Model Serving Framework"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.7"
-keywords = ["MLOps", "AI", "BentoML", "Model Serving", "Model Deployment"]
+keywords = ["MLOps", "AI", "VtsServing", "Model Serving", "Model Deployment"]
 license = { text = "Apache-2.0" }
-authors = [{ name = "BentoML Team", email = "contact@bentoml.com" }]
+authors = [{ name = "VtsServing Team", email = "contact@vtsserving.com" }]
 classifiers = [
   "License :: OSI Approved :: Apache Software License",
   "Operating System :: OS Independent",
@@ -72,18 +72,18 @@ dependencies = [
 dynamic = ["version"]
 
 [project.urls]
-"Documentation" = "https://docs.bentoml.org/en/latest/"
-"Bug Reports" = "https://github.com/bentoml/BentoML/issues"
-"BentoML Community Slack" = "https://bit.ly/2N5IpbB"
-"BentoML Official Blog" = "https://modelserving.com"
-"BentoML Twitter" = "https://twitter.com/bentomlai"
+"Documentation" = "https://docs.vtsserving.org/en/latest/"
+"Bug Reports" = "https://github.com/vtsserving/VtsServing/issues"
+"VtsServing Community Slack" = "https://bit.ly/2N5IpbB"
+"VtsServing Official Blog" = "https://modelserving.com"
+"VtsServing Twitter" = "https://twitter.com/vtsservingai"
 
 [project.scripts]
-bentoml = "bentoml_cli.cli:cli"
+vtsserving = "vtsserving_cli.cli:cli"
 
 [tool.setuptools.package-data]
-bentoml = ["bentoml/*"]
-bentoml_cli = ["bentoml_cli/*"]
+vtsserving = ["vtsserving/*"]
+vtsserving_cli = ["vtsserving_cli/*"]
 
 [tool.setuptools.exclude-package-data]
 "*" = [
@@ -96,41 +96,41 @@ bentoml_cli = ["bentoml_cli/*"]
   "*.py[cod]",
   "typings",
 ]
-bentoml = ["grpc/buf.yaml", "_internal/frameworks/FRAMEWORK_TEMPLATE_PY"]
-bentoml_cli = ["worker/README.md"]
+vtsserving = ["grpc/buf.yaml", "_internal/frameworks/FRAMEWORK_TEMPLATE_PY"]
+vtsserving_cli = ["worker/README.md"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
 include = [
-  # include bentoml packages
-  "bentoml",
-  "bentoml.grpc*",
-  "bentoml.testing*",
-  "bentoml._internal*",
-  # include bentoml_cli packages
-  "bentoml_cli",
-  "bentoml_cli.worker",
+  # include vtsserving packages
+  "vtsserving",
+  "vtsserving.grpc*",
+  "vtsserving.testing*",
+  "vtsserving._internal*",
+  # include vtsserving_cli packages
+  "vtsserving_cli",
+  "vtsserving_cli.worker",
 ]
 
 [project.optional-dependencies]
 all = [
-  "bentoml[aws]",
-  "bentoml[io]",
-  "bentoml[grpc]",
-  "bentoml[grpc-reflection]",
-  "bentoml[grpc-channelz]",
-  "bentoml[tracing]",
+  "vtsserving[aws]",
+  "vtsserving[io]",
+  "vtsserving[grpc]",
+  "vtsserving[grpc-reflection]",
+  "vtsserving[grpc-channelz]",
+  "vtsserving[tracing]",
 ]
 aws = ["fs-s3fs"]
 io = [
-  "bentoml[io-json]",
-  "bentoml[io-image]",
-  "bentoml[io-pandas]",
-  "bentoml[io-file]",
-] # syntatic sugar for bentoml[io-json,io-image,io-pandas,io-file]
+  "vtsserving[io-json]",
+  "vtsserving[io-image]",
+  "vtsserving[io-pandas]",
+  "vtsserving[io-file]",
+] # syntatic sugar for vtsserving[io-json,io-image,io-pandas,io-file]
 io-file = ["filetype"] # Currently use for from_sample
 io-json = ["pydantic<2"] # currently we don't have support for pydantic 2.0
-io-image = ["bentoml[io-file]", "Pillow"]
+io-image = ["vtsserving[io-file]", "Pillow"]
 io-pandas = ["pandas", "pyarrow"]
 grpc = [
   # Restrict maximum version due to breaking protobuf 4.21.0 changes
@@ -145,22 +145,22 @@ grpc = [
   "grpcio-health-checking>=1.41.0,!=1.48.2",
   "opentelemetry-instrumentation-grpc==0.35b0",
 ]
-grpc-reflection = ["bentoml[grpc]", "grpcio-reflection>=1.41.0,!=1.48.2"]
-grpc-channelz = ["bentoml[grpc]", "grpcio-channelz>=1.41.0,!=1.48.2"]
+grpc-reflection = ["vtsserving[grpc]", "grpcio-reflection>=1.41.0,!=1.48.2"]
+grpc-channelz = ["vtsserving[grpc]", "grpcio-channelz>=1.41.0,!=1.48.2"]
 # We kept for compatibility with previous
-# versions of BentoML. It is discouraged to use this, instead use any
+# versions of VtsServing. It is discouraged to use this, instead use any
 # of the above tracing.* extras.
 tracing = [
-  "bentoml[tracing-jaeger]",
-  "bentoml[tracing-otlp]",
-  "bentoml[tracing-zipkin]",
+  "vtsserving[tracing-jaeger]",
+  "vtsserving[tracing-otlp]",
+  "vtsserving[tracing-zipkin]",
 ]
 tracing-jaeger = ["opentelemetry-exporter-jaeger==1.14.0"]
 tracing-zipkin = ["opentelemetry-exporter-zipkin==1.14.0"]
 tracing-otlp = ["opentelemetry-exporter-otlp==1.14.0"]
 
 [tool.setuptools_scm]
-write_to = "src/bentoml/_version.py"
+write_to = "src/vtsserving/_version.py"
 git_describe_command = "git describe --dirty --tags --long --first-parent"
 version_scheme = "post-release"
 fallback_version = "0.0.0"
@@ -171,36 +171,36 @@ source = ["src"]
 [tool.coverage.run]
 branch = true
 parallel = true
-source = ["src/bentoml/"]
+source = ["src/vtsserving/"]
 omit = [
-  "src/bentoml/__main__.py",
-  "src/bentoml/io.py",
-  "src/bentoml/serve.py",
-  "src/bentoml/start.py",
-  "src/bentoml/_internal/types.py",
-  "src/bentoml/testing/*",
-  "src/bentoml/grpc/v1alpha1/*",
-  "src/bentoml/grpc/v1/*",
-  "src/bentoml/_internal/external_typing/*",
-  "src/bentoml/_internal/yatai_client/*",
-  "src/bentoml/_internal/yatai_rest_api_client/*",
+  "src/vtsserving/__main__.py",
+  "src/vtsserving/io.py",
+  "src/vtsserving/serve.py",
+  "src/vtsserving/start.py",
+  "src/vtsserving/_internal/types.py",
+  "src/vtsserving/testing/*",
+  "src/vtsserving/grpc/v1alpha1/*",
+  "src/vtsserving/grpc/v1/*",
+  "src/vtsserving/_internal/external_typing/*",
+  "src/vtsserving/_internal/yatai_client/*",
+  "src/vtsserving/_internal/yatai_rest_api_client/*",
 ]
 
 [tool.coverage.report]
 show_missing = true
 precision = 2
 omit = [
-  'src/bentoml/__main__.py',
-  "src/bentoml/io.py",
-  "src/bentoml/serve.py",
-  "src/bentoml/start.py",
-  "src/bentoml/_internal/types.py",
-  "src/bentoml/testing/*",
-  "src/bentoml/grpc/v1alpha1/*",
-  "src/bentoml/grpc/v1/*",
-  "src/bentoml/_internal/external_typing/*",
-  "src/bentoml/_internal/yatai_client/*",
-  "src/bentoml/_internal/yatai_rest_api_client/*",
+  'src/vtsserving/__main__.py',
+  "src/vtsserving/io.py",
+  "src/vtsserving/serve.py",
+  "src/vtsserving/start.py",
+  "src/vtsserving/_internal/types.py",
+  "src/vtsserving/testing/*",
+  "src/vtsserving/grpc/v1alpha1/*",
+  "src/vtsserving/grpc/v1/*",
+  "src/vtsserving/_internal/external_typing/*",
+  "src/vtsserving/_internal/yatai_client/*",
+  "src/vtsserving/_internal/yatai_rest_api_client/*",
 ]
 exclude_lines = [
   "\\#\\s*pragma: no cover",
@@ -232,18 +232,18 @@ exclude = '''
     | lib
     | dist
     | typings
-    | src/bentoml/grpc/v1alpha1
-    | src/bentoml/grpc/v1
+    | src/vtsserving/grpc/v1alpha1
+    | src/vtsserving/grpc/v1
     | tests/proto
     | grpc-client/thirdparty
-    | grpc-client/bentoml
+    | grpc-client/vtsserving
   )/
-  | src/bentoml/_version.py
+  | src/vtsserving/_version.py
 )
 '''
 
 [tool.pytest.ini_options]
-addopts = ["-rfEX", "-pbentoml.testing.pytest.plugin"]
+addopts = ["-rfEX", "-pvtsserving.testing.pytest.plugin"]
 python_files = ["test_*.py", "*_test.py"]
 testpaths = ["tests"]
 
@@ -259,9 +259,9 @@ extension-pkg-allow-list = [
   "pydantic.schema",
 ]
 ignore-paths = [
-  "src/bentoml/_internal/external_typing",
-  "src/bentoml/grpc/v1alpha1",
-  "src/bentoml/grpc/v1",
+  "src/vtsserving/_internal/external_typing",
+  "src/vtsserving/grpc/v1alpha1",
+  "src/vtsserving/grpc/v1",
 ]
 disable = ["coerce-builtin", "no-absolute-import", "C", "R"]
 enable = ["c-extension-no-member"]
@@ -292,7 +292,7 @@ init-import = true
 [tool.pylint.typecheck]
 contextmanager-decorators = [
   "contextlib.contextmanager",
-  "bentoml._internal.utils.cached_contextmanager",
+  "vtsserving._internal.utils.cached_contextmanager",
 ]
 
 [tool.isort]
@@ -301,7 +301,7 @@ line_length = 88
 length_sort = true
 force_single_line = true
 order_by_type = true
-known_first_party = "bentoml"
+known_first_party = "vtsserving"
 force_alphabetical_sort_within_sections = true
 skip_glob = [
   "typings/*",
@@ -311,7 +311,7 @@ skip_glob = [
   "venv/*",
   "lib/*",
   "grpc-client/thirdparty",
-  "grpc-client/bentoml",
+  "grpc-client/vtsserving",
   "bazel-*",
 ]
 
@@ -319,9 +319,9 @@ skip_glob = [
 pythonVersion = "3.10"
 include = ["src/", "examples/", "tests/"]
 exclude = [
-  'src/bentoml/_version.py',
-  'src/bentoml/__main__.py',
-  'src/bentoml/_internal/external_typing/',
+  'src/vtsserving/_version.py',
+  'src/vtsserving/__main__.py',
+  'src/vtsserving/_internal/external_typing/',
   'src/**/*_pb2.py*',
   "src/**/*_pb2_grpc.py*",
   "grpc-client/thirdparty",

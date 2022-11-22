@@ -13,7 +13,7 @@ from torchvision import datasets
 from torchvision import transforms
 from torch.optim.lr_scheduler import StepLR
 
-import bentoml
+import vtsserving
 
 
 class Net(nn.Module):
@@ -187,15 +187,15 @@ def main():
         scheduler.step()
     test(scripted_model, device, test_loader)
 
-    # Saving model and running inference with BentoML:
+    # Saving model and running inference with VtsServing:
 
-    # Option1: save natively with bentoml.torchscript_iris
-    bentoml.torchscript.save_model(
+    # Option1: save natively with vtsserving.torchscript_iris
+    vtsserving.torchscript.save_model(
         "torchscript_mnist",
         scripted_model,
         signatures={"__call__": {"batchable": True}},
     )
-    model_runner = bentoml.torchscript.get("torchscript_mnist").to_runner()
+    model_runner = vtsserving.torchscript.get("torchscript_mnist").to_runner()
     model_runner.init_local()
 
     test_datapoint, test_target = next(iter(test_loader))
@@ -208,19 +208,19 @@ def main():
         )
     )
 
-    # Option2: save MLflow model and import MLflow pyfunc model to BentoML
+    # Option2: save MLflow model and import MLflow pyfunc model to VtsServing
     with mlflow.start_run():
         # logging scripted model
         mlflow.pytorch.log_model(scripted_model, "model")
 
-        # Import logged mlflow model to BentoML model store for serving:
+        # Import logged mlflow model to VtsServing model store for serving:
         model_uri = mlflow.get_artifact_uri("model")
-        bento_model = bentoml.mlflow.import_model(
+        vts_model = vtsserving.mlflow.import_model(
             "mlflow_torch_mnist", model_uri, signatures={"predict": {"batchable": True}}
         )
-        print(f"Model imported to BentoML: {bento_model}")
+        print(f"Model imported to VtsServing: {vts_model}")
 
-        model_runner = bentoml.mlflow.get("mlflow_torch_mnist").to_runner()
+        model_runner = vtsserving.mlflow.get("mlflow_torch_mnist").to_runner()
         model_runner.init_local()
 
         test_datapoint, test_target = next(iter(test_loader))

@@ -52,14 +52,14 @@ sourceSets {
     }
 }
 
-task bentoServiceClient(type: CreateStartScripts) {
+task vtsServiceClient(type: CreateStartScripts) {
     mainClass = 'com.client.BentoServiceClient'
-    applicationName = 'bento-service-client'
+    applicationName = 'vts-service-client'
     outputDir = new File(project.buildDir, 'tmp/scripts/' + name)
     classpath = startScripts.classpath
 }
 
 applicationDistribution.into('bin') {
-    from(bentoServiceClient)
+    from(vtsServiceClient)
     fileMode = 0755
 }

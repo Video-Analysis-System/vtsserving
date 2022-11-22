@@ -1,10 +1,10 @@
-# Custom LDA classifier model via bentoml.picklable_model
+# Custom LDA classifier model via vtsserving.picklable_model
 
 This example is based on https://github.com/eriklindernoren/ML-From-Scratch
 
-`bentoml.picklable_model` represents a generic model type in BentoML, that uses
+`vtsserving.picklable_model` represents a generic model type in VtsServing, that uses
 `cloudpickle` for model serialization under the hood. Most pure python code based
-ML model implementation should work with `bentoml.picklable_model` out-of-the-box.
+ML model implementation should work with `vtsserving.picklable_model` out-of-the-box.
 
 0. Install dependencies:
 
@@ -21,7 +21,7 @@ python ./train.py
 2. Run the service:
 
 ```bash
-bentoml serve service.py:svc
+vtsserving serve service.py:svc
 ```
 
 3. Send test request
@@ -33,11 +33,11 @@ curl -X POST -H "content-type: application/json" --data "[[5.9, 3, 5.1, 1.8]]" h
 4. Build Bento
 
 ```
-bentoml build
+vtsserving build
 ```
 
 5. Build docker image
 
 ```
-bentoml containerize iris_classifier_lda:latest
+vtsserving containerize iris_classifier_lda:latest
 ```

@@ -3,7 +3,7 @@ syntax = "proto3";
 package tests.proto;
 
 option cc_enable_arenas = true;
-option go_package = "github.com/bentoml/testing/v1";
+option go_package = "github.com/vtsserving/testing/v1";
 option optimize_for = SPEED;
 option py_generic_services = true;
 

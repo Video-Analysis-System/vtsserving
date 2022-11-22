@@ -21,7 +21,7 @@ let packageDependencies: [Package.Dependency] = [
 
 // Defines dependencies for our targets.
 extension Target.Dependency {
-  static let bentoServiceModel: Self = .target(name: "BentoServiceModel")
+  static let vtsServiceModel: Self = .target(name: "BentoServiceModel")
 
   static let grpc: Self = .product(name: "GRPC", package: "grpc-swift")
   static let nio: Self = .product(name: "NIO", package: "swift-nio")
@@ -33,21 +33,21 @@ extension Target.Dependency {
 // Targets are the basic building blocks of a package. A target can define a module or a test suite.
 // Targets can depend on other targets in this package, and on products in packages this package depends on.
 extension Target {
-  static let bentoServiceModel: Target = .target(
+  static let vtsServiceModel: Target = .target(
     name: "BentoServiceModel",
     dependencies: [
       .grpc,
       .nio,
       .protobuf,
     ],
-    path: "Sources/bentoml/grpc/v1alpha1"
+    path: "Sources/vtsserving/grpc/v1alpha1"
   )
 
-  static let bentoServiceClient: Target = .executableTarget(
+  static let vtsServiceClient: Target = .executableTarget(
     name: "BentoServiceClient",
     dependencies: [
       .grpc,
-      .bentoServiceModel,
+      .vtsServiceModel,
       .nioCore,
       .nioPosix,
     ],
@@ -58,5 +58,5 @@ extension Target {
 let package = Package(
   name: "iris-swift-client",
   dependencies: packageDependencies,
-  targets: [.bentoServiceModel, .bentoServiceClient]
+  targets: [.vtsServiceModel, .vtsServiceClient]
 )

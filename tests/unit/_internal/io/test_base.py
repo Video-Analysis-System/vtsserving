@@ -5,17 +5,17 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from bentoml.io import IODescriptor
+from vtsserving.io import IODescriptor
 
 if TYPE_CHECKING:
 
     from typing_extensions import Self
 
-    from bentoml._internal.context import InferenceApiContext as Context
+    from vtsserving._internal.context import InferenceApiContext as Context
 
 
-class DummyDescriptor(IODescriptor[t.Any], descriptor_id="bentoml.io.Dummy"):
-    _mime_type = "application/vnd.bentoml.dummy"
+class DummyDescriptor(IODescriptor[t.Any], descriptor_id="vtsserving.io.Dummy"):
+    _mime_type = "application/vnd.vtsserving.dummy"
 
     def __init__(self, **kwargs: t.Any):
         [object.__setattr__(self, k, v) for k, v in kwargs.items()]

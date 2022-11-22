@@ -1,6 +1,6 @@
 {
-    "name": "bentoml/grpc-php-client",
-    "description": "BentoML gRPC client for PHP",
+    "name": "vtsserving/grpc-php-client",
+    "description": "VtsServing gRPC client for PHP",
     "require": {
         "grpc/grpc": "1.42.0",
         "google/protobuf": "3.19.4"
@@ -14,7 +14,7 @@
     },
     "authors": [
         {
-            "name": "BentoML Team"
+            "name": "VtsServing Team"
         }
     ]
 }

@@ -9,4 +9,4 @@ dependencies:
   - boto3
   - torchvision>=0.9.1
   - torch>=1.9.0
-  - bentoml>=1.0.0rc3
+  - vtsserving>=1.0.0rc3

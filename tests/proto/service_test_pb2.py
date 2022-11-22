@@ -19,9 +19,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='tests/proto/service_test.proto',
   package='tests.proto',
   syntax='proto3',
-  serialized_options=b'H\001Z\035github.com/bentoml/testing/v1\220\001\001\370\001\001',
+  serialized_options=b'H\001Z\035github.com/vtsserving/testing/v1\220\001\001\370\001\001',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x1etests/proto/service_test.proto\x12\x0btests.proto\"\x1f\n\x0e\x45xecuteRequest\x12\r\n\x05input\x18\x01 \x01(\t\"!\n\x0f\x45xecuteResponse\x12\x0e\n\x06output\x18\x01 \x01(\t2S\n\x0bTestService\x12\x44\n\x07\x45xecute\x12\x1b.tests.proto.ExecuteRequest\x1a\x1c.tests.proto.ExecuteResponseB\'H\x01Z\x1dgithub.com/bentoml/testing/v1\x90\x01\x01\xf8\x01\x01\x62\x06proto3'
+  serialized_pb=b'\n\x1etests/proto/service_test.proto\x12\x0btests.proto\"\x1f\n\x0e\x45xecuteRequest\x12\r\n\x05input\x18\x01 \x01(\t\"!\n\x0f\x45xecuteResponse\x12\x0e\n\x06output\x18\x01 \x01(\t2S\n\x0bTestService\x12\x44\n\x07\x45xecute\x12\x1b.tests.proto.ExecuteRequest\x1a\x1c.tests.proto.ExecuteResponseB\'H\x01Z\x1dgithub.com/vtsserving/testing/v1\x90\x01\x01\xf8\x01\x01\x62\x06proto3'
 )
 
 

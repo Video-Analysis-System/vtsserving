@@ -1,18 +1,18 @@
-# BentoML Project Governance Document
+# VtsServing Project Governance Document
 
-Welcome to the BentoML community. BentoML is an open, community-driven project for 
+Welcome to the VtsServing community. VtsServing is an open, community-driven project for 
 machine learning model serving. 
 
-BentoML takes a meritocratic, consensus-based approach to its governance structure. 
+VtsServing takes a meritocratic, consensus-based approach to its governance structure. 
 Anyone with an interest in the project can join the community, contribute to the project
 and participate in the decision making process. And this is a living document aiming to 
 outline how that participation takes place.
 
-* Contribution guidelines: https://github.com/bentoml/BentoML/blob/main/CONTRIBUTING.md
-* Code of Conduct: https://github.com/bentoml/BentoML/blob/main/CODE_OF_CONDUCT.md
-* Development guidelines: https://github.com/bentoml/BentoML/blob/main/DEVELOPMENT.md
-* BentoML contributor mailing list: https://groups.google.com/forum/#!forum/bentoml
-* BentoML contributor slack channel: https://bentoml.slack.com/archives/CKC2JP3TM
+* Contribution guidelines: https://github.com/vtsserving/VtsServing/blob/main/CONTRIBUTING.md
+* Code of Conduct: https://github.com/vtsserving/VtsServing/blob/main/CODE_OF_CONDUCT.md
+* Development guidelines: https://github.com/vtsserving/VtsServing/blob/main/DEVELOPMENT.md
+* VtsServing contributor mailing list: https://groups.google.com/forum/#!forum/vtsserving
+* VtsServing contributor slack channel: https://vtsserving.slack.com/archives/CKC2JP3TM
 
 
 ## Roles And Responsibilities
@@ -21,42 +21,42 @@ outline how that participation takes place.
 
 Contributors are community members who contribute in concrete ways to the project. 
 Anyone can become a contributor, and contributions can take many forms, as detailed in 
-the [BentoML Contribution Guidelines](https://github.com/bentoml/BentoML/blob/main/CONTRIBUTING.md).
+the [VtsServing Contribution Guidelines](https://github.com/vtsserving/VtsServing/blob/main/CONTRIBUTING.md).
 There is no expectation of commitment to the project, no specific skill requirements and
 no selection process.
 
 As a contributor, you may find yourself doing one or more of the following:
 
 * Support new users by answering questions on the
-    [github issue tracker](https://github.com/bentoml/BentoML/issues) and the 
-    [#bentoml-users slack channel](https://join.slack.bentoml.org).
+    [github issue tracker](https://github.com/vtsserving/VtsServing/issues) and the 
+    [#vtsserving-users slack channel](https://join.slack.vtsserving.org).
 * Report issues you're facing and "Thumbs up" on issues and feature requests that are 
-    relevant to you in BentoML's [issue tracker](https://github.com/bentoml/BentoML/issues).
+    relevant to you in VtsServing's [issue tracker](https://github.com/vtsserving/VtsServing/issues).
 * Investigate bugs and reviewing other developer's pull requests.
 * Contribute code or documentation to the project by submitting a Github pull request.
-* Create new example projects and contribute it to [bentoml/examples](https://github.com/bentoml/BentoML/tree/main/examples).
+* Create new example projects and contribute it to [vtsserving/examples](https://github.com/vtsserving/VtsServing/tree/main/examples).
 
 
 Contributors engage with the project through the issue tracker and mailing list. They 
 submit code or documentation changes to the project via github pull request, which will 
 be reviewed by the Core Team members (see next section). 
 
-The [BentoML contributors mailing list](https://groups.google.com/forum/#!forum/bentoml) 
+The [VtsServing contributors mailing list](https://groups.google.com/forum/#!forum/vtsserving) 
 is the most appropriate place to ask for help or get feedback when making contributions.
 
 As contributors gain experience and familiarity with the project, their profile within, 
 and commitment to, the community will increase. At some stage, they may find themselves 
-being nominated for the BentoML Core Team.
+being nominated for the VtsServing Core Team.
 
 
 #### Core Team
 
-The BentoML Core Team consist of contributors who have produced contributions that are
+The VtsServing Core Team consist of contributors who have produced contributions that are
 substantial in quality and quantity. The core team members has additional
 responsibilities over those of a contributor. These responsibilities ensure the smooth 
 running of the project:
 
-* Managing the BentoML code and documentation
+* Managing the VtsServing code and documentation
 * Managing QA and new releases
 * Maintaining a high-level technical direction and roadmap
 * Project governance decisions and changes
@@ -133,9 +133,9 @@ they will appoint a substitute BDFL for that decision.
 Anyone can contribute to the project, regardless of their skills, as there are many ways
 to contribute. For instance, a contributor might be active on the project mailing list 
 and issue tracker, or might supply patches. The various ways of contributing are 
-described in more detail in the [Contribution Guidelines](https://github.com/bentoml/BentoML/blob/main/CONTRIBUTING.md).
+described in more detail in the [Contribution Guidelines](https://github.com/vtsserving/VtsServing/blob/main/CONTRIBUTING.md).
 
-The [BentoML contributor mailing list](https://groups.google.com/forum/#!forum/bentoml) 
+The [VtsServing contributor mailing list](https://groups.google.com/forum/#!forum/vtsserving) 
 is the most appropriate place to ask for help or get feedback when making contributions.
 
 
@@ -144,7 +144,7 @@ is the most appropriate place to ask for help or get feedback when making contri
 Decisions about the future of the project are made through discussion with all members 
 of the community, from the newest user to the most experienced PMC member. All 
 non-sensitive project management discussion takes place on the 
-[BentoML contributors mailing list](https://groups.google.com/forum/#!forum/bentoml). 
+[VtsServing contributors mailing list](https://groups.google.com/forum/#!forum/vtsserving). 
 
 In order to ensure that the project is not bogged down by endless discussion and 
 continual voting, the project operates a policy of lazy consensus. This allows the 
@@ -161,7 +161,7 @@ Decision making typically involves the following steps:
 * Decision
 
 Any community member can make a proposal for consideration by the community. In order to
-initiate a discussion about a new idea, they should send an email to the BentoML 
+initiate a discussion about a new idea, they should send an email to the VtsServing 
 contributors’ list or create a github issue describing the idea. This will prompt a 
 review and, if necessary, a discussion of the idea. The goal of this review and 
 discussion is to gain approval for the contribution. Since most people in the project 

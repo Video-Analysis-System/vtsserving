@@ -3,7 +3,7 @@ API Reference
 =============
 
 This page contains detailed API specifications. This is best use for digging deeper into
-BentoML APIs and learn about all the options they provide.
+VtsServing APIs and learn about all the options they provide.
 
 .. toctree::
   :maxdepth: 2

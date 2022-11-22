@@ -5,7 +5,7 @@ Logging
 Server Logging
 --------------
 
-BentoML provides a powerful and detailed logging pattern out of the box. Request logs for
+VtsServing provides a powerful and detailed logging pattern out of the box. Request logs for
 webservices are logged along with requests to each of the model runner services.
 
 The request log format is as follows:
@@ -24,7 +24,7 @@ For example, a log message might look like:
 OpenTelemetry Compatible
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The BentoML logging system implements the `OpenTelemetry <https://opentelemetry.io/docs/>`_ standard
+The VtsServing logging system implements the `OpenTelemetry <https://opentelemetry.io/docs/>`_ standard
 for `http <https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/http.md>`_
 throughout the call stack to provide for maximum debuggability. Propogation of the OpenTelemetry
 parameters follows the standard provided
@@ -48,19 +48,19 @@ particular requests.
 Logging Configuration
 ^^^^^^^^^^^^^^^^^^^^^
 
-Access logs can be configured by setting the appropriate flags in the bento configuration file for
-both web requests and model serving requests. Read more about how to use a bento configuration file
+Access logs can be configured by setting the appropriate flags in the vts configuration file for
+both web requests and model serving requests. Read more about how to use a vts configuration file
 here in the - :ref:`Configuration Guide <configuration-page>`
 
 To configure other logs, use the
-`default python logging configuration <https://docs.python.org/3/howto/logging.html>`_. All BentoML
-logs are logged under the ``"bentoml"`` namespace.
+`default python logging configuration <https://docs.python.org/3/howto/logging.html>`_. All VtsServing
+logs are logged under the ``"vtsserving"`` namespace.
 
 Web Service Request Logging
 """""""""""""""""""""""""""
 
 For web requests, logging can be enabled and disabled using the `api_server.logging.access` parameter at the
-top level of the ``bentoml_configuration.yml``.
+top level of the ``vtsserving_configuration.yml``.
 
 .. code-block:: yaml
 
@@ -81,10 +81,10 @@ top level of the ``bentoml_configuration.yml``.
 Model Runner Request Logging
 """"""""""""""""""""""""""""
 
-Depending on how you've configured BentoML, the webserver may be separated from the model runner.
+Depending on how you've configured VtsServing, the webserver may be separated from the model runner.
 In either case, we have special logging that is enabled specifically on the model side of the
 request. You may configure the runner access logs under the runners parameter at the top level of
-your ``bentoml_configuration.yml``:
+your ``vtsserving_configuration.yml``:
 
 .. code-block:: yaml
 
@@ -101,7 +101,7 @@ These logs are disabled by default in order to prevent double logging of request
 Access Logging Format
 """""""""""""""""""""
 
-You may configure the format of the Trace and Span IDs in the access logs in ``bentoml_configuration.yml``.
+You may configure the format of the Trace and Span IDs in the access logs in ``vtsserving_configuration.yml``.
 The default configuration is shown below, where the opentelemetry ``trace_id`` and ``span_id`` are logged in
 hexadecimal format, consistent with opentelemetry logging instrumentation. You may also configure other format
 specs, such as decimal ``d``.
@@ -119,7 +119,7 @@ specs, such as decimal ``d``.
 Library Logging
 ---------------
 
-When using BentoML as a library, BentoML does not configure any logs. By default, Python will configure a root logger that logs at level WARNING and higher. If you want to see BentoML's DEBUG or INFO logs, register a log handler to the ``bentoml`` namespace:
+When using VtsServing as a library, VtsServing does not configure any logs. By default, Python will configure a root logger that logs at level WARNING and higher. If you want to see VtsServing's DEBUG or INFO logs, register a log handler to the ``vtsserving`` namespace:
 
 .. code-block:: python
 
@@ -129,7 +129,7 @@ When using BentoML as a library, BentoML does not configure any logs. By default
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     ch.setFormatter(formatter)
 
-    bentoml_logger = logging.getLogger("bentoml")
-    bentoml_logger.addHandler(ch)
-    bentoml_logger.setLevel(logging.DEBUG)
+    vtsserving_logger = logging.getLogger("vtsserving")
+    vtsserving_logger.addHandler(ch)
+    vtsserving_logger.setLevel(logging.DEBUG)
 

@@ -2,12 +2,12 @@ import logging
 
 import pytest
 
-import bentoml
-from bentoml._internal.runner import Runner
+import vtsserving
+from vtsserving._internal.runner import Runner
 
 
-class DummyRunnable(bentoml.Runnable):
-    @bentoml.Runnable.method
+class DummyRunnable(vtsserving.Runnable):
+    @vtsserving.Runnable.method
     def dummy_runnable_method(self):
         pass
 
@@ -17,14 +17,14 @@ def test_runner(caplog):
 
     assert dummy_runner.name == "dummyrunnable"
     assert (
-        "bentoml._internal.runner.runner",
+        "vtsserving._internal.runner.runner",
         logging.WARNING,
         "Using lowercased runnable class name 'dummyrunnable' for runner.",
     ) in caplog.record_tuples
 
     named_runner = Runner(DummyRunnable, name="UPPERCASE_name")
     assert (
-        "bentoml._internal.runner.runner",
+        "vtsserving._internal.runner.runner",
         logging.WARNING,
         "Converting runner name 'UPPERCASE_name' to lowercase: 'uppercase_name'",
     ) in caplog.record_tuples

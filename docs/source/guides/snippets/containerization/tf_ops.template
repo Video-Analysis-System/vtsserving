@@ -1,4 +1,4 @@
-{% extends bento_base_template %}
+{% extends vts_base_template %}
 {% block SETUP_VTS_BASE_IMAGE %}
 
 {{ super() }}

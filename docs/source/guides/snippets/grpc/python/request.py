@@ -1,4 +1,4 @@
-from bentoml.grpc.v1 import service_pb2 as pb
+from vtsserving.grpc.v1 import service_pb2 as pb
 
 req = pb.Request(
     api_name="classify",

@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       related: ${{ steps.filter.outputs.related }}
-      bentoml: ${{ steps.filter.outputs.bentoml }}
+      vtsserving: ${{ steps.filter.outputs.vtsserving }}
       docs: ${{ steps.filter.outputs.docs }}
       protos: ${{ steps.filter.outputs.protos }}
     steps:
@@ -38,12 +38,12 @@ jobs:
               - pyproject.toml
               - requirements/tests-requirements.txt
             protos: &protos
-              - "src/bentoml/grpc/**/*.proto"
-            bentoml:
+              - "src/vtsserving/grpc/**/*.proto"
+            vtsserving:
               - *protos
               - *related
-              - "src/bentoml/**"
-              - "src/bentoml_cli/**"
+              - "src/vtsserving/**"
+              - "src/vtsserving_cli/**"
               - "tests/**"
               - "examples/**"
             docs:
@@ -56,7 +56,7 @@ jobs:
     needs:
       - diff
 
-    if: ${{ (github.event_name == 'pull_request' && needs.diff.outputs.bentoml == 'true') || github.event_name == 'push' }}
+    if: ${{ (github.event_name == 'pull_request' && needs.diff.outputs.vtsserving == 'true') || github.event_name == 'push' }}
 
     steps:
       - uses: actions/checkout@v3
@@ -111,7 +111,7 @@ jobs:
       - name: Proto check
         if: ${{ (github.event_name == 'pull_request' && needs.diff.outputs.protos == 'true') || github.event_name == 'push' }}
         run: |
-          buf lint --config "src/bentoml/grpc/buf.yaml" --error-format msvs src
+          buf lint --config "src/vtsserving/grpc/buf.yaml" --error-format msvs src
 
   documentation_spelling_check:
     runs-on: ubuntu-latest
@@ -163,7 +163,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ["3.7", "3.8", "3.9", "3.10"]
 
-    if: ${{ (github.event_name == 'pull_request' && needs.diff.outputs.bentoml == 'true') || github.event_name == 'push' }}
+    if: ${{ (github.event_name == 'pull_request' && needs.diff.outputs.vtsserving == 'true') || github.event_name == 'push' }}
     name: python${{ matrix.python-version }}_unit_tests (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
 
@@ -197,7 +197,7 @@ jobs:
 
       - name: Run unit tests
         run: |
-          OPTS=(--cov-config pyproject.toml --cov=src/bentoml --cov-append)
+          OPTS=(--cov-config pyproject.toml --cov=src/vtsserving --cov-append)
           if [ "${{ matrix.os }}" != 'windows-latest' ]; then
             # we will use pytest-xdist to improve tests run-time.
             OPTS=(${OPTS[@]} --dist loadfile -n auto --run-grpc-tests)
@@ -214,7 +214,7 @@ jobs:
           files: coverage.xml
           token: ${{ secrets.CODECOV_TOKEN }}
 
-  bento_server_e2e_tests:
+  vts_server_e2e_tests:
     needs:
       - diff
 
@@ -228,7 +228,7 @@ jobs:
           - os: windows-latest
             server_type: "grpc"
 
-    if: ${{ (github.event_name == 'pull_request' && needs.diff.outputs.bentoml == 'true') || github.event_name == 'push' }}
+    if: ${{ (github.event_name == 'pull_request' && needs.diff.outputs.vtsserving == 'true') || github.event_name == 'push' }}
     name: python${{ matrix.python-version }}_${{ matrix.server_type }}_e2e_tests (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
@@ -275,14 +275,14 @@ jobs:
           else
             pip install -e .
           fi
-          if [ -f "tests/e2e/bento_server_${{ matrix.server_type }}/requirements.txt" ]; then
-            pip install -r tests/e2e/bento_server_${{ matrix.server_type }}/requirements.txt
+          if [ -f "tests/e2e/vts_server_${{ matrix.server_type }}/requirements.txt" ]; then
+            pip install -r tests/e2e/vts_server_${{ matrix.server_type }}/requirements.txt
           fi
 
       - name: Run ${{ matrix.server_type }} tests and generate coverage report
         run: |
-          OPTS=(--cov-config pyproject.toml --cov=src/bentoml --cov-append)
-          coverage run -m pytest tests/e2e/bento_server_${{ matrix.server_type }} "${OPTS[@]}"
+          OPTS=(--cov-config pyproject.toml --cov=src/vtsserving --cov-append)
+          coverage run -m pytest tests/e2e/vts_server_${{ matrix.server_type }} "${OPTS[@]}"
 
       - name: Generage coverage
         run: coverage xml

@@ -1,7 +1,7 @@
 service: "service:svc"
 description: "file: ./README.md"
 labels:
-  owner: bentoml-team
+  owner: vtsserving-team
   stage: demo
 include:
 - "*.py"

@@ -4,17 +4,17 @@ MLflow
 
 .. admonition:: About this page
 
-   This is an API reference for using MLflow in BentoML. Please refer to
+   This is an API reference for using MLflow in VtsServing. Please refer to
    :doc:`MLflow guide </integrations/mlflow>` for more information about how to use MLflow
-   in BentoML.
+   in VtsServing.
 
 
-.. currentmodule:: bentoml.mlflow
+.. currentmodule:: vtsserving.mlflow
 
-.. autofunction:: bentoml.mlflow.import_model
+.. autofunction:: vtsserving.mlflow.import_model
 
-.. autofunction:: bentoml.mlflow.load_model
+.. autofunction:: vtsserving.mlflow.load_model
 
-.. autofunction:: bentoml.mlflow.get
+.. autofunction:: vtsserving.mlflow.get
 
-.. autofunction:: bentoml.mlflow.get_mlflow_model
+.. autofunction:: vtsserving.mlflow.get_mlflow_model

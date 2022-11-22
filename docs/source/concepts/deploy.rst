@@ -6,19 +6,19 @@ Deploying Bento
 Deployment Overview
 -------------------
 
-The three most common deployment options with BentoML are:
+The three most common deployment options with VtsServing are:
 
 - 🐳 Generate container images from Bento for custom docker deployment
-- `🦄️ Yatai <https://github.com/bentoml/Yatai>`_: Model Deployment at scale on Kubernetes
-- `🚀 bentoctl <https://github.com/bentoml/bentoctl>`_: Fast model deployment on any cloud platform
+- `🦄️ Yatai <https://github.com/vtsserving/Yatai>`_: Model Deployment at scale on Kubernetes
+- `🚀 vtsctl <https://github.com/vtsserving/vtsctl>`_: Fast model deployment on any cloud platform
 
 
 Containerize Bentos
 -------------------
 
-Containerizing bentos as Docker images allows users to easily distribute and deploy
-bentos. Once services are built as bentos and saved to the bento store, we can
-containerize saved bentos with the CLI command `bentoml containerize`.
+Containerizing vtss as Docker images allows users to easily distribute and deploy
+vtss. Once services are built as vtss and saved to the vts store, we can
+containerize saved vtss with the CLI command `vtsserving containerize`.
 
 Start the Docker engine. Verify using `docker info`.
 
@@ -26,22 +26,22 @@ Start the Docker engine. Verify using `docker info`.
 
     > docker info
 
-Run :code:`bentoml list` to view available bentos in the store.
+Run :code:`vtsserving list` to view available vtss in the store.
 
 .. code:: bash
 
-    > bentoml list
+    > vtsserving list
 
     Tag                               Size        Creation Time        Path
-    iris_classifier:ejwnswg5kw6qnuqj  803.01 KiB  2022-05-27 00:37:08  ~/bentoml/bentos/iris_classifier/ejwnswg5kw6qnuqj
-    iris_classifier:h4g6jmw5kc4ixuqj  644.45 KiB  2022-05-27 00:02:08  ~/bentoml/bentos/iris_classifier/h4g6jmw5kc4ixuqj
+    iris_classifier:ejwnswg5kw6qnuqj  803.01 KiB  2022-05-27 00:37:08  ~/vtsserving/vtss/iris_classifier/ejwnswg5kw6qnuqj
+    iris_classifier:h4g6jmw5kc4ixuqj  644.45 KiB  2022-05-27 00:02:08  ~/vtsserving/vtss/iris_classifier/h4g6jmw5kc4ixuqj
 
 
-Run :code:`bentoml containerize` to start the containerization process.
+Run :code:`vtsserving containerize` to start the containerization process.
 
 .. code:: bash
 
-    > bentoml containerize iris_classifier:latest                                                                                                                                             02:10:47
+    > vtsserving containerize iris_classifier:latest                                                                                                                                             02:10:47
 
     INFO [cli] Building docker image for Bento(tag="iris_classifier:ejwnswg5kw6qnuqj")...
     [+] Building 21.2s (20/20) FINISHED
@@ -57,7 +57,7 @@ Run :code:`bentoml containerize` to start the containerization process.
 
    .. code:: bash
 
-      bentoml containerize --platform=linux/amd64 iris_classifier:latest
+      vtsserving containerize --platform=linux/amd64 iris_classifier:latest
 
 
 View the built Docker image:
@@ -87,25 +87,25 @@ Deploy with Yatai
 -----------------
 
 Yatai helps ML teams to deploy large scale model serving workloads on Kubernetes. It
-standardizes BentoML deployment on Kubernetes, provides UI and APis for managing all
+standardizes VtsServing deployment on Kubernetes, provides UI and APis for managing all
 your ML models and deployments in one place, and enables advanced GitOps and CI/CD
 workflows.
 
 Yatai is Kubernetes native, integrates well with other cloud native tools in the K8s
 eco-system.
 
-To get started, get an API token from Yatai Web UI and login from your :code:`bentoml`
+To get started, get an API token from Yatai Web UI and login from your :code:`vtsserving`
 CLI command:
 
 .. code:: bash
 
-    bentoml yatai login --api-token {YOUR_TOKEN_GOES_HERE} --endpoint http://yatai.127.0.0.1.sslip.io
+    vtsserving yatai login --api-token {YOUR_TOKEN_GOES_HERE} --endpoint http://yatai.127.0.0.1.sslip.io
 
 Push your local Bentos to yatai:
 
 .. code:: python
 
-    bentoml push iris_classifier:latest
+    vtsserving push iris_classifier:latest
 
 .. tip::
     Yatai will automatically start building container images for a new Bento pushed.
@@ -136,7 +136,7 @@ Deploy via API
 Yatai's REST API specification can be found under the :code:`/swagger` endpoint. If you
 have Yatai deployed locally with minikube, visit:
 http://yatai.127.0.0.1.sslip.io/swagger/. The Swagger API spec covers all core Yatai
-functionalities ranging from model/bento management, cluster management to deployment
+functionalities ranging from model/vts management, cluster management to deployment
 automation.
 
 .. note::
@@ -146,15 +146,15 @@ automation.
 
     .. code:: python
 
-        yatai_client = bentoml.YataiClient.from_env()
+        yatai_client = vtsserving.YataiClient.from_env()
 
-        bento = yatai_client.get_bento('my_svc:v1')
-        assert bento and bento.status.is_ready()
+        vts = yatai_client.get_vts('my_svc:v1')
+        assert vts and vts.status.is_ready()
 
-        yatai_client.create_deployment('my_deployment', bento.tag, ...)
+        yatai_client.create_deployment('my_deployment', vts.tag, ...)
 
         # For updating a deployment:
-        yatai_client.update_deployment('my_deployment', bento.tag)
+        yatai_client.update_deployment('my_deployment', vts.tag)
 
         # check deployment_info.status
         deployment_info = yatai_client.get_deployment('my_deployment')
@@ -176,7 +176,7 @@ deployment CRD controller.
     metadata:
       name: demo
     spec:
-      bento_tag: iris_classifier:3oevmqfvnkvwvuqj
+      vts_tag: iris_classifier:3oevmqfvnkvwvuqj
       resources:
         limits:
           cpu: 1000m
@@ -189,17 +189,17 @@ deployment CRD controller.
 
 
 
-Deploy with bentoctl
+Deploy with vtsctl
 --------------------
 
-:code:`bentoctl` is a CLI tool for deploying Bentos to run on any cloud platform. It
+:code:`vtsctl` is a CLI tool for deploying Bentos to run on any cloud platform. It
 supports all major cloud providers, including AWS, Azure, Google Cloud, and many more.
 
-Underneath, :code:`bentoctl` is powered by Terraform. :code:`bentoctl` adds required
+Underneath, :code:`vtsctl` is powered by Terraform. :code:`vtsctl` adds required
 modifications to Bento or service configurations, and then generate terraform templates
 for the target deploy platform for easy deployment.
 
-The :code:`bentoctl` deployment workflow is optimized for CI/CD and GitOps. It is highly
+The :code:`vtsctl` deployment workflow is optimized for CI/CD and GitOps. It is highly
 customizable, users can fine-tune all configurations provided by the cloud platform. It
 is also extensible, for users to define additional terraform templates to be attached
 to a deployment.
@@ -207,25 +207,25 @@ to a deployment.
 Quick Tour
 ^^^^^^^^^^
 
-Install aws-lambda plugin for :code:`bentoctl` as an example:
+Install aws-lambda plugin for :code:`vtsctl` as an example:
 
 .. code:: bash
 
-    bentoctl operator install aws-lambda
+    vtsctl operator install aws-lambda
 
-Initialize a bentoctl project. This enters an interactive mode asking users for related
+Initialize a vtsctl project. This enters an interactive mode asking users for related
 deployment configurations:
 
 .. code:: bash
 
-    > bentoctl init
+    > vtsctl init
 
     Bentoctl Interactive Deployment Config Builder
     ...
 
     deployment config generated to: deployment_config.yaml
     ✨ generated template files.
-      - bentoctl.tfvars
+      - vtsctl.tfvars
       - main.tf
 
 
@@ -250,7 +250,7 @@ configuration:
 
 .. code:: bash
 
-    bentoctl build -b iris_classifier:btzv5wfv665trhcu -f ./deployment_config.yaml
+    vtsctl build -b iris_classifier:btzv5wfv665trhcu -f ./deployment_config.yaml
 
 Next step, use :code:`terraform` CLI command to apply the generated deployment configs
 to AWS. This will require user setting up AWS credentials on the environment.
@@ -259,7 +259,7 @@ to AWS. This will require user setting up AWS credentials on the environment.
 .. code:: bash
 
     > terraform init
-    > terraform apply -var-file=bentoctl.tfvars --auto-approve
+    > terraform apply -var-file=vtsctl.tfvars --auto-approve
 
     ...
     base_url = "https://ka8h2p2yfh.execute-api.us-west-1.amazonaws.com/"
@@ -282,14 +282,14 @@ Testing the endpoint deployed:
 Supported Cloud Platforms
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- AWS Lambda: https://github.com/bentoml/aws-lambda-deploy
-- AWS SageMaker: https://github.com/bentoml/aws-sagemaker-deploy
-- AWS EC2: https://github.com/bentoml/aws-ec2-deploy
-- Google Cloud Run: https://github.com/bentoml/google-cloud-run-deploy
-- Google Compute Engine: https://github.com/bentoml/google-compute-engine-deploy
-- Azure Functions: https://github.com/bentoml/azure-functions-deploy
-- Azure Container Instances: https://github.com/bentoml/azure-container-instances-deploy
-- Heroku: https://github.com/bentoml/heroku-deploy
+- AWS Lambda: https://github.com/vtsserving/aws-lambda-deploy
+- AWS SageMaker: https://github.com/vtsserving/aws-sagemaker-deploy
+- AWS EC2: https://github.com/vtsserving/aws-ec2-deploy
+- Google Cloud Run: https://github.com/vtsserving/google-cloud-run-deploy
+- Google Compute Engine: https://github.com/vtsserving/google-compute-engine-deploy
+- Azure Functions: https://github.com/vtsserving/azure-functions-deploy
+- Azure Container Instances: https://github.com/vtsserving/azure-container-instances-deploy
+- Heroku: https://github.com/vtsserving/heroku-deploy
 
 .. TODO::
     Explain limitations of each platform, e.g. GPU support
@@ -306,5 +306,5 @@ recommended approach if auto-scaling and resource efficiency are required for yo
 Yatai enables users to fine-tune resource requirements and
 auto-scaling policy at the Runner level, which inherently improves interoperability between auto-scaling and data aggregated at Runner's adaptive batching layer in real-time.
 
-Many of bentoctl’s deployment targets also come with a certain level of auto-scaling
+Many of vtsctl’s deployment targets also come with a certain level of auto-scaling
 capabilities, including AWS EC2 and AWS Lambda.

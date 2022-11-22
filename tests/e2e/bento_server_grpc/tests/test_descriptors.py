@@ -8,13 +8,13 @@ from functools import partial
 
 import pytest
 
-from bentoml.grpc.utils import import_grpc
-from bentoml.grpc.utils import import_generated_stubs
-from bentoml.testing.grpc import create_channel
-from bentoml.testing.grpc import async_client_call
-from bentoml.testing.grpc import randomize_pb_ndarray
-from bentoml._internal.types import LazyType
-from bentoml._internal.utils import LazyLoader
+from vtsserving.grpc.utils import import_grpc
+from vtsserving.grpc.utils import import_generated_stubs
+from vtsserving.testing.grpc import create_channel
+from vtsserving.testing.grpc import async_client_call
+from vtsserving.testing.grpc import randomize_pb_ndarray
+from vtsserving._internal.types import LazyType
+from vtsserving._internal.utils import LazyLoader
 
 if TYPE_CHECKING:
     import grpc
@@ -24,8 +24,8 @@ if TYPE_CHECKING:
     from google.protobuf import struct_pb2
     from google.protobuf import wrappers_pb2
 
-    from bentoml.grpc.v1 import service_pb2 as pb
-    from bentoml._internal import external_typing as ext
+    from vtsserving.grpc.v1 import service_pb2 as pb
+    from vtsserving._internal import external_typing as ext
 else:
     pb, _ = import_generated_stubs()
     grpc, _ = import_grpc()

@@ -2,11 +2,11 @@
 Tracing
 =======
 
-BentoML API server supports tracing with `Zipkin <https://zipkin.io/>`_,
+VtsServing API server supports tracing with `Zipkin <https://zipkin.io/>`_,
 `Jaeger <https://www.jaegertracing.io/>`_ and `OTLP <https://opentelemetry.io/>`_.
 
-:bdg-info:`Requirements:` bentoml must be installed with the extras dependencies for
-tracing exporters. The following command will install BentoML with its coresponding
+:bdg-info:`Requirements:` vtsserving must be installed with the extras dependencies for
+tracing exporters. The following command will install VtsServing with its coresponding
 tracing exporter:
 
 .. tab-set::
@@ -15,19 +15,19 @@ tracing exporter:
 
        .. code-block:: bash
 
-          pip install "bentoml[tracing-jaeger]"
+          pip install "vtsserving[tracing-jaeger]"
 
    .. tab-item:: Zipkin
 
       .. code-block:: bash
 
-         pip install "bentoml[tracing-zipkin]"
+         pip install "vtsserving[tracing-zipkin]"
 
    .. tab-item:: OpenTelemetry Protocol
 
       .. code-block:: bash
 
-         pip install "bentoml[tracing-otlp]"
+         pip install "vtsserving[tracing-otlp]"
 
 To config tracing server, user can provide a config YAML file specifying the tracer type and tracing server information:
 
@@ -56,7 +56,7 @@ Here is an example config for tracing with a Zipkin server:
        zipkin:
          url: http://localhost:9411/api/v2/spans
 
-When using Zipkin tracer, BentoML only supports its v2 protocol. If you are reporting to
+When using Zipkin tracer, VtsServing only supports its v2 protocol. If you are reporting to
 the an OpenZipkin server directly, make sure to add the URL path :code:`/api/v2/spans`
 to the server address.
 
@@ -109,20 +109,20 @@ If using HTTP, you must set the whole Traces receiver endpoint path (e.g. `/v1/t
         protocol: http
         url: http://localhost:4318/v1/traces
 
-When starting a BentoML API model server, provide the path to this config file
+When starting a VtsServing API model server, provide the path to this config file
 by setting the environment variable :code:`VTSSERVING_CONFIG`:
 
 .. code-block:: bash
 
-    VTSSERVING_CONFIG=my_config_file.yml bentoml serve $VTS_BUNDLE_PATH
+    VTSSERVING_CONFIG=my_config_file.yml vtsserving serve $VTS_BUNDLE_PATH
 
 
-Similarly when serving with BentoML API server docker image, assuming you have a
+Similarly when serving with VtsServing API server docker image, assuming you have a
 :code:`my_config_file.yml` file ready in current directory:
 
 .. code-block:: bash
 
-    docker run -v $(PWD):/tmp -p 3000:3000 -e VTSSERVING_CONFIG=/tmp/my_config_file.yml my-bento-api-server
+    docker run -v $(PWD):/tmp -p 3000:3000 -e VTSSERVING_CONFIG=/tmp/my_config_file.yml my-vts-api-server
 
 .. spelling::
 

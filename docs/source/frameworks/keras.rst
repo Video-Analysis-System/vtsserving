@@ -4,20 +4,20 @@ Keras
 
 .. note::
 
-   Both ``bentoml.keras`` and ``bentoml.tensorflow`` support Keras
-   models. ``bentoml.keras`` utilizes the native model format and
+   Both ``vtsserving.keras`` and ``vtsserving.tensorflow`` support Keras
+   models. ``vtsserving.keras`` utilizes the native model format and
    will give a better development experience to users who are more
    familiar with Keras models. However, the native model format of Keras is
    not optimized for production inference. There are `known reports
    <https://github.com/tensorflow/tensorflow/issues?q=is%3Aissue+sort%3Aupdated-desc+keras+memory+leak>`_
-   of memory leaks during serving time at the time of BentoML 1.0
-   release, so ``bentoml.tensorflow`` is recommended in production
-   environments. You can read :doc:`bentoml.tensorflow
+   of memory leaks during serving time at the time of VtsServing 1.0
+   release, so ``vtsserving.tensorflow`` is recommended in production
+   environments. You can read :doc:`vtsserving.tensorflow
    </frameworks/tensorflow>` documentation for more information.
 
    You can also convert a Keras model to ONNX model and use
-   ``bentoml.onnx`` to serve in production. Refer
-   :doc:`bentoml.onnx documentation </frameworks/onnx>` and
+   ``vtsserving.onnx`` to serve in production. Refer
+   :doc:`vtsserving.onnx documentation </frameworks/onnx>` and
    `tensorflow-onnx (tf2onnx) documentation
    <https://github.com/onnx/tensorflow-onnx>`_ for more information.
 
@@ -25,7 +25,7 @@ Keras
 Compatibility
 -------------
 
-BentoML requires TensorFlow version **2.7.3** or higher to be installed.
+VtsServing requires TensorFlow version **2.7.3** or higher to be installed.
 
 
 Saving a Keras Model
@@ -60,20 +60,20 @@ The following example loads a pre-trained ResNet50 model.
    # Keras Predicted: [('n04285008', 'sports_car', 0.3447785)]
 
 
-After the Keras model is ready, use :obj:`~bentoml.keras.save_model`
-to save the model instance to BentoML model store.
+After the Keras model is ready, use :obj:`~vtsserving.keras.save_model`
+to save the model instance to VtsServing model store.
 
 .. code-block:: python
 
-   bentoml.keras.save_model("keras_resnet50", model)
+   vtsserving.keras.save_model("keras_resnet50", model)
 
 
-Keras model can be loaded with :obj:`~bentoml.keras.load_model` to 
+Keras model can be loaded with :obj:`~vtsserving.keras.load_model` to 
 verify that the saved model can be loaded properly.
 
 .. code-block:: python
 
-   model = bentoml.keras.load_model("keras_resnet50:latest")
+   model = vtsserving.keras.load_model("keras_resnet50:latest")
 
    print(decode_predictions(model.predict(x)))
 
@@ -84,7 +84,7 @@ Building a Service using Keras
 .. seealso::
 
    See :ref:`Building a Service <concepts/service:Service and APIs>` for more 
-   information on creating a prediction service with BentoML.
+   information on creating a prediction service with VtsServing.
 
 The following service example creates a ``predict`` API endpoint that accepts an image as input 
 and return JSON data as output. Within the API function, Keras model runner created from the 
@@ -92,15 +92,15 @@ previously saved ResNet50 model is used for inference.
 
 .. code-block:: python
 
-   import bentoml
+   import vtsserving
 
    import numpy as np
-   from bentoml.io import Image
-   from bentoml.io import JSON
+   from vtsserving.io import Image
+   from vtsserving.io import JSON
 
-   runner = bentoml.keras.get("keras_resnet50:latest").to_runner()
+   runner = vtsserving.keras.get("keras_resnet50:latest").to_runner()
 
-   svc = bentoml.Service("keras_resnet50", runners=[runner])
+   svc = vtsserving.Service("keras_resnet50", runners=[runner])
 
    @svc.api(input=Image(), output=JSON())
    async def predict(img):
@@ -115,7 +115,7 @@ previously saved ResNet50 model is used for inference.
        return decode_predictions(preds, top=1)[0]
 
 
-When constructing a :ref:`bentofile.yaml <concepts/bento:Bento Build
+When constructing a :ref:`vtsfile.yaml <concepts/vts:Bento Build
 Options>`, there are two ways to include Keras as a dependency, via
 ``python`` (if using pip) or ``conda``:
 

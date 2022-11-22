@@ -1,6 +1,6 @@
 # Custom PyTorch MNIST runner
 
-This example showcases how one can extend BentoML's provided runner and build a custom Runner. See [our documentation][#custom-runner] on Runners.
+This example showcases how one can extend VtsServing's provided runner and build a custom Runner. See [our documentation][#custom-runner] on Runners.
 
 This example will also demonstrate how one can create custom metrics to monitor the model's performance.
 We will provide two Prometheus configs to use for either HTTP or gRPC BentoServer for demonstration.
@@ -38,7 +38,7 @@ wget -qO- https://github.com/myleott/mnist_png/raw/master/mnist_png.tar.gz | tar
 <td>
 
 ```bash
-bentoml serve-http service.py:svc
+vtsserving serve-http service.py:svc
 ```
 
 </td>
@@ -48,7 +48,7 @@ bentoml serve-http service.py:svc
 <td>
 
 ```bash
-bentoml serve-grpc service.py:svc
+vtsserving serve-grpc service.py:svc
 ```
 
 </td>
@@ -76,7 +76,7 @@ curl -F 'image=@mnist_png/testing/8/1007.png' http://127.0.0.1:3000/predict
 <td>
 
 ```bash
-grpcurl -d @ -plaintext 0.0.0.0:3000 bentoml.grpc.v1.BentoService/Call <<EOM
+grpcurl -d @ -plaintext 0.0.0.0:3000 vtsserving.grpc.v1.BentoService/Call <<EOM
 {
   "apiName": "classify",
   "file": {
@@ -92,7 +92,7 @@ EOM
 Start production server:
 
 ```bash
-bentoml serve --production
+vtsserving serve --production
 ```
 
 From another terminal:
@@ -102,4 +102,4 @@ pip install locust
 locust -H http://0.0.0.0:3000
 ```
 
-[#custom-runner]: https://docs.bentoml.org/en/latest/concepts/runner.html#custom-runner
+[#custom-runner]: https://docs.vtsserving.org/en/latest/concepts/runner.html#custom-runner

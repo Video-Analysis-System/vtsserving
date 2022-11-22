@@ -9,13 +9,13 @@ import numpy as np
 import pytest
 import aiohttp
 
-from bentoml.testing.utils import async_request
-from bentoml.testing.utils import parse_multipart_form
+from vtsserving.testing.utils import async_request
+from vtsserving.testing.utils import parse_multipart_form
 
 if TYPE_CHECKING:
     import PIL.Image as PILImage
 else:
-    from bentoml._internal.utils import LazyLoader
+    from vtsserving._internal.utils import LazyLoader
 
     PILImage = LazyLoader("PILImage", globals(), "PIL.Image")
 
@@ -64,7 +64,7 @@ async def test_numpy(host: str):
 
 @pytest.mark.asyncio
 async def test_json(host: str):
-    ORIGIN = "http://bentoml.ai"
+    ORIGIN = "http://vtsserving.ai"
 
     await async_request(
         "POST",
@@ -112,7 +112,7 @@ async def test_obj(host: str):
 async def test_pandas(host: str):
     import pandas as pd
 
-    ORIGIN = "http://bentoml.ai"
+    ORIGIN = "http://vtsserving.ai"
 
     df = pd.DataFrame([[101]], columns=["col1"])
 

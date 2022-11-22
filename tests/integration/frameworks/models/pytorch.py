@@ -6,13 +6,13 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-import bentoml
+import vtsserving
 
 from . import FrameworkTestModel
 from . import FrameworkTestModelInput as Input
 from . import FrameworkTestModelConfiguration as Config
 
-framework = bentoml.pytorch
+framework = vtsserving.pytorch
 
 backward_compatible = True
 

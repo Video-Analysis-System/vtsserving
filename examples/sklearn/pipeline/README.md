@@ -1,4 +1,4 @@
-# BentoML Sklearn Example: document classification pipeline
+# VtsServing Sklearn Example: document classification pipeline
 
 0. Install dependencies:
 
@@ -15,7 +15,7 @@ python ./train.py
 2. Run the service:
 
 ```bash
-bentoml serve service.py:svc
+vtsserving serve service.py:svc
 ```
 
 3. Send test request
@@ -34,13 +34,13 @@ curl -X POST -H "content-type: application/text" --data "hello world" http://127
 4. Build Bento
 
 ```
-bentoml build
+vtsserving build
 ```
 
 5. Build docker image
 
 ```
-bentoml containerize doc_classifier:latest
+vtsserving containerize doc_classifier:latest
 ```
 
 

@@ -4,13 +4,13 @@ import keras
 import numpy as np
 import tensorflow as tf
 
-import bentoml
+import vtsserving
 
 from . import FrameworkTestModel
 from . import FrameworkTestModelInput as Input
 from . import FrameworkTestModelConfiguration as Config
 
-framework = bentoml.tensorflow
+framework = vtsserving.tensorflow
 
 backward_compatible = True
 

@@ -15,8 +15,8 @@ from prometheus_client.parser import (
     text_string_to_metric_families,  # type: ignore (no prometheus types)
 )
 
-import bentoml
-from bentoml._internal.utils import analytics
+import vtsserving
+from vtsserving._internal.utils import analytics
 
 if TYPE_CHECKING:
     from unittest.mock import MagicMock
@@ -25,13 +25,13 @@ if TYPE_CHECKING:
     from _pytest.monkeypatch import MonkeyPatch
     from prometheus_client.metrics_core import Metric
 
-    from bentoml import Service
+    from vtsserving import Service
 
 SCHEMA = Schema(
     {
         "common_properties": {
             "timestamp": str,
-            "bentoml_version": str,
+            "vtsserving_version": str,
             "client": {"creation_timestamp": str, "id": str},
             "memory_usage_percent": Or(int, float),
             "platform": str,
@@ -67,9 +67,9 @@ def test_get_payload(event_properties: analytics.schemas.ModelSaveEvent):
     assert SCHEMA.validate(payload)
 
 
-@patch("bentoml._internal.utils.analytics.usage_stats.requests.post")
-@patch("bentoml._internal.utils.analytics.usage_stats.do_not_track")
-@patch("bentoml._internal.utils.analytics.usage_stats._usage_event_debugging")
+@patch("vtsserving._internal.utils.analytics.usage_stats.requests.post")
+@patch("vtsserving._internal.utils.analytics.usage_stats.do_not_track")
+@patch("vtsserving._internal.utils.analytics.usage_stats._usage_event_debugging")
 def test_send_usage(
     mock_usage_event_debugging: MagicMock,
     mock_do_not_track: MagicMock,
@@ -91,8 +91,8 @@ def test_send_usage(
     assert "Tracking Payload" in caplog.text
 
 
-@patch("bentoml._internal.utils.analytics.usage_stats.requests.post")
-@patch("bentoml._internal.utils.analytics.usage_stats.do_not_track")
+@patch("vtsserving._internal.utils.analytics.usage_stats.requests.post")
+@patch("vtsserving._internal.utils.analytics.usage_stats.do_not_track")
 def test_do_not_track(
     mock_do_not_track: MagicMock,
     mock_post: MagicMock,
@@ -105,9 +105,9 @@ def test_do_not_track(
     assert not mock_post.called
 
 
-@patch("bentoml._internal.utils.analytics.usage_stats.logger")
-@patch("bentoml._internal.utils.analytics.usage_stats.requests.post")
-@patch("bentoml._internal.utils.analytics.usage_stats.do_not_track")
+@patch("vtsserving._internal.utils.analytics.usage_stats.logger")
+@patch("vtsserving._internal.utils.analytics.usage_stats.requests.post")
+@patch("vtsserving._internal.utils.analytics.usage_stats.do_not_track")
 def test_send_usage_failure(
     mock_do_not_track: MagicMock,
     mock_post: MagicMock,
@@ -123,9 +123,9 @@ def test_send_usage_failure(
     mock_logger.debug.assert_called_with("Tracking Error: %s", mock_post.side_effect)
 
 
-@patch("bentoml._internal.utils.analytics.usage_stats.requests.post")
-@patch("bentoml._internal.utils.analytics.usage_stats.do_not_track")
-@patch("bentoml._internal.utils.analytics.usage_stats._usage_event_debugging")
+@patch("vtsserving._internal.utils.analytics.usage_stats.requests.post")
+@patch("vtsserving._internal.utils.analytics.usage_stats.do_not_track")
+@patch("vtsserving._internal.utils.analytics.usage_stats._usage_event_debugging")
 @pytest.mark.parametrize("production", [False, True])
 @pytest.mark.usefixtures("propagate_logs")
 def test_track_serve_init(
@@ -165,14 +165,14 @@ def test_track_serve_init(
     assert "model_types" in caplog.text
 
 
-@patch("bentoml._internal.utils.analytics.usage_stats.do_not_track")
-@patch("bentoml._internal.utils.analytics.usage_stats._usage_event_debugging")
-def test_track_serve_init_no_bento(
+@patch("vtsserving._internal.utils.analytics.usage_stats.do_not_track")
+@patch("vtsserving._internal.utils.analytics.usage_stats._usage_event_debugging")
+def test_track_serve_init_no_vts(
     mock_usage_event_debugging: MagicMock,
     mock_do_not_track: MagicMock,
     caplog: LogCaptureFixture,
 ):
-    logger = logging.getLogger("bentoml")
+    logger = logging.getLogger("vtsserving")
     logger.propagate = False
 
     mock_do_not_track.return_value = False
@@ -181,7 +181,7 @@ def test_track_serve_init_no_bento(
 
     with caplog.at_level(logging.INFO):
         analytics.usage_stats._track_serve_init(  # type: ignore (private warning)
-            bentoml.Service("test"),
+            vtsserving.Service("test"),
             production=False,
             serve_info=analytics.usage_stats.get_serve_info(),
             serve_kind="http",
@@ -189,7 +189,7 @@ def test_track_serve_init_no_bento(
     assert "model_types" not in caplog.text
 
 
-@patch("bentoml._internal.server.metrics.prometheus.PrometheusClient")
+@patch("vtsserving._internal.server.metrics.prometheus.PrometheusClient")
 @pytest.mark.parametrize(
     "mock_output,expected",
     [
@@ -217,7 +217,7 @@ def test_filter_metrics_report(
     )
 
 
-@patch("bentoml._internal.utils.analytics.usage_stats.do_not_track")
+@patch("vtsserving._internal.utils.analytics.usage_stats.do_not_track")
 def test_track_serve_do_not_track(
     mock_do_not_track: MagicMock, simple_service: Service
 ):
@@ -233,8 +233,8 @@ def test_track_serve_do_not_track(
     assert mock_do_not_track.called
 
 
-@patch("bentoml._internal.utils.analytics.usage_stats.do_not_track")
-@patch("bentoml._internal.server.metrics.prometheus.PrometheusClient")
+@patch("vtsserving._internal.utils.analytics.usage_stats.do_not_track")
+@patch("vtsserving._internal.server.metrics.prometheus.PrometheusClient")
 def test_legacy_get_metrics_report(
     mock_prometheus_client: MagicMock,
     mock_do_not_track: MagicMock,
@@ -269,7 +269,7 @@ VTSSERVING_simple_service_request_total{endpoint="/predict",http_response_code="
     assert not any(x in endpoints for x in analytics.usage_stats.EXCLUDE_PATHS)
 
 
-@patch("bentoml._internal.server.metrics.prometheus.PrometheusClient")
+@patch("vtsserving._internal.server.metrics.prometheus.PrometheusClient")
 @pytest.mark.parametrize(
     "serve_kind,expected",
     [
@@ -291,12 +291,12 @@ VTSSERVING_simple_service_request_total{endpoint="/predict",http_response_code="
     [
         text_string_to_metric_families(
             b"""\
-                # HELP bentoml_api_server_request_total Multiprocess metric
-                # TYPE bentoml_api_server_request_total counter
-                bentoml_api_server_request_total{api_name="pred_json",http_response_code="200",service_name="simple_service",service_version="not available"} 15.0
-                # HELP bentoml_api_server_request_in_progress Multiprocess metric
-                # TYPE bentoml_api_server_request_in_progress gauge
-                bentoml_api_server_request_in_progress{api_name="pred_json",service_name="simple_service",service_version="not available"} 0.0
+                # HELP vtsserving_api_server_request_total Multiprocess metric
+                # TYPE vtsserving_api_server_request_total counter
+                vtsserving_api_server_request_total{api_name="pred_json",http_response_code="200",service_name="simple_service",service_version="not available"} 15.0
+                # HELP vtsserving_api_server_request_in_progress Multiprocess metric
+                # TYPE vtsserving_api_server_request_in_progress gauge
+                vtsserving_api_server_request_in_progress{api_name="pred_json",service_name="simple_service",service_version="not available"} 0.0
                 """.decode(
                 "utf-8"
             )
@@ -321,11 +321,11 @@ def test_get_metrics_report(
         assert expected in output
 
 
-@patch("bentoml._internal.utils.analytics.usage_stats.do_not_track")
-@patch("bentoml._internal.utils.analytics.usage_stats.requests.post")
-@patch("bentoml._internal.utils.analytics.usage_stats._track_serve_init")
-@patch("bentoml._internal.utils.analytics.usage_stats._usage_event_debugging")
-@patch("bentoml._internal.server.metrics.prometheus.PrometheusClient")
+@patch("vtsserving._internal.utils.analytics.usage_stats.do_not_track")
+@patch("vtsserving._internal.utils.analytics.usage_stats.requests.post")
+@patch("vtsserving._internal.utils.analytics.usage_stats._track_serve_init")
+@patch("vtsserving._internal.utils.analytics.usage_stats._usage_event_debugging")
+@patch("vtsserving._internal.server.metrics.prometheus.PrometheusClient")
 @pytest.mark.usefixtures("propagate_logs")
 def test_track_serve(
     mock_prometheus_client: MagicMock,

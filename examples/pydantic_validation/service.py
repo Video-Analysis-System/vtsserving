@@ -4,13 +4,13 @@ import numpy as np
 import pandas as pd
 from pydantic import BaseModel
 
-import bentoml
-from bentoml.io import JSON
-from bentoml.io import NumpyNdarray
+import vtsserving
+from vtsserving.io import JSON
+from vtsserving.io import NumpyNdarray
 
-iris_clf_runner = bentoml.sklearn.get("iris_clf_with_feature_names:latest").to_runner()
+iris_clf_runner = vtsserving.sklearn.get("iris_clf_with_feature_names:latest").to_runner()
 
-svc = bentoml.Service("iris_classifier_pydantic", runners=[iris_clf_runner])
+svc = vtsserving.Service("iris_classifier_pydantic", runners=[iris_clf_runner])
 
 
 class IrisFeatures(BaseModel):

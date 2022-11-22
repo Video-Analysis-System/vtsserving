@@ -13,20 +13,20 @@ from transformers.models.auto.modeling_auto import AutoModelForSequenceClassific
 from transformers.models.auto.tokenization_auto import AutoTokenizer
 from transformers.pipelines.audio_classification import AudioClassificationPipeline
 
-import bentoml
-from bentoml.exceptions import BentoMLException
-from bentoml.transformers import ModelOptions
+import vtsserving
+from vtsserving.exceptions import VtsServingException
+from vtsserving.transformers import ModelOptions
 
 set_seed(124)
 
 
 def test_convert_to_auto_class():
-    from bentoml._internal.frameworks.transformers import (
+    from vtsserving._internal.frameworks.transformers import (
         _convert_to_auto_class,  # type: ignore
     )
 
     with pytest.raises(
-        BentoMLException, match="Given not_a_class is not a valid Transformers *"
+        VtsServingException, match="Given not_a_class is not a valid Transformers *"
     ):
         _convert_to_auto_class("not_a_class")
 
@@ -57,8 +57,8 @@ def test_raise_different_default_definition():
         "type": "text",
     }
 
-    with pytest.raises(BentoMLException) as exc_info:
-        _ = bentoml.transformers.save_model(
+    with pytest.raises(VtsServingException) as exc_info:
+        _ = vtsserving.transformers.save_model(
             "forbidden_override",
             sentiment,
             task_name=alias,
@@ -70,10 +70,10 @@ def test_raise_different_default_definition():
 def test_raise_does_not_match_task_name():
     # pipeline task does not match given task name or pipeline.task is None
     with pytest.raises(
-        BentoMLException,
+        VtsServingException,
         match=f"Argument 'task_name' 'custom' does not match pipeline task name '{sentiment.task}'.",
     ):
-        _ = bentoml.transformers.save_model(
+        _ = vtsserving.transformers.save_model(
             "forbidden_override",
             sentiment,
             task_name="custom",
@@ -86,11 +86,11 @@ def test_raise_does_not_match_impl_field():
     orig_impl: type = original_task["impl"]
     try:
         with pytest.raises(
-            BentoMLException,
+            VtsServingException,
             match=f"Argument 'pipeline' is not an instance of {AudioClassificationPipeline}. It is an instance of {type(sentiment)}.",
         ):
             original_task["impl"] = AudioClassificationPipeline
-            _ = bentoml.transformers.save_model(
+            _ = vtsserving.transformers.save_model(
                 "forbidden_override",
                 sentiment,
                 task_name=alias,
@@ -101,8 +101,8 @@ def test_raise_does_not_match_impl_field():
 
 
 def test_raises_is_not_pipeline_instance():
-    with pytest.raises(BentoMLException) as exc_info:
-        _ = bentoml.transformers.save_model(
+    with pytest.raises(VtsServingException) as exc_info:
+        _ = vtsserving.transformers.save_model(
             "not_pipeline_type", AudioClassificationPipeline  # type: ignore (testing invalid type)
         )
     assert (
@@ -113,7 +113,7 @@ def test_raises_is_not_pipeline_instance():
 
 def test_logs_custom_task_definition(caplog: pytest.LogCaptureFixture):
     with caplog.at_level(logging.INFO):
-        _ = bentoml.transformers.save_model(
+        _ = vtsserving.transformers.save_model(
             "custom_sentiment_pipeline",
             sentiment,
             task_name="sentiment-analysis",
@@ -127,14 +127,14 @@ def test_logs_custom_task_definition(caplog: pytest.LogCaptureFixture):
 
 def test_log_load_model(caplog: pytest.LogCaptureFixture):
     with caplog.at_level(logging.INFO):
-        _ = bentoml.transformers.save_model(
+        _ = vtsserving.transformers.save_model(
             "sentiment_test",
             pipeline(
                 task="text-classification",
                 model="hf-internal-testing/tiny-random-distilbert",
             ),
         )
-        _ = bentoml.transformers.load_model("sentiment_test:latest", use_fast=True)
+        _ = vtsserving.transformers.load_model("sentiment_test:latest", use_fast=True)
     assert "with kwargs {'use_fast': True}." in caplog.text
 
 
@@ -191,7 +191,7 @@ def test_custom_pipeline():
             tokenizer=AutoTokenizer.from_pretrained(TINY_TEXT_MODEL),
         )
 
-        saved_pipe = bentoml.transformers.save_model(
+        saved_pipe = vtsserving.transformers.save_model(
             "my_classification_model",
             pipeline=pipe,
             task_name=TASK_NAME,
@@ -214,7 +214,7 @@ def test_custom_pipeline():
             tokenizer=AutoTokenizer.from_pretrained(TINY_TEXT_MODEL),
         )
 
-        saved_pipe = bentoml.transformers.save_model(
+        saved_pipe = vtsserving.transformers.save_model(
             "my_classification_model",
             pipeline=pipe,
             task_name=TASK_NAME,
@@ -229,15 +229,15 @@ def test_custom_pipeline():
     assert saved_pipe.tag.name == "my_classification_model"
 
     input_data: t.List[str] = [
-        "BentoML: Create an ML Powered Prediction Service in Minutes via @TDataScience https://buff.ly/3srhTw9 #Python #MachineLearning #BentoML",
-        "Top MLOps Serving frameworks — 2021 https://link.medium.com/5Elq6Aw52ib #mlops #TritonInferenceServer #opensource #nvidia #machincelearning  #serving #tensorflow #PyTorch #Bodywork #BentoML #KFServing #kubeflow #Cortex #Seldon #Sagify #Syndicai",
-        "#MLFlow provides components for experimentation management, ML project management. #BentoML only focuses on serving and deploying trained models",
-        "2000 and beyond #OpenSource #bentoml",
-        "Model Serving Made Easy https://github.com/bentoml/BentoML ⭐ 1.1K #Python #Bentoml #BentoML #Modelserving #Modeldeployment #Modelmanagement #Mlplatform #Mlinfrastructure #Ml #Ai #Machinelearning #Awssagemaker #Awslambda #Azureml #Mlops #Aiops #Machinelearningoperations #Turn",
+        "VtsServing: Create an ML Powered Prediction Service in Minutes via @TDataScience https://buff.ly/3srhTw9 #Python #MachineLearning #VtsServing",
+        "Top MLOps Serving frameworks — 2021 https://link.medium.com/5Elq6Aw52ib #mlops #TritonInferenceServer #opensource #nvidia #machincelearning  #serving #tensorflow #PyTorch #Bodywork #VtsServing #KFServing #kubeflow #Cortex #Seldon #Sagify #Syndicai",
+        "#MLFlow provides components for experimentation management, ML project management. #VtsServing only focuses on serving and deploying trained models",
+        "2000 and beyond #OpenSource #vtsserving",
+        "Model Serving Made Easy https://github.com/vtsserving/VtsServing ⭐ 1.1K #Python #Bentoml #VtsServing #Modelserving #Modeldeployment #Modelmanagement #Mlplatform #Mlinfrastructure #Ml #Ai #Machinelearning #Awssagemaker #Awslambda #Azureml #Mlops #Aiops #Machinelearningoperations #Turn",
     ]
 
     try:
-        pipe = bentoml.transformers.load_model("my_classification_model:latest")
+        pipe = vtsserving.transformers.load_model("my_classification_model:latest")
         output_data = pipe(input_data)
     finally:
         del SUPPORTED_TASKS[TASK_NAME]
@@ -248,7 +248,7 @@ def test_custom_pipeline():
     assert all([isinstance(data, np.ndarray) for data in output_data])
 
     try:
-        runnable: bentoml.Runnable = bentoml.transformers.get_runnable(saved_pipe)()
+        runnable: vtsserving.Runnable = vtsserving.transformers.get_runnable(saved_pipe)()
         output_data = runnable(input_data)
     finally:
         del SUPPORTED_TASKS[TASK_NAME]

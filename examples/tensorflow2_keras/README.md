@@ -1,12 +1,12 @@
-# BentoML TensorFlow 2 Tutorial
+# VtsServing TensorFlow 2 Tutorial
 
-This is a sample project demonstrating usage of BentoML following the advanced TensorFlow2 quickstart here: https://www.tensorflow.org/tutorials/quickstart/advanced
+This is a sample project demonstrating usage of VtsServing following the advanced TensorFlow2 quickstart here: https://www.tensorflow.org/tutorials/quickstart/advanced
 
 In this project, will train a model using Tensorflow2 library and the MNIST dataset. We will then build
 an ML service for the model, serve the model behind an HTTP endpoint, and containerize the model
 server as a docker image for production deployment.
 
-This project is also available to run from a notebook: https://github.com/bentoml/BentoML/blob/main/examples/tensorflow2/tensorflow2_mnist_demo.ipynb
+This project is also available to run from a notebook: https://github.com/vtsserving/VtsServing/blob/main/examples/tensorflow2/tensorflow2_mnist_demo.ipynb
 
 ### Install Dependencies
 
@@ -37,7 +37,7 @@ Then try running the "pip install tensorflow-macos" again
 ### Model Training
 
 First step, train a classification model with tensorflow's built in mnist dataset and save the model
-with BentoML:
+with VtsServing:
 
 ```bash
 python train.py
@@ -45,14 +45,14 @@ python train.py
 
 If you look at the last line of train.py, you'll see:
 ````python
-bentoml.tensorflow.save_model("tensorflow_mnist", model)
+vtsserving.tensorflow.save_model("tensorflow_mnist", model)
 ````
 
 
-This should save a new model in the BentoML local model store under model name "tensorflow_mnist:
+This should save a new model in the VtsServing local model store under model name "tensorflow_mnist:
 
 ```bash
-bentoml models list
+vtsserving models list
 ```
 
 Verify that the model can be loaded as runner from Python shell:
@@ -61,9 +61,9 @@ Verify that the model can be loaded as runner from Python shell:
 import numpy as np
 import PIL.Image
 
-import bentoml
+import vtsserving
 
-runner = bentoml.tensorflow.get("tensorflow_mnist:latest").to_runner()
+runner = vtsserving.tensorflow.get("tensorflow_mnist:latest").to_runner()
 runner.init_local()  # for debug only. please do not call this in the service
 
 img = PIL.Image.open("samples/0.png")
@@ -87,14 +87,14 @@ import numpy as np
 import PIL.Image
 from PIL.Image import Image as PILImage
 
-import bentoml
-from bentoml.io import Image
-from bentoml.io import NumpyNdarray
+import vtsserving
+from vtsserving.io import Image
+from vtsserving.io import NumpyNdarray
 
 
-mnist_runner = bentoml.tensorflow.get("tensorflow_mnist").to_runner()
+mnist_runner = vtsserving.tensorflow.get("tensorflow_mnist").to_runner()
 
-svc = bentoml.Service(
+svc = vtsserving.Service(
     name="tensorflow_mnist_demo",
     runners=[
         mnist_runner,
@@ -134,7 +134,7 @@ We defined two api endpoints `/predict_ndarray` and `/predict_image` with single
 Start an API server locally to test the service code above:
 
 ```bash
-bentoml serve service:svc --reload
+vtsserving serve service:svc --reload
 ```
 
 With the `--reload` flag, the API server will automatically restart when the source
@@ -154,14 +154,14 @@ locust --headless -u 100 -r 1000 --run-time 10m --host http://127.0.0.1:3000
 
 ### Build Bento for deployment
 
-A `bentofile` is already created in this directory for building a
+A `vtsfile` is already created in this directory for building a
 Bento for the service:
 
 ```yaml
 service: "service:svc"
 description: "file: ./README.md"
 labels:
-  owner: bentoml-team
+  owner: vtsserving-team
   stage: demo
 include:
 - "*.py"
@@ -173,20 +173,20 @@ python:
     - tensorflow
 ```
 
-Note that we exclude `locustfile.py` from the bento using `exclude`.
+Note that we exclude `locustfile.py` from the vts using `exclude`.
 
-Simply run `bentoml build` from current directory to build a Bento with the latest
+Simply run `vtsserving build` from current directory to build a Bento with the latest
 version of the `tensorflow_mnist` model.
 
-This may take a while when running for the first time for BentoML to resolve all dependency versions:
+This may take a while when running for the first time for VtsServing to resolve all dependency versions:
 
 ```
-> bentoml build
+> vtsserving build
 
-[01:14:04 AM] INFO     Building BentoML service "tensorflow_mnist_demo:bmygukdtzpy6zlc5vcqvsoywq" from build context      
+[01:14:04 AM] INFO     Building VtsServing service "tensorflow_mnist_demo:bmygukdtzpy6zlc5vcqvsoywq" from build context      
                        "/home/chef/workspace/gallery/tensorflow2"                                                         
               INFO     Packing model "tensorflow_mnist_demo:xm6jsddtu3y6zluuvcqvsoywq" from                               
-                       "/home/chef/bentoml/models/tensorflow_mnist_demo/xm6jsddtu3y6zluuvcqvsoywq"                       
+                       "/home/chef/vtsserving/models/tensorflow_mnist_demo/xm6jsddtu3y6zluuvcqvsoywq"                       
               INFO     Locking PyPI package versions..                                                                 
 [01:14:05 AM] INFO                                                                                                     
                        ██████╗░███████╗███╗░░██╗████████╗░█████╗░███╗░░░███╗██╗░░░░░                                   
@@ -197,28 +197,28 @@ This may take a while when running for the first time for BentoML to resolve all
                        ╚═════╝░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚════╝░╚═╝░░░░░╚═╝╚══════╝                                   
                                                                                                                        
               INFO     Successfully built Bento(tag="tensorflow_mnist_demo:bmygukdtzpy6zlc5vcqvsoywq") at                 
-                       "/home/chef/bentoml/bentos/tensorflow_mnist_demo/bmygukdtzpy6zlc5vcqvsoywq/"                      
+                       "/home/chef/vtsserving/vtss/tensorflow_mnist_demo/bmygukdtzpy6zlc5vcqvsoywq/"                      
 ```
 
 This Bento can now be loaded for serving:
 
 ```bash
-bentoml serve tensorflow_mnist_demo:latest --production
+vtsserving serve tensorflow_mnist_demo:latest --production
 ```
 
 The Bento directory contains all code, files, models and configs required for running this service.
-BentoML standarlizes this file structure which enables serving runtimes and deployment tools to be
-built on top of it. By default, Bentos are managed under the `~/bentoml/bentos` directory:
+VtsServing standarlizes this file structure which enables serving runtimes and deployment tools to be
+built on top of it. By default, Bentos are managed under the `~/vtsserving/vtss` directory:
 
 ```
-> cd ~/bentoml/bentos/tensorflow_mnist_demo && cd $(cat latest)
+> cd ~/vtsserving/vtss/tensorflow_mnist_demo && cd $(cat latest)
 
 > tree
 .
 ├── README.md
 ├── apis
 │   └── openapi.yaml
-├── bento.yaml
+├── vts.yaml
 ├── env
 │   ├── conda
 │   ├── docker
@@ -254,7 +254,7 @@ will use your local docker environment to build a new docker image, containing t
 server configured from this Bento:
 
 ```bash
-bentoml containerize tensorflow_mnist_demo:latest
+vtsserving containerize tensorflow_mnist_demo:latest
 ```
 
 Test out the docker image built:

@@ -2,14 +2,14 @@ import math
 
 import pytest
 
-import bentoml
-import bentoml.exceptions
-from bentoml.exceptions import BentoMLConfigException
-from bentoml._internal.resource import Resource
-from bentoml._internal.resource import CpuResource
-from bentoml._internal.resource import get_resource
-from bentoml._internal.resource import system_resources
-from bentoml._internal.resource import NvidiaGpuResource
+import vtsserving
+import vtsserving.exceptions
+from vtsserving.exceptions import VtsServingConfigException
+from vtsserving._internal.resource import Resource
+from vtsserving._internal.resource import CpuResource
+from vtsserving._internal.resource import get_resource
+from vtsserving._internal.resource import system_resources
+from vtsserving._internal.resource import NvidiaGpuResource
 
 
 class DummyResource(Resource[str], resource_id="dummy"):
@@ -32,7 +32,7 @@ def test_system_resources():
 
 
 def test_get_resource():
-    with pytest.raises(bentoml.exceptions.BentoMLConfigException):
+    with pytest.raises(vtsserving.exceptions.VtsServingConfigException):
         get_resource({}, "bad_resource")
 
     with pytest.raises(ValueError):
@@ -45,9 +45,9 @@ def test_get_resource():
 
 def test_CpuResource():
     assert CpuResource.from_system() > 0  # TODO: real from_system tests
-    with pytest.raises(BentoMLConfigException):
+    with pytest.raises(VtsServingConfigException):
         CpuResource.validate(CpuResource.from_system() + 1)
-    with pytest.raises(BentoMLConfigException):
+    with pytest.raises(VtsServingConfigException):
         CpuResource.validate(-1)
 
     CpuResource.validate(0)
@@ -66,11 +66,11 @@ def test_CpuResource():
 def test_NvidiaGpuResource():
     assert len(NvidiaGpuResource.from_system()) >= 0  # TODO: real from_system tests
 
-    with pytest.raises(BentoMLConfigException):
+    with pytest.raises(VtsServingConfigException):
         NvidiaGpuResource.validate(NvidiaGpuResource.from_system() + [1])
-    with pytest.raises(BentoMLConfigException):
+    with pytest.raises(VtsServingConfigException):
         NvidiaGpuResource.validate([-2])
-    with pytest.raises(BentoMLConfigException):
+    with pytest.raises(VtsServingConfigException):
         NvidiaGpuResource.validate([-1])
 
     NvidiaGpuResource.validate([])
@@ -86,20 +86,20 @@ def test_NvidiaGpuResource():
     assert NvidiaGpuResource.from_spec(-1) == []
     assert NvidiaGpuResource.from_spec("-1") == []
 
-    with pytest.raises(BentoMLConfigException):
+    with pytest.raises(VtsServingConfigException):
         # Currently this is not supported and is considered invalid
         assert NvidiaGpuResource.from_spec("[1, 2, 3]") == [1, 2, 3]
 
     with pytest.raises(TypeError):
         NvidiaGpuResource.from_spec((1, 2, 3))
 
-    with pytest.raises(BentoMLConfigException):
+    with pytest.raises(VtsServingConfigException):
         NvidiaGpuResource.from_spec("100m")
 
-    with pytest.raises(BentoMLConfigException):
+    with pytest.raises(VtsServingConfigException):
         assert NvidiaGpuResource.from_spec(-2)
 
-    with pytest.raises(BentoMLConfigException):
+    with pytest.raises(VtsServingConfigException):
         assert NvidiaGpuResource.from_spec("-2")
 
     with pytest.raises(TypeError):

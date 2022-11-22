@@ -5,7 +5,7 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.layers import Flatten
 
-import bentoml
+import vtsserving
 
 print("TensorFlow version:", tf.__version__)
 
@@ -60,7 +60,7 @@ if __name__ == "__main__":
         validation_data=(x_val, y_val),
     )
 
-    bentoml.tensorflow.save_model(
+    vtsserving.tensorflow.save_model(
         "tensorflow_mnist",
         model,
         signatures={"__call__": {"batchable": True, "batch_dim": 0}},
