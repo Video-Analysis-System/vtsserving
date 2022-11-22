@@ -1,0 +1,91 @@
+api_server:
+  workers: ~ # When this is set to null the number of available CPU cores is used.
+  timeout: 60
+  backlog: 2048
+  metrics:
+    enabled: true
+    namespace: bentoml_api_server
+  logging:
+    access:
+      enabled: true
+      request_content_length: true
+      request_content_type: true
+      response_content_length: true
+      response_content_type: true
+      format:
+        trace_id: 032x
+        span_id: 016x
+  ssl:
+    certfile: ~
+    keyfile: ~
+    keyfile_password: ~
+    ca_certs: ~
+    version: 17 # ssl.PROTOCOL_TLS_SERVER
+    cert_reqs: 0 # ssl.CERT_NONE
+    ciphers: TLSv1 # default ciphers
+  http:
+    host: 0.0.0.0
+    port: 3000
+    cors:
+      enabled: false
+      access_control_allow_origin: ~
+      access_control_allow_credentials: ~
+      access_control_allow_methods: ~
+      access_control_allow_headers: ~
+      access_control_max_age: ~
+      access_control_expose_headers: ~
+  grpc:
+    host: 0.0.0.0
+    port: 3000
+    max_concurrent_streams: ~
+    maximum_concurrent_rpcs: ~
+    max_message_length: -1
+    reflection:
+      enabled: false
+    channelz:
+      enabled: false
+    metrics:
+      host: 0.0.0.0
+      port: 3001
+  runner_probe: # configure whether the API server's health check endpoints (readyz, livez, healthz) also check the runners
+    enabled: true
+    timeout: 1
+    period: 10
+
+runners:
+  batching:
+    enabled: true
+    max_batch_size: 100
+    max_latency_ms: 10000
+  resources: ~
+  logging:
+    access:
+      enabled: true
+      request_content_length: true
+      request_content_type: true
+      response_content_length: true
+      response_content_type: true
+  metrics:
+    enabled: True
+    namespace: bentoml_runner
+  timeout: 300
+
+tracing:
+  type: zipkin
+  sample_rate: ~
+  excluded_urls: ~
+  zipkin:
+    url: ~
+  jaeger:
+    address: ~
+    port: ~
+  otlp:
+    protocol: ~
+    url: ~
+
+monitoring:
+  enabled: true
+  type: default
+  options:
+    log_config_file: ~
+    log_path: monitoring
