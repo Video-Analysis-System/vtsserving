@@ -21,23 +21,23 @@ _main() {
 	elif [[ "$#" -eq 0 ]] || [[ "${1:0:1}" =~ '-' ]]; then
 		# This is provided for backwards compatibility with places where user may have
 		# discover this easter egg and use it in their scripts to run the container.
-		if [[ -v BENTOML_SERVE_COMPONENT ]]; then
-			echo "\$BENTOML_SERVE_COMPONENT is set! Calling 'bentoml start-*' instead"
-			if [ "${BENTOML_SERVE_COMPONENT}" = 'http_server' ]; then
+		if [[ -v VTSSERVING_SERVE_COMPONENT ]]; then
+			echo "\$VTSSERVING_SERVE_COMPONENT is set! Calling 'bentoml start-*' instead"
+			if [ "${VTSSERVING_SERVE_COMPONENT}" = 'http_server' ]; then
 				set -- bentoml start-http-server "$@" "$BENTO_PATH"
-			elif [ "${BENTOML_SERVE_COMPONENT}" = 'grpc_server' ]; then
+			elif [ "${VTSSERVING_SERVE_COMPONENT}" = 'grpc_server' ]; then
 				set -- bentoml start-grpc-server "$@" "$BENTO_PATH"
-			elif [ "${BENTOML_SERVE_COMPONENT}" = 'runner' ]; then
+			elif [ "${VTSSERVING_SERVE_COMPONENT}" = 'runner' ]; then
 				set -- bentoml start-runner-server "$@" "$BENTO_PATH"
 			fi
 		else
 			set -- bentoml serve --production "$@" "$BENTO_PATH"
 		fi
 	fi
-	# Overide the BENTOML_PORT if PORT env var is present. Used for Heroku and Yatai.
+	# Overide the VTSSERVING_PORT if PORT env var is present. Used for Heroku and Yatai.
 	if [[ -v PORT ]]; then
-		echo "\$PORT is set! Overiding \$BENTOML_PORT with \$PORT ($PORT)"
-		export BENTOML_PORT=$PORT
+		echo "\$PORT is set! Overiding \$VTSSERVING_PORT with \$PORT ($PORT)"
+		export VTSSERVING_PORT=$PORT
 	fi
 	# Handle serve and start commands that is passed to the container.
 	# Assuming that serve and start commands are the first arguments

@@ -25,7 +25,7 @@ from ..container import generate_containerfile
 from ...exceptions import InvalidArgument
 from ...exceptions import BentoMLException
 from ..utils.dotenv import parse_dotenv
-from ..configuration import CLEAN_BENTOML_VERSION
+from ..configuration import CLEAN_VTSSERVING_VERSION
 from .build_dev_bentoml_whl import build_bentoml_editable_wheel
 from ..container.frontend.dockerfile import DistroSpec
 from ..container.frontend.dockerfile import get_supported_spec
@@ -499,7 +499,7 @@ class PythonOptions:
         with bento_fs.open(fs.path.join(py_folder, "version.txt"), "w") as f:
             f.write(f"{version_info.major}.{version_info.minor}.{version_info.micro}")
 
-        # Build BentoML whl from local source if BENTOML_BUNDLE_LOCAL_BUILD=True
+        # Build BentoML whl from local source if VTSSERVING_BUNDLE_LOCAL_BUILD=True
         build_bentoml_editable_wheel(bento_fs.getsyspath(wheels_folder))
 
         # Move over required wheel files
@@ -552,8 +552,8 @@ PIP_ARGS=("""
 REQUIREMENTS_TXT="$BASEDIR/requirements.txt"
 REQUIREMENTS_LOCK="$BASEDIR/requirements.lock.txt"
 WHEELS_DIR="$BASEDIR/wheels"
-BENTOML_VERSION=${BENTOML_VERSION:-"""
-                + CLEAN_BENTOML_VERSION
+VTSSERVING_VERSION=${VTSSERVING_VERSION:-"""
+                + CLEAN_VTSSERVING_VERSION
                 + """}
 # Install python packages, prefer installing the requirements.lock.txt file if it exist
 if [ -f "$REQUIREMENTS_LOCK" ]; then
@@ -575,11 +575,11 @@ fi
 # Install the BentoML from PyPI if it's not already installed
 if python3 -c "import bentoml" &> /dev/null; then
     existing_bentoml_version=$(python3 -c "import bentoml; print(bentoml.__version__)")
-    if [ "$existing_bentoml_version" != "$BENTOML_VERSION" ]; then
+    if [ "$existing_bentoml_version" != "$VTSSERVING_VERSION" ]; then
         echo "WARNING: using BentoML version ${existing_bentoml_version}"
     fi
 else
-    pip3 install bentoml=="$BENTOML_VERSION"
+    pip3 install bentoml=="$VTSSERVING_VERSION"
 fi
 """
             )

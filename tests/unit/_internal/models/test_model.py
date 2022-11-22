@@ -19,7 +19,7 @@ from bentoml._internal.models import ModelOptions as InternalModelOptions
 from bentoml._internal.models.model import Model
 from bentoml._internal.models.model import ModelInfo
 from bentoml._internal.models.model import ModelStore
-from bentoml._internal.configuration import BENTOML_VERSION
+from bentoml._internal.configuration import VTSSERVING_VERSION
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -96,7 +96,7 @@ def test_model_info(tmpdir: "Path"):
     )
     end = datetime.now(timezone.utc)
 
-    assert modelinfo_a.context.bentoml_version == BENTOML_VERSION
+    assert modelinfo_a.context.bentoml_version == VTSSERVING_VERSION
     assert modelinfo_a.context.python_version == TEST_PYTHON_VERSION
     assert start <= modelinfo_a.creation_time <= end
 
@@ -130,7 +130,7 @@ def test_model_info(tmpdir: "Path"):
 
     with open(model_yaml_b_filename, encoding="utf-8") as model_yaml_b:
         assert model_yaml_b.read() == expected_yaml.format(
-            bentoml_version=BENTOML_VERSION,
+            bentoml_version=VTSSERVING_VERSION,
             creation_time=modelinfo_b.creation_time.isoformat(),
             python_version=TEST_PYTHON_VERSION,
         )

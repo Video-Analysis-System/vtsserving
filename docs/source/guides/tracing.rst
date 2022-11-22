@@ -110,11 +110,11 @@ If using HTTP, you must set the whole Traces receiver endpoint path (e.g. `/v1/t
         url: http://localhost:4318/v1/traces
 
 When starting a BentoML API model server, provide the path to this config file
-by setting the environment variable :code:`BENTOML_CONFIG`:
+by setting the environment variable :code:`VTSSERVING_CONFIG`:
 
 .. code-block:: bash
 
-    BENTOML_CONFIG=my_config_file.yml bentoml serve $BENTO_BUNDLE_PATH
+    VTSSERVING_CONFIG=my_config_file.yml bentoml serve $BENTO_BUNDLE_PATH
 
 
 Similarly when serving with BentoML API server docker image, assuming you have a
@@ -122,7 +122,7 @@ Similarly when serving with BentoML API server docker image, assuming you have a
 
 .. code-block:: bash
 
-    docker run -v $(PWD):/tmp -p 3000:3000 -e BENTOML_CONFIG=/tmp/my_config_file.yml my-bento-api-server
+    docker run -v $(PWD):/tmp -p 3000:3000 -e VTSSERVING_CONFIG=/tmp/my_config_file.yml my-bento-api-server
 
 .. spelling::
 

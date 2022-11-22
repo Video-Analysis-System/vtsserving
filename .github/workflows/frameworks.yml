@@ -11,7 +11,7 @@ on:
 env:
   LINES: 120
   COLUMNS: 120
-  BENTOML_DO_NOT_TRACK: True
+  VTSSERVING_DO_NOT_TRACK: True
 
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#defaultsrun
 defaults:

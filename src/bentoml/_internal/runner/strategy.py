@@ -44,7 +44,7 @@ class Strategy(abc.ABC):
 
 
 THREAD_ENVS = [
-    "BENTOML_NUM_THREAD",  # For custom Runner code
+    "VTSSERVING_NUM_THREAD",  # For custom Runner code
     "OMP_NUM_THREADS",  # openmp
     "OPENBLAS_NUM_THREADS",  # openblas,
     "MKL_NUM_THREADS",  # mkl,

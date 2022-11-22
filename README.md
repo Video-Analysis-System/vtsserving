@@ -179,10 +179,10 @@ You can opt-out of usage tracking by the `--do-not-track` CLI option:
 bentoml [command] --do-not-track
 ```
 
-Or by setting environment variable `BENTOML_DO_NOT_TRACK=True`:
+Or by setting environment variable `VTSSERVING_DO_NOT_TRACK=True`:
 
 ```bash
-export BENTOML_DO_NOT_TRACK=True
+export VTSSERVING_DO_NOT_TRACK=True
 ```
 
 ---

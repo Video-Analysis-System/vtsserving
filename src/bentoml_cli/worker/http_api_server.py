@@ -18,8 +18,8 @@ import click
 @click.option(
     "--runner-map",
     type=click.STRING,
-    envvar="BENTOML_RUNNER_MAP",
-    help="JSON string of runners map, default sets to envars `BENTOML_RUNNER_MAP`",
+    envvar="VTSSERVING_RUNNER_MAP",
+    help="JSON string of runners map, default sets to envars `VTSSERVING_RUNNER_MAP`",
 )
 @click.option(
     "--backlog", type=click.INT, default=2048, help="Backlog size for the socket"

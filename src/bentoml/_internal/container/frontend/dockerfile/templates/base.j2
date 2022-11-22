@@ -1,4 +1,4 @@
-{# BENTOML INTERNAL #}
+{# VTSSERVING INTERNAL #}
 {# users can use these values #}
 {% import '_macros.j2' as common %}
 {% set bento__entrypoint = bento__entrypoint | default(expands_bento_path("env", "docker", "entrypoint.sh", bento_path=bento__path)) %}
@@ -46,7 +46,7 @@ ENV {{ key }}={{ value }}
 
 ARG BENTO_PATH={{ bento__path }}
 ENV BENTO_PATH=$BENTO_PATH
-ENV BENTOML_HOME={{ bento__home }}
+ENV VTSSERVING_HOME={{ bento__home }}
 
 RUN mkdir $BENTO_PATH && chown {{ bento__user }}:{{ bento__user }} $BENTO_PATH -R
 WORKDIR $BENTO_PATH

@@ -113,9 +113,9 @@ monitoring:
     space_key: <your_space_key>
 ```
 
-Then you can specify the config file through environment variable `BENTOML_CONFIG`:
+Then you can specify the config file through environment variable `VTSSERVING_CONFIG`:
 ```bash
-BENTOML_CONFIG=deployment.yaml bentoml serve service.py:svc
+VTSSERVING_CONFIG=deployment.yaml bentoml serve service.py:svc
 ```
 
 

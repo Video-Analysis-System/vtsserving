@@ -23,10 +23,10 @@ except ImportError:
 # used within functions in this file
 logger = logging.getLogger(__name__)
 
-DEBUG_ENV_VAR = "BENTOML_DEBUG"
-QUIET_ENV_VAR = "BENTOML_QUIET"
-CONFIG_ENV_VAR = "BENTOML_CONFIG"
-CONFIG_OVERRIDE_ENV_VAR = "BENTOML_CONFIG_OPTIONS"
+DEBUG_ENV_VAR = "VTSSERVING_DEBUG"
+QUIET_ENV_VAR = "VTSSERVING_QUIET"
+CONFIG_ENV_VAR = "VTSSERVING_CONFIG"
+CONFIG_OVERRIDE_ENV_VAR = "VTSSERVING_CONFIG_OPTIONS"
 # https://github.com/grpc/grpc/blob/master/doc/environment_variables.md
 GRPC_DEBUG_ENV_VAR = "GRPC_VERBOSITY"
 
@@ -53,9 +53,9 @@ def clean_bentoml_version(bentoml_version: str) -> str:
 
 
 # Find BentoML version managed by setuptools_scm
-BENTOML_VERSION = __version__
+VTSSERVING_VERSION = __version__
 # Get clean BentoML version indicating latest PyPI release. E.g. 1.0.0.post => 1.0.0
-CLEAN_BENTOML_VERSION: str = clean_bentoml_version(BENTOML_VERSION)
+CLEAN_VTSSERVING_VERSION: str = clean_bentoml_version(VTSSERVING_VERSION)
 
 
 @lru_cache(maxsize=1)
@@ -82,9 +82,9 @@ def is_pypi_installed_bentoml() -> bool:
     base on a recent official release.
     """
     # In a git repo with no tag, setuptools_scm generated version starts with "0.1."
-    is_tagged = not BENTOML_VERSION.startswith("0.1.")
+    is_tagged = not VTSSERVING_VERSION.startswith("0.1.")
     is_clean = not str(__version_tuple__[-1]).split(".")[-1].startswith("d")
-    not_been_modified = BENTOML_VERSION == BENTOML_VERSION.split("+")[0]
+    not_been_modified = VTSSERVING_VERSION == VTSSERVING_VERSION.split("+")[0]
     return is_tagged and is_clean and not_been_modified
 
 
@@ -143,12 +143,12 @@ def load_global_config(bentoml_config_file: t.Optional[str] = None):
         if not bentoml_config_file.endswith((".yml", ".yaml")):
             raise BentoMLConfigException(
                 "BentoML config file specified in ENV VAR does not end with `.yaml`: "
-                f"`BENTOML_CONFIG={bentoml_config_file}`"
+                f"`VTSSERVING_CONFIG={bentoml_config_file}`"
             ) from None
         if not os.path.isfile(bentoml_config_file):
             raise FileNotFoundError(
                 "BentoML config file specified in ENV VAR not found: "
-                f"`BENTOML_CONFIG={bentoml_config_file}`"
+                f"`VTSSERVING_CONFIG={bentoml_config_file}`"
             ) from None
 
     bentoml_configuration = BentoMLConfiguration(

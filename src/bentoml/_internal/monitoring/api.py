@@ -22,8 +22,8 @@ MT = t.TypeVar("MT", bound="MonitorBase[t.Any]")
 
 logger = logging.getLogger(__name__)
 
-BENTOML_MONITOR_ROLES = {"feature", "prediction", "target"}
-BENTOML_MONITOR_TYPES = {"numerical", "categorical", "numerical_sequence"}
+VTSSERVING_MONITOR_ROLES = {"feature", "prediction", "target"}
+VTSSERVING_MONITOR_TYPES = {"numerical", "categorical", "numerical_sequence"}
 
 MONITOR_REGISTRY: dict[str, MonitorBase[t.Any]] = {}  # cache of monitors
 
@@ -117,11 +117,11 @@ class MonitorBase(t.Generic[DT]):
             )
             name = name + "_"
 
-        if role not in BENTOML_MONITOR_ROLES:
+        if role not in VTSSERVING_MONITOR_ROLES:
             logger.warning(
                 "Role {role} is not officially supported, but will be logged anyway."
             )
-        if data_type not in BENTOML_MONITOR_TYPES:
+        if data_type not in VTSSERVING_MONITOR_TYPES:
             logger.warning(
                 "Data type {data_type} is not officially supported, but will be logged anyway."
             )

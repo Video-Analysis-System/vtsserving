@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 PYTHON_VERSION: str = f"{pyver.major}.{pyver.minor}.{pyver.micro}"
-BENTOML_VERSION: str = importlib_metadata.version("bentoml")
+VTSSERVING_VERSION: str = importlib_metadata.version("bentoml")
 
 
 def createfile(filepath: str) -> str:
@@ -114,7 +114,7 @@ def test_models(tmpdir: "Path"):
     retrieved_testmodel1 = bentoml.models.get("testmodel", _model_store=store)
     assert retrieved_testmodel1.tag == testmodel1tag
     assert retrieved_testmodel1.info.context.python_version == PYTHON_VERSION
-    assert retrieved_testmodel1.info.context.bentoml_version == BENTOML_VERSION
+    assert retrieved_testmodel1.info.context.bentoml_version == VTSSERVING_VERSION
     assert (
         retrieved_testmodel1.info.context.framework_name
         == TEST_MODEL_CONTEXT.framework_name

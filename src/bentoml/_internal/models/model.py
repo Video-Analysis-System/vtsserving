@@ -33,7 +33,7 @@ from ..utils import label_validator
 from ..utils import metadata_validator
 from ...exceptions import NotFound
 from ...exceptions import BentoMLException
-from ..configuration import BENTOML_VERSION
+from ..configuration import VTSSERVING_VERSION
 from ..configuration.containers import BentoMLContainer
 
 if TYPE_CHECKING:
@@ -377,7 +377,7 @@ class ModelContext:
     framework_versions: t.Dict[str, str]
 
     # using factory explicitly instead of default because omit_if_default is enabled in ModelInfo
-    bentoml_version: str = attr.field(factory=lambda: BENTOML_VERSION)
+    bentoml_version: str = attr.field(factory=lambda: VTSSERVING_VERSION)
     python_version: str = attr.field(factory=lambda: PYTHON_VERSION)
 
     @staticmethod

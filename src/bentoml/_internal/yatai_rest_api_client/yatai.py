@@ -23,7 +23,7 @@ from .schemas import CreateModelRepositorySchema
 from .schemas import CompleteMultipartUploadSchema
 from .schemas import PreSignMultipartUploadUrlSchema
 from ...exceptions import YataiRESTApiClientError
-from ..configuration import BENTOML_VERSION
+from ..configuration import VTSSERVING_VERSION
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,7 @@ class YataiRESTApiClient:
             {
                 "X-YATAI-API-TOKEN": api_token,
                 "Content-Type": "application/json",
-                "X-Bentoml-Version": BENTOML_VERSION,
+                "X-Bentoml-Version": VTSSERVING_VERSION,
             }
         )
 

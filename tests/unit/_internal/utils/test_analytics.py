@@ -195,7 +195,7 @@ def test_track_serve_init_no_bento(
     [
         (b"", []),
         (
-            b"""# HELP BENTOML_noop_request_total Multiprocess metric""",
+            b"""# HELP VTSSERVING_noop_request_total Multiprocess metric""",
             [],
         ),
     ],
@@ -244,12 +244,12 @@ def test_legacy_get_metrics_report(
     mock_prometheus_client.multiproc.return_value = False
     mock_prometheus_client.text_string_to_metric_families.return_value = text_string_to_metric_families(
         b"""\
-# HELP BENTOML_simple_service_request_in_progress Multiprocess metric
-# TYPE BENTOML_simple_service_request_in_progress gauge
-BENTOML_simple_service_request_in_progress{endpoint="/predict",service_version="not available"} 0.0
-# HELP BENTOML_simple_service_request_total Multiprocess metric
-# TYPE BENTOML_simple_service_request_total counter
-BENTOML_simple_service_request_total{endpoint="/predict",http_response_code="200",service_version="not available"} 8.0
+# HELP VTSSERVING_simple_service_request_in_progress Multiprocess metric
+# TYPE VTSSERVING_simple_service_request_in_progress gauge
+VTSSERVING_simple_service_request_in_progress{endpoint="/predict",service_version="not available"} 0.0
+# HELP VTSSERVING_simple_service_request_total Multiprocess metric
+# TYPE VTSSERVING_simple_service_request_total counter
+VTSSERVING_simple_service_request_total{endpoint="/predict",http_response_code="200",service_version="not available"} 8.0
 """.decode(
             "utf-8"
         )
@@ -341,7 +341,7 @@ def test_track_serve(
     mock_do_not_track.return_value = False
     mock_usage_event_debugging.return_value = True
 
-    monkeypatch.setenv("__BENTOML_DEBUG_USAGE", "True")
+    monkeypatch.setenv("__VTSSERVING_DEBUG_USAGE", "True")
     analytics.usage_stats.SERVE_USAGE_TRACKING_INTERVAL_SECONDS = 1
 
     with caplog.at_level(logging.INFO):

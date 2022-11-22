@@ -17,7 +17,7 @@ And join us in the BentoML slack community: https://l.linklyhq.com/l/ktOh
 
 from typing import TYPE_CHECKING
 
-from ._internal.configuration import BENTOML_VERSION as __version__
+from ._internal.configuration import VTSSERVING_VERSION as __version__
 from ._internal.configuration import load_global_config
 
 # Inject dependencies and configurations

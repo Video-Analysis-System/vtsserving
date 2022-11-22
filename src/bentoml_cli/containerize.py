@@ -438,7 +438,7 @@ def add_containerize_command(cli: Group) -> None:
         ),
         required=False,
         default="docker",
-        envvar="BENTOML_CONTAINERIZE_BACKEND",
+        envvar="VTSSERVING_CONTAINERIZE_BACKEND",
         type=click.STRING,
     )
     @click.option(

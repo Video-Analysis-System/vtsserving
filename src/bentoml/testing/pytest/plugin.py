@@ -15,7 +15,7 @@ import bentoml
 from bentoml._internal.utils import LazyLoader
 from bentoml._internal.utils import validate_or_create_dir
 from bentoml._internal.models import ModelContext
-from bentoml._internal.configuration import CLEAN_BENTOML_VERSION
+from bentoml._internal.configuration import CLEAN_VTSSERVING_VERSION
 from bentoml._internal.configuration.containers import BentoMLContainer
 
 if TYPE_CHECKING:
@@ -45,7 +45,7 @@ _RUN_GRPC_TESTS_MARKER = "--run-grpc-tests"
 
 @pytest.mark.tryfirst
 def pytest_report_header(config: Config) -> list[str]:
-    return [f"bentoml: version={CLEAN_BENTOML_VERSION}"]
+    return [f"bentoml: version={CLEAN_VTSSERVING_VERSION}"]
 
 
 @pytest.hookimpl
@@ -208,7 +208,7 @@ def pytest_sessionstart(session: Session) -> None:
     config = session.config
     config.add_cleanup(mp.undo)
 
-    _PYTEST_BENTOML_HOME, _PYTEST_MULTIPROC_DIR = _setup_test_directory()
+    _PYTEST_VTSSERVING_HOME, _PYTEST_MULTIPROC_DIR = _setup_test_directory()
 
     # The evironment variable patch ensures that we will
     # always build bento using bentoml from source, use the correct
@@ -217,13 +217,13 @@ def pytest_sessionstart(session: Session) -> None:
         mp,
         session,
         ("PROMETHEUS_MULTIPROC_DIR", _PYTEST_MULTIPROC_DIR),
-        ("BENTOML_BUNDLE_LOCAL_BUILD", "True"),
+        ("VTSSERVING_BUNDLE_LOCAL_BUILD", "True"),
         ("SETUPTOOLS_USE_DISTUTILS", "stdlib"),
-        ("__BENTOML_DEBUG_USAGE", "False"),
-        ("BENTOML_DO_NOT_TRACK", "True"),
+        ("__VTSSERVING_DEBUG_USAGE", "False"),
+        ("VTSSERVING_DO_NOT_TRACK", "True"),
     )
 
-    _setup_session_environment(mp, config, ("BENTOML_HOME", _PYTEST_BENTOML_HOME))
+    _setup_session_environment(mp, config, ("VTSSERVING_HOME", _PYTEST_VTSSERVING_HOME))
 
 
 def _teardown_session_environment(o: Session | Config, *variables: str):
@@ -241,13 +241,13 @@ def pytest_sessionfinish(session: Session, exitstatus: int | ExitCode) -> None:
 
     _teardown_session_environment(
         session,
-        "BENTOML_BUNDLE_LOCAL_BUILD",
+        "VTSSERVING_BUNDLE_LOCAL_BUILD",
         "PROMETHEUS_MULTIPROC_DIR",
         "SETUPTOOLS_USE_DISTUTILS",
-        "__BENTOML_DEBUG_USAGE",
-        "BENTOML_DO_NOT_TRACK",
+        "__VTSSERVING_DEBUG_USAGE",
+        "VTSSERVING_DO_NOT_TRACK",
     )
-    _teardown_session_environment(config, "BENTOML_HOME")
+    _teardown_session_environment(config, "VTSSERVING_HOME")
 
     # reset home and prometheus_multiproc_dir to default
     BentoMLContainer.prometheus_multiproc_dir.reset()

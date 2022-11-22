@@ -207,7 +207,7 @@ def run_bento_server_container(
         f"{port}:3000",
     ]
     if config_file is not None:
-        cmd.extend(["--env", "BENTOML_CONFIG=/home/bentoml/bentoml_config.yml"])
+        cmd.extend(["--env", "VTSSERVING_CONFIG=/home/bentoml/bentoml_config.yml"])
         cmd.extend(
             ["-v", f"{os.path.abspath(config_file)}:/home/bentoml/bentoml_config.yml"]
         )
@@ -253,7 +253,7 @@ def run_bento_server_standalone(
     """
     copied = os.environ.copy()
     if config_file is not None:
-        copied["BENTOML_CONFIG"] = os.path.abspath(config_file)
+        copied["VTSSERVING_CONFIG"] = os.path.abspath(config_file)
     with reserve_free_port(host=host, enable_so_reuseport=use_grpc) as server_port:
         cmd = [
             sys.executable,
@@ -327,7 +327,7 @@ def run_bento_server_distributed(
     else:
         copied["HTTP_PROXY"] = f"http://127.0.0.1:{proxy_port}"
     if config_file is not None:
-        copied["BENTOML_CONFIG"] = os.path.abspath(config_file)
+        copied["VTSSERVING_CONFIG"] = os.path.abspath(config_file)
 
     runner_map = {}
     processes: list[subprocess.Popen[str]] = []
@@ -450,8 +450,8 @@ def host_bento(
     else:
         clean_on_exit = False
 
-    # NOTE: we need to set the BENTOML_HOME to a temporary folder to avoid
-    # conflict with the user's BENTOML_HOME.
+    # NOTE: we need to set the VTSSERVING_HOME to a temporary folder to avoid
+    # conflict with the user's VTSSERVING_HOME.
     if bentoml_home:
         from bentoml._internal.configuration.containers import BentoMLContainer
 

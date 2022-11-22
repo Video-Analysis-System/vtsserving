@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-BENTOML_FIGLET = """
+VTSSERVING_FIGLET = """
 ██████╗░███████╗███╗░░██╗████████╗░█████╗░███╗░░░███╗██╗░░░░░
 ██╔══██╗██╔════╝████╗░██║╚══██╔══╝██╔══██╗████╗░████║██║░░░░░
 ██████╦╝█████╗░░██╔██╗██║░░░██║░░░██║░░██║██╔████╔██║██║░░░░░
@@ -355,7 +355,7 @@ def build(
         version=version,
         build_ctx=build_ctx,
     ).save(_bento_store)
-    logger.info(BENTOML_FIGLET)
+    logger.info(VTSSERVING_FIGLET)
     logger.info("Successfully built %s.", bento)
     return bento
 
@@ -393,7 +393,7 @@ def build_bentofile(
         version=version,
         build_ctx=build_ctx,
     ).save(_bento_store)
-    logger.info(BENTOML_FIGLET)
+    logger.info(VTSSERVING_FIGLET)
     logger.info("Successfully built %s.", bento)
     return bento
 

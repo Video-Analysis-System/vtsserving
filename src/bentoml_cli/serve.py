@@ -32,7 +32,7 @@ def add_serve_command(cli: click.Group) -> None:
         type=click.INT,
         default=BentoMLContainer.http.port.get(),
         help="The port to listen on for the REST api server",
-        envvar="BENTOML_PORT",
+        envvar="VTSSERVING_PORT",
         show_default=True,
     )
     @click.option(
@@ -40,7 +40,7 @@ def add_serve_command(cli: click.Group) -> None:
         type=click.STRING,
         default=BentoMLContainer.http.host.get(),
         help="The host to bind for the REST api server",
-        envvar="BENTOML_HOST",
+        envvar="VTSSERVING_HOST",
         show_default=True,
     )
     @click.option(
@@ -48,7 +48,7 @@ def add_serve_command(cli: click.Group) -> None:
         type=click.INT,
         default=BentoMLContainer.api_server_workers.get(),
         help="Specify the number of API server workers to start. Default to number of available CPU cores in production mode",
-        envvar="BENTOML_API_WORKERS",
+        envvar="VTSSERVING_API_WORKERS",
         show_default=True,
     )
     @click.option(
@@ -240,7 +240,7 @@ def add_serve_command(cli: click.Group) -> None:
         type=click.INT,
         default=BentoMLContainer.grpc.port.get(),
         help="The port to listen on for the REST api server",
-        envvar="BENTOML_PORT",
+        envvar="VTSSERVING_PORT",
         show_default=True,
     )
     @click.option(
@@ -248,7 +248,7 @@ def add_serve_command(cli: click.Group) -> None:
         type=click.STRING,
         default=BentoMLContainer.grpc.host.get(),
         help="The host to bind for the gRPC server",
-        envvar="BENTOML_HOST",
+        envvar="VTSSERVING_HOST",
         show_default=True,
     )
     @click.option(
@@ -256,7 +256,7 @@ def add_serve_command(cli: click.Group) -> None:
         type=click.INT,
         default=BentoMLContainer.api_server_workers.get(),
         help="Specify the number of API server workers to start. Default to number of available CPU cores in production mode",
-        envvar="BENTOML_API_WORKERS",
+        envvar="VTSSERVING_API_WORKERS",
         show_default=True,
     )
     @click.option(

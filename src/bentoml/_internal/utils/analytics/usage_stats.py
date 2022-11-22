@@ -39,7 +39,7 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-BENTOML_DO_NOT_TRACK = "BENTOML_DO_NOT_TRACK"
+VTSSERVING_DO_NOT_TRACK = "VTSSERVING_DO_NOT_TRACK"
 USAGE_TRACKING_URL = "https://t.bentoml.com"
 SERVE_USAGE_TRACKING_INTERVAL_SECONDS = int(12 * 60 * 60)  # every 12 hours
 USAGE_REQUEST_TIMEOUT_SECONDS = 1
@@ -49,13 +49,13 @@ USAGE_REQUEST_TIMEOUT_SECONDS = 1
 def do_not_track() -> bool:  # pragma: no cover
     # Returns True if and only if the environment variable is defined and has value True.
     # The function is cached for better performance.
-    return os.environ.get(BENTOML_DO_NOT_TRACK, str(False)).lower() == "true"
+    return os.environ.get(VTSSERVING_DO_NOT_TRACK, str(False)).lower() == "true"
 
 
 @lru_cache(maxsize=1)
 def _usage_event_debugging() -> bool:
     # For BentoML developers only - debug and print event payload if turned on
-    return os.environ.get("__BENTOML_DEBUG_USAGE", str(False)).lower() == "true"
+    return os.environ.get("__VTSSERVING_DEBUG_USAGE", str(False)).lower() == "true"
 
 
 def silent(func: t.Callable[P, T]) -> t.Callable[P, T]:  # pragma: no cover
@@ -187,7 +187,7 @@ def get_metrics_report(
 ) -> list[dict[str, str | float]]:
     """
     Get Prometheus metrics reports from the metrics client. This will be used to determine tracking events.
-    If the return metrics are legacy metrics, the metrics will have prefix BENTOML_, otherwise they will have prefix bentoml_
+    If the return metrics are legacy metrics, the metrics will have prefix VTSSERVING_, otherwise they will have prefix bentoml_
 
     Args:
         metrics_client: Instance of bentoml._internal.server.metrics.prometheus.PrometheusClient
@@ -222,9 +222,9 @@ def get_metrics_report(
             ]
         else:
             raise NotImplementedError("Unknown serve kind %s" % serve_kind)
-        # If metrics prefix is BENTOML_, this is legacy metrics
+        # If metrics prefix is VTSSERVING_, this is legacy metrics
         if metric_name.endswith("_request") and (
-            metric_name.startswith("bentoml_") or metric_name.startswith("BENTOML_")
+            metric_name.startswith("bentoml_") or metric_name.startswith("VTSSERVING_")
         ):
             return filter_metrics(metric_samples, *_filters)
 

@@ -10,7 +10,7 @@ on:
 env:
   LINES: 120
   COLUMNS: 120
-  BENTOML_DO_NOT_TRACK: True
+  VTSSERVING_DO_NOT_TRACK: True
 
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#defaultsrun
 defaults:
@@ -235,7 +235,7 @@ jobs:
 
     env:
       SETUPTOOLS_USE_DISTUTILS: stdlib
-      BENTOML_BUNDLE_LOCAL_BUILD: True
+      VTSSERVING_BUNDLE_LOCAL_BUILD: True
 
     steps:
       - uses: actions/checkout@v3

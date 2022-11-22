@@ -35,7 +35,7 @@ from .build_config import BentoPathSpec
 from .build_config import DockerOptions
 from .build_config import PythonOptions
 from .build_config import BentoBuildConfig
-from ..configuration import BENTOML_VERSION
+from ..configuration import VTSSERVING_VERSION
 from ..configuration.containers import BentoMLContainer
 
 if TYPE_CHECKING:
@@ -80,7 +80,7 @@ def get_default_svc_readme(svc: Service, svc_version: str | None = None) -> str:
     if svc.bento:
         bentoml_version = svc.bento.info.bentoml_version
     else:
-        bentoml_version = BENTOML_VERSION
+        bentoml_version = VTSSERVING_VERSION
 
     if not svc_version:
         if svc.tag and svc.tag.version:
@@ -423,7 +423,7 @@ class BentoInfo:
     name: str = attr.field(init=False)
     version: str = attr.field(init=False)
     # using factory explicitly instead of default because omit_if_default is enabled for BentoInfo
-    bentoml_version: str = attr.field(factory=lambda: BENTOML_VERSION)
+    bentoml_version: str = attr.field(factory=lambda: VTSSERVING_VERSION)
     creation_time: datetime = attr.field(factory=lambda: datetime.now(timezone.utc))
 
     labels: t.Dict[str, t.Any] = attr.field(factory=dict)

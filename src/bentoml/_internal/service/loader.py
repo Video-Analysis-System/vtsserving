@@ -21,7 +21,7 @@ from ...exceptions import ImportServiceError
 from ..bento.bento import BENTO_YAML_FILENAME
 from ..bento.bento import BENTO_PROJECT_DIR_NAME
 from ..bento.bento import DEFAULT_BENTO_BUILD_FILE
-from ..configuration import BENTOML_VERSION
+from ..configuration import VTSSERVING_VERSION
 from ..bento.build_config import BentoBuildConfig
 from ..configuration.containers import BentoMLContainer
 
@@ -203,20 +203,20 @@ def load_bento(
     )
 
     # not in validate as it's only really necessary when getting bentos from disk
-    if bento.info.bentoml_version != BENTOML_VERSION:
+    if bento.info.bentoml_version != VTSSERVING_VERSION:
         info_bentoml_version = bento.info.bentoml_version
-        if tuple(info_bentoml_version.split(".")) > tuple(BENTOML_VERSION.split(".")):
+        if tuple(info_bentoml_version.split(".")) > tuple(VTSSERVING_VERSION.split(".")):
             logger.warning(
                 "%s was built with newer version of BentoML, which does not match with current running BentoML version %s",
                 bento,
-                BENTOML_VERSION,
+                VTSSERVING_VERSION,
             )
         else:
             logger.debug(
                 "%s was built with BentoML version %s, which does not match the current BentoML version %s",
                 bento,
                 info_bentoml_version,
-                BENTOML_VERSION,
+                VTSSERVING_VERSION,
             )
     return _load_bento(bento, standalone_load)
 
@@ -270,7 +270,7 @@ def load(
 
     The argument bento_identifier can be one of the following forms:
 
-    * Tag pointing to a Bento in local Bento store under `BENTOML_HOME/bentos`
+    * Tag pointing to a Bento in local Bento store under `VTSSERVING_HOME/bentos`
     * File path to a Bento directory
     * "import_str" for loading a service instance from the `working_dir`
 

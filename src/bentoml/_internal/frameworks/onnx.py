@@ -384,7 +384,7 @@ def get_runnable(bento_model: bentoml.Model) -> t.Type[bentoml.Runnable]:
                 # set CPUExecutionProvider parallelization options
                 # TODO @larme: follow onnxruntime issue 11668 and
                 # 10330 to decide best cpu parallelization strategy
-                thread_count = int(os.getenv("BENTOML_NUM_THREAD", 1))
+                thread_count = int(os.getenv("VTSSERVING_NUM_THREAD", 1))
                 session_options.execution_mode = ort.ExecutionMode.ORT_PARALLEL
                 if session_options.intra_op_num_threads != 0:
                     logger.warning(

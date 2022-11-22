@@ -5,8 +5,8 @@
   "dockerFile": "Dockerfile",
   "context": "..",
   "containerEnv": {
-    "BENTOML_DEBUG": "True",
-    "BENTOML_BUNDLE_LOCAL_BUILD": "True",
+    "VTSSERVING_DEBUG": "True",
+    "VTSSERVING_BUNDLE_LOCAL_BUILD": "True",
     "SETUPTOOLS_USE_DISTUTILS": "stdlib"
   },
   "runArgs": ["--init"],

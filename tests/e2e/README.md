@@ -72,7 +72,7 @@ def pytest_collection_modifyitems(
 ) -> None:
     subprocess.check_call(
         [sys.executable, "-m", "train"],
-        env={"BENTOML_HOME": BentoMLContainer.bentoml_home.get()},
+        env={"VTSSERVING_HOME": BentoMLContainer.bentoml_home.get()},
     )
 
 

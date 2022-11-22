@@ -11,7 +11,7 @@ from ..configuration import is_pypi_installed_bentoml
 
 logger = logging.getLogger(__name__)
 
-BENTOML_DEV_BUILD = "BENTOML_BUNDLE_LOCAL_BUILD"
+VTSSERVING_DEV_BUILD = "VTSSERVING_BUNDLE_LOCAL_BUILD"
 
 
 def build_bentoml_editable_wheel(
@@ -20,9 +20,9 @@ def build_bentoml_editable_wheel(
     """
     This is for BentoML developers to create Bentos that contains the local bentoml
     build based on their development branch. To enable this behavior, one must
-    set envar :code:`BENTOML_BUNDLE_LOCAL_BUILD=True` before building a Bento.
+    set envar :code:`VTSSERVING_BUNDLE_LOCAL_BUILD=True` before building a Bento.
     """
-    if str(os.environ.get(BENTOML_DEV_BUILD, False)).lower() != "true":
+    if str(os.environ.get(VTSSERVING_DEV_BUILD, False)).lower() != "true":
         return
 
     if is_pypi_installed_bentoml():
@@ -41,7 +41,7 @@ def build_bentoml_editable_wheel(
         # isort: on
     except ModuleNotFoundError as e:
         raise MissingDependencyException(
-            f"Environment variable '{BENTOML_DEV_BUILD}=True', which requires the 'pypa/build' package ({e}). Install development dependencies with 'pip install -r requirements/dev-requirements.txt' and try again."
+            f"Environment variable '{VTSSERVING_DEV_BUILD}=True', which requires the 'pypa/build' package ({e}). Install development dependencies with 'pip install -r requirements/dev-requirements.txt' and try again."
         ) from None
 
     # Find bentoml module path

@@ -7,12 +7,12 @@ features can be customized through configuration. Both BentoML CLI and Python AP
 by the configuration. Configuration is best used for scenarios where the customizations can be specified once 
 and applied to the entire team.
 
-BentoML configuration is defined by a YAML file placed in a directory specified by the ``BENTOML_CONFIG`` 
+BentoML configuration is defined by a YAML file placed in a directory specified by the ``VTSSERVING_CONFIG`` 
 environment variable. The example below starts the bento server with configuration defined in ``~/bentoml_configuration.yaml``:
 
 .. code-block:: shell
 
-    $ BENTOML_CONFIG=~/bentoml_configuration.yaml bentoml serve iris_classifier:latest
+    $ VTSSERVING_CONFIG=~/bentoml_configuration.yaml bentoml serve iris_classifier:latest
 
 Users only need to specify a partial configuration with only the properties they wish to customize instead 
 of a full configuration schema. In the example below, the microbatching workers count is overridden to 4.
@@ -38,11 +38,11 @@ Overrding configuration with environment variables
 --------------------------------------------------
 
 Users can also override configuration fields with environment variables. by defining
-an oneline value of a "flat" JSON via ``BENTOML_CONFIG_OPTIONS``:
+an oneline value of a "flat" JSON via ``VTSSERVING_CONFIG_OPTIONS``:
 
 .. code-block:: yaml
 
-   $ BENTOML_CONFIG_OPTIONS='runners.pytorch_mnist.resources."nvidia.com/gpu"[0]=0 runners.pytorch_mnist.resources."nvidia.com/gpu"[1]=2' \
+   $ VTSSERVING_CONFIG_OPTIONS='runners.pytorch_mnist.resources."nvidia.com/gpu"[0]=0 runners.pytorch_mnist.resources."nvidia.com/gpu"[1]=2' \
             bentoml serve pytorch_mnist_demo:latest --production
 
 Which the override configuration will be intepreted as:
@@ -71,7 +71,7 @@ runtime using the `-e` environment variable option.
 
 .. code-block:: shell
 
-    $ docker run -v /local/path/configuration.yml:/home/bentoml/configuration.yml -e BENTOML_CONFIG=/home/bentoml/configuration.yml
+    $ docker run -v /local/path/configuration.yml:/home/bentoml/configuration.yml -e VTSSERVING_CONFIG=/home/bentoml/configuration.yml
 
 
 .. spelling::

@@ -22,13 +22,13 @@ def add_start_command(cli: click.Group) -> None:
         "--remote-runner",
         type=click.STRING,
         multiple=True,
-        envvar="BENTOML_SERVE_REMOTE_RUNNER",
+        envvar="VTSSERVING_SERVE_REMOTE_RUNNER",
         help="list of runners map",
     )
     @click.option(
         "--runner-map",
         type=click.STRING,
-        envvar="BENTOML_SERVE_RUNNER_MAP",
+        envvar="VTSSERVING_SERVE_RUNNER_MAP",
         help="[Deprecated] use --remote-runner instead. "
         "JSON string of runners map. For backword compatibility for yatai < 1.0.0",
     )
@@ -44,7 +44,7 @@ def add_start_command(cli: click.Group) -> None:
         type=click.INT,
         default=BentoMLContainer.http.port.get(),
         help="The port to listen on for the REST api server",
-        envvar="BENTOML_PORT",
+        envvar="VTSSERVING_PORT",
         show_default=True,
     )
     @click.option(
@@ -52,7 +52,7 @@ def add_start_command(cli: click.Group) -> None:
         type=click.STRING,
         default=BentoMLContainer.http.host.get(),
         help="The host to bind for the REST api server [defaults: 127.0.0.1(dev), 0.0.0.0(production)]",
-        envvar="BENTOML_HOST",
+        envvar="VTSSERVING_HOST",
     )
     @click.option(
         "--backlog",
@@ -66,7 +66,7 @@ def add_start_command(cli: click.Group) -> None:
         type=click.INT,
         default=BentoMLContainer.api_server_workers.get(),
         help="Specify the number of API server workers to start. Default to number of available CPU cores in production mode",
-        envvar="BENTOML_API_WORKERS",
+        envvar="VTSSERVING_API_WORKERS",
     )
     @click.option(
         "--working-dir",
@@ -188,7 +188,7 @@ def add_start_command(cli: click.Group) -> None:
         "--runner-name",
         type=click.STRING,
         required=True,
-        envvar="BENTOML_SERVE_RUNNER_NAME",
+        envvar="VTSSERVING_SERVE_RUNNER_NAME",
         help="specify the runner name to serve",
     )
     @click.option(
@@ -203,7 +203,7 @@ def add_start_command(cli: click.Group) -> None:
         type=click.INT,
         default=BentoMLContainer.http.port.get(),
         help="The port to listen on for the REST api server",
-        envvar="BENTOML_PORT",
+        envvar="VTSSERVING_PORT",
         show_default=True,
     )
     @click.option(
@@ -211,7 +211,7 @@ def add_start_command(cli: click.Group) -> None:
         type=click.STRING,
         default=BentoMLContainer.http.host.get(),
         help="The host to bind for the REST api server [defaults: 127.0.0.1(dev), 0.0.0.0(production)]",
-        envvar="BENTOML_HOST",
+        envvar="VTSSERVING_HOST",
     )
     @click.option(
         "--backlog",
@@ -271,7 +271,7 @@ def add_start_command(cli: click.Group) -> None:
         "--remote-runner",
         type=click.STRING,
         multiple=True,
-        envvar="BENTOML_SERVE_RUNNER_MAP",
+        envvar="VTSSERVING_SERVE_RUNNER_MAP",
         help="JSON string of runners map",
     )
     @click.option(
@@ -279,7 +279,7 @@ def add_start_command(cli: click.Group) -> None:
         type=click.INT,
         default=BentoMLContainer.grpc.port.get(),
         help="The port to listen on for the gRPC server",
-        envvar="BENTOML_PORT",
+        envvar="VTSSERVING_PORT",
         show_default=True,
     )
     @click.option(
@@ -287,7 +287,7 @@ def add_start_command(cli: click.Group) -> None:
         type=click.STRING,
         default=BentoMLContainer.grpc.host.get(),
         help="The host to bind for the gRPC server (defaults: 0.0.0.0)",
-        envvar="BENTOML_HOST",
+        envvar="VTSSERVING_HOST",
     )
     @click.option(
         "--backlog",
@@ -308,7 +308,7 @@ def add_start_command(cli: click.Group) -> None:
         type=click.INT,
         default=BentoMLContainer.api_server_workers.get(),
         help="Specify the number of API server workers to start. Default to number of available CPU cores in production mode",
-        envvar="BENTOML_API_WORKERS",
+        envvar="VTSSERVING_API_WORKERS",
     )
     @click.option(
         "--enable-reflection",

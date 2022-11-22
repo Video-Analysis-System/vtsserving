@@ -310,7 +310,7 @@ First, put the following in your ``bentofile.yaml`` build file:
 .. code-block:: yaml
 
     python:
-        requirements_txt: $BENTOML_MLFLOW_MODEL_PATH/mlflow_model/requirements.txt
+        requirements_txt: $VTSSERVING_MLFLOW_MODEL_PATH/mlflow_model/requirements.txt
         lock_packages: False
 
 Alternatively, one can also use MLflow model's generated conda environment file:
@@ -318,16 +318,16 @@ Alternatively, one can also use MLflow model's generated conda environment file:
 .. code-block:: yaml
 
     conda:
-        environment_yml: $BENTOML_MLFLOW_MODEL_PATH/mlflow_model/conda.yaml
+        environment_yml: $VTSSERVING_MLFLOW_MODEL_PATH/mlflow_model/conda.yaml
 
 This allows BentoML to dynamically find the given dependency file based on a user-defined
 environment variable. In this case, the ``bentoml get`` CLI returns the path to the target
 MLflow model folder and expose it to ``bentoml build`` via the environment variable
-``BENTOML_MLFLOW_MODEL_PATH``:
+``VTSSERVING_MLFLOW_MODEL_PATH``:
 
 .. code-block:: bash
 
-    export BENTOML_MLFLOW_MODEL_PATH=$(bentoml models get my_mlflow_model:latest -o path)
+    export VTSSERVING_MLFLOW_MODEL_PATH=$(bentoml models get my_mlflow_model:latest -o path)
     bentoml build
 
 

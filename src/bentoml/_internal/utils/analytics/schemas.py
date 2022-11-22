@@ -18,7 +18,7 @@ from simple_di import inject
 from simple_di import Provide
 
 from ...utils import bentoml_cattr
-from ...configuration import BENTOML_VERSION
+from ...configuration import VTSSERVING_VERSION
 from ...configuration.containers import BentoMLContainer
 from ...yatai_rest_api_client.config import get_config_path
 from ...yatai_rest_api_client.config import get_current_context
@@ -108,7 +108,7 @@ class CommonProperties:
 
     # environment related
     platform: str = attr.field(factory=get_platform)
-    bentoml_version: str = attr.field(default=BENTOML_VERSION)
+    bentoml_version: str = attr.field(default=VTSSERVING_VERSION)
     python_version: str = attr.field(factory=get_python_version)
     is_interactive: bool = attr.field(factory=is_interactive)
     in_notebook: bool = attr.field(factory=in_notebook)

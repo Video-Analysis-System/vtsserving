@@ -374,7 +374,7 @@ class _BentoMLContainerClass:
         home = expand_env_var(
             str(
                 os.environ.get(
-                    "BENTOML_HOME", os.path.join(os.path.expanduser("~"), "bentoml")
+                    "VTSSERVING_HOME", os.path.join(os.path.expanduser("~"), "bentoml")
                 )
             )
         )

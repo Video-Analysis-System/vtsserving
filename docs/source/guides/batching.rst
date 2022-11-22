@@ -78,7 +78,7 @@ Configured through the ``max_latency_ms`` key, max latency represents the maximu
 Monitoring
 ----------
 
-Adaptive batching size is by default exposed as a histogram metric with name, ``BENTOML_{runner}_{method}_adaptive_batch_size_bucket``, for observing and debugging adaptive batching behaviors of each model runner.
+Adaptive batching size is by default exposed as a histogram metric with name, ``VTSSERVING_{runner}_{method}_adaptive_batch_size_bucket``, for observing and debugging adaptive batching behaviors of each model runner.
 
 .. image:: ../_static/img/adaptive-batching-histogram.png
 

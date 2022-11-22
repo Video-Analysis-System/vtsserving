@@ -14,21 +14,21 @@ import click
 conda_packages_name = "conda_packages"
 
 _ENVVAR = [
-    "BENTOML_DEBUG",
-    "BENTOML_QUIET",
-    "BENTOML_BUNDLE_LOCAL_BUILD",
-    "BENTOML_DO_NOT_TRACK",
-    "BENTOML_CONFIG",
-    "BENTOML_CONFIG_OPTIONS",
-    "BENTOML_PORT",
-    "BENTOML_HOST",
-    "BENTOML_API_WORKERS",
+    "VTSSERVING_DEBUG",
+    "VTSSERVING_QUIET",
+    "VTSSERVING_BUNDLE_LOCAL_BUILD",
+    "VTSSERVING_DO_NOT_TRACK",
+    "VTSSERVING_CONFIG",
+    "VTSSERVING_CONFIG_OPTIONS",
+    "VTSSERVING_PORT",
+    "VTSSERVING_HOST",
+    "VTSSERVING_API_WORKERS",
 ]
 _CONDITIONAL_ENVVAR = [
     # Only print if set
-    "BENTOML_RETRY_RUNNER_REQUESTS",
-    "BENTOML_CONTAINERIZE_BACKEND",
-    "BENTOML_NUM_THREAD",
+    "VTSSERVING_RETRY_RUNNER_REQUESTS",
+    "VTSSERVING_CONTAINERIZE_BACKEND",
+    "VTSSERVING_NUM_THREAD",
     "OMP_NUM_THREADS",
     "OPENBLAS_NUM_THREADS",
     "MKL_NUM_THREADS",
@@ -105,7 +105,7 @@ def pretty_format(
 
 
 def add_env_command(cli: click.Group) -> None:
-    from bentoml import __version__ as BENTOML_VERSION
+    from bentoml import __version__ as VTSSERVING_VERSION
     from bentoml.exceptions import CLIException
     from bentoml._internal.utils.pkg import get_pkg_version
     from bentoml._internal.utils.pkg import PackageNotFoundError
@@ -127,7 +127,7 @@ def add_env_command(cli: click.Group) -> None:
         is_windows = sys.platform == "win32"
 
         info_dict: dict[str, str | list[str]] = {
-            "bentoml": BENTOML_VERSION,
+            "bentoml": VTSSERVING_VERSION,
             "python": platform.python_version(),
             "platform": platform.platform(),
         }

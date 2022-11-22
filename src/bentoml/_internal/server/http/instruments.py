@@ -43,7 +43,7 @@ class HTTPTrafficMetricsMiddleware:
 
         DEFAULT_NAMESPACE = "bentoml_api_server"
         if self.namespace == DEFAULT_NAMESPACE:
-            legacy_namespace = "BENTOML"
+            legacy_namespace = "VTSSERVING"
         else:
             legacy_namespace = self.namespace
 

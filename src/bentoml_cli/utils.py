@@ -142,7 +142,7 @@ class BentoMLCommandGroup(click.Group):
         from bentoml._internal.configuration import QUIET_ENV_VAR
         from bentoml._internal.configuration import set_debug_mode
         from bentoml._internal.configuration import set_quiet_mode
-        from bentoml._internal.utils.analytics import BENTOML_DO_NOT_TRACK
+        from bentoml._internal.utils.analytics import VTSSERVING_DO_NOT_TRACK
 
         @click.option(
             "-q",
@@ -164,7 +164,7 @@ class BentoMLCommandGroup(click.Group):
             "--do-not-track",
             is_flag=True,
             default=False,
-            envvar=BENTOML_DO_NOT_TRACK,
+            envvar=VTSSERVING_DO_NOT_TRACK,
             help="Do not send usage info",
         )
         @functools.wraps(func)
@@ -196,14 +196,14 @@ class BentoMLCommandGroup(click.Group):
         from bentoml._internal.utils.analytics import track
         from bentoml._internal.utils.analytics import CliEvent
         from bentoml._internal.utils.analytics import cli_events_map
-        from bentoml._internal.utils.analytics import BENTOML_DO_NOT_TRACK
+        from bentoml._internal.utils.analytics import VTSSERVING_DO_NOT_TRACK
 
         command_name = kwargs.get("name", func.__name__)
 
         @functools.wraps(func)
         def wrapper(do_not_track: bool, *args: P.args, **kwargs: P.kwargs) -> t.Any:
             if do_not_track:
-                os.environ[BENTOML_DO_NOT_TRACK] = str(True)
+                os.environ[VTSSERVING_DO_NOT_TRACK] = str(True)
                 return func(*args, **kwargs)
 
             start_time = time.time_ns()

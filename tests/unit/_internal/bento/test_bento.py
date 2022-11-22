@@ -17,7 +17,7 @@ from bentoml._internal.bento.bento import BentoInfo
 from bentoml._internal.bento.bento import BentoApiInfo
 from bentoml._internal.bento.bento import BentoModelInfo
 from bentoml._internal.bento.bento import BentoRunnerInfo
-from bentoml._internal.configuration import BENTOML_VERSION
+from bentoml._internal.configuration import VTSSERVING_VERSION
 from bentoml._internal.bento.build_config import BentoBuildConfig
 
 if TYPE_CHECKING:
@@ -29,7 +29,7 @@ def test_bento_info(tmpdir: Path):
     bentoinfo_a = BentoInfo(tag=Tag("tag"), service="service")
     end = datetime.now(timezone.utc)
 
-    assert bentoinfo_a.bentoml_version == BENTOML_VERSION
+    assert bentoinfo_a.bentoml_version == VTSSERVING_VERSION
     assert start <= bentoinfo_a.creation_time <= end
     # validate should fail
 
@@ -130,7 +130,7 @@ conda:
 
     with open(bento_yaml_b_filename, encoding="utf-8") as bento_yaml_b:
         assert bento_yaml_b.read() == expected_yaml.format(
-            bentoml_version=BENTOML_VERSION,
+            bentoml_version=VTSSERVING_VERSION,
             creation_time=bentoinfo_b.creation_time.isoformat(),
             model_creation_time=model_creation_time.isoformat(),
             python_version=f"{version_info.major}.{version_info.minor}",
@@ -319,7 +319,7 @@ def test_bento(model_store: ModelStore):
     bento = build_test_bento()
     end = datetime.now(timezone.utc)
 
-    assert bento.info.bentoml_version == BENTOML_VERSION
+    assert bento.info.bentoml_version == VTSSERVING_VERSION
     assert start <= bento.creation_time <= end
     # validate should fail
 
