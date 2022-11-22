@@ -24,14 +24,14 @@ _main() {
 		if [[ -v VTSSERVING_SERVE_COMPONENT ]]; then
 			echo "\$VTSSERVING_SERVE_COMPONENT is set! Calling 'bentoml start-*' instead"
 			if [ "${VTSSERVING_SERVE_COMPONENT}" = 'http_server' ]; then
-				set -- bentoml start-http-server "$@" "$BENTO_PATH"
+				set -- bentoml start-http-server "$@" "$VTS_PATH"
 			elif [ "${VTSSERVING_SERVE_COMPONENT}" = 'grpc_server' ]; then
-				set -- bentoml start-grpc-server "$@" "$BENTO_PATH"
+				set -- bentoml start-grpc-server "$@" "$VTS_PATH"
 			elif [ "${VTSSERVING_SERVE_COMPONENT}" = 'runner' ]; then
-				set -- bentoml start-runner-server "$@" "$BENTO_PATH"
+				set -- bentoml start-runner-server "$@" "$VTS_PATH"
 			fi
 		else
-			set -- bentoml serve --production "$@" "$BENTO_PATH"
+			set -- bentoml serve --production "$@" "$VTS_PATH"
 		fi
 	fi
 	# Overide the VTSSERVING_PORT if PORT env var is present. Used for Heroku and Yatai.
@@ -43,7 +43,7 @@ _main() {
 	# Assuming that serve and start commands are the first arguments
 	# Note that this is the recommended way going forward to run all bentoml containers.
 	if [ "${#}" -gt 0 ] && { [ "${1}" = 'serve' ] || [ "${1}" = 'serve-http' ] || [ "${1}" = 'serve-grpc' ] || [ "${1}" = 'start-http-server' ] || [ "${1}" = 'start-grpc-server' ] || [ "${1}" = 'start-runner-server' ]; }; then
-		exec bentoml "$@" "$BENTO_PATH"
+		exec bentoml "$@" "$VTS_PATH"
 	else
 		# otherwise default to run whatever the command is
 		# This should allow running bash, sh, python, etc

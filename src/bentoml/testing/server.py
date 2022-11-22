@@ -320,8 +320,8 @@ def run_bento_server_distributed(
     proxy_process.start()
     copied = os.environ.copy()
     # to ensure yatai specified headers BP100
-    copied["YATAI_BENTO_DEPLOYMENT_NAME"] = "test-deployment"
-    copied["YATAI_BENTO_DEPLOYMENT_NAMESPACE"] = "yatai"
+    copied["YATAI_VTS_DEPLOYMENT_NAME"] = "test-deployment"
+    copied["YATAI_VTS_DEPLOYMENT_NAMESPACE"] = "yatai"
     if use_grpc:
         copied["GPRC_PROXY"] = f"localhost:{proxy_port}"
     else:

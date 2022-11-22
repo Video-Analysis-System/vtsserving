@@ -16,8 +16,8 @@
 # ===========================================
 {% endif %}
 
-# Block SETUP_BENTO_BASE_IMAGE
-{% block SETUP_BENTO_BASE_IMAGE %}
+# Block SETUP_VTS_BASE_IMAGE
+{% block SETUP_VTS_BASE_IMAGE %}
 FROM {{ __base_image__ }} as base-container
 
 ENV LANG=C.UTF-8
@@ -30,32 +30,32 @@ ENV PYTHONUNBUFFERED=1
 
 {% endblock %}
 
-# Block SETUP_BENTO_USER
-{% block SETUP_BENTO_USER %}
-ARG BENTO_USER={{ bento__user }}
-ARG BENTO_USER_UID={{ bento__uid_gid }}
-ARG BENTO_USER_GID={{ bento__uid_gid }}
-RUN groupadd -g $BENTO_USER_GID -o $BENTO_USER && useradd -m -u $BENTO_USER_UID -g $BENTO_USER_GID -o -r $BENTO_USER
+# Block SETUP_VTS_USER
+{% block SETUP_VTS_USER %}
+ARG VTS_USER={{ bento__user }}
+ARG VTS_USER_UID={{ bento__uid_gid }}
+ARG VTS_USER_GID={{ bento__uid_gid }}
+RUN groupadd -g $VTS_USER_GID -o $VTS_USER && useradd -m -u $VTS_USER_UID -g $VTS_USER_GID -o -r $VTS_USER
 {% endblock %}
-{% block SETUP_BENTO_ENVARS %}
+{% block SETUP_VTS_ENVARS %}
 {% if __options__env is not none %}
 {% for key, value in __options__env.items() -%}
 ENV {{ key }}={{ value }}
 {% endfor -%}
 {% endif -%}
 
-ARG BENTO_PATH={{ bento__path }}
-ENV BENTO_PATH=$BENTO_PATH
+ARG VTS_PATH={{ bento__path }}
+ENV VTS_PATH=$VTS_PATH
 ENV VTSSERVING_HOME={{ bento__home }}
 
-RUN mkdir $BENTO_PATH && chown {{ bento__user }}:{{ bento__user }} $BENTO_PATH -R
-WORKDIR $BENTO_PATH
+RUN mkdir $VTS_PATH && chown {{ bento__user }}:{{ bento__user }} $VTS_PATH -R
+WORKDIR $VTS_PATH
 
 COPY --chown={{ bento__user }}:{{ bento__user }} . ./
 {% endblock %}
 
-# Block SETUP_BENTO_COMPONENTS
-{% block SETUP_BENTO_COMPONENTS %}
+# Block SETUP_VTS_COMPONENTS
+{% block SETUP_VTS_COMPONENTS %}
 {% set __install_python_scripts__ = expands_bento_path("env", "python", "install.sh", bento_path=bento__path) %}
 {% set __pip_cache__ = common.mount_cache("/root/.cache/pip") %}
 # install python packages with install.sh
@@ -67,8 +67,8 @@ RUN {{ __setup_script__ }}
 {% endif %}
 {% endblock %}
 
-# Block SETUP_BENTO_ENTRYPOINT
-{% block SETUP_BENTO_ENTRYPOINT %}
+# Block SETUP_VTS_ENTRYPOINT
+{% block SETUP_VTS_ENTRYPOINT %}
 # Default port for BentoServer
 EXPOSE 3000
 

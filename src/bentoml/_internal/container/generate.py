@@ -25,17 +25,17 @@ if TYPE_CHECKING:
     TemplateFunc = t.Callable[[DockerOptions], dict[str, t.Any]]
     F = t.Callable[P, t.Any]
 
-BENTO_UID_GID = 1034
-BENTO_USER = "bentoml"
-BENTO_HOME = f"/home/{BENTO_USER}/"
-BENTO_PATH = f"{BENTO_HOME}bento"
+VTS_UID_GID = 1034
+VTS_USER = "bentoml"
+VTS_HOME = f"/home/{VTS_USER}/"
+VTS_PATH = f"{VTS_HOME}bento"
 # 1.2.1 is the current docker frontend that both buildkitd and kaniko supports.
-BENTO_BUILDKIT_FRONTEND = "docker/dockerfile:1.2.1"
+VTS_BUILDKIT_FRONTEND = "docker/dockerfile:1.2.1"
 
 
-def expands_bento_path(*path: str, bento_path: str = BENTO_PATH) -> str:
+def expands_bento_path(*path: str, bento_path: str = VTS_PATH) -> str:
     """
-    Expand a given paths with respect to :code:`BENTO_PATH`.
+    Expand a given paths with respect to :code:`VTS_PATH`.
     Note on using "/": the returned path is meant to be used in the generated Dockerfile.
     """
     return "/".join([bento_path, *path])
@@ -73,12 +73,12 @@ def get_templates_variables(
         )
     # bento__env
     default_env = {
-        "uid_gid": BENTO_UID_GID,
-        "user": BENTO_USER,
-        "home": BENTO_HOME,
-        "path": BENTO_PATH,
+        "uid_gid": VTS_UID_GID,
+        "user": VTS_USER,
+        "home": VTS_HOME,
+        "path": VTS_PATH,
         "add_header": True,
-        "buildkit_frontend": BENTO_BUILDKIT_FRONTEND,
+        "buildkit_frontend": VTS_BUILDKIT_FRONTEND,
         "enable_buildkit": True,
     }
     if bento_env:
@@ -131,7 +131,7 @@ def generate_containerfile(
         | python        | Python releases.                         |
         +---------------+------------------------------------------+
 
-        All templates will have the following blocks: "SETUP_BENTO_BASE_IMAGE", "SETUP_BENTO_USER", "SETUP_BENTO_ENVARS", "SETUP_BENTO_COMPONENTS", "SETUP_BENTO_ENTRYPOINT",
+        All templates will have the following blocks: "SETUP_VTS_BASE_IMAGE", "SETUP_VTS_USER", "SETUP_VTS_ENVARS", "SETUP_VTS_COMPONENTS", "SETUP_VTS_ENTRYPOINT",
 
         Overriding templates variables: bento__uid_gid, bento__user, bento__home, bento__path, bento__enable_buildkit
     """

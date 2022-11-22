@@ -3,7 +3,7 @@ import os
 
 import nltk
 
-if os.environ.get("BENTO_PATH"):
+if os.environ.get("VTS_PATH"):
     # Bento setup_script is executed as root user during containerize. By default, NLTK
     # will download data files to "/root/nltk_data". However, the default user when running
     # a BentoML generated docker image is "bentoml", which does not have the permission

@@ -47,10 +47,10 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-BENTO_YAML_FILENAME = "bento.yaml"
-BENTO_PROJECT_DIR_NAME = "src"
-BENTO_README_FILENAME = "README.md"
-DEFAULT_BENTO_BUILD_FILE = "bentofile.yaml"
+VTS_YAML_FILENAME = "bento.yaml"
+VTS_PROJECT_DIR_NAME = "src"
+VTS_README_FILENAME = "README.md"
+DEFAULT_VTS_BUILD_FILE = "bentofile.yaml"
 
 API_INFO_MD = "| POST [`/{api}`](#{link}) | {input} | {output} |"
 
@@ -219,8 +219,8 @@ class Bento(StoreItem):
             raise InvalidArgument(
                 "Paths outside of the build context directory cannot be included; use a symlink or copy those files into the working directory manually."
             )
-        bento_fs.makedir(BENTO_PROJECT_DIR_NAME)
-        target_fs = bento_fs.opendir(BENTO_PROJECT_DIR_NAME)
+        bento_fs.makedir(VTS_PROJECT_DIR_NAME)
+        target_fs = bento_fs.opendir(VTS_PROJECT_DIR_NAME)
 
         for dir_path, _, files in ctx_fs.walk():
             for f in files:
@@ -243,16 +243,16 @@ class Bento(StoreItem):
 
         # Create `readme.md` file
         if build_config.description is None:
-            with bento_fs.open(BENTO_README_FILENAME, "w", encoding="utf-8") as f:
+            with bento_fs.open(VTS_README_FILENAME, "w", encoding="utf-8") as f:
                 f.write(get_default_svc_readme(svc, svc_version=tag.version))
         else:
             if build_config.description.startswith("file:"):
                 file_name = build_config.description[5:].strip()
                 copy_file_to_fs_folder(
-                    file_name, bento_fs, dst_filename=BENTO_README_FILENAME
+                    file_name, bento_fs, dst_filename=VTS_README_FILENAME
                 )
             else:
-                with bento_fs.open(BENTO_README_FILENAME, "w") as f:
+                with bento_fs.open(VTS_README_FILENAME, "w") as f:
                     f.write(build_config.description)
 
         # Create 'apis/openapi.yaml' file
@@ -289,11 +289,11 @@ class Bento(StoreItem):
     @classmethod
     def from_fs(cls, item_fs: FS) -> Bento:
         try:
-            with item_fs.open(BENTO_YAML_FILENAME, "r", encoding="utf-8") as bento_yaml:
+            with item_fs.open(VTS_YAML_FILENAME, "r", encoding="utf-8") as bento_yaml:
                 info = BentoInfo.from_yaml_file(bento_yaml)
         except fs.errors.ResourceNotFound:
             raise BentoMLException(
-                f"Failed to load bento because it does not contain a '{BENTO_YAML_FILENAME}'"
+                f"Failed to load bento because it does not contain a '{VTS_YAML_FILENAME}'"
             )
 
         res = cls(info.tag, item_fs, info)
@@ -312,7 +312,7 @@ class Bento(StoreItem):
         return self._fs.getsyspath(item)
 
     def flush_info(self):
-        with self._fs.open(BENTO_YAML_FILENAME, "w") as bento_yaml:
+        with self._fs.open(VTS_YAML_FILENAME, "w") as bento_yaml:
             self.info.dump(bento_yaml)
 
     @property
@@ -320,7 +320,7 @@ class Bento(StoreItem):
         if self._doc is not None:
             return self._doc
 
-        with self._fs.open(BENTO_README_FILENAME, "r") as readme_md:
+        with self._fs.open(VTS_README_FILENAME, "r") as readme_md:
             self._doc = str(readme_md.read())
             return self._doc
 
@@ -347,9 +347,9 @@ class Bento(StoreItem):
         return self
 
     def validate(self):
-        if not self._fs.isfile(BENTO_YAML_FILENAME):
+        if not self._fs.isfile(VTS_YAML_FILENAME):
             raise BentoMLException(
-                f"{self!s} does not contain a {BENTO_YAML_FILENAME}."
+                f"{self!s} does not contain a {VTS_YAML_FILENAME}."
             )
 
     def __str__(self):
@@ -491,7 +491,7 @@ class BentoInfo:
         try:
             return bentoml_cattr.structure(yaml_content, cls)
         except KeyError as e:
-            raise BentoMLException(f"Missing field {e} in {BENTO_YAML_FILENAME}")
+            raise BentoMLException(f"Missing field {e} in {VTS_YAML_FILENAME}")
 
     def validate(self):
         # Validate bento.yml file schema, content, bentoml version, etc

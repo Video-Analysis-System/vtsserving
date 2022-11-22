@@ -196,11 +196,11 @@ class _ComponentContext:
 
     @property
     def yatai_bento_deployment_name(self) -> str:
-        return os.environ.get("YATAI_BENTO_DEPLOYMENT_NAME", "")
+        return os.environ.get("YATAI_VTS_DEPLOYMENT_NAME", "")
 
     @property
     def yatai_bento_deployment_namespace(self) -> str:
-        return os.environ.get("YATAI_BENTO_DEPLOYMENT_NAMESPACE", "")
+        return os.environ.get("YATAI_VTS_DEPLOYMENT_NAMESPACE", "")
 
 
 trace_context = _ServiceTraceContext()

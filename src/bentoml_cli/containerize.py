@@ -420,7 +420,7 @@ def add_containerize_command(cli: Group) -> None:
     from bentoml._internal.configuration.containers import BentoMLContainer
 
     @cli.command()
-    @click.argument("bento_tag", type=click.STRING, metavar="BENTO:TAG")
+    @click.argument("bento_tag", type=click.STRING, metavar="VTS:TAG")
     @click.option(
         "-t",
         "--image-tag",
@@ -486,7 +486,7 @@ def add_containerize_command(cli: Group) -> None:
 
         \b
 
-        ``BENTO`` is the target BentoService to be containerized, referenced by its name
+        ``VTS`` is the target BentoService to be containerized, referenced by its name
         and version in format of name:version. For example: ``iris_classifier:v1.2.0``
 
         \b

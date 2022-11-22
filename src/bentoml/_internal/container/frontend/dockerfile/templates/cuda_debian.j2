@@ -1,5 +1,5 @@
 {% extends "base_debian.j2" %}
-{% block SETUP_BENTO_BASE_IMAGE %}
+{% block SETUP_VTS_BASE_IMAGE %}
 {{ super() }}
 
 {% call common.RUN(__enable_buildkit__) -%} {{ common.mount_cache(__lib_apt__) }} {{ common.mount_cache(__cache_apt__) }} {% endcall -%} \
@@ -18,11 +18,11 @@ RUN curl -O https://bootstrap.pypa.io/get-pip.py && \
     rm -rf get-pip.py
 
 {% endblock %}
-{% block SETUP_BENTO_ENVARS %}
+{% block SETUP_VTS_ENVARS %}
 
 {{ super() }}
 {% endblock %}
-{% block SETUP_BENTO_ENTRYPOINT %}
+{% block SETUP_VTS_ENTRYPOINT %}
 RUN rm -rf /var/lib/{apt,cache,log}
 {{ super() }}
 {% endblock %}

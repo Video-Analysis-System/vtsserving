@@ -851,7 +851,7 @@ _NDARRAY.fields_by_name['int64_values']._options = None
 _NDARRAY.fields_by_name['uint32_values']._options = None
 _NDARRAY.fields_by_name['uint64_values']._options = None
 
-_BENTOSERVICE = _descriptor.ServiceDescriptor(
+_VTSSERVICE = _descriptor.ServiceDescriptor(
   name='BentoService',
   full_name='bentoml.grpc.v1.BentoService',
   file=DESCRIPTOR,
@@ -872,17 +872,17 @@ _BENTOSERVICE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
 ])
-_sym_db.RegisterServiceDescriptor(_BENTOSERVICE)
+_sym_db.RegisterServiceDescriptor(_VTSSERVICE)
 
-DESCRIPTOR.services_by_name['BentoService'] = _BENTOSERVICE
+DESCRIPTOR.services_by_name['BentoService'] = _VTSSERVICE
 
 BentoService = service_reflection.GeneratedServiceType('BentoService', (_service.Service,), dict(
-  DESCRIPTOR = _BENTOSERVICE,
+  DESCRIPTOR = _VTSSERVICE,
   __module__ = 'bentoml.grpc.v1.service_pb2'
   ))
 
 BentoService_Stub = service_reflection.GeneratedServiceStubType('BentoService_Stub', (BentoService,), dict(
-  DESCRIPTOR = _BENTOSERVICE,
+  DESCRIPTOR = _VTSSERVICE,
   __module__ = 'bentoml.grpc.v1.service_pb2'
   ))
 

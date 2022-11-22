@@ -61,8 +61,8 @@ class ResourceType(Enum):
     USER = "user"
     ORG = "organization"
     CLUSTER = "cluster"
-    BENTO_REPOSITORY = "bento_repository"
-    BENTO = "bento"
+    VTS_REPOSITORY = "bento_repository"
+    VTS = "bento"
     MODEL_REPOSITORY = "model_repository"
     MODEL = "model"
 

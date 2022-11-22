@@ -84,7 +84,7 @@ BentoML's base template and blocks. The template should render a valid
 .. code-block:: jinja
 
    {% extends bento_base_template %}
-   {% block SETUP_BENTO_COMPONENTS %}
+   {% block SETUP_VTS_COMPONENTS %}
    {{ super() }}
    RUN echo "We are running this during bentoml containerize!"
    {% endblock %}
@@ -199,7 +199,7 @@ Define the following :code:`Dockerfile.template`:
 .. code-block:: jinja
 
    {% extends bento_base_template %}
-   {% block SETUP_BENTO_BASE_IMAGE %}
+   {% block SETUP_VTS_BASE_IMAGE %}
    ARG AWS_SECRET_ACCESS_KEY
    ARG AWS_ACCESS_KEY_ID
    {{ super() }}
@@ -210,7 +210,7 @@ Define the following :code:`Dockerfile.template`:
    ENV AWS_SECRET_ACCESS_KEY=$ARG AWS_SECRET_ACCESS_KEY
    ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
    {% endblock %}
-   {% block SETUP_BENTO_COMPONENTS %}
+   {% block SETUP_VTS_COMPONENTS %}
    {{ super() }}
 
    RUN aws s3 cp s3://path/to/file {{ bento__path }}
@@ -234,7 +234,7 @@ Define the following :code:`Dockerfile.template`:
 .. code-block:: jinja
 
    {% extends bento_base_template %}
-   {% block SETUP_BENTO_COMPONENTS %}
+   {% block SETUP_VTS_COMPONENTS %}
    {{ super() }}
    
    RUN --mount=type=secret,id=aws,target=/root/.aws/credentials \
@@ -281,7 +281,7 @@ isolate the installation of a local library :code:`mypackage`:
 .. code-block:: jinja
 
    {% extends bento_base_template %}
-   {% block SETUP_BENTO_BASE_IMAGE %}
+   {% block SETUP_VTS_BASE_IMAGE %}
    FROM --platform=$BUILDPLATFORM python:3.7-slim as buildstage
    RUN mkdir /tmp/mypackage
 
@@ -291,7 +291,7 @@ isolate the installation of a local library :code:`mypackage`:
 
    {{ super() }}
    {% endblock %}
-   {% block SETUP_BENTO_COMPONENTS %}
+   {% block SETUP_VTS_COMPONENTS %}
    {{ super() }}
    COPY --from=buildstage mypackage.tar.gz /tmp/wheels/
    RUN --network=none pip install --find-links /tmp/wheels mypackage
@@ -364,20 +364,20 @@ All exported blocks that users can use to extend are as follow:
 +---------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
 | Blocks                          | Definition                                                                                                                       |
 +=================================+==================================================================================================================================+
-| :code:`SETUP_BENTO_BASE_IMAGE`  | Instructions to set up multi architecture supports, base images as well as installing system packages that is defined by users.  |
+| :code:`SETUP_VTS_BASE_IMAGE`  | Instructions to set up multi architecture supports, base images as well as installing system packages that is defined by users.  |
 +---------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
-| :code:`SETUP_BENTO_USER`        | Setup bento users with correct UID, GID and directory for a 🍱.                                                                  |
+| :code:`SETUP_VTS_USER`        | Setup bento users with correct UID, GID and directory for a 🍱.                                                                  |
 +---------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
-| :code:`SETUP_BENTO_ENVARS`      | Add users environment variables (if specified) and other required variables from BentoML.                                        |
+| :code:`SETUP_VTS_ENVARS`      | Add users environment variables (if specified) and other required variables from BentoML.                                        |
 +---------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
-| :code:`SETUP_BENTO_COMPONENTS`  | Setup components for a 🍱 , including installing pip packages, running setup scripts, installing bentoml, etc.                   |
+| :code:`SETUP_VTS_COMPONENTS`  | Setup components for a 🍱 , including installing pip packages, running setup scripts, installing bentoml, etc.                   |
 +---------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
-| :code:`SETUP_BENTO_ENTRYPOINT`  | Finalize ports and set :code:`ENTRYPOINT` and :code:`CMD` for the 🍱.                                                            |
+| :code:`SETUP_VTS_ENTRYPOINT`  | Finalize ports and set :code:`ENTRYPOINT` and :code:`CMD` for the 🍱.                                                            |
 +---------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
 
 .. note::
 
-   All the defined blocks are prefixed with :code:`SETUP_BENTO_*`. This is to
+   All the defined blocks are prefixed with :code:`SETUP_VTS_*`. This is to
    ensure that users can extend blocks defined by BentoML without sacrificing
    the flexibility of a Jinja template.
 
@@ -452,12 +452,12 @@ By default, a Bento sets:
 This aboved instructions ensure that whenever :code:`docker run` is invoked on the 🍱 container, :code:`bentoml` is called correctly. 
 
 In scenarios where one needs to setup a custom :code:`ENTRYPOINT`, make sure to use
-the :code:`ENTRYPOINT` instruction under the :code:`SETUP_BENTO_ENTRYPOINT` block as follows:
+the :code:`ENTRYPOINT` instruction under the :code:`SETUP_VTS_ENTRYPOINT` block as follows:
 
 .. code-block:: jinja
 
     {% extends bento_base_template %}
-    {% block SETUP_BENTO_ENTRYPOINT %}
+    {% block SETUP_VTS_ENTRYPOINT %}
     {{ super() }}
 
     ...

@@ -935,7 +935,7 @@ In the ``setup.sh`` file:
     echo "Downloading NLTK data.."
     python -m nltk.downloader all
 
-Now build a new bento and then run `bentoml containerize MY_BENTO --progress plain` to
+Now build a new bento and then run `bentoml containerize MY_VTS --progress plain` to
 view the docker image build progress. The newly built docker image will contain
 pre-downloaded NLTK dataset.
 

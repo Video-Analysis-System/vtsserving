@@ -142,7 +142,7 @@ def add_serve_command(cli: click.Group) -> None:
         """Start a HTTP BentoServer from a given 🍱
 
         \b
-        BENTO is the serving target, it can be the import as:
+        VTS is the serving target, it can be the import as:
         - the import path of a 'bentoml.Service' instance
         - a tag to a Bento in local Bento store
         - a folder containing a valid 'bentofile.yaml' build file with a 'service' field, which provides the import path of a 'bentoml.Service' instance
@@ -344,7 +344,7 @@ def add_serve_command(cli: click.Group) -> None:
         """Start a gRPC BentoServer from a given 🍱
 
         \b
-        BENTO is the serving target, it can be the import as:
+        VTS is the serving target, it can be the import as:
         - the import path of a 'bentoml.Service' instance
         - a tag to a Bento in local Bento store
         - a folder containing a valid 'bentofile.yaml' build file with a 'service' field, which provides the import path of a 'bentoml.Service' instance

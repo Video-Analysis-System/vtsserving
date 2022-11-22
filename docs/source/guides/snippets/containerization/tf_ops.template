@@ -1,5 +1,5 @@
 {% extends bento_base_template %}
-{% block SETUP_BENTO_BASE_IMAGE %}
+{% block SETUP_VTS_BASE_IMAGE %}
 
 {{ super() }}
 
@@ -14,7 +14,7 @@ RUN set -ex && \
 	g++ --std=c++14 -shared zero_out.cc -o zero_out.so -fPIC ${TF_CFLAGS[@]} ${TF_LFLAGS[@]} -I$(python -c 'import tensorflow as tf; print(tf.sysconfig.get_include());') -D_GLIBCXX_USE_CXX11_ABI=0 -O2
 
 {% endblock %}
-{% block SETUP_BENTO_COMPONENTS %}
+{% block SETUP_VTS_COMPONENTS %}
 {{ super() }}
 RUN stat /usr/lib/zero_out.so
 {% endblock %}

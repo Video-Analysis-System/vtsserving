@@ -18,9 +18,9 @@ from .service import on_load_bento
 from ...exceptions import NotFound
 from ...exceptions import BentoMLException
 from ...exceptions import ImportServiceError
-from ..bento.bento import BENTO_YAML_FILENAME
-from ..bento.bento import BENTO_PROJECT_DIR_NAME
-from ..bento.bento import DEFAULT_BENTO_BUILD_FILE
+from ..bento.bento import VTS_YAML_FILENAME
+from ..bento.bento import VTS_PROJECT_DIR_NAME
+from ..bento.bento import DEFAULT_VTS_BUILD_FILE
 from ..configuration import VTSSERVING_VERSION
 from ..bento.build_config import BentoBuildConfig
 from ..configuration.containers import BentoMLContainer
@@ -239,7 +239,7 @@ def load_bento_dir(path: str, standalone_load: bool = False) -> "Service":
 
 def _load_bento(bento: Bento, standalone_load: bool) -> "Service":
     # Use Bento's user project path as working directory when importing the service
-    working_dir = bento._fs.getsyspath(BENTO_PROJECT_DIR_NAME)
+    working_dir = bento._fs.getsyspath(VTS_PROJECT_DIR_NAME)
 
     # Use Bento's local "{base_dir}/models/" directory as its model store
     model_store = ModelStore(bento._fs.getsyspath("models"))
@@ -315,7 +315,7 @@ def load(
         bento_path = os.path.abspath(os.path.expanduser(bento_identifier))
 
         if os.path.isfile(
-            os.path.expanduser(os.path.join(bento_path, BENTO_YAML_FILENAME))
+            os.path.expanduser(os.path.join(bento_path, VTS_YAML_FILENAME))
         ):
             # Loading from path to a built Bento
             try:
@@ -326,12 +326,12 @@ def load(
                 )
             logger.info("Service loaded from Bento directory: %s", svc)
         elif os.path.isfile(
-            os.path.expanduser(os.path.join(bento_path, DEFAULT_BENTO_BUILD_FILE))
+            os.path.expanduser(os.path.join(bento_path, DEFAULT_VTS_BUILD_FILE))
         ):
             # Loading from path to a project directory containing bentofile.yaml
             try:
                 with open(
-                    os.path.join(bento_path, DEFAULT_BENTO_BUILD_FILE),
+                    os.path.join(bento_path, DEFAULT_VTS_BUILD_FILE),
                     "r",
                     encoding="utf-8",
                 ) as f:

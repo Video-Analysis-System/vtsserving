@@ -6,7 +6,7 @@
 {% set conda_version="py39_4.11.0" %}
 {% set conda_path="/opt/conda" %}
 {% set conda_exec=[conda_path, "bin", "conda"] | join("/") %}
-{% block SETUP_BENTO_BASE_IMAGE %}
+{% block SETUP_VTS_BASE_IMAGE %}
 FROM debian:bullseye-slim as conda-build
 
 RUN --mount=type=cache,from=cached,sharing=shared,target=/var/cache/apt \
@@ -69,7 +69,7 @@ RUN set -ex && \
 	echo "{{ conda_exec }} activate base" >> ~/.bashrc
 
 {% endblock %}
-{% block SETUP_BENTO_ENVARS %}
+{% block SETUP_VTS_ENVARS %}
 
 SHELL [ "/bin/bash", "-eo", "pipefail", "-c" ]
 {{ super() }}

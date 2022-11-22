@@ -47,7 +47,7 @@ def add_bento_management_commands(cli: Group):
     from bentoml._internal.utils import calc_dir_size
     from bentoml._internal.utils import human_readable_size
     from bentoml._internal.utils import display_path_under_home
-    from bentoml._internal.bento.bento import DEFAULT_BENTO_BUILD_FILE
+    from bentoml._internal.bento.bento import DEFAULT_VTS_BUILD_FILE
     from bentoml._internal.yatai_client import yatai_client
     from bentoml._internal.configuration.containers import BentoMLContainer
 
@@ -193,7 +193,7 @@ def add_bento_management_commands(cli: Group):
 
         \b
         Arguments:
-            BENTO_TAG: bento identifier
+            VTS_TAG: bento identifier
             OUT_PATH: output path of exported bento.
 
         If out_path argument is not provided, bento is exported to name-version.bento in the current directory.
@@ -217,7 +217,7 @@ def add_bento_management_commands(cli: Group):
 
         \b
         Arguments:
-            BENTO_PATH: path of Bento archive file
+            VTS_PATH: path of Bento archive file
 
         \b
         Examples:
@@ -265,7 +265,7 @@ def add_bento_management_commands(cli: Group):
     @cli.command()
     @click.argument("build_ctx", type=click.Path(), default=".")
     @click.option(
-        "-f", "--bentofile", type=click.STRING, default=DEFAULT_BENTO_BUILD_FILE
+        "-f", "--bentofile", type=click.STRING, default=DEFAULT_VTS_BUILD_FILE
     )
     @click.option("--version", type=click.STRING, default=None)
     def build(build_ctx: str, bentofile: str, version: str) -> None:  # type: ignore (not accessed)

@@ -114,7 +114,7 @@ by setting the environment variable :code:`VTSSERVING_CONFIG`:
 
 .. code-block:: bash
 
-    VTSSERVING_CONFIG=my_config_file.yml bentoml serve $BENTO_BUNDLE_PATH
+    VTSSERVING_CONFIG=my_config_file.yml bentoml serve $VTS_BUNDLE_PATH
 
 
 Similarly when serving with BentoML API server docker image, assuming you have a

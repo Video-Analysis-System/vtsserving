@@ -1,8 +1,8 @@
 {% extends "base_debian.j2" %}
-{% block SETUP_BENTO_ENVARS %}
+{% block SETUP_VTS_ENVARS %}
 {{ super() }}
 {% endblock %}
-{% block SETUP_BENTO_ENTRYPOINT %}
+{% block SETUP_VTS_ENTRYPOINT %}
 RUN rm -rf /var/lib/{apt,cache,log}
 {{ super() }}
 {% endblock %}
