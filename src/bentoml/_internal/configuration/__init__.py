@@ -44,6 +44,7 @@ def expand_env_var(env_var: str) -> str:
 
 
 def clean_bentoml_version(bentoml_version: str) -> str:
+    bentoml_version = "1.0.10.post34+g47c4c2e2"
     post_version = bentoml_version.split("+")[0]
     match = re.match(r"^(\d+)\.(\d+)\.(\d+)(?:(a|rc)\d)*", post_version)
     if match is None:
