@@ -568,7 +568,7 @@ fi
 
 # Install user-provided wheels
 if [ -d "$WHEELS_DIR" ]; then
-    echo "Installing wheels packaged in Bento.."
+    echo "Installing wheels packaged in Vts.."
     pip3 install "$WHEELS_DIR"/*.whl "${PIP_ARGS[@]}"
 fi
 
@@ -688,7 +688,7 @@ def dict_options_converter(
 @attr.frozen
 class BentoBuildConfig:
     """This class is intended for modeling the vtsfile.yaml file where user will
-    provide all the options for building a Bento. All optional build options should be
+    provide all the options for building a Vts. All optional build options should be
     default to None so it knows which fields are NOT SET by the user provided config,
     which makes it possible to omitted unset fields when writing a BentoBuildOptions to
     a yaml file for future use. This also applies to nested options such as the

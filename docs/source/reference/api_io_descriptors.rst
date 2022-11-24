@@ -14,7 +14,7 @@ NumPy ``ndarray``
 
    Install it with ``pip install numpy`` and add it to your :code:`vtsfile.yaml`'s under either Python or Conda packages list.
 
-   Refer to :ref:`Build Options <concepts/vts:Bento Build Options>`.
+   Refer to :ref:`Build Options <concepts/vts:Vts Build Options>`.
 
    .. tab-set::
 
@@ -65,7 +65,7 @@ To use the IO descriptor, install vtsserving with extra ``io-pandas`` dependency
 
    Install it with ``pip install pandas`` and add it to your :code:`vtsfile.yaml`'s under either Python or Conda packages list.
 
-   Refer to :ref:`Build Options <concepts/vts:Bento Build Options>`.
+   Refer to :ref:`Build Options <concepts/vts:Vts Build Options>`.
 
    .. tab-set::
 
@@ -125,7 +125,7 @@ Structured Data with JSON
 
    Then proceed to add it to your :code:`vtsfile.yaml`'s under either Python or Conda packages list.
 
-   Refer to :ref:`Build Options <concepts/vts:Bento Build Options>`.
+   Refer to :ref:`Build Options <concepts/vts:Vts Build Options>`.
 
    .. tab-set::
 
@@ -151,7 +151,7 @@ Structured Data with JSON
               dependencies:
                 - pydantic
 
-   Refers to :ref:`Build Options <concepts/vts:Bento Build Options>`.
+   Refers to :ref:`Build Options <concepts/vts:Vts Build Options>`.
 
    .. tab-set::
 
@@ -210,7 +210,7 @@ To use the IO descriptor, install vtsserving with extra ``io-image`` dependency:
 
    Install it with ``pip install Pillow`` and add it to your :code:`vtsfile.yaml`'s under either Python or Conda packages list.
 
-   Refer to :ref:`Build Options <concepts/vts:Bento Build Options>`.
+   Refer to :ref:`Build Options <concepts/vts:Vts Build Options>`.
 
    .. tab-set::
 

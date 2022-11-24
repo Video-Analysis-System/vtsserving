@@ -31,7 +31,7 @@ if TYPE_CHECKING:
     from starlette.datastructures import Headers
     from starlette.datastructures import FormData
 
-    from vtsserving._internal.vts.vts import Bento
+    from vtsserving._internal.vts.vts import Vts
 
 else:
     pb_health = LazyLoader("pb_health", globals(), "grpc_health.v1.health_pb2")
@@ -130,7 +130,7 @@ async def server_warmup(
 
 
 @cached_contextmanager("{project_path}, {cleanup}")
-def build(project_path: str, cleanup: bool = True) -> t.Generator[Bento, None, None]:
+def build(project_path: str, cleanup: bool = True) -> t.Generator[Vts, None, None]:
     """
     Build a VtsServing project.
     """
@@ -235,7 +235,7 @@ def run_vts_server_container(
                     f"API server {host_url} failed to start within {timeout} seconds"
                 ) from None
         finally:
-            print(f"Stopping Bento container {container_name}...")
+            print(f"Stopping Vts container {container_name}...")
             subprocess.call([backend, "stop", container_name])
     time.sleep(1)
 

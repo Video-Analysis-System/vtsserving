@@ -25,7 +25,7 @@ vtsserving serve service.py:svc
 curl -X POST -H "content-type: application/json" --data "[1,2,3,4,5]" http://127.0.0.1:3000/square
 ```
 
-4. Build Bento
+4. Build Vts
 
 ```bash
 vtsserving build

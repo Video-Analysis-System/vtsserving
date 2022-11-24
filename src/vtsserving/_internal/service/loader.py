@@ -11,7 +11,7 @@ import fs
 from simple_di import inject
 from simple_di import Provide
 
-from ..vts import Bento
+from ..vts import Vts
 from ..models import ModelStore
 from .service import on_import_svc
 from .service import on_load_vts
@@ -75,7 +75,7 @@ def import_service(
     try:
         if working_dir is not None:
             working_dir = os.path.realpath(os.path.expanduser(working_dir))
-            # Set cwd(current working directory) to the Bento's project directory,
+            # Set cwd(current working directory) to the Vts's project directory,
             # which allows user code to read files using relative path
             os.chdir(working_dir)
         else:
@@ -132,7 +132,7 @@ def import_service(
             # Importing by module name:
             module_name = import_path
 
-        # Import the service using the Bento's own model store
+        # Import the service using the Vts's own model store
         try:
             module = importlib.import_module(module_name, package=working_dir)
         except ImportError as e:
@@ -228,7 +228,7 @@ def load_vts_dir(path: str, standalone_load: bool = False) -> "Service":
         load_vts_dir("~/vtsserving/vtss/iris_classifier/4tht2icroji6zput3suqi5nl2")
     """
     vts_fs = fs.open_fs(path)
-    vts = Bento.from_fs(vts_fs)
+    vts = Vts.from_fs(vts_fs)
     logger.debug(
         'Loading vts "%s" from directory: %s',
         vts.tag,
@@ -237,11 +237,11 @@ def load_vts_dir(path: str, standalone_load: bool = False) -> "Service":
     return _load_vts(vts, standalone_load)
 
 
-def _load_vts(vts: Bento, standalone_load: bool) -> "Service":
-    # Use Bento's user project path as working directory when importing the service
+def _load_vts(vts: Vts, standalone_load: bool) -> "Service":
+    # Use Vts's user project path as working directory when importing the service
     working_dir = vts._fs.getsyspath(VTS_PROJECT_DIR_NAME)
 
-    # Use Bento's local "{base_dir}/models/" directory as its model store
+    # Use Vts's local "{base_dir}/models/" directory as its model store
     model_store = ModelStore(vts._fs.getsyspath("models"))
 
     svc = import_service(
@@ -262,7 +262,7 @@ def load(
     """Load a Service instance by the vts_identifier
 
     Args:
-        vts_identifier: target Service to import or Bento to load
+        vts_identifier: target Service to import or Vts to load
         working_dir: when importing from service, set the working_dir
         standalone_load: treat target Service as standalone. This will change global
             current working directory and global model store.
@@ -270,11 +270,11 @@ def load(
 
     The argument vts_identifier can be one of the following forms:
 
-    * Tag pointing to a Bento in local Bento store under `VTSSERVING_HOME/vtss`
-    * File path to a Bento directory
+    * Tag pointing to a Vts in local Vts store under `VTSSERVING_HOME/vtss`
+    * File path to a Vts directory
     * "import_str" for loading a service instance from the `working_dir`
 
-    Example load from Bento usage:
+    Example load from Vts usage:
 
     .. code-block:: python
 
@@ -317,14 +317,14 @@ def load(
         if os.path.isfile(
             os.path.expanduser(os.path.join(vts_path, VTS_YAML_FILENAME))
         ):
-            # Loading from path to a built Bento
+            # Loading from path to a built Vts
             try:
                 svc = load_vts_dir(vts_path, standalone_load=standalone_load)
             except ImportServiceError as e:
                 raise VtsServingException(
-                    f"Failed loading Bento from directory {vts_path}: {e}"
+                    f"Failed loading Vts from directory {vts_path}: {e}"
                 )
-            logger.info("Service loaded from Bento directory: %s", svc)
+            logger.info("Service loaded from Vts directory: %s", svc)
         elif os.path.isfile(
             os.path.expanduser(os.path.join(vts_path, DEFAULT_VTS_BUILD_FILE))
         ):
@@ -346,12 +346,12 @@ def load(
                 )
             except ImportServiceError as e:
                 raise VtsServingException(
-                    f"Failed loading Bento from directory {vts_path}: {e}"
+                    f"Failed loading Vts from directory {vts_path}: {e}"
                 )
             logger.debug("'%s' loaded from '%s': %s", svc.name, vts_path, svc)
         else:
             raise VtsServingException(
-                f"Failed loading service from path {vts_path}. When loading from a path, it must be either a Bento containing vts.yaml or a project directory containing vtsfile.yaml"
+                f"Failed loading service from path {vts_path}. When loading from a path, it must be either a Vts containing vts.yaml or a project directory containing vtsfile.yaml"
             )
     else:
         try:
@@ -366,7 +366,7 @@ def load(
             try:
                 # Loading from local vts store by tag, e.g. "iris_classifier:latest"
                 svc = load_vts(vts_identifier, standalone_load=standalone_load)
-                logger.debug("'%s' loaded from Bento store: %s", svc.name, svc)
+                logger.debug("'%s' loaded from Vts store: %s", svc.name, svc)
             except (NotFound, ImportServiceError) as e2:
                 raise VtsServingException(
                     f"Failed to load vts or import service '{vts_identifier}'.\n"

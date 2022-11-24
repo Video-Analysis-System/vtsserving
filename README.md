@@ -41,7 +41,7 @@ for the easiest and fastest way to deploy your vts.
 
 🚂 **Standardized process** for a frictionless transition to production
 
-- Build [Bento](https://docs.vtsserving.org/en/latest/concepts/vts.html) as the standard deployable artifact for ML services
+- Build [Vts](https://docs.vtsserving.org/en/latest/concepts/vts.html) as the standard deployable artifact for ML services
 - Automatically **generate docker images** with the desired dependencies
 - Easy CUDA setup for inference with GPU
 - Rich integration with the MLOps ecosystem, including Kubeflow, Airflow, MLFlow, Triton
@@ -123,11 +123,11 @@ Sent a prediction request:
 curl -F 'image=@samples/1.png' http://127.0.0.1:3000/predict_image
 ```
 
-Build a Bento and generate a docker image:
+Build a Vts and generate a docker image:
 
 ```bash
 $ vtsserving build
-Successfully built Bento(tag="pytorch_mnist:4mymorgurocxjuqj") at "~/vtsserving/vtss/pytorch_mnist/4mymorgurocxjuqj/"
+Successfully built Vts(tag="pytorch_mnist:4mymorgurocxjuqj") at "~/vtsserving/vtss/pytorch_mnist/4mymorgurocxjuqj/"
 
 $ vtsserving containerize pytorch_mnist:4mymorgurocxjuqj
 Successfully built docker image "pytorch_mnist:4mymorgurocxjuqj"

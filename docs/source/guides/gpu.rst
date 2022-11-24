@@ -41,7 +41,7 @@ install the corresponding cuda version onto the docker image created:
 If the desired :code:`cuda_version` is not natively supported by VtsServing, users can
 still customize the installation of cuda driver and libraries via the
 :code:`system_packages`, :code:`setup_script`, or :code:`base_image` options under the
-:ref:`Bento build docker options<concepts/vts:Docker Options>`.
+:ref:`Vts build docker options<concepts/vts:Docker Options>`.
 
 
 Running Docker with GPU

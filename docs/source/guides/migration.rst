@@ -125,7 +125,7 @@ dependencies (e.g. :code:`pip_packages`, :code:`pip_index_url`), Conda dependenc
 
 VtsServing version 1.0.0 no longer relies on the environment decorator. Environment settings and service dependencies are
 defined in the :code:`vtsfile.yaml` file in the project directory. The contents are used to specify the
-:code:`vtsserving build` opations when :ref:`building vtss <concepts/vts:Bento Build Options>`.
+:code:`vtsserving build` opations when :ref:`building vtss <concepts/vts:Vts Build Options>`.
 
 .. admonition:: 💡 Migration Task
 
@@ -275,7 +275,7 @@ the service for distribution. This operation is unique to VtsServing version 1.0
             ██████╦╝███████╗██║░╚███║░░░██║░░░╚█████╔╝██║░╚═╝░██║███████╗
             ╚═════╝░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚════╝░╚═╝░░░░░╚═╝╚══════╝
 
-            Successfully built Bento(tag="iris_classifier:6otbsmxzq6lwbgxi")
+            Successfully built Vts(tag="iris_classifier:6otbsmxzq6lwbgxi")
 
 You can view and manage all saved models via the :code:`vtsserving` CLI command.
 
@@ -310,7 +310,7 @@ version 1.0.0, see :ref:`Containerize Bentos <concepts/deploy:Containerize Bento
 
     > vtsserving containerize iris_classifier:latest
 
-    Building docker image for Bento(tag="iris_classifier:6otbsmxzq6lwbgxi")...
+    Building docker image for Vts(tag="iris_classifier:6otbsmxzq6lwbgxi")...
     Successfully built docker image "iris_classifier:6otbsmxzq6lwbgxi"
 
 You can run the docker image to start the service.
@@ -319,14 +319,14 @@ You can run the docker image to start the service.
 
     > docker run -p 3000:3000 iris_classifier:6otbsmxzq6lwbgxi
 
-    2022-07-01T21:57:47+0000 [INFO] [] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+    2022-07-01T21:57:47+0000 [INFO] [] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
     2022-07-01T21:57:47+0000 [INFO] [] Starting production BentoServer from "/home/vtsserving/vts" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
-    2022-07-01T21:57:48+0000 [INFO] [api_server:1] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
-    2022-07-01T21:57:48+0000 [INFO] [runner-iris_clf:1] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
-    2022-07-01T21:57:48+0000 [INFO] [api_server:2] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+    2022-07-01T21:57:48+0000 [INFO] [api_server:1] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+    2022-07-01T21:57:48+0000 [INFO] [runner-iris_clf:1] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+    2022-07-01T21:57:48+0000 [INFO] [api_server:2] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
     2022-07-01T21:57:48+0000 [INFO] [runner-iris_clf:1] Setting up worker: set CPU thread count to 4
-    2022-07-01T21:57:48+0000 [INFO] [api_server:3] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
-    2022-07-01T21:57:48+0000 [INFO] [api_server:4] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+    2022-07-01T21:57:48+0000 [INFO] [api_server:3] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+    2022-07-01T21:57:48+0000 [INFO] [api_server:4] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
 
 Deploy Bentos
 -------------

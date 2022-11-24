@@ -11,7 +11,7 @@ import fs
 import pytest
 
 from vtsserving import Tag
-from vtsserving._internal.vts import Bento
+from vtsserving._internal.vts import Vts
 from vtsserving._internal.models import ModelStore
 from vtsserving._internal.vts.vts import BentoInfo
 from vtsserving._internal.vts.vts import BentoApiInfo
@@ -142,7 +142,7 @@ conda:
         assert vtsinfo_b_from_yaml == vtsinfo_b
 
 
-def build_test_vts() -> Bento:
+def build_test_vts() -> Vts:
     vts_cfg = BentoBuildConfig(
         "simplevts.py:svc",
         include=["*.py", "config.json", "somefile", "*dir*", ".vtsignore"],
@@ -160,7 +160,7 @@ def build_test_vts() -> Bento:
         },
     )
 
-    return Bento.create(vts_cfg, version="1.0", build_ctx="./simplevts")
+    return Vts.create(vts_cfg, version="1.0", build_ctx="./simplevts")
 
 
 def fs_identical(fs1: fs.base.FS, fs2: fs.base.FS):
@@ -177,27 +177,27 @@ def test_vts_export(tmpdir: "Path", model_store: "ModelStore"):
     working_dir = os.getcwd()
 
     testvts = build_test_vts()
-    # Bento build will change working dir to the build_context, this will reset it
+    # Vts build will change working dir to the build_context, this will reset it
     os.chdir(working_dir)
 
     cfg = BentoBuildConfig("vtsa.py:svc")
-    vtsa = Bento.create(cfg, build_ctx="./vtsa")
-    # Bento build will change working dir to the build_context, this will reset it
+    vtsa = Vts.create(cfg, build_ctx="./vtsa")
+    # Vts build will change working dir to the build_context, this will reset it
     os.chdir(working_dir)
 
-    vtsa1 = Bento.create(cfg, build_ctx="./vtsa1")
-    # Bento build will change working dir to the build_context, this will reset it
+    vtsa1 = Vts.create(cfg, build_ctx="./vtsa1")
+    # Vts build will change working dir to the build_context, this will reset it
     os.chdir(working_dir)
 
     cfg = BentoBuildConfig("vtsb.py:svc")
-    vtsb = Bento.create(cfg, build_ctx="./vtsb")
+    vtsb = Vts.create(cfg, build_ctx="./vtsb")
 
     vts = testvts
     path = os.path.join(tmpdir, "testvts")
     export_path = vts.export(path)
     assert export_path == path + ".vts"
     assert os.path.isfile(export_path)
-    imported_vts = Bento.import_from(export_path)
+    imported_vts = Vts.import_from(export_path)
     assert imported_vts.tag == vts.tag
     assert imported_vts.info == vts.info
     del imported_vts
@@ -207,7 +207,7 @@ def test_vts_export(tmpdir: "Path", model_store: "ModelStore"):
     export_path = vts.export(path)
     assert export_path == path + ".vts"
     assert os.path.isfile(export_path)
-    imported_vts = Bento.import_from(export_path)
+    imported_vts = Vts.import_from(export_path)
     assert imported_vts.tag == vts.tag
     assert imported_vts.info == vts.info
     del imported_vts
@@ -217,7 +217,7 @@ def test_vts_export(tmpdir: "Path", model_store: "ModelStore"):
     export_path = vts.export(path)
     assert export_path == path + ".vts"
     assert os.path.isfile(export_path)
-    imported_vts = Bento.import_from(export_path)
+    imported_vts = Vts.import_from(export_path)
     assert imported_vts.tag == vts.tag
     assert imported_vts.info == vts.info
     del imported_vts
@@ -227,7 +227,7 @@ def test_vts_export(tmpdir: "Path", model_store: "ModelStore"):
     export_path = vts.export(path)
     assert export_path == path + ".vts"
     assert os.path.isfile(export_path)
-    imported_vts = Bento.import_from(export_path)
+    imported_vts = Vts.import_from(export_path)
     assert imported_vts.tag == vts.tag
     assert imported_vts.info == vts.info
     del imported_vts
@@ -237,7 +237,7 @@ def test_vts_export(tmpdir: "Path", model_store: "ModelStore"):
     export_path = vts.export(path)
     assert export_path == path
     assert os.path.isfile(export_path)
-    imported_vts = Bento.import_from(path)
+    imported_vts = Vts.import_from(path)
     assert imported_vts.tag == vts.tag
     assert imported_vts.info == vts.info
     del imported_vts
@@ -247,7 +247,7 @@ def test_vts_export(tmpdir: "Path", model_store: "ModelStore"):
     export_path = vts.export(path)
     assert export_path == os.path.join(path, vts._export_name + ".vts")
     assert os.path.isfile(export_path)
-    imported_vts = Bento.import_from(export_path)
+    imported_vts = Vts.import_from(export_path)
     assert imported_vts.tag == vts.tag
     assert imported_vts.info == vts.info
     del imported_vts
@@ -261,7 +261,7 @@ def test_vts_export(tmpdir: "Path", model_store: "ModelStore"):
     export_path = vts.export(path)
     assert export_path == os.path.join(path, vts._export_name + ".vts")
     assert os.path.isfile(export_path)
-    imported_vts = Bento.import_from(export_path)
+    imported_vts = Vts.import_from(export_path)
     assert imported_vts.tag == vts.tag
     assert imported_vts.info == vts.info
     del imported_vts
@@ -277,11 +277,11 @@ def test_vts_export(tmpdir: "Path", model_store: "ModelStore"):
     export_path = vts.export(path)
     assert export_path == os.path.join(tmpdir, "testvts-by-url.vts")
     assert os.path.isfile(export_path)
-    imported_vts = Bento.import_from(export_path)
+    imported_vts = Vts.import_from(export_path)
     assert imported_vts.tag == vts.tag
     assert imported_vts.info == vts.info
     del imported_vts
-    imported_vts = Bento.import_from(path + ".vts")
+    imported_vts = Vts.import_from(path + ".vts")
     assert imported_vts.tag == vts.tag
     assert imported_vts.info == vts.info
     del imported_vts
@@ -293,7 +293,7 @@ def test_vts_export(tmpdir: "Path", model_store: "ModelStore"):
     path = "zip://" + fs.path.join(str(tmpdir), "testvts.zip")
     export_path = vts.export(path)
     assert export_path == path
-    imported_vts = Bento.import_from(export_path)
+    imported_vts = Vts.import_from(export_path)
     assert imported_vts.tag == vts.tag
     assert imported_vts.info == vts.info
     del imported_vts
@@ -303,7 +303,7 @@ def test_vts_export(tmpdir: "Path", model_store: "ModelStore"):
     export_path = vts.export(path, output_format="gz")
     assert export_path == os.path.join(path, vts._export_name + ".gz")
     assert os.path.isfile(export_path)
-    imported_vts = Bento.import_from(export_path)
+    imported_vts = Vts.import_from(export_path)
     assert imported_vts.tag == vts.tag
     assert imported_vts.info == vts.info
     del imported_vts

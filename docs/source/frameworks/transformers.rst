@@ -12,7 +12,7 @@ Compatibility
 VtsServing requires Transformers version 4 or above. For other versions of Transformers, consider using a 
 :ref:`concepts/runner:Custom Runner`.
 
-When constructing a :ref:`vtsfile.yaml <concepts/vts:Bento Build Options>`, include ``transformers`` and the machine learning 
+When constructing a :ref:`vtsfile.yaml <concepts/vts:Vts Build Options>`, include ``transformers`` and the machine learning 
 framework of the model, e.g. ``pytorch``, ``tensorflow``, or ``jax``.
 
 .. tab-set::

@@ -82,7 +82,7 @@ grpcurl -d @ -plaintext 0.0.0.0:3000 vtsserving.grpc.v1.BentoService/Call <<EOM
 EOM
 ```
 
-4. Build Bento
+4. Build Vts
 
 ```
 vtsserving build

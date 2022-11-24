@@ -1,5 +1,5 @@
 ============
-Bento Client
+Vts Client
 ============
 
 VtsServing provides a client implementation that can be used to make requests to a VtsServing server.

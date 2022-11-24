@@ -115,7 +115,7 @@ class Params(t.Generic[T]):
         return next(iter(self.kwargs.values()))
 
 
-PAYLOAD_META_HEADER = "Bento-Payload-Meta"
+PAYLOAD_META_HEADER = "Vts-Payload-Meta"
 
 
 def payload_paramss_to_batch_params(

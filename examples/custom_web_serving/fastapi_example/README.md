@@ -55,7 +55,7 @@ $ curl http://127.0.0.1:3000/metadata
 ```
 
 
-4. Build Bento
+4. Build Vts
 
 ```
 vtsserving build

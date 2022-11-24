@@ -31,7 +31,7 @@ curl -X POST -H "content-type: application/text" --data "hello world" http://127
 ```
 
 
-4. Build Bento
+4. Build Vts
 
 ```
 vtsserving build

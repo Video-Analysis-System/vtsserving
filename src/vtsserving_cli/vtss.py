@@ -62,7 +62,7 @@ def add_vts_management_commands(cli: Group):
         default="yaml",
     )
     def get(vts_tag: str, output: str) -> None:  # type: ignore (not accessed)
-        """Print Bento details by providing the vts_tag.
+        """Print Vts details by providing the vts_tag.
 
         \b
         vtsserving get iris_classifier:qojf5xauugwqtgxi
@@ -149,7 +149,7 @@ def add_vts_management_commands(cli: Group):
         help="Skip confirmation when deleting a specific vts bundle",
     )
     def delete(delete_targets: list[str], yes: bool) -> None:  # type: ignore (not accessed)
-        """Delete Bento in local vts store.
+        """Delete Vts in local vts store.
 
         \b
         Examples:
@@ -189,7 +189,7 @@ def add_vts_management_commands(cli: Group):
         required=False,
     )
     def export(vts_tag: str, out_path: str) -> None:  # type: ignore (not accessed)
-        """Export a Bento to an external file archive
+        """Export a Vts to an external file archive
 
         \b
         Arguments:
@@ -213,11 +213,11 @@ def add_vts_management_commands(cli: Group):
     @cli.command(name="import")
     @click.argument("vts_path", type=click.STRING)
     def import_vts_(vts_path: str) -> None:  # type: ignore (not accessed)
-        """Import a previously exported Bento archive file
+        """Import a previously exported Vts archive file
 
         \b
         Arguments:
-            VTS_PATH: path of Bento archive file
+            VTS_PATH: path of Vts archive file
 
         \b
         Examples:
@@ -237,7 +237,7 @@ def add_vts_management_commands(cli: Group):
         help="Force pull from yatai to local and overwrite even if it already exists in local",
     )
     def pull(vts_tag: str, force: bool) -> None:  # type: ignore (not accessed)
-        """Pull Bento from a yatai server."""
+        """Pull Vts from a yatai server."""
         yatai_client.pull_vts(vts_tag, force=force)
 
     @cli.command()
@@ -256,10 +256,10 @@ def add_vts_management_commands(cli: Group):
         help="Number of threads to use for upload",
     )
     def push(vts_tag: str, force: bool, threads: int) -> None:  # type: ignore (not accessed)
-        """Push Bento to a yatai server."""
+        """Push Vts to a yatai server."""
         vts_obj = vts_store.get(vts_tag)
         if not vts_obj:
-            raise click.ClickException(f"Bento {vts_tag} not found in local store")
+            raise click.ClickException(f"Vts {vts_tag} not found in local store")
         yatai_client.push_vts(vts_obj, force=force, threads=threads)
 
     @cli.command()
@@ -269,7 +269,7 @@ def add_vts_management_commands(cli: Group):
     )
     @click.option("--version", type=click.STRING, default=None)
     def build(build_ctx: str, vtsfile: str, version: str) -> None:  # type: ignore (not accessed)
-        """Build a new Bento from current directory."""
+        """Build a new Vts from current directory."""
         if sys.path[0] != build_ctx:
             sys.path.insert(0, build_ctx)
 

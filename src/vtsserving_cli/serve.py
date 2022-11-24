@@ -144,9 +144,9 @@ def add_serve_command(cli: click.Group) -> None:
         \b
         VTS is the serving target, it can be the import as:
         - the import path of a 'vtsserving.Service' instance
-        - a tag to a Bento in local Bento store
+        - a tag to a Vts in local Vts store
         - a folder containing a valid 'vtsfile.yaml' build file with a 'service' field, which provides the import path of a 'vtsserving.Service' instance
-        - a path to a built Bento (for internal & debug use only)
+        - a path to a built Vts (for internal & debug use only)
 
         e.g.:
 
@@ -155,12 +155,12 @@ def add_serve_command(cli: click.Group) -> None:
             'vtsserving serve fraud_detector.py:svc'
 
         \b
-        Serve from a Bento built in local store:
+        Serve from a Vts built in local store:
             'vtsserving serve fraud_detector:4tht2icroji6zput3suqi5nl2'
             'vtsserving serve fraud_detector:latest'
 
         \b
-        Serve from a Bento directory:
+        Serve from a Vts directory:
             'vtsserving serve ./fraud_detector_vts'
 
         \b
@@ -346,9 +346,9 @@ def add_serve_command(cli: click.Group) -> None:
         \b
         VTS is the serving target, it can be the import as:
         - the import path of a 'vtsserving.Service' instance
-        - a tag to a Bento in local Bento store
+        - a tag to a Vts in local Vts store
         - a folder containing a valid 'vtsfile.yaml' build file with a 'service' field, which provides the import path of a 'vtsserving.Service' instance
-        - a path to a built Bento (for internal & debug use only)
+        - a path to a built Vts (for internal & debug use only)
 
         e.g.:
 
@@ -357,12 +357,12 @@ def add_serve_command(cli: click.Group) -> None:
             'vtsserving serve-grpc fraud_detector.py:svc'
 
         \b
-        Serve from a Bento built in local store:
+        Serve from a Vts built in local store:
             'vtsserving serve-grpc fraud_detector:4tht2icroji6zput3suqi5nl2'
             'vtsserving serve-grpc fraud_detector:latest'
 
         \b
-        Serve from a Bento directory:
+        Serve from a Vts directory:
             'vtsserving serve-grpc ./fraud_detector_vts'
 
         If '--reload' is provided, VtsServing will detect code and model store changes during development, and restarts the service automatically.

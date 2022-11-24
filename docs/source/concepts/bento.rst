@@ -2,20 +2,20 @@
 Building Bentos
 ===============
 
-What is a Bento?
+What is a Vts?
 ----------------
 
-:ref:`Bento 🍱 <reference/core:vtsserving.Bento>` is a file archive with all the source
+:ref:`Vts 🍱 <reference/core:vtsserving.Vts>` is a file archive with all the source
 code, models, data files and dependency configurations required for running a
 user-defined :ref:`reference/core:vtsserving.Service`, packaged into a standardized format.
 
 While ``vtsserving.Service`` standardizes the inference API definition, including the
 serving logic, runners initialization and API input, output types.
-``Bento`` standardizes how to reproduce the required environment for running a
+``Vts`` standardizes how to reproduce the required environment for running a
 ``vtsserving.Service`` in production.
 
 .. note::
-    "Bento Build" is essentially the build process in traditional software development,
+    "Vts Build" is essentially the build process in traditional software development,
     where source code files were converted into standalone artifacts that are ready to
     deploy. VtsServing reimagined this process for Machine Learning model delivery, and
     optimized the workflow both for interactive model development and for working with
@@ -25,7 +25,7 @@ serving logic, runners initialization and API input, output types.
 The Build Command
 -----------------
 
-A Bento can be created with the :ref:`vtsserving build <reference/cli:build>` CLI command
+A Vts can be created with the :ref:`vtsserving build <reference/cli:build>` CLI command
 with a ``vtsfile.yaml`` build file. Here's an example from the
 :doc:`tutorial </tutorial>`:
 
@@ -57,12 +57,12 @@ with a ``vtsfile.yaml`` build file. Here's an example from the
     ██████╦╝███████╗██║░╚███║░░░██║░░░╚█████╔╝██║░╚═╝░██║███████╗
     ╚═════╝░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚════╝░╚═╝░░░░░╚═╝╚══════╝
 
-    Successfully built Bento(tag="iris_classifier:dpijemevl6nlhlg6")
+    Successfully built Vts(tag="iris_classifier:dpijemevl6nlhlg6")
 
 Similar to :doc:`saving a model </concepts/model>`, a unique version tag will be
-automatically generated for the newly created Bento.
+automatically generated for the newly created Vts.
 
-It is also possible to customize the Bento version string by specifying it in the
+It is also possible to customize the Vts version string by specifying it in the
 :code:`--version` CLI argument. However this is generally not recommended. Only use it
 if your team has a very specific naming convention for deployable artifacts, e.g.:
 
@@ -72,7 +72,7 @@ if your team has a very specific naming convention for deployable artifacts, e.g
 
 .. note::
 
-    The Bento build process requires importing the ``vtsserving.Service`` object
+    The Vts build process requires importing the ``vtsserving.Service`` object
     defined. This means, the build environment must have all its dependencies installed.
     Support for building from a docker environment is on the roadmap, see :issue:`2495`.
 
@@ -96,7 +96,7 @@ build_ctx
 
 vtsfile
     ``vtsfile`` is a ``.yaml`` file that specifies the
-    :ref:`concepts/vts:Bento Build Options`. Default to the ``vtsfile.yaml``
+    :ref:`concepts/vts:Vts Build Options`. Default to the ``vtsfile.yaml``
     file under the build context.
 
 They can also be customized via the CLI command, e.g.:
@@ -112,7 +112,7 @@ Managing Bentos
 Bentos are the unit of deployment in VtsServing, one of the most important artifact to keep
 track of for your model deployment workflow.
 
-Local Bento Store
+Local Vts Store
 ^^^^^^^^^^^^^^^^^
 
 Similar to Models, Bentos built locally can be managed via the
@@ -168,7 +168,7 @@ Similar to Models, Bentos built locally can be managed via the
 
           » vtsserving delete iris_classifier:latest -y
 
-          Bento(tag="iris_classifier:nvjtj7wwfgsafuqj") deleted
+          Vts(tag="iris_classifier:nvjtj7wwfgsafuqj") deleted
 
 
 Import and Export
@@ -181,13 +181,13 @@ Bentos between teams or moving between different deployment stages. For example:
 
     > vtsserving export iris_classifier:latest .
 
-    INFO [cli] Bento(tag="iris_classifier:nvjtj7wwfgsafuqj") exported to ./iris_classifier-nvjtj7wwfgsafuqj.vts
+    INFO [cli] Vts(tag="iris_classifier:nvjtj7wwfgsafuqj") exported to ./iris_classifier-nvjtj7wwfgsafuqj.vts
 
 .. code:: bash
 
     > vtsserving import ./iris_classifier-nvjtj7wwfgsafuqj.vts
 
-    INFO [cli] Bento(tag="iris_classifier:nvjtj7wwfgsafuqj") imported
+    INFO [cli] Vts(tag="iris_classifier:nvjtj7wwfgsafuqj") imported
 
 .. note::
 
@@ -204,28 +204,28 @@ Bentos between teams or moving between different deployment stages. For example:
 Push and Pull
 ^^^^^^^^^^^^^
 
-`Yatai <https://github.com/vtsserving/Yatai>`_ provides a centralized Bento repository
+`Yatai <https://github.com/vtsserving/Yatai>`_ provides a centralized Vts repository
 that comes with flexible APIs and Web UI for managing all Bentos created by your team.
-It can be configured to store Bento files on cloud blob storage such as AWS S3, MinIO
-or GCS, and automatically build docker images when a new Bento was pushed.
+It can be configured to store Vts files on cloud blob storage such as AWS S3, MinIO
+or GCS, and automatically build docker images when a new Vts was pushed.
 
 .. code-block:: bash
 
   » vtsserving push iris_classifier:latest
 
-  Successfully pushed Bento "iris_classifier:nvjtj7wwfgsafuqj"
+  Successfully pushed Vts "iris_classifier:nvjtj7wwfgsafuqj"
 
 .. code-block:: bash
 
   » vtsserving pull iris_classifier:nvjtj7wwfgsafuqj
 
-  Successfully pulled Bento "iris_classifier:nvjtj7wwfgsafuqj"
+  Successfully pulled Vts "iris_classifier:nvjtj7wwfgsafuqj"
 
 .. image:: /_static/img/yatai-vts-repos.png
-   :alt: Yatai Bento Repo UI
+   :alt: Yatai Vts Repo UI
 
 
-Bento Management API
+Vts Management API
 ^^^^^^^^^^^^^^^^^^^^
 
 Similar to :ref:`concepts/model:Managing Models`, equivalent Python APIs are also
@@ -271,8 +271,8 @@ provided for managing Bentos:
 
         If your team has `Yatai <https://github.com/vtsserving/Yatai>`_ setup, you can also
         push local Bentos to Yatai, it provides APIs and Web UI for managing all Bentos
-        created by your team, stores Bento files on cloud blob storage such as AWS S3, MinIO
-        or GCS, and automatically builds docker images when a new Bento was pushed.
+        created by your team, stores Vts files on cloud blob storage such as AWS S3, MinIO
+        or GCS, and automatically builds docker images when a new Vts was pushed.
 
         .. code-block:: bash
 
@@ -291,12 +291,12 @@ provided for managing Bentos:
             vtsserving.delete("iris_classifier:nvjtj7wwfgsafuqj")
 
 
-What's inside a Bento
+What's inside a Vts
 ^^^^^^^^^^^^^^^^^^^^^
 
-It is possible to view the generated files in a specific Bento. Simply use the
+It is possible to view the generated files in a specific Vts. Simply use the
 :code:`-o/--output` option of the ``vtsserving get`` command to find the file path to
-the Bento archive directory.
+the Vts archive directory.
 
 .. code-block:: bash
 
@@ -336,19 +336,19 @@ the Bento archive directory.
 * ``apis`` directory contains all API definitions. This directory contains API specs
   that are generated from the ``vtsserving.Service`` object's API definitions.
 
-* ``env`` directory contains all environment-related files which will help boostrap the Bento 🍱. This directory contains files that are generated
-  from :ref:`concepts/vts:Bento Build Options` that is specified under ``vtsfile.yaml``.
+* ``env`` directory contains all environment-related files which will help boostrap the Vts 🍱. This directory contains files that are generated
+  from :ref:`concepts/vts:Vts Build Options` that is specified under ``vtsfile.yaml``.
 
 .. note::
 
-   :bdg-warning:`Warning:` users **should never** change files in the generated Bento
+   :bdg-warning:`Warning:` users **should never** change files in the generated Vts
    archive, unless it's for debugging purpose.
 
 
-Bento Build Options
+Vts Build Options
 -------------------
 
-Build options are specified in a ``.yaml`` file, which customizes the final Bento
+Build options are specified in a ``.yaml`` file, which customizes the final Vts
 produced.
 
 By convention, this file is named ``vtsfile.yaml``.
@@ -397,7 +397,7 @@ interpreted as:
 Description
 ^^^^^^^^^^^
 
-``description`` field allows user to customize documentation for any given Bento.
+``description`` field allows user to customize documentation for any given Vts.
 
 The description contents must be plain text, optionally in `Markdown <https://daringfireball.net/projects/markdown/syntax>`_ format. Description
 can be specified either inline in the ``vtsfile.yaml``, or via a file path to an
@@ -411,7 +411,7 @@ existing text file:
 
           service: "service.py:svc"
           description: |
-              ## Description For My Bento 🍱
+              ## Description For My Vts 🍱
 
               Use **any markdown syntax** here!
 
@@ -440,7 +440,7 @@ Labels
 
 ``labels`` are key-value pairs that are attached to an object.
 
-In VtsServing, both ``Bento`` and ``Model`` can have labels attached to them. Labels are intended to
+In VtsServing, both ``Vts`` and ``Model`` can have labels attached to them. Labels are intended to
 be used to specify identifying attributes of Bentos/Models that are meaningful and
 relevant to users, but do not directly imply semantics to the rest of the system.
 
@@ -483,7 +483,7 @@ Files to exclude
 If there are a lot of files under the working directory, another approach is to
 only specify which files to be ignored.
 
-``exclude`` field specifies the pathspecs (similar to ``.gitignore`` files) of files to be excluded in the final Bento build. The pathspecs are relative to
+``exclude`` field specifies the pathspecs (similar to ``.gitignore`` files) of files to be excluded in the final Vts build. The pathspecs are relative to
 the ``build_ctx`` directory.
 
 .. code-block:: yaml
@@ -516,7 +516,7 @@ directory. This is what a ``.vtsignore`` file would look like:
 Python Packages
 ^^^^^^^^^^^^^^^
 
-Required Python packages for a given Bento can be specified under the ``python.packages`` field.
+Required Python packages for a given Vts can be specified under the ``python.packages`` field.
 
 When a package name is left without a version, VtsServing will lock the package to the
 version available under the current environment when running ``vtsserving build``. User can also specify the
@@ -534,7 +534,7 @@ desired version, install from a custom PyPI source, or install from a GitHub rep
 
 .. note::
     There's no need to specify :code:`vtsserving` as a dependency here since VtsServing will
-    addd the current version of VtsServing to the Bento's dependency list by default. User
+    addd the current version of VtsServing to the Vts's dependency list by default. User
     can override this by specifying a different VtsServing version.
 
 
@@ -684,7 +684,7 @@ Python Wheels
 """""""""""""
 
 Python ``.whl`` files are also supported as a type of dependency to include in a
-Bento. Simply provide a path to your ``.whl`` files under the ``wheels``` field.
+Vts. Simply provide a path to your ``.whl`` files under the ``wheels``` field.
 
 
 .. code-block:: yaml
@@ -793,8 +793,8 @@ Conda Options Table
 Docker Options
 ^^^^^^^^^^^^^^
 
-VtsServing makes it easy to deploy a Bento to a Docker container. This section discuss the
-available options for customizing the docker image generated from a Bento.
+VtsServing makes it easy to deploy a Vts to a Docker container. This section discuss the
+available options for customizing the docker image generated from a Vts.
 
 Here's a basic Docker options configuration:
 
@@ -981,11 +981,11 @@ Setup script is always executed after the specified Python packages, conda depen
 and system packages are installed. Thus user can import and utilize those libraries in
 their setup script for the initialization process.
 
-Enable features for your Bento
+Enable features for your Vts
 """"""""""""""""""""""""""""""
 
 Users can optionally pass in the ``--enable-features`` flag to ``vtsserving containerize`` to
-enable additional features for the generated Bento container image.
+enable additional features for the generated Vts container image.
 
 +---------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
 | ``--enable-features``                 | Feature                                                                                                                 |

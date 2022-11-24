@@ -22,7 +22,7 @@ curl -X POST -H "Content-Type:application/json" \
   http://localhost:3000/predict
 ```
 
-Build Bento and containerize BentoServier for deployment:
+Build Vts and containerize BentoServier for deployment:
 
 ```bash
 vtsserving build

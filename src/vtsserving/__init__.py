@@ -23,7 +23,7 @@ from ._internal.configuration import load_global_config
 # Inject dependencies and configurations
 load_global_config()
 
-# Bento management APIs
+# Vts management APIs
 from .vtss import get
 from .vtss import list  # pylint: disable=W0622
 from .vtss import pull
@@ -34,7 +34,7 @@ from .vtss import import_vts
 
 # VtsServing built-in types
 from ._internal.tag import Tag
-from ._internal.vts import Bento
+from ._internal.vts import Vts
 from ._internal.models import Model
 from ._internal.runner import Runner
 from ._internal.runner import Runnable
@@ -147,7 +147,7 @@ __all__ = [
     "load",
     "push",
     "pull",
-    "Bento",
+    "Vts",
     # Framework specific modules
     "catboost",
     "detectron",

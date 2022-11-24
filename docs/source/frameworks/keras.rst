@@ -115,7 +115,7 @@ previously saved ResNet50 model is used for inference.
        return decode_predictions(preds, top=1)[0]
 
 
-When constructing a :ref:`vtsfile.yaml <concepts/vts:Bento Build
+When constructing a :ref:`vtsfile.yaml <concepts/vts:Vts Build
 Options>`, there are two ways to include Keras as a dependency, via
 ``python`` (if using pip) or ``conda``:
 

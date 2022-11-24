@@ -386,7 +386,7 @@ Building a Service for **ONNX**
    2. The ``async_run`` refers to VtsServing's runner inference API for invoking a model's signature. In the case of ONNX, it happens to have a similar name like the ``InferenceSession`` endpoint.
 
 
-When constructing a :ref:`vtsfile.yaml <concepts/vts:Bento Build
+When constructing a :ref:`vtsfile.yaml <concepts/vts:Vts Build
 Options>`, there are two ways to include ONNX as a dependency, via
 ``python`` (if using pip) or ``conda``:
 

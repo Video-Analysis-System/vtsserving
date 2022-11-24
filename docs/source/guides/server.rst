@@ -1,5 +1,5 @@
 ============
-Bento Server
+Vts Server
 ============
 
 VtsServing Server runs the Service API in an `ASGI <https://asgi.readthedocs.io/en/latest/>`_

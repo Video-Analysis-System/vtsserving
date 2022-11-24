@@ -6,7 +6,7 @@ Tutorial: Intro to VtsServing
 
 In this tutorial, we will focus on online model serving with VtsServing, using a
 classification model trained with `scikit-learn <https://scikit-learn.org/stable/>`_ and the Iris dataset.
-By the end of this tutorial, we will have a Bento that can be served easily using HTTP or gRPC for handling inference requests, and a docker
+By the end of this tutorial, we will have a Vts that can be served easily using HTTP or gRPC for handling inference requests, and a docker
 container image for deployment.
 
 
@@ -387,15 +387,15 @@ creating the service object.
          return result
 
 
-Building a Bento 🍱
+Building a Vts 🍱
 -------------------
 
 Once the service definition is finalized, we can build the model and service into a
-``vts``. Bento is the distribution format for a service. It is a self-contained
+``vts``. Vts is the distribution format for a service. It is a self-contained
 archive that contains all the source code, model files and dependency specifications
 required to run the service.
 
-To build a Bento, first create a ``vtsfile.yaml`` file in your project directory:
+To build a Vts, first create a ``vtsfile.yaml`` file in your project directory:
 
 .. tab-set::
 
@@ -448,17 +448,10 @@ Next, run the ``vtsserving build`` CLI command from the same directory:
     Building VtsServing service "iris_classifier:6otbsmxzq6lwbgxi" from build context "/home/user/gallery/quickstart"
     Packing model "iris_clf:zy3dfgxzqkjrlgxi"
     Locking PyPI package versions..
- 
-    ██████╗░███████╗███╗░░██╗████████╗░█████╗░███╗░░░███╗██╗░░░░░
-    ██╔══██╗██╔════╝████╗░██║╚══██╔══╝██╔══██╗████╗░████║██║░░░░░
-    ██████╦╝█████╗░░██╔██╗██║░░░██║░░░██║░░██║██╔████╔██║██║░░░░░
-    ██╔══██╗██╔══╝░░██║╚████║░░░██║░░░██║░░██║██║╚██╔╝██║██║░░░░░
-    ██████╦╝███████╗██║░╚███║░░░██║░░░╚█████╔╝██║░╚═╝░██║███████╗
-    ╚═════╝░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚════╝░╚═╝░░░░░╚═╝╚══════╝
 
-    Successfully built Bento(tag="iris_classifier:6otbsmxzq6lwbgxi")
+    Successfully built Vts(tag="iris_classifier:6otbsmxzq6lwbgxi")
 
-🎉 You've just created your first Bento, and it is now ready for serving in production!
+🎉 You've just created your first Vts, and it is now ready for serving in production!
 For starters, you can now serve it with the ``vtsserving serve`` CLI command:
 
 .. tab-set::
@@ -490,7 +483,7 @@ For starters, you can now serve it with the ``vtsserving serve`` CLI command:
    The build process resolves ``iris_clf:latest`` and packages the latest version of the ``iris_clf`` model in the model store to ensure the same version of the model gets deployed every time.
 
 
-Bento is the unit of deployment in VtsServing, one of the most important artifacts to keep
+Vts is the unit of deployment in VtsServing, one of the most important artifacts to keep
 track of in your model deployment workflow. VtsServing provides CLI commands and APIs for
 managing Bentos and moving them around, see the :ref:`concepts/vts:Managing Bentos`
 section to learn more.
@@ -499,7 +492,7 @@ section to learn more.
 Generate Docker Image
 ---------------------
 
-A docker image can be automatically generated from a Bento for production deployment,
+A docker image can be automatically generated from a Vts for production deployment,
 via the ``vtsserving containerize`` CLI command:
 
 .. tab-set::
@@ -511,9 +504,9 @@ via the ``vtsserving containerize`` CLI command:
 
           » vtsserving containerize iris_classifier:latest
 
-          Building docker image for Bento(tag="iris_classifier:6otbsmxzq6lwbgxi")...
+          Building docker image for Vts(tag="iris_classifier:6otbsmxzq6lwbgxi")...
           Successfully built docker image for "iris_classifier:6otbsmxzq6lwbgxi" with tags "iris_classifier:6otbsmxzq6lwbgxi"
-          To run your newly built Bento container, pass "iris_classifier:6otbsmxzq6lwbgxi" to "docker run". For example: "docker run -it --rm -p 3000:3000 iris_classifier:6otbsmxzq6lwbgxi serve --production".
+          To run your newly built Vts container, pass "iris_classifier:6otbsmxzq6lwbgxi" to "docker run". For example: "docker run -it --rm -p 3000:3000 iris_classifier:6otbsmxzq6lwbgxi serve --production".
 
     .. tab-item:: gRPC
        :sync: grpc
@@ -522,10 +515,10 @@ via the ``vtsserving containerize`` CLI command:
 
           » vtsserving containerize iris_classifier:latest --enable-features grpc
 
-          Building docker image for Bento(tag="iris_classifier:6otbsmxzq6lwbgxi")...
+          Building docker image for Vts(tag="iris_classifier:6otbsmxzq6lwbgxi")...
           Successfully built docker image for "iris_classifier:6otbsmxzq6lwbgxi" with tags "iris_classifier:6otbsmxzq6lwbgxi"
-          To run your newly built Bento container, pass "iris_classifier:6otbsmxzq6lwbgxi" to "docker run". For example: "docker run -it --rm -p 3000:3000 iris_classifier:6otbsmxzq6lwbgxi serve --production".
-          Additionally, to run your Bento container as a gRPC server, do: "docker run -it --rm -p 3000:3000 -p 3001:3001 iris_classifier:6otbsmxzq6lwbgxi serve-grpc --production"
+          To run your newly built Vts container, pass "iris_classifier:6otbsmxzq6lwbgxi" to "docker run". For example: "docker run -it --rm -p 3000:3000 iris_classifier:6otbsmxzq6lwbgxi serve --production".
+          Additionally, to run your Vts container as a gRPC server, do: "docker run -it --rm -p 3000:3000 -p 3001:3001 iris_classifier:6otbsmxzq6lwbgxi serve-grpc --production"
 
 .. note::
 
@@ -542,8 +535,8 @@ via the ``vtsserving containerize`` CLI command:
 
       » vtsserving containerize --platform=linux/amd64 iris_classifier:latest
 
-This creates a docker image that includes the Bento, and has all its dependencies
-installed. The docker image tag will be same as the Bento tag by default:
+This creates a docker image that includes the Vts, and has all its dependencies
+installed. The docker image tag will be same as the Vts tag by default:
 
 .. code-block:: bash
 
@@ -564,16 +557,16 @@ Run the docker image to start the BentoServer:
 
           » docker run -it --rm -p 3000:3000 iris_classifier:6otbsmxzq6lwbgxi serve --production
 
-          2022-09-19T05:27:31+0000 [INFO] [cli] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:27:31+0000 [INFO] [cli] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
           2022-09-19T05:27:31+0000 [WARNING] [cli] GPU not detected. Unable to initialize pynvml lib.
           2022-09-19T05:27:31+0000 [INFO] [cli] Environ for worker 0: set CPU thread count to 4
           2022-09-19T05:27:31+0000 [INFO] [cli] Prometheus metrics for HTTP BentoServer from "/home/vtsserving/vts" can be accessed at http://0.0.0.0:3000/metrics.
           2022-09-19T05:27:32+0000 [INFO] [cli] Starting production HTTP BentoServer from "/home/vtsserving/vts" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
-          2022-09-19T05:27:32+0000 [INFO] [api_server:2] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
-          2022-09-19T05:27:32+0000 [INFO] [api_server:1] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
-          2022-09-19T05:27:32+0000 [INFO] [runner:iris_clf:1] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
-          2022-09-19T05:27:32+0000 [INFO] [api_server:3] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
-          2022-09-19T05:27:32+0000 [INFO] [api_server:4] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:27:32+0000 [INFO] [api_server:2] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:27:32+0000 [INFO] [api_server:1] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:27:32+0000 [INFO] [runner:iris_clf:1] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:27:32+0000 [INFO] [api_server:3] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:27:32+0000 [INFO] [api_server:4] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
 
     .. tab-item:: gRPC
        :sync: grpc
@@ -582,20 +575,20 @@ Run the docker image to start the BentoServer:
 
           » docker run -it --rm -p 3000:3000 -p 3001:3001 iris_classifier:6otbsmxzq6lwbgxi serve-grpc --production
 
-          2022-09-19T05:28:29+0000 [INFO] [cli] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:28:29+0000 [INFO] [cli] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
           2022-09-19T05:28:29+0000 [WARNING] [cli] GPU not detected. Unable to initialize pynvml lib.
           2022-09-19T05:28:29+0000 [INFO] [cli] Environ for worker 0: set CPU thread count to 4
           2022-09-19T05:28:29+0000 [INFO] [cli] Prometheus metrics for gRPC BentoServer from "/home/vtsserving/vts" can be accessed at http://0.0.0.0:3001.
           2022-09-19T05:28:30+0000 [INFO] [cli] Starting production gRPC BentoServer from "/home/vtsserving/vts" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
-          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:2] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
-          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:4] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
-          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:3] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
-          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:1] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
-          2022-09-19T05:28:30+0000 [INFO] [runner:iris_clf:1] Service loaded from Bento directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:2] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:4] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:3] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:1] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
+          2022-09-19T05:28:30+0000 [INFO] [runner:iris_clf:1] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
 
 
 Most of the deployment tools built on top of VtsServing use Docker under the hood. It is
-recommended to test out serving from a containerized Bento docker image first, before
+recommended to test out serving from a containerized Vts docker image first, before
 moving to a production deployment. This helps verify the correctness of all the docker
 and dependency configs specified in the ``vtsfile.yaml``.
 
@@ -603,12 +596,12 @@ and dependency configs specified in the ``vtsfile.yaml``.
 Deploying Bentos
 ----------------
 
-VtsServing standardizes the saved model format, service API definition and the Bento build
+VtsServing standardizes the saved model format, service API definition and the Vts build
 process, which opens up many different deployment options for ML teams.
 
-The Bento we built and the docker image created in the previous steps are designed to
+The Vts we built and the docker image created in the previous steps are designed to
 be DevOps friendly and ready for deployment in a production environment. If your team
-has existing infrastructure for running docker, it's likely that the Bento generated
+has existing infrastructure for running docker, it's likely that the Vts generated
 docker images can be directly deployed to your infrastructure without any modification.
 
 .. note::

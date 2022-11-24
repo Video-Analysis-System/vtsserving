@@ -4,7 +4,7 @@ import os
 import nltk
 
 if os.environ.get("VTS_PATH"):
-    # Bento setup_script is executed as root user during containerize. By default, NLTK
+    # Vts setup_script is executed as root user during containerize. By default, NLTK
     # will download data files to "/root/nltk_data". However, the default user when running
     # a VtsServing generated docker image is "vtsserving", which does not have the permission
     # for accessing "/root".

@@ -20,7 +20,7 @@ def build_vtsserving_editable_wheel(
     """
     This is for VtsServing developers to create Bentos that contains the local vtsserving
     build based on their development branch. To enable this behavior, one must
-    set envar :code:`VTSSERVING_BUNDLE_LOCAL_BUILD=True` before building a Bento.
+    set envar :code:`VTSSERVING_BUNDLE_LOCAL_BUILD=True` before building a Vts.
     """
     if str(os.environ.get(VTSSERVING_DEV_BUILD, False)).lower() != "true":
         return
@@ -78,5 +78,5 @@ def build_vtsserving_editable_wheel(
             )
     else:
         logger.info(
-            "Custom VtsServing build is detected. For a Bento to use the same build at serving time, add your custom VtsServing build to the pip packages list, e.g. `packages=['git+https://github.com/vtsserving/vtsserving.git@13dfb36']`"
+            "Custom VtsServing build is detected. For a Vts to use the same build at serving time, add your custom VtsServing build to the pip packages list, e.g. `packages=['git+https://github.com/vtsserving/vtsserving.git@13dfb36']`"
         )

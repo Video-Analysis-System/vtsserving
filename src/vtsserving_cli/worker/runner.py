@@ -58,7 +58,7 @@ def main(
     Start a runner server.
 
     Args:
-        vts_identifier: the Bento identifier
+        vts_identifier: the Vts identifier
         name: the name of the runner
         fd: the file descriptor of the runner server's socket
         working_dir: (Optional) the working directory

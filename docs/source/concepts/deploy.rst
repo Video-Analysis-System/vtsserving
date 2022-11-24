@@ -1,5 +1,5 @@
 ===============
-Deploying Bento
+Deploying Vts
 ===============
 
 
@@ -8,7 +8,7 @@ Deployment Overview
 
 The three most common deployment options with VtsServing are:
 
-- 🐳 Generate container images from Bento for custom docker deployment
+- 🐳 Generate container images from Vts for custom docker deployment
 - `🦄️ Yatai <https://github.com/vtsserving/Yatai>`_: Model Deployment at scale on Kubernetes
 - `🚀 vtsctl <https://github.com/vtsserving/vtsctl>`_: Fast model deployment on any cloud platform
 
@@ -43,7 +43,7 @@ Run :code:`vtsserving containerize` to start the containerization process.
 
     > vtsserving containerize iris_classifier:latest                                                                                                                                             02:10:47
 
-    INFO [cli] Building docker image for Bento(tag="iris_classifier:ejwnswg5kw6qnuqj")...
+    INFO [cli] Building docker image for Vts(tag="iris_classifier:ejwnswg5kw6qnuqj")...
     [+] Building 21.2s (20/20) FINISHED
     ...
     INFO [cli] Successfully built docker image "iris_classifier:ejwnswg5kw6qnuqj"
@@ -108,7 +108,7 @@ Push your local Bentos to yatai:
     vtsserving push iris_classifier:latest
 
 .. tip::
-    Yatai will automatically start building container images for a new Bento pushed.
+    Yatai will automatically start building container images for a new Vts pushed.
 
 
 Deploy via Web UI
@@ -116,7 +116,7 @@ Deploy via Web UI
 
 Although not always recommended for production workloads, Yatai offers an easy-to-use
 web UI for quickly creating deployments. This is convenient for data scientists to test
-out Bento deployments end-to-end from a development or testing environment:
+out Vts deployments end-to-end from a development or testing environment:
 
 .. image:: /_static/img/yatai-deployment-creation.png
     :alt: Yatai Deployment creation UI
@@ -196,7 +196,7 @@ Deploy with vtsctl
 supports all major cloud providers, including AWS, Azure, Google Cloud, and many more.
 
 Underneath, :code:`vtsctl` is powered by Terraform. :code:`vtsctl` adds required
-modifications to Bento or service configurations, and then generate terraform templates
+modifications to Vts or service configurations, and then generate terraform templates
 for the target deploy platform for easy deployment.
 
 The :code:`vtsctl` deployment workflow is optimized for CI/CD and GitOps. It is highly

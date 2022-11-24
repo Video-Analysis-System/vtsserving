@@ -162,11 +162,11 @@ class RemoteRunnerClient(RunnerHandle):
                 f"{self._addr}/{path}",
                 data=pickle.dumps(payload_params),  # FIXME: pickle inside pickle
                 headers={
-                    "Bento-Name": component_context.vts_name,
-                    "Bento-Version": component_context.vts_version,
+                    "Vts-Name": component_context.vts_name,
+                    "Vts-Version": component_context.vts_version,
                     "Runner-Name": self._runner.name,
-                    "Yatai-Bento-Deployment-Name": component_context.yatai_vts_deployment_name,
-                    "Yatai-Bento-Deployment-Namespace": component_context.yatai_vts_deployment_namespace,
+                    "Yatai-Vts-Deployment-Name": component_context.yatai_vts_deployment_name,
+                    "Yatai-Vts-Deployment-Namespace": component_context.yatai_vts_deployment_namespace,
                 },
             ) as resp:
                 body = await resp.read()
@@ -181,11 +181,11 @@ class RemoteRunnerClient(RunnerHandle):
                             payload_params
                         ),  # FIXME: pickle inside pickle
                         headers={
-                            "Bento-Name": component_context.vts_name,
-                            "Bento-Version": component_context.vts_version,
+                            "Vts-Name": component_context.vts_name,
+                            "Vts-Version": component_context.vts_version,
                             "Runner-Name": self._runner.name,
-                            "Yatai-Bento-Deployment-Name": component_context.yatai_vts_deployment_name,
-                            "Yatai-Bento-Deployment-Namespace": component_context.yatai_vts_deployment_namespace,
+                            "Yatai-Vts-Deployment-Name": component_context.yatai_vts_deployment_name,
+                            "Yatai-Vts-Deployment-Namespace": component_context.yatai_vts_deployment_namespace,
                         },
                     ) as resp:
                         body = await resp.read()
@@ -215,7 +215,7 @@ class RemoteRunnerClient(RunnerHandle):
             meta_header = resp.headers[PAYLOAD_META_HEADER]
         except KeyError:
             raise RemoteException(
-                f"Bento payload decode error: {PAYLOAD_META_HEADER} header not set. An exception might have occurred in the remote server. [{resp.status}] {body.decode()}"
+                f"Vts payload decode error: {PAYLOAD_META_HEADER} header not set. An exception might have occurred in the remote server. [{resp.status}] {body.decode()}"
             ) from None
 
         if content_type == "application/vnd.vtsserving.multiple_outputs":
@@ -229,7 +229,7 @@ class RemoteRunnerClient(RunnerHandle):
                 data=body, meta=json.loads(meta_header), container=container
             )
         except JSONDecodeError:
-            raise ValueError(f"Bento payload decode error: {meta_header}") from None
+            raise ValueError(f"Vts payload decode error: {meta_header}") from None
 
         return AutoContainer.from_payload(payload)
 
@@ -260,11 +260,11 @@ class RemoteRunnerClient(RunnerHandle):
         async with self._client.get(
             f"{self._addr}/readyz",
             headers={
-                "Bento-Name": component_context.vts_name,
-                "Bento-Version": component_context.vts_version,
+                "Vts-Name": component_context.vts_name,
+                "Vts-Version": component_context.vts_version,
                 "Runner-Name": self._runner.name,
-                "Yatai-Bento-Deployment-Name": component_context.yatai_vts_deployment_name,
-                "Yatai-Bento-Deployment-Namespace": component_context.yatai_vts_deployment_namespace,
+                "Yatai-Vts-Deployment-Name": component_context.yatai_vts_deployment_name,
+                "Yatai-Vts-Deployment-Namespace": component_context.yatai_vts_deployment_namespace,
             },
             timeout=aio_timeout,
         ) as resp:

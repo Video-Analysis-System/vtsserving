@@ -108,7 +108,7 @@ Building a Service using fastai
       return np.asarray(res[-1])
 
 
-When constructing a :ref:`vtsfile.yaml <concepts/vts:Bento Build Options>`,
+When constructing a :ref:`vtsfile.yaml <concepts/vts:Vts Build Options>`,
 there are two ways to include fastai as a dependency, via ``python`` or
 ``conda``:
 

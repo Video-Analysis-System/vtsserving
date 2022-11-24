@@ -95,8 +95,8 @@ async def async_request(
 
 def assert_distributed_header(headers: multidict.CIMultiDict[str]) -> None:
     assert (
-        headers.get("Yatai-Bento-Deployment-Name") == "test-deployment"
-        and headers.get("Yatai-Bento-Deployment-Namespace") == "yatai"
+        headers.get("Yatai-Vts-Deployment-Name") == "test-deployment"
+        and headers.get("Yatai-Vts-Deployment-Namespace") == "yatai"
     )
 
 

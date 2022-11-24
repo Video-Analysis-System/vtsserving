@@ -152,10 +152,10 @@ locust --headless -u 100 -r 1000 --run-time 10m --host http://127.0.0.1:3000
 ```
 
 
-### Build Bento for deployment
+### Build Vts for deployment
 
 A `vtsfile` is already created in this directory for building a
-Bento for the service:
+Vts for the service:
 
 ```yaml
 service: "service:svc"
@@ -175,7 +175,7 @@ python:
 
 Note that we exclude `locustfile.py` from the vts using `exclude`.
 
-Simply run `vtsserving build` from current directory to build a Bento with the latest
+Simply run `vtsserving build` from current directory to build a Vts with the latest
 version of the `tensorflow_mnist` model.
 
 This may take a while when running for the first time for VtsServing to resolve all dependency versions:
@@ -196,17 +196,17 @@ This may take a while when running for the first time for VtsServing to resolve 
                        ██████╦╝███████╗██║░╚███║░░░██║░░░╚█████╔╝██║░╚═╝░██║███████╗                                   
                        ╚═════╝░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚════╝░╚═╝░░░░░╚═╝╚══════╝                                   
                                                                                                                        
-              INFO     Successfully built Bento(tag="tensorflow_mnist_demo:bmygukdtzpy6zlc5vcqvsoywq") at                 
+              INFO     Successfully built Vts(tag="tensorflow_mnist_demo:bmygukdtzpy6zlc5vcqvsoywq") at                 
                        "/home/chef/vtsserving/vtss/tensorflow_mnist_demo/bmygukdtzpy6zlc5vcqvsoywq/"                      
 ```
 
-This Bento can now be loaded for serving:
+This Vts can now be loaded for serving:
 
 ```bash
 vtsserving serve tensorflow_mnist_demo:latest --production
 ```
 
-The Bento directory contains all code, files, models and configs required for running this service.
+The Vts directory contains all code, files, models and configs required for running this service.
 VtsServing standarlizes this file structure which enables serving runtimes and deployment tools to be
 built on top of it. By default, Bentos are managed under the `~/vtsserving/vtss` directory:
 
@@ -247,11 +247,11 @@ built on top of it. By default, Bentos are managed under the `~/vtsserving/vtss`
 ```
 
 
-### Containerize Bento for deployment
+### Containerize Vts for deployment
 
 Make sure you have docker installed and docker deamon running, and the following command
 will use your local docker environment to build a new docker image, containing the model
-server configured from this Bento:
+server configured from this Vts:
 
 ```bash
 vtsserving containerize tensorflow_mnist_demo:latest

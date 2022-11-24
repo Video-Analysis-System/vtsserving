@@ -25,7 +25,7 @@ This is a step-by-step tour that help you dive into the main concepts in VtsServ
         :link: /concepts/vts
         :link-type: doc
 
-        Build and customize Bento for production deployment
+        Build and customize Vts for production deployment
 
     .. grid-item-card:: :doc:`/concepts/runner`
         :link: /concepts/runner

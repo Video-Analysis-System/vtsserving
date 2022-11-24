@@ -482,7 +482,7 @@ def add_containerize_command(cli: Group) -> None:
         _memoized: dict[str, t.Any],
         **kwargs: t.Any,  # pylint: disable=unused-argument
     ) -> None:
-        """Containerizes given Bento into an OCI-compliant container, with any given OCI builder.
+        """Containerizes given Vts into an OCI-compliant container, with any given OCI builder.
 
         \b
 
@@ -491,10 +491,10 @@ def add_containerize_command(cli: Group) -> None:
 
         \b
         ``vtsserving containerize`` command also supports the use of the ``latest`` tag
-        which will automatically use the last built version of your Bento.
+        which will automatically use the last built version of your Vts.
 
         \b
-        You can provide a tag for the image built by Bento using the
+        You can provide a tag for the image built by Vts using the
         ``--image-tag`` flag.
 
         \b
@@ -601,23 +601,23 @@ def add_containerize_command(cli: Group) -> None:
             example_tag = random.choice(tags)
 
             logger.info(
-                'Successfully built Bento container for "%s" with tag(s) "%s"',
+                'Successfully built Vts container for "%s" with tag(s) "%s"',
                 vts_tag,
                 ",".join(tags),
             )
             instructions = [
-                "To run your newly built Bento container, use '%s' as a tag and pass it to '%s run'. For example:",
+                "To run your newly built Vts container, use '%s' as a tag and pass it to '%s run'. For example:",
                 _indent("%s run -it --rm -p 3000:3000 %s serve --production"),
             ]
             if multiple_tags:
-                start = "To run your newly built Bento container, use one of the above tags (e.g: %s) and pass it to '%s run'. For example:"
+                start = "To run your newly built Vts container, use one of the above tags (e.g: %s) and pass it to '%s run'. For example:"
                 instructions[0] = start
             fmt = [example_tag, container_runtime, container_runtime, example_tag]
             if features is not None and "grpc" in features:
                 grpc_metrics_port = VtsServingContainer.grpc.metrics.port.get()
                 instructions.extend(
                     [
-                        "%s can also be served with gRPC. To run your Bento container as a gRPC server, do the following:",
+                        "%s can also be served with gRPC. To run your Vts container as a gRPC server, do the following:",
                         _indent(
                             "%s run -it -p 3000:3000 -p %s:%s %s serve-grpc --production"
                         ),

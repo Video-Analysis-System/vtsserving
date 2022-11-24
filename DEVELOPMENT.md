@@ -242,15 +242,15 @@ regenerate the proto stubs.
 
 ## Deploy with your changes
 
-Test test out your changes in an actual VTSSERVING model deployment, you can create a new Bento with your custom VTSSERVING source repo:
+Test test out your changes in an actual VTSSERVING model deployment, you can create a new Vts with your custom VTSSERVING source repo:
 
 1. Install custom VTSSERVING in editable mode. e.g.:
    - git clone your VTSSERVING fork
    - `pip install -e PATH_TO_THE_FORK`
 2. Set env var `export VTSSERVING_BUNDLE_LOCAL_BUILD=True` and `export SETUPTOOLS_USE_DISTUTILS=stdlib`
    - make sure you have the latest setuptools installed: `pip install -U setuptools`
-3. Build a new Bento with `VTSSERVING build` in your project directory
-4. The new Bento will include a wheel file built from the VTSSERVING source, and
+3. Build a new Vts with `VTSSERVING build` in your project directory
+4. The new Vts will include a wheel file built from the VTSSERVING source, and
    `VTSSERVING containerize` will install it to override the default VTSSERVING installation in base image
 
 ### Distribute a custom VTSSERVING release for your team
@@ -262,7 +262,7 @@ branch to your fork of VTSSERVING, and have your users install it this way:
 pip install git+https://github.com/{YOUR_GITHUB_USERNAME}/VTSSERVING@{YOUR_REVISION}
 ```
 
-And in your VTSSERVING projects' `vtsfile.yaml`, force the Bento to install this distribution, e.g.:
+And in your VTSSERVING projects' `vtsfile.yaml`, force the Vts to install this distribution, e.g.:
 
 ```yaml
 service: "service:svc"

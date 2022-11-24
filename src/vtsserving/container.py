@@ -375,7 +375,7 @@ def build(
         vtsserving.container.build(vts, backend='podman', features=["grpc", "tracing"])
 
     Args:
-        vts_tag: Bento tag in format of ``NAME:VERSION``
+        vts_tag: Vts tag in format of ``NAME:VERSION``
         backend: The backend to use for building the image. Current supported builder backends
                  include ``docker``, ``podman``, ``buildah``, ``nerdctl``, ``buildctl``, and ``buildx``.
 
@@ -420,9 +420,9 @@ def get_containerfile(
     _vts_store: BentoStore = Provide[VtsServingContainer.vts_store],
 ):
     """
-    Returns the generated container file for a given Bento.
+    Returns the generated container file for a given Vts.
 
-    Note that the container file (Dockerfile) inside the Bento is minimal, whereas
+    Note that the container file (Dockerfile) inside the Vts is minimal, whereas
     this utility functions returns the container file that 'vtsserving containerize' will
     be using.
 

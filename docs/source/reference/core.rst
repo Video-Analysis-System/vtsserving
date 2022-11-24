@@ -24,10 +24,10 @@ vtsserving.build
 .. autofunction:: vtsserving.vtss.containerize
 
 
-vtsserving.Bento
+vtsserving.Vts
 -------------
 
-.. autoclass:: vtsserving.Bento
+.. autoclass:: vtsserving.Vts
     :members: tag, info, path, path_of, doc
     :undoc-members:
 

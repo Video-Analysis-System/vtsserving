@@ -48,7 +48,7 @@ $ curl -X POST -H "content-type: application/json" --data '{"sepal_len": 6.2, "s
 ```
 
 
-4. Build Bento
+4. Build Vts
 
 ```
 vtsserving build

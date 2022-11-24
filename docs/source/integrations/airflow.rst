@@ -28,9 +28,9 @@ A typical Airflow pipeline with a VtsServing serving & deployment workflow look 
 5. Perform model evaluation and validation
 6. :doc:`Save model with VtsServing </concepts/model>`
 7. :ref:`Push saved model to Yatai registry (or export model to s3) <concepts/model:Managing Models>`
-8. :doc:`Build a new Bento using the newly trained model </concepts/vts>`
-9. Run integration test on the Bento to verify the entire serving pipeline
-10. :ref:`Push the Bento to a Yatai (or export vts to s3) <concepts/vts:Managing Bentos>`
+8. :doc:`Build a new Vts using the newly trained model </concepts/vts>`
+9. Run integration test on the Vts to verify the entire serving pipeline
+10. :ref:`Push the Vts to a Yatai (or export vts to s3) <concepts/vts:Managing Bentos>`
 11. (Optional) Trigger a redeployment via Yatai, vtsctl, or custom deploy script
 
 
@@ -46,7 +46,7 @@ Airflow deployment and running a mix of different tasks.
 
 To avoid this, we recommend managing dependencies of your ML pipeline with the
 `PythonVirtualenvOperator <https://airflow.apache.org/docs/apache-airflow/stable/howto/operator/python.html#pythonvirtualenvoperator>`_,
-which runs your code in a virtual environment. This allows you to define your Bento's
+which runs your code in a virtual environment. This allows you to define your Vts's
 dependencies in a ``requirements.txt`` file and use it across training pipeline and the
 vts build process. For example:
 
@@ -73,7 +73,7 @@ vts build process. For example:
         )
         def build_vts(**context):
             """
-            Perform Bento build in a virtual environment.
+            Perform Vts build in a virtual environment.
             """
             import vtsserving
             vts = vtsserving.vtss.build(
@@ -101,7 +101,7 @@ Airflow cluster, and also by the workers in your production deployment environme
 
 For a simple setup, we recommend using the Import/Export API for
 :ref:`Model <concepts/model:Managing Models>` and
-:ref:`Bento <concepts/vts:Managing Bentos>`. This allows you to export the model files
+:ref:`Vts <concepts/vts:Managing Bentos>`. This allows you to export the model files
 directly to cloud storage, and import them from the same location when needed. E.g:
 
 .. code-block:: python
@@ -112,7 +112,7 @@ directly to cloud storage, and import them from the same location when needed. E
     vtsserving.export_vts('s3://my_bucket/vtss/')
     vtsserving.import_vts('s3://my_bucket/vtss/iris_classifier-7soszfq53sv6huqj.vts')
 
-For a more advanced setup, we recommend using the Model and Bento Registry feature
+For a more advanced setup, we recommend using the Model and Vts Registry feature
 provided in `Yatai <https://github.com/vtsserving/Yatai>`_, which provides additional
 management features such as filtering, labels, and a web UI for browsing and managing
 models. E.g:
@@ -130,23 +130,23 @@ Python API or CLI
 ~~~~~~~~~~~~~~~~~
 
 VtsServing provides both Python APIs and CLI commands for most workflow management tasks,
-such as building Bento, managing Models/Bentos, and deploying to production.
+such as building Vts, managing Models/Bentos, and deploying to production.
 
 When using the Python APIs, you can organize your code in a Airflow PythonOperator task.
 And for CLI commands, you can use the `BashOperator <https://airflow.apache.org/docs/apache-airflow/stable/howto/operator/bash.html>`_
 instead.
 
 
-Validating new Bento
+Validating new Vts
 ~~~~~~~~~~~~~~~~~~~~
 
-It is important to validate the new Bento before deploying it to production. The
+It is important to validate the new Vts before deploying it to production. The
 `vtsserving.testing` module provides a set of utility functions for building behavior tests
 for your VtsServing Service, by launching the API server in a docker container and sending
 test requests to it.
 
 The VtsServing community is also building a standardized way of defining and running
-test cases for your Bento, that can be easily integrated with your CI/CD pipeline in
+test cases for your Vts, that can be easily integrated with your CI/CD pipeline in
 an Airflow job. See `#2967 <https://github.com/vtsserving/VtsServing/issues/2967>`_ for the
 latest progress.
 

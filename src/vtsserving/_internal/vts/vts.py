@@ -116,7 +116,7 @@ This is a Machine Learning Service created with VtsServing."""
 
 
 @attr.define(repr=False, auto_attribs=False)
-class Bento(StoreItem):
+class Vts(StoreItem):
     _tag: Tag = attr.field()
     __fs: FS = attr.field()
 
@@ -164,7 +164,7 @@ class Bento(StoreItem):
         build_config: BentoBuildConfig,
         version: t.Optional[str] = None,
         build_ctx: t.Optional[str] = None,
-    ) -> Bento:
+    ) -> Vts:
         from ..service.loader import import_service
 
         build_ctx = (
@@ -174,7 +174,7 @@ class Bento(StoreItem):
         )
         if not os.path.isdir(build_ctx):
             raise InvalidArgument(
-                f"Bento build context {build_ctx} does not exist or is not a directory."
+                f"Vts build context {build_ctx} does not exist or is not a directory."
             )
 
         # This also verifies that svc can be imported correctly
@@ -260,7 +260,7 @@ class Bento(StoreItem):
         with vts_fs.open(fs.path.combine("apis", "openapi.yaml"), "w") as f:
             yaml.dump(svc.openapi_spec, f)
 
-        res = Bento(
+        res = Vts(
             tag,
             vts_fs,
             BentoInfo(
@@ -287,7 +287,7 @@ class Bento(StoreItem):
         return res
 
     @classmethod
-    def from_fs(cls, item_fs: FS) -> Bento:
+    def from_fs(cls, item_fs: FS) -> Vts:
         try:
             with item_fs.open(VTS_YAML_FILENAME, "r", encoding="utf-8") as vts_yaml:
                 info = BentoInfo.from_yaml_file(vts_yaml)
@@ -332,7 +332,7 @@ class Bento(StoreItem):
     def save(
         self,
         vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
-    ) -> "Bento":
+    ) -> "Vts":
         try:
             self.validate()
         except VtsServingException as e:
@@ -353,12 +353,12 @@ class Bento(StoreItem):
             )
 
     def __str__(self):
-        return f'Bento(tag="{self.tag}")'
+        return f'Vts(tag="{self.tag}")'
 
 
-class BentoStore(Store[Bento]):
+class BentoStore(Store[Vts]):
     def __init__(self, base_path: t.Union[PathType, "FS"]):
-        super().__init__(base_path, Bento)
+        super().__init__(base_path, Vts)
 
 
 @attr.frozen

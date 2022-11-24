@@ -46,7 +46,7 @@ $ curl -X POST -H "content-type: application/json" --data "[[5.9, 3, 5.1, 1.8]]"
 [2]
 ```
 
-4. Build Bento
+4. Build Vts
 
 ```
 vtsserving build

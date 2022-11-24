@@ -103,7 +103,7 @@ def generate_containerfile(
     **override_vts_env: t.Any,
 ) -> str:
     """
-    Generate a Dockerfile that containerize a Bento.
+    Generate a Dockerfile that containerize a Vts.
 
     .. note::
 

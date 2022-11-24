@@ -72,7 +72,7 @@ Sample result:
 
 
 
-## Build Bento
+## Build Vts
 
 The `vtsfile.yaml` have configured all required system packages and python dependencies. 
 
@@ -80,7 +80,7 @@ The `vtsfile.yaml` have configured all required system packages and python depen
 vtsserving build
 ```
 
-Once the Bento is built, containerize it as a Docker image for deployment:
+Once the Vts is built, containerize it as a Docker image for deployment:
 
 ```bash
 vtsserving containerize yolo_v5_demo:latest

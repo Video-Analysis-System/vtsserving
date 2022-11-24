@@ -14,8 +14,8 @@ For basic containerizing options, see :ref:`Docker Options <concepts/vts:Docker 
 Why you may need this?
 ----------------------
 
-- If you want to customize the containerization process of your Bento.
-- If you need a certain tools, configs, prebuilt binaries that is available across all your Bento generated container images.
+- If you want to customize the containerization process of your Vts.
+- If you need a certain tools, configs, prebuilt binaries that is available across all your Vts generated container images.
 - A big difference with :ref:`base image <concepts/vts:Docker Options Table>` features is that you don't have to setup a custom base image and then push it to a remote registry.
 
 Custom Base Image
@@ -37,7 +37,7 @@ will build a new image on top of the base_image with the following steps:
 - setup env vars
 - run the :code:`setup_script` if provided
 - install the required Python packages
-- copy over the Bento file
+- copy over the Vts file
 - setup the entrypoint command for serving.
 
 
@@ -61,7 +61,7 @@ will build a new image on top of the base_image with the following steps:
     only be used for building linux/amd64 platform docker images.
 
     If you are running VtsServing from an Apple M1 device or an ARM based computer, make
-    sure to pass the :code:`--platform` parameter when containerizing a Bento. e.g.:
+    sure to pass the :code:`--platform` parameter when containerizing a Vts. e.g.:
 
     .. code:: bash
 
@@ -72,7 +72,7 @@ Dockerfile Template
 -------------------
 
 The :code:`dockerfile_template` field gives the user full control over how the
-:code:`Dockerfile` is generated for a Bento by extending the template used by
+:code:`Dockerfile` is generated for a Vts by extending the template used by
 VtsServing.
 
 First, create a :code:`Dockerfile.template` file next to your :code:`vtsfile.yaml`
@@ -97,7 +97,7 @@ your :code: `vtsfile.yaml`:
     docker:
         dockerfile_template: "./Dockerfile.template"
 
-Now run :code:`vtsserving build` to build a new Bento. It will contain a Dockerfile
+Now run :code:`vtsserving build` to build a new Vts. It will contain a Dockerfile
 generated with the custom template. To confirm the generated Dockerfile works as
 expected, run :code:`vtsserving containerize <vts>` to build a docker image with it.
 
@@ -120,7 +120,7 @@ Examples
 Building TensorFlow custom op
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let's start with an example that builds a `custom TensorFlow op <https://www.tensorflow.org/guide/create_op>`_ binary into a Bento, which is based on |zero_out|_:
+Let's start with an example that builds a `custom TensorFlow op <https://www.tensorflow.org/guide/create_op>`_ binary into a Vts, which is based on |zero_out|_:
 
 .. _zero_out: https://www.tensorflow.org/guide/create_op#define_the_op_interface
 
@@ -146,7 +146,7 @@ Then add the following to your :code:`vtsfile.yaml`:
    docker:
      dockerfile_template: ./Dockerfile.template
 
-Proceed to build your Bento with :code:`vtsserving build` and containerize with :code:`vtsserving containerize`:
+Proceed to build your Vts with :code:`vtsserving build` and containerize with :code:`vtsserving containerize`:
 
 .. code-block:: bash
 
@@ -166,7 +166,7 @@ Proceed to build your Bento with :code:`vtsserving build` and containerize with 
 Access AWS credentials during image build
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We will now demonstrate how to provide AWS credentials to a Bento via two approaches:
+We will now demonstrate how to provide AWS credentials to a Vts via two approaches:
 
 1. :ref:`guides/containerization:Using environment variables`.
 2. :ref:`guides/containerization:Mount credentials from host`.
@@ -245,7 +245,7 @@ Define the following :code:`Dockerfile.template`:
 Follow the above addition to :code:`vtsfile.yaml` to include ``awscli`` and
 the custom dockerfile template.
 
-To pass in secrets to the Bento, pass it via :code:`--secret` to :code:`vtsserving
+To pass in secrets to the Vts, pass it via :code:`--secret` to :code:`vtsserving
 containerize`:
 
 .. code-block:: bash
@@ -307,7 +307,7 @@ Jinja templates
 ~~~~~~~~~~~~~~~
 
 One of the powerful features Jinja offers is its `template inheritance <https://jinja.palletsprojects.com/en/3.1.x/templates/#template-inheritance>`_.
-This allows VtsServing to enable users to fully customize how to structure a Bento's Dockerfile.
+This allows VtsServing to enable users to fully customize how to structure a Vts's Dockerfile.
 
 .. note::
 
@@ -329,7 +329,7 @@ To construct a custom :code:`Dockerfile` template, users have to provide an `ext
 
 .. tip::
 
-   :bdg-warning:`Warning:` If you pass in a generic :code:`Dockerfile` file, and then run :code:`vtsserving build` to build a Bento and it doesn't throw any errors.
+   :bdg-warning:`Warning:` If you pass in a generic :code:`Dockerfile` file, and then run :code:`vtsserving build` to build a Vts and it doesn't throw any errors.
 
    However, when you try to run :code:`vtsserving containerize`, this won't work.
 
@@ -401,7 +401,7 @@ The use of the following instructions can be **potentially harmful**. They shoul
 +----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Instruction    | Reasons not to use                                                                                                                                                                                                                                        |
 +================+===========================================================================================================================================================================================================================================================+
-| :code:`FROM`   | Since the containerized Bento is a multi-stage builds container, adding :code:`FROM` statement will result in failure to containerize the given Bento.                                                                                                    |
+| :code:`FROM`   | Since the containerized Vts is a multi-stage builds container, adding :code:`FROM` statement will result in failure to containerize the given Vts.                                                                                                    |
 +----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | :code:`SHELL`  | VtsServing uses `heredoc syntax <https://github.com/moby/buildkit/blob/master/frontend/dockerfile/docs/syntax.md#user-content-here-documents>`_ and using :code:`bash` in our containerization process. Hence changing :code:`SHELL` will result in failure. |
 +----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -423,8 +423,8 @@ make sure that your instructions define the correct path to any working files.
 
 .. note::
 
-   By default, all paths for Bento-related files will be generated to its
-   fspath, which ensures that Bento will work regardless of :code:`WORKDIR`
+   By default, all paths for Vts-related files will be generated to its
+   fspath, which ensures that Vts will work regardless of :code:`WORKDIR`
 
 
 :code:`ENTRYPOINT`
@@ -441,7 +441,7 @@ From `Dockerfile documentation <https://docs.docker.com/engine/reference/builder
 
     Only the last :code:`ENTRYPOINT` instruction in the Dockerfile will have an effect.
 
-By default, a Bento sets:
+By default, a Vts sets:
 
 .. code-block:: jinja
 
@@ -499,7 +499,7 @@ The following are the variables that users can set in their custom Dockerfile te
 If any of the aforementioned fields are set with :code:`{% set ... %}`, then we
 will use your value instead, otherwise a default value will be used.
 
-Adding :code:`conda` to CUDA-enabled Bento
+Adding :code:`conda` to CUDA-enabled Vts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. tip::

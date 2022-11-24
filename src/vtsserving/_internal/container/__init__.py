@@ -22,7 +22,7 @@ from ..configuration.containers import VtsServingContainer
 if TYPE_CHECKING:
     from ..tag import Tag
     from .base import Arguments
-    from ..vts import Bento
+    from ..vts import Vts
     from ..vts import BentoStore
 
     P = t.ParamSpec("P")
@@ -135,7 +135,7 @@ FEATURES = frozenset(
 
 @contextlib.contextmanager
 def construct_containerfile(
-    vts: Bento,
+    vts: Vts,
     enable_buildkit: bool = True,
     *,
     features: t.Sequence[str] | None = None,

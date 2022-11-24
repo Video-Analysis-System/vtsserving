@@ -24,7 +24,7 @@ vtsserving serve service.py:svc
 curl -X POST -H "content-type: application/json" --data "[[5, 3]]" http://127.0.0.1:3000/predict
 ```
 
-4. Build Bento
+4. Build Vts
 
 ```
 vtsserving build

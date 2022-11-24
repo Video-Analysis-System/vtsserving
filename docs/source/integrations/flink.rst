@@ -7,7 +7,7 @@ Apache Flink DataStream
 
 VtsServing support stream model inferencing in 
 `Apache Flink DataStream API <https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/overview/>`_ 
-through either embedded runners or remote calls to a separated deployed Bento Service. This guide assumes prior knowledge 
+through either embedded runners or remote calls to a separated deployed Vts Service. This guide assumes prior knowledge 
 on using runners and service APIs.
 
 Embedded Model Runners
@@ -104,14 +104,14 @@ For simplicity, the input stream and output sink are abstracted out using in-mem
         classify_tweets()
 
 
-Remote Bento Service
+Remote Vts Service
 ^^^^^^^^^^^^^^^^^^^^
 
-Model runners can also be invoked remotely as a separately deployed Bento Service. Calling a remote Bento Service may be 
+Model runners can also be invoked remotely as a separately deployed Vts Service. Calling a remote Vts Service may be 
 preferred if the model cannot be loaded into memory of the Flink DataStream program. This options is also advantageous because 
 model runners can be scaled more easily with deployment frameworks like :ref:`Yatai <concepts/deploy:Deploy with Yatai>`.
 
-To send a prediction request to a remotely deployed Bento Service in the DataStream program, you can use any HTTP client 
+To send a prediction request to a remotely deployed Vts Service in the DataStream program, you can use any HTTP client 
 implementation of your choice inside the `MapFunction` or `ProcessWindowFunction`.
 
 
@@ -127,4 +127,4 @@ implementation of your choice inside the `MapFunction` or `ProcessWindowFunction
 
 
 Using a client with asynchronous IO support combined with Flink AsyncFunction is recommended to handle requests and responses 
-concurrent and minimize IO waiting time of calling a remote Bento Service.
+concurrent and minimize IO waiting time of calling a remote Vts Service.

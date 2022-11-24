@@ -5,13 +5,13 @@ from .. import calc_dir_size
 from .schemas import BentoBuildEvent
 
 if TYPE_CHECKING:
-    from ...vts.vts import Bento
+    from ...vts.vts import Vts
 
 
 def _cli_vtsserving_build_event(
     cmd_group: str,
     cmd_name: str,
-    return_value: "t.Optional[Bento]",
+    return_value: "t.Optional[Vts]",
 ) -> BentoBuildEvent:  # pragma: no cover
     if return_value is not None:
         vts = return_value

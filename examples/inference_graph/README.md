@@ -179,7 +179,7 @@ async def classify_generated_texts(original_sentence: str) -> dict:
 vtsserving serve --reload
 ```
 
-Open your web browser at http://127.0.0.1:3000 to view the Bento UI for sending test requests.
+Open your web browser at http://127.0.0.1:3000 to view the Vts UI for sending test requests.
 
 You may also send request with `curl` command or any HTTP client, e.g.:
 
@@ -194,13 +194,13 @@ curl -X 'POST' \
 
 
 
-### Build Bento for deployment
+### Build Vts for deployment
 
-Bento is the distribution format in VtsServing which captures all the source code, model files, config
+Vts is the distribution format in VtsServing which captures all the source code, model files, config
 files and dependency specifications required for running the service for production deployment. Think 
 of it as Docker/Container designed for machine learning models.
 
-To begin with building Bento, create a `vtsfile.yaml` under your project directory:
+To begin with building Vts, create a `vtsfile.yaml` under your project directory:
 
 ```yaml
 service: "service.py:svc"
@@ -215,7 +215,7 @@ python:
     - torch
 ```
 
-Next, run `vtsserving build` from current directory to start the Bento build:
+Next, run `vtsserving build` from current directory to start the Vts build:
 
 ```
 > vtsserving build
@@ -237,21 +237,21 @@ Locking PyPI package versions..
 ██████╦╝███████╗██║░╚███║░░░██║░░░╚█████╔╝██║░╚═╝░██║███████╗
 ╚═════╝░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚════╝░╚═╝░░░░░╚═╝╚══════╝
 
-Successfully built Bento(tag="inference_graph:owljo4hna25nblg6")
+Successfully built Vts(tag="inference_graph:owljo4hna25nblg6")
 ```
 
-A new Bento is now built and saved to local Bento store. You can view and manage it via 
+A new Vts is now built and saved to local Vts store. You can view and manage it via 
 `vtsserving list`,`vtsserving get` and `vtsserving delete` CLI command.
 
 
 ### Containerize and Deployment
 
-Bento is designed to be deployed to run efficiently in a variety of different environments.
+Vts is designed to be deployed to run efficiently in a variety of different environments.
 And there are lots of deployment options and tools as part of the VtsServing eco-system, such as 
 [Yatai](https://github.com/vtsserving/Yatai) and [vtsctl](https://github.com/vtsserving/vtsctl) for
 direct deployment to cloud platforms.
 
-In this guide, we will show you the most basic way of deploying a Bento, which is converting a Bento
+In this guide, we will show you the most basic way of deploying a Vts, which is converting a Vts
 into a Docker image containing the HTTP model server.
 
 Make sure you have docker installed and docker deamon running, and run the following commnand:
@@ -272,7 +272,7 @@ docker run -p 3000:3000 inference_graph:invwzzsw7li6zckb2ie5eubhd
 - 👉 [Pop into our Slack community!](https://l.linklyhq.com/l/ktO8) We're happy to help with any issue you face or even just to meet you and hear what you're working on.
 - Dive deeper into the [Core Concepts](https://docs.vtsserving.org/en/latest/concepts/index.html) in VtsServing
 - Learn how to use VtsServing with other ML Frameworks at [Frameworks Guide](https://docs.vtsserving.org/en/latest/frameworks/index.html) or check out other [gallery projects](https://github.com/vtsserving/VtsServing/tree/main/examples)
-- Learn more about model deployment options for Bento:
+- Learn more about model deployment options for Vts:
   - [🦄️ Yatai](https://github.com/vtsserving/Yatai): Model Deployment at scale on Kubernetes
   - [🚀 vtsctl](https://github.com/vtsserving/vtsctl): Fast model deployment on any cloud platform
 

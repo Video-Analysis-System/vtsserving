@@ -36,13 +36,13 @@ vtsserving serve
 curl -X POST -H "content-type: application/json" --data "[[5.9, 3, 5.1, 1.8]]" http://127.0.0.1:3000/classify
 ```
 
-## Build Bento for production deployment
+## Build Vts for production deployment
 
 ```
 vtsserving build
 ```
 
-Generate docker image from Bento:
+Generate docker image from Vts:
 ```
 vtsserving containerize lgb_iris_service:latest
 ```

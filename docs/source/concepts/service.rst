@@ -39,7 +39,7 @@ list of :doc:`Runners </concepts/runner>` required in the service:
     svc = vtsserving.Service("iris_classifier", runners=[iris_clf_runner])
 
 .. note::
-    The service name will become the name of the Bento.
+    The service name will become the name of the Vts.
 
 The ``svc`` object created provides a decorator method ``svc.api`` for defining`
 APIs in this service:

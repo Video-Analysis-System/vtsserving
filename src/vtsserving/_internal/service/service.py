@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from vtsserving.grpc.types import ServicerClass
 
     from .. import external_typing as ext
-    from ..vts import Bento
+    from ..vts import Vts
     from ..server.grpc.servicer import Servicer
     from .openapi.specification import OpenAPISpecification
 else:
@@ -108,9 +108,9 @@ class Service:
     # list of APIs from @svc.api
     apis: t.Dict[str, InferenceAPI] = attr.field(init=False, factory=dict)
 
-    # Tag/Bento are only set when the service was loaded from a vts
+    # Tag/Vts are only set when the service was loaded from a vts
     tag: Tag | None = attr.field(init=False, default=None)
-    vts: Bento | None = attr.field(init=False, default=None)
+    vts: Vts | None = attr.field(init=False, default=None)
 
     # Working dir and Import path of the service, set when the service was imported
     _working_dir: str | None = attr.field(init=False, default=None)
@@ -287,7 +287,7 @@ class Service:
         self.grpc_handlers.extend(handlers)
 
 
-def on_load_vts(svc: Service, vts: Bento):
+def on_load_vts(svc: Service, vts: Vts):
     object.__setattr__(svc, "vts", vts)
     object.__setattr__(svc, "tag", vts.info.tag)
 

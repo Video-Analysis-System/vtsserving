@@ -80,7 +80,7 @@ Verify the endpoint can be accessed locally:
 curl -X POST -H "content-type: application/json" --data "[[0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1]]" http://127.0.0.1:3000/classify
 ```
 
-### Build Bento for deployment
+### Build Vts for deployment
 
 A `vtsfile` for the agaricus service is also contained in this directory:
 
@@ -99,7 +99,7 @@ python:
     - xgboost
 ```
 
-Simply run `vtsserving build` from this directory to build a Bento with the latest version of the
+Simply run `vtsserving build` from this directory to build a Vts with the latest version of the
 `agaricus` model. This may take a while when running for the first time, as VtsServing needs to resolve
 all dependency versions:
 
@@ -119,16 +119,16 @@ all dependency versions:
                                 ██████╦╝███████╗██║░╚███║░░░██║░░░╚█████╔╝██║░╚═╝░██║███████╗
                                 ╚═════╝░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚════╝░╚═╝░░░░░╚═╝╚══════╝
 
-03/07/2022 12:25:17 PM INFO     [cli] Successfully built Bento(tag="agaricus:uvkv7d46cgnvgeb5") at "/home/user/vtsserving/vtss/agaricus/uvkv7d46cgnvgeb5/"
+03/07/2022 12:25:17 PM INFO     [cli] Successfully built Vts(tag="agaricus:uvkv7d46cgnvgeb5") at "/home/user/vtsserving/vtss/agaricus/uvkv7d46cgnvgeb5/"
 ```
 
-This Bento can now be served:
+This Vts can now be served:
 
 ```bash
 vtsserving serve agaricus:latest --production
 ```
 
-The Bento directory contains all code, files, models and configuration required to run this service.
+The Vts directory contains all code, files, models and configuration required to run this service.
 VtsServing standarizes this file structure, enabling serving runtimes and deployment tools to be built
 on top of it. By default, Bentos are managed under the `~/vtsserving/vtss` directory:
 
@@ -164,10 +164,10 @@ on top of it. By default, Bentos are managed under the `~/vtsserving/vtss` direc
 9 directories, 14 files
 ```
 
-### Containerize Bento for deployment
+### Containerize Vts for deployment
 
 Make sure you have docker installed and the docker daemon is running. The following command will use
-your local docker environment to build a new docker image containing the Bento:
+your local docker environment to build a new docker image containing the Vts:
 
 ```bash
 vtsserving containerize agaricus:latest

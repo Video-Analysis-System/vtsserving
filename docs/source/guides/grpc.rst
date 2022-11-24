@@ -6,7 +6,7 @@ This guide will demonstrate advanced features that VtsServing offers for you to 
 with `gRPC <https://grpc.io/>`_:
 
 - First-class support for :ref:`custom gRPC Servicer <guides/grpc:Mounting Servicer>`, :ref:`custom interceptors <guides/grpc:Mounting gRPC Interceptors>`, handlers.
-- Seemlessly adding gRPC support to existing Bento.
+- Seemlessly adding gRPC support to existing Vts.
 
 This guide will also walk you through tradeoffs of serving with gRPC, as well as
 recommendation on scenarios where gRPC might be a good fit.
@@ -35,7 +35,7 @@ Install VtsServing with gRPC support with :pypi:`pip`:
 
    » pip install -U "vtsserving[grpc]"
 
-Thats it! You can now serve your Bento with gRPC via :ref:`vtsserving serve-grpc <reference/cli:serve-grpc>` without having to modify your current service definition 😃.
+Thats it! You can now serve your Vts with gRPC via :ref:`vtsserving serve-grpc <reference/cli:serve-grpc>` without having to modify your current service definition 😃.
 
 .. code-block:: bash
 
@@ -723,24 +723,24 @@ After successfully running the client, proceed to build the vts as usual:
 
 :raw-html:`<br />`
 
-Containerize your Bento 🍱 with gRPC support
+Containerize your Vts 🍱 with gRPC support
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To containerize the Bento with gRPC features, pass in ``--enable-features=grpc`` to
+To containerize the Vts with gRPC features, pass in ``--enable-features=grpc`` to
 :ref:`vtsserving containerize <reference/cli:containerize>` to add additional gRPC
-dependencies to your Bento
+dependencies to your Vts
 
 .. code-block:: bash
 
    » vtsserving containerize iris_classifier:latest --enable-features=grpc
 
-``--enable-features`` allows users to containerize any of the existing Bentos with :ref:`additional features <concepts/vts:Enable features for your Bento>` that VtsServing provides without having to rebuild the Bento.
+``--enable-features`` allows users to containerize any of the existing Bentos with :ref:`additional features <concepts/vts:Enable features for your Vts>` that VtsServing provides without having to rebuild the Vts.
 
 .. note::
 
    ``--enable-features`` accepts a comma-separated list of features or multiple arguments.
 
-After containerization, your Bento container can now be used with gRPC:
+After containerization, your Vts container can now be used with gRPC:
 
 .. code-block:: bash
 
@@ -1438,8 +1438,8 @@ Should I use gRPC instead of REST for model serving?
 Yes and no.
 
 If your organization is already using gRPC for inter-service communications, using
-your Bento with gRPC is a no-brainer. You will be able to seemlessly integrate your
-Bento with your existing gRPC services without having to worry about the overhead of
+your Vts with gRPC is a no-brainer. You will be able to seemlessly integrate your
+Vts with your existing gRPC services without having to worry about the overhead of
 implementing :github:`grpc-gateway <grpc-ecosystem/grpc-gateway>`.
 
 However, if your organization is not using gRPC, we recommend to keep using REST for

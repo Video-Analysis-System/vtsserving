@@ -35,7 +35,7 @@ if TYPE_CHECKING:
     from typing_extensions import Literal
 
 from ..tag import Tag
-from ..vts import Bento
+from ..vts import Vts
 from ..vts import BentoStore
 from ..utils import calc_dir_size
 from ..models import Model
@@ -193,16 +193,16 @@ class YataiClient:
             self.spinner_progress.stop_task(task_id)
             self.spinner_progress.update(task_id, visible=False)
 
-    def push_vts(self, vts: "Bento", *, force: bool = False, threads: int = 10):
+    def push_vts(self, vts: "Vts", *, force: bool = False, threads: int = 10):
         with Live(self.progress_group):
             upload_task_id = self.transmission_progress.add_task(
-                f'Pushing Bento "{vts.tag}"', start=False, visible=False
+                f'Pushing Vts "{vts.tag}"', start=False, visible=False
             )
             self._do_push_vts(vts, upload_task_id, force=force, threads=threads)
 
     def _do_push_vts(
         self,
-        vts: "Bento",
+        vts: "Vts",
         upload_task_id: TaskID,
         *,
         force: bool = False,
@@ -212,7 +212,7 @@ class YataiClient:
         name = vts.tag.name
         version = vts.tag.version
         if version is None:
-            raise VtsServingException(f"Bento {vts.tag} version cannot be None")
+            raise VtsServingException(f"Vts {vts.tag} version cannot be None")
         info = vts.info
         model_tags = [m.tag for m in info.models]
         model_store = vts._model_store  # type: ignore
@@ -229,16 +229,16 @@ class YataiClient:
 
             futures: t.Iterator[None] = executor.map(push_model, models)
             list(futures)
-        with self.spin(text=f'Fetching Bento repository "{name}"'):
+        with self.spin(text=f'Fetching Vts repository "{name}"'):
             vts_repository = yatai_rest_client.get_vts_repository(
                 vts_repository_name=name
             )
         if not vts_repository:
-            with self.spin(text=f'Bento repository "{name}" not found, creating now..'):
+            with self.spin(text=f'Vts repository "{name}" not found, creating now..'):
                 vts_repository = yatai_rest_client.create_vts_repository(
                     req=CreateBentoRepositorySchema(name=name, description="")
                 )
-        with self.spin(text=f'Try fetching Bento "{vts.tag}" from Yatai..'):
+        with self.spin(text=f'Try fetching Vts "{vts.tag}" from Yatai..'):
             remote_vts = yatai_rest_client.get_vts(
                 vts_repository_name=name, version=version
             )
@@ -248,7 +248,7 @@ class YataiClient:
             and remote_vts.upload_status == BentoUploadStatus.SUCCESS
         ):
             self.log_progress.add_task(
-                f'[bold blue]Push failed: Bento "{vts.tag}" already exists in Yatai'
+                f'[bold blue]Push failed: Vts "{vts.tag}" already exists in Yatai'
             )
             return
         labels: t.List[LabelItemSchema] = [
@@ -280,7 +280,7 @@ class YataiClient:
             size_bytes=calc_dir_size(vts.path),
         )
         if not remote_vts:
-            with self.spin(text=f'Registering Bento "{vts.tag}" with Yatai..'):
+            with self.spin(text=f'Registering Vts "{vts.tag}" with Yatai..'):
                 remote_vts = yatai_rest_client.create_vts(
                     vts_repository_name=vts_repository.name,
                     req=CreateBentoSchema(
@@ -292,7 +292,7 @@ class YataiClient:
                     ),
                 )
         else:
-            with self.spin(text=f'Updating Bento "{vts.tag}"..'):
+            with self.spin(text=f'Updating Vts "{vts.tag}"..'):
                 remote_vts = yatai_rest_client.update_vts(
                     vts_repository_name=vts_repository.name,
                     version=version,
@@ -321,7 +321,7 @@ class YataiClient:
         with io.BytesIO() as tar_io:
             vts_dir_path = vts.path
             if vts_dir_path is None:
-                raise VtsServingException(f'Bento "{vts}" path cannot be None')
+                raise VtsServingException(f'Vts "{vts}" path cannot be None')
             with self.spin(text=f'Creating tar archive for vts "{vts.tag}"..'):
                 with tarfile.open(fileobj=tar_io, mode="w:gz") as tar:
 
@@ -391,7 +391,7 @@ class YataiClient:
                         )
                 else:
                     with self.spin(
-                        text=f'Start multipart uploading Bento "{vts.tag}"...'
+                        text=f'Start multipart uploading Vts "{vts.tag}"...'
                     ):
                         remote_vts = yatai_rest_client.start_vts_multipart_upload(
                             vts_repository_name=vts_repository.name,
@@ -399,7 +399,7 @@ class YataiClient:
                         )
                         if not remote_vts.upload_id:
                             raise VtsServingException(
-                                f'Failed to start multipart upload for Bento "{vts.tag}", upload_id is empty'
+                                f'Failed to start multipart upload for Vts "{vts.tag}", upload_id is empty'
                             )
 
                         upload_id: str = remote_vts.upload_id
@@ -410,7 +410,7 @@ class YataiClient:
                         upload_id: str, chunk_number: int
                     ) -> FinishUploadBentoSchema | t.Tuple[str, int]:
                         with self.spin(
-                            text=f'({chunk_number}/{chunks_count}) Presign multipart upload url of Bento "{vts.tag}"...'
+                            text=f'({chunk_number}/{chunks_count}) Presign multipart upload url of Vts "{vts.tag}"...'
                         ):
                             remote_vts = (
                                 yatai_rest_client.presign_vts_multipart_upload_url(
@@ -423,7 +423,7 @@ class YataiClient:
                                 )
                             )
                         with self.spin(
-                            text=f'({chunk_number}/{chunks_count}) Uploading chunk of Bento "{vts.tag}"...'
+                            text=f'({chunk_number}/{chunks_count}) Uploading chunk of Vts "{vts.tag}"...'
                         ):
 
                             chunk = (
@@ -487,7 +487,7 @@ class YataiClient:
                             )
 
                     with self.spin(
-                        text=f'Completing multipart upload of Bento "{vts.tag}"...'
+                        text=f'Completing multipart upload of Vts "{vts.tag}"...'
                     ):
                         remote_vts = (
                             yatai_rest_client.complete_vts_multipart_upload(
@@ -507,7 +507,7 @@ class YataiClient:
                 )
             if finish_req.status is BentoUploadStatus.FAILED:
                 self.log_progress.add_task(
-                    f'[bold red]Failed to upload Bento "{vts.tag}"'
+                    f'[bold red]Failed to upload Vts "{vts.tag}"'
                 )
             with self.spin(text="Submitting upload status to Yatai"):
                 yatai_rest_client.finish_upload_vts(
@@ -517,11 +517,11 @@ class YataiClient:
                 )
             if finish_req.status != BentoUploadStatus.SUCCESS:
                 self.log_progress.add_task(
-                    f'[bold red]Failed pushing Bento "{vts.tag}": {finish_req.reason}'
+                    f'[bold red]Failed pushing Vts "{vts.tag}": {finish_req.reason}'
                 )
             else:
                 self.log_progress.add_task(
-                    f'[bold green]Successfully pushed Bento "{vts.tag}"'
+                    f'[bold green]Successfully pushed Vts "{vts.tag}"'
                 )
 
     @inject
@@ -531,7 +531,7 @@ class YataiClient:
         *,
         force: bool = False,
         vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
-    ) -> "Bento":
+    ) -> "Vts":
         with Live(self.progress_group):
             download_task_id = self.transmission_progress.add_task(
                 f'Pulling vts "{tag}"', start=False, visible=False
@@ -551,12 +551,12 @@ class YataiClient:
         *,
         force: bool = False,
         vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
-    ) -> "Bento":
+    ) -> "Vts":
         try:
             vts = vts_store.get(tag)
             if not force:
                 self.log_progress.add_task(
-                    f'[bold blue]Bento "{tag}" exists in local model store'
+                    f'[bold blue]Vts "{tag}" exists in local model store'
                 )
                 return vts
             vts_store.delete(tag)
@@ -566,7 +566,7 @@ class YataiClient:
         name = _tag.name
         version = _tag.version
         if version is None:
-            raise VtsServingException(f'Bento "{_tag}" version can not be None')
+            raise VtsServingException(f'Vts "{_tag}" version can not be None')
 
         yatai_rest_client = get_current_yatai_rest_api_client()
 
@@ -575,7 +575,7 @@ class YataiClient:
                 vts_repository_name=name, version=version
             )
         if not remote_vts:
-            raise VtsServingException(f'Bento "{_tag}" not found on Yatai')
+            raise VtsServingException(f'Vts "{_tag}" not found on Yatai')
 
         with tempfile.TemporaryDirectory() as temp_dir:
             # Download models to a temporary directory
@@ -665,7 +665,7 @@ class YataiClient:
                             if p.parent != Path("."):
                                 temp_fs.makedirs(str(p.parent), recreate=True)
                             temp_fs.writebytes(member.name, f.read())
-                        vts = Bento.from_fs(temp_fs)
+                        vts = Vts.from_fs(temp_fs)
                         for model_tag in remote_vts.manifest.models:
                             with self.spin(
                                 text=f'Copying model "{model_tag}" to vts'
