@@ -88,7 +88,7 @@ async def server_warmup(
             try:
                 if service_name is None:
                     service_name = (
-                        f"vtsserving.grpc.{_internal_stubs_version}.BentoService"
+                        f"vtsserving.grpc.{_internal_stubs_version}.VtsService"
                     )
                 async with create_channel(host_url) as channel:
                     Check = channel.unary_unary(
@@ -464,7 +464,7 @@ def host_vts(
         else:
             vts = vtsserving.get(vts_name)
         print(
-            f"Hosting BentoServer '{vts.tag}' in {deployment_mode} mode at '{project_path}'{' with config file '+config_file if config_file else ''}."
+            f"Hosting VtsServer '{vts.tag}' in {deployment_mode} mode at '{project_path}'{' with config file '+config_file if config_file else ''}."
         )
         if deployment_mode == "standalone":
             with run_vts_server_standalone(

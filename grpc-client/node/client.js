@@ -5,7 +5,7 @@ const services = require("./vtsserving/grpc/v1/service_grpc_pb");
 
 function main() {
   const target = "localhost:3000";
-  const client = new services.BentoServiceClient(
+  const client = new services.VtsServiceClient(
     target,
     grpc.credentials.createInsecure()
   );

@@ -20,8 +20,8 @@ kt_jvm_grpc_library(
 
 kt_jvm_binary(
     name = "client_kt",
-    srcs = ["src/main/kotlin/com/client/BentoServiceClient.kt"],
-    main_class = "com.client.BentoServiceClient",
+    srcs = ["src/main/kotlin/com/client/VtsServiceClient.kt"],
+    main_class = "com.client.VtsServiceClient",
     deps = [
         ":service_grpc_kt",
         ":service_kt",

@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from ..tag import Tag
     from .base import Arguments
     from ..vts import Vts
-    from ..vts import BentoStore
+    from ..vts import VtsStore
 
     P = t.ParamSpec("P")
 
@@ -83,7 +83,7 @@ def register_default_backends():
 def determine_container_tag(
     vts_tag: Tag | str,
     image_tag: tuple[str] | None = None,
-    _vts_store: BentoStore = Provide[VtsServingContainer.vts_store],
+    _vts_store: VtsStore = Provide[VtsServingContainer.vts_store],
 ):
     # NOTE: for tags strategy, we will always generate a default tag from the vts:tag
     # If '-t/--image-tag' is provided, we will use this tag provided by user.
@@ -141,7 +141,7 @@ def construct_containerfile(
     features: t.Sequence[str] | None = None,
     add_header: bool = False,
 ) -> t.Generator[tuple[str, str], None, None]:
-    from ..vts.vts import BentoInfo
+    from ..vts.vts import VtsInfo
 
     dockerfile_path = os.path.join("env", "docker", "Dockerfile")
     instruction: list[str] = []
@@ -150,7 +150,7 @@ def construct_containerfile(
         vts.path_of("vts.yaml"), "rb"
     ) as vts_yaml:
         tempdir = temp_fs.getsyspath("/")
-        options = BentoInfo.from_yaml_file(vts_yaml)
+        options = VtsInfo.from_yaml_file(vts_yaml)
         # tmpdir is our new build context.
         fs.mirror.mirror(vts._fs, temp_fs, copy_if_newer=True)
         dockerfile = generate_containerfile(
@@ -183,7 +183,7 @@ def build(
     vts_tag: Tag | str,
     backend: str,
     features: t.Sequence[str] | None = None,
-    _vts_store: BentoStore = Provide[VtsServingContainer.vts_store],
+    _vts_store: VtsStore = Provide[VtsServingContainer.vts_store],
     **kwargs: t.Any,
 ):
     clean_context = contextlib.ExitStack()

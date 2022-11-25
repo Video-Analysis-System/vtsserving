@@ -1,5 +1,5 @@
 ===============
-Building Bentos
+Building Vtss
 ===============
 
 What is a Vts?
@@ -80,7 +80,7 @@ Advanced Project Structure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For projects that are part of a larger codebase and interacts with other local python
-modules; Or for projects containing multiple Bentos/Services, it may not be possible to
+modules; Or for projects containing multiple Vtss/Services, it may not be possible to
 put all service definition code and ``vtsfile.yaml`` under the project's root
 directory.
 
@@ -106,16 +106,16 @@ They can also be customized via the CLI command, e.g.:
     » vtsserving build -f ./src/my_project_a/vts_fraud_detect.yaml ./src/
 
 
-Managing Bentos
+Managing Vtss
 ---------------
 
-Bentos are the unit of deployment in VtsServing, one of the most important artifact to keep
+Vtss are the unit of deployment in VtsServing, one of the most important artifact to keep
 track of for your model deployment workflow.
 
 Local Vts Store
 ^^^^^^^^^^^^^^^^^
 
-Similar to Models, Bentos built locally can be managed via the
+Similar to Models, Vtss built locally can be managed via the
 :doc:`vtsserving CLI commands </reference/cli>`:
 
 .. tab-set::
@@ -174,8 +174,8 @@ Similar to Models, Bentos built locally can be managed via the
 Import and Export
 ^^^^^^^^^^^^^^^^^
 
-Bentos can be exported to a standalone archive file outside of the store, for sharing
-Bentos between teams or moving between different deployment stages. For example:
+Vtss can be exported to a standalone archive file outside of the store, for sharing
+Vtss between teams or moving between different deployment stages. For example:
 
 .. code:: bash
 
@@ -191,7 +191,7 @@ Bentos between teams or moving between different deployment stages. For example:
 
 .. note::
 
-    Bentos can be exported to or import from AWS S3, GCS, FTP, Dropbox, etc. For
+    Vtss can be exported to or import from AWS S3, GCS, FTP, Dropbox, etc. For
     example with S3:
 
     .. code:: bash
@@ -205,7 +205,7 @@ Push and Pull
 ^^^^^^^^^^^^^
 
 `Yatai <https://github.com/vtsserving/Yatai>`_ provides a centralized Vts repository
-that comes with flexible APIs and Web UI for managing all Bentos created by your team.
+that comes with flexible APIs and Web UI for managing all Vtss created by your team.
 It can be configured to store Vts files on cloud blob storage such as AWS S3, MinIO
 or GCS, and automatically build docker images when a new Vts was pushed.
 
@@ -229,7 +229,7 @@ Vts Management API
 ^^^^^^^^^^^^^^^^^^^^
 
 Similar to :ref:`concepts/model:Managing Models`, equivalent Python APIs are also
-provided for managing Bentos:
+provided for managing Vtss:
 
 .. tab-set::
 
@@ -264,13 +264,13 @@ provided for managing Bentos:
 
         .. note::
 
-            Bentos can be exported to or import from AWS S3, GCS, FTP, Dropbox, etc. For
+            Vtss can be exported to or import from AWS S3, GCS, FTP, Dropbox, etc. For
             example: :code:`vtsserving.export_vts('my_vts:latest', 's3://my_bucket/folder')`
 
     .. tab-item:: Push / Pull
 
         If your team has `Yatai <https://github.com/vtsserving/Yatai>`_ setup, you can also
-        push local Bentos to Yatai, it provides APIs and Web UI for managing all Bentos
+        push local Vtss to Yatai, it provides APIs and Web UI for managing all Vtss
         created by your team, stores Vts files on cloud blob storage such as AWS S3, MinIO
         or GCS, and automatically builds docker images when a new Vts was pushed.
 
@@ -441,10 +441,10 @@ Labels
 ``labels`` are key-value pairs that are attached to an object.
 
 In VtsServing, both ``Vts`` and ``Model`` can have labels attached to them. Labels are intended to
-be used to specify identifying attributes of Bentos/Models that are meaningful and
+be used to specify identifying attributes of Vtss/Models that are meaningful and
 relevant to users, but do not directly imply semantics to the rest of the system.
 
-Labels can be used to organize models and Bentos in `Yatai <https://github.com/vtsserving/Yatai>`_,
+Labels can be used to organize models and Vtss in `Yatai <https://github.com/vtsserving/Yatai>`_,
 which also allow users to add or modify labels at any time.
 
 .. code-block:: yaml
@@ -815,7 +815,7 @@ Here's a basic Docker options configuration:
 .. note::
 
    VtsServing leverage `BuildKit <https://github.com/moby/buildkit>`_, a cache-efficient builder toolkit,
-   to containerize Bentos 🍱.
+   to containerize Vtss 🍱.
 
    BuildKit comes with `Docker 18.09 <https://docs.docker.com/develop/develop-images/build_enhancements/>`_. This means
    if you are using Docker via Docker Desktop, BuildKit will be available by default.

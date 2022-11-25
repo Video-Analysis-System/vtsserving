@@ -1,6 +1,6 @@
 #include "vtsserving/grpc/v1/service.pb.h"
 
-using vtsserving::grpc::v1::BentoService;
+using vtsserving::grpc::v1::VtsService;
 using vtsserving::grpc::v1::NDArray;
 using vtsserving::grpc::v1::Request;
 

@@ -22,11 +22,11 @@ from ..vts.vts import VTS_YAML_FILENAME
 from ..vts.vts import VTS_PROJECT_DIR_NAME
 from ..vts.vts import DEFAULT_VTS_BUILD_FILE
 from ..configuration import VTSSERVING_VERSION
-from ..vts.build_config import BentoBuildConfig
+from ..vts.build_config import VtsBuildConfig
 from ..configuration.containers import VtsServingContainer
 
 if TYPE_CHECKING:
-    from ..vts import BentoStore
+    from ..vts import VtsStore
     from .service import Service
 
 logger = logging.getLogger(__name__)
@@ -186,7 +186,7 @@ def import_service(
 @inject
 def load_vts(
     vts_tag: str,
-    vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
+    vts_store: "VtsStore" = Provide[VtsServingContainer.vts_store],
     standalone_load: bool = False,
 ) -> "Service":
     """Load a Service instance from a vts found in local vts store:
@@ -335,7 +335,7 @@ def load(
                     "r",
                     encoding="utf-8",
                 ) as f:
-                    build_config = BentoBuildConfig.from_yaml(f)
+                    build_config = VtsBuildConfig.from_yaml(f)
                 assert (
                     build_config.service
                 ), '"service" field in "vtsfile.yaml" is required for loading the service, e.g. "service: my_service.py:svc"'

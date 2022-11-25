@@ -31,8 +31,8 @@ kt_jvm_grpc_library(
 
 kt_jvm_binary(
     name = "client",
-    srcs = ["src/main/kotlin/com/client/BentoServiceClient.kt"],
-    main_class = "com.client.BentoServiceClient",
+    srcs = ["src/main/kotlin/com/client/VtsServiceClient.kt"],
+    main_class = "com.client.VtsServiceClient",
     deps = [
         ":service_kt_grpc_v1alpha1",
         ":service_kt_proto_v1alpha1",
@@ -68,8 +68,8 @@ kt_jvm_grpc_library(
 
 kt_jvm_binary(
     name = "client",
-    srcs = ["src/main/kotlin/com/client/BentoServiceClient.kt"],
-    main_class = "com.client.BentoServiceClient",
+    srcs = ["src/main/kotlin/com/client/VtsServiceClient.kt"],
+    main_class = "com.client.VtsServiceClient",
     deps = [
         ":service_kt_grpc",
         ":service_kt_proto",

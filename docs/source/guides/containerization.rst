@@ -344,7 +344,7 @@ To construct a custom :code:`Dockerfile` template, users have to provide an `ext
 As you can notice throughout this guides, we use a special function :code:`{{ super() }}`. This is a Jinja
 features that allow users to call content of `parent block <https://jinja.palletsprojects.com/en/3.1.x/templates/#super-blocks>`_. This 
 enables users to fully extend base templates provided by VtsServing to ensure that
-the result Bentos can be containerized.
+the result Vtss can be containerized.
 
 .. seealso::
 

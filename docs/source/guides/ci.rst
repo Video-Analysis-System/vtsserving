@@ -6,7 +6,7 @@ Training Pipeline Integration (CI/CD)
     Document how to build CI pipelines with VtsServing.
 
 Before a more detailed documentation is coming, check out the APIs for
-:doc:`/concepts/vts`, :ref:`concepts/vts:Managing Bentos` and
+:doc:`/concepts/vts`, :ref:`concepts/vts:Managing Vtss` and
 :ref:`concepts/model:Managing Models`. They are essential to building a CI pipeline
 with VtsServing.
 

@@ -497,7 +497,7 @@ vtsserving_cattr.register_unstructure_hook(
 @attr.define(repr=False, eq=False, frozen=True)
 class ModelInfo:
 
-    # for backward compatibility in case new fields are added to BentoInfo.
+    # for backward compatibility in case new fields are added to VtsInfo.
     __forbid_extra_keys__ = False
     # omit field in yaml file if it is not provided by the user.
     __omit_if_default__ = True

@@ -73,7 +73,7 @@ Start vts generated image and check for GPU usages:
 
 
 .. tip::
-    In order to check for GPU usage, one can run ``nvidia-smi`` to check whether BentoService is using GPU. e.g
+    In order to check for GPU usage, one can run ``nvidia-smi`` to check whether VtsService is using GPU. e.g
 
     .. code:: bash
 

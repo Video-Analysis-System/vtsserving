@@ -21,7 +21,7 @@ def add_serve_command(cli: click.Group) -> None:
     @click.option(
         "--production",
         type=click.BOOL,
-        help="Run the BentoServer in production mode",
+        help="Run the VtsServer in production mode",
         is_flag=True,
         default=False,
         show_default=True,
@@ -139,7 +139,7 @@ def add_serve_command(cli: click.Group) -> None:
         ssl_ca_certs: str | None,
         ssl_ciphers: str | None,
     ) -> None:
-        """Start a HTTP BentoServer from a given 🍱
+        """Start a HTTP VtsServer from a given 🍱
 
         \b
         VTS is the serving target, it can be the import as:
@@ -229,7 +229,7 @@ def add_serve_command(cli: click.Group) -> None:
     @click.option(
         "--production",
         type=click.BOOL,
-        help="Run the BentoServer in production mode",
+        help="Run the VtsServer in production mode",
         is_flag=True,
         default=False,
         show_default=True,
@@ -341,7 +341,7 @@ def add_serve_command(cli: click.Group) -> None:
         enable_channelz: bool,
         max_concurrent_streams: int | None,
     ):
-        """Start a gRPC BentoServer from a given 🍱
+        """Start a gRPC VtsServer from a given 🍱
 
         \b
         VTS is the serving target, it can be the import as:

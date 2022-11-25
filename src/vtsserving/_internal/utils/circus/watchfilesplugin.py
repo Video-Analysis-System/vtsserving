@@ -16,8 +16,8 @@ from ...log import configure_server_logging
 from ...context import component_context
 from ...utils.pkg import source_locations
 from ...configuration import is_pypi_installed_vtsserving
-from ...vts.build_config import BentoPathSpec
-from ...vts.build_config import BentoBuildConfig
+from ...vts.build_config import VtsPathSpec
+from ...vts.build_config import VtsBuildConfig
 
 if TYPE_CHECKING:
     from watchfiles.main import FileChange
@@ -73,14 +73,14 @@ class ServiceReloaderPlugin(CircusPlugin):
         vtsfile_path = os.path.join(self.working_dir, "vtsfile.yaml")
         if not os.path.exists(vtsfile_path):
             # if vtsfile.yaml is not found, by default we will assume to watch all files
-            # via BentoBuildConfig.with_defaults()
-            build_config = BentoBuildConfig(service="").with_defaults()
+            # via VtsBuildConfig.with_defaults()
+            build_config = VtsBuildConfig(service="").with_defaults()
         else:
             # respect vtsfile.yaml include and exclude
             with open(vtsfile_path, "r") as f:
-                build_config = BentoBuildConfig.from_yaml(f).with_defaults()
+                build_config = VtsBuildConfig.from_yaml(f).with_defaults()
 
-        self.vts_spec = BentoPathSpec(build_config.include, build_config.exclude)  # type: ignore (unfinished converter type)
+        self.vts_spec = VtsPathSpec(build_config.include, build_config.exclude)  # type: ignore (unfinished converter type)
 
     def should_include(self, path: str | Path) -> bool:
         # returns True if file with 'path' has changed, else False

@@ -35,7 +35,7 @@ if TYPE_CHECKING:
     from vtsserving.grpc.types import RpcMethodHandler
     from vtsserving.grpc.types import AsyncHandlerMethod
     from vtsserving.grpc.types import HandlerCallDetails
-    from vtsserving.grpc.types import BentoServicerContext
+    from vtsserving.grpc.types import VtsServicerContext
 else:
     _, services = import_generated_stubs()
     grpc, aio = import_grpc()
@@ -58,7 +58,7 @@ class AppendMetadataInterceptor(aio.ServerInterceptor):
         def wrapper(behaviour: AsyncHandlerMethod[Response]):
             @functools.wraps(behaviour)
             async def new_behaviour(
-                request: Request, context: BentoServicerContext
+                request: Request, context: VtsServicerContext
             ) -> Response | t.Awaitable[Response]:
                 context.set_trailing_metadata(aio.Metadata.from_tuple(self._metadata))
                 return await behaviour(request, context)
@@ -134,7 +134,7 @@ async def test_access_log_exception(caplog: LogCaptureFixture, simple_service: S
             AccessLogServerInterceptor(),
         ]
     ) as (server, host_url):
-        services.add_BentoServiceServicer_to_server(
+        services.add_VtsServiceServicer_to_server(
             create_vts_servicer(simple_service), server
         )
         try:
@@ -148,7 +148,7 @@ async def test_access_log_exception(caplog: LogCaptureFixture, simple_service: S
                         assert_code=grpc.StatusCode.INTERNAL,
                     )
             assert (
-                "(scheme=http,path=/vtsserving.grpc.v1.BentoService/Call,type=application/grpc,size=17) (http_status=500,grpc_status=13,type=application/grpc,size=0)"
+                "(scheme=http,path=/vtsserving.grpc.v1.VtsService/Call,type=application/grpc,size=17) (http_status=500,grpc_status=13,type=application/grpc,size=0)"
                 in caplog.text
             )
         finally:

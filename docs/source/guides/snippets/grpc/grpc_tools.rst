@@ -2,7 +2,7 @@
 
    .. tab-item:: gRPCurl
 
-      We will use :github:`fullstorydev/grpcurl` to send a CURL-like request to the gRPC BentoServer.
+      We will use :github:`fullstorydev/grpcurl` to send a CURL-like request to the gRPC VtsServer.
 
       Note that we will use `docker <https://docs.docker.com/get-docker/>`_ to run the ``grpcurl`` command.
 
@@ -15,7 +15,7 @@
 
                » docker run -i --rm \
                               fullstorydev/grpcurl -d @ -plaintext host.docker.internal:3000 \
-                              vtsserving.grpc.v1.BentoService/Call <<EOT
+                              vtsserving.grpc.v1.VtsService/Call <<EOT
                {
                   "apiName": "classify",
                   "ndarray": {
@@ -33,7 +33,7 @@
                » docker run -i --rm \
                               --network=host \
                               fullstorydev/grpcurl -d @ -plaintext 0.0.0.0:3000 \
-                              vtsserving.grpc.v1.BentoService/Call <<EOT
+                              vtsserving.grpc.v1.VtsService/Call <<EOT
                {
                   "apiName": "classify",
                   "ndarray": {

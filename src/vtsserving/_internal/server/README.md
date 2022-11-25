@@ -1,7 +1,7 @@
-# Developing BentoServer 
+# Developing VtsServer 
 
 
-## Run BentoServer with sample Service
+## Run VtsServer with sample Service
 Create a sample Servie in `hello.py`:
 
 ```python
@@ -23,12 +23,12 @@ async def classify(input_json):
 app = svc.asgi_app
 ```
 
-Run the BentoServer:
+Run the VtsServer:
 ```bash
 vtsserving serve hello:svc --reload
 ```
 
-Alternatively, run the BentoServer directly with `uvicorn`:
+Alternatively, run the VtsServer directly with `uvicorn`:
 ```bash
 uvicorn hello:app --reload
 ```

@@ -27,7 +27,7 @@ from ._internal.configuration.containers import VtsServingContainer
 
 if TYPE_CHECKING:
     from ._internal.tag import Tag
-    from ._internal.vts import BentoStore
+    from ._internal.vts import VtsStore
     from ._internal.types import PathType
     from ._internal.container.base import ArgType
 
@@ -361,7 +361,7 @@ def build(
     backend: str = "docker",
     image_tag: tuple[str] | None = None,
     features: t.Sequence[str] | None = None,
-    _vts_store: BentoStore = Provide[VtsServingContainer.vts_store],
+    _vts_store: VtsStore = Provide[VtsServingContainer.vts_store],
     **kwargs: t.Any,
 ):
     """
@@ -417,7 +417,7 @@ def get_containerfile(
     output_path: str | None = None,
     enable_buildkit: bool = True,
     features: t.Sequence[str] | None = None,
-    _vts_store: BentoStore = Provide[VtsServingContainer.vts_store],
+    _vts_store: VtsStore = Provide[VtsServingContainer.vts_store],
 ):
     """
     Returns the generated container file for a given Vts.

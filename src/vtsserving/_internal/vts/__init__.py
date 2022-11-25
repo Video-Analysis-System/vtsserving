@@ -1,4 +1,4 @@
 from .vts import Vts
-from .vts import BentoStore
+from .vts import VtsStore
 
-__all__ = ["Vts", "BentoStore"]
+__all__ = ["Vts", "VtsStore"]

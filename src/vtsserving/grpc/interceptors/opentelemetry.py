@@ -37,7 +37,7 @@ if TYPE_CHECKING:
     from vtsserving.grpc.types import RpcMethodHandler
     from vtsserving.grpc.types import AsyncHandlerMethod
     from vtsserving.grpc.types import HandlerCallDetails
-    from vtsserving.grpc.types import BentoServicerContext
+    from vtsserving.grpc.types import VtsServicerContext
 else:
     grpc, aio = import_grpc()
 
@@ -45,7 +45,7 @@ logger = logging.getLogger(__name__)
 
 
 class _OpenTelemetryServicerContext(aio.ServicerContext["Request", "Response"]):
-    def __init__(self, servicer_context: BentoServicerContext, active_span: Span):
+    def __init__(self, servicer_context: VtsServicerContext, active_span: Span):
         self._servicer_context = servicer_context
         self._active_span = active_span
         self._code = grpc.StatusCode.OK
@@ -159,7 +159,7 @@ class AsyncOpenTelemetryServerInterceptor(aio.ServerInterceptor):
 
     @asynccontextmanager
     async def set_remote_context(
-        self, servicer_context: BentoServicerContext
+        self, servicer_context: VtsServicerContext
     ) -> t.AsyncGenerator[None, None]:
         metadata = servicer_context.invocation_metadata()
         if metadata:
@@ -176,7 +176,7 @@ class AsyncOpenTelemetryServerInterceptor(aio.ServerInterceptor):
     def start_span(
         self,
         method_name: str,
-        context: BentoServicerContext,
+        context: VtsServicerContext,
         set_status_on_exception: bool = False,
     ) -> t.ContextManager[Span]:
         attributes: dict[str, str | bytes] = {
@@ -253,7 +253,7 @@ class AsyncOpenTelemetryServerInterceptor(aio.ServerInterceptor):
         def wrapper(behaviour: AsyncHandlerMethod[Response]):
             @functools.wraps(behaviour)
             async def new_behaviour(
-                request: Request, context: BentoServicerContext
+                request: Request, context: VtsServicerContext
             ) -> Response | t.Awaitable[Response]:
 
                 async with self.set_remote_context(context):

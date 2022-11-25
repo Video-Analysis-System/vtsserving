@@ -23,7 +23,7 @@ async def test_success_invocation_custom_servicer(host: str) -> None:
         health = await t.cast(
             t.Awaitable[pb_health.HealthCheckResponse],
             HealthCheck(
-                pb_health.HealthCheckRequest(service="vtsserving.grpc.v1.BentoService")
+                pb_health.HealthCheckRequest(service="vtsserving.grpc.v1.VtsService")
             ),
         )
         assert health.status == pb_health.HealthCheckResponse.SERVING  # type: ignore ( no generated enum types)

@@ -469,26 +469,26 @@ class NDArray(google.protobuf.message.Message):
 
 global___NDArray = NDArray
 
-class BentoService(google.protobuf.service.Service, metaclass=abc.ABCMeta):
-    """a gRPC BentoServer."""
+class VtsService(google.protobuf.service.Service, metaclass=abc.ABCMeta):
+    """a gRPC VtsServer."""
 
     DESCRIPTOR: google.protobuf.descriptor.ServiceDescriptor
     @abc.abstractmethod
     def Call(
-        inst: BentoService,
+        inst: VtsService,
         rpc_controller: google.protobuf.service.RpcController,
         request: global___Request,
         callback: collections.abc.Callable[[global___Response], None] | None,
     ) -> concurrent.futures.Future[global___Response]:
         """Call handles methodcaller of given API entrypoint."""
 
-class BentoService_Stub(BentoService):
-    """a gRPC BentoServer."""
+class VtsService_Stub(VtsService):
+    """a gRPC VtsServer."""
 
     def __init__(self, rpc_channel: google.protobuf.service.RpcChannel) -> None: ...
     DESCRIPTOR: google.protobuf.descriptor.ServiceDescriptor
     def Call(
-        inst: BentoService_Stub,
+        inst: VtsService_Stub,
         rpc_controller: google.protobuf.service.RpcController,
         request: global___Request,
         callback: collections.abc.Callable[[global___Response], None] | None = ...,

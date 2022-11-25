@@ -20,7 +20,7 @@ if TYPE_CHECKING:
     from vtsserving.exceptions import VtsServingException
     from vtsserving.grpc.types import ProtoField
     from vtsserving.grpc.types import RpcMethodHandler
-    from vtsserving.grpc.types import BentoServicerContext
+    from vtsserving.grpc.types import VtsServicerContext
     from vtsserving._internal.io_descriptors import IODescriptor
 
 else:
@@ -140,7 +140,7 @@ def wrap_rpc_handler(
     wrapper: t.Callable[
         ...,
         t.Callable[
-            [pb.Request, BentoServicerContext],
+            [pb.Request, VtsServicerContext],
             t.Coroutine[t.Any, t.Any, pb.Response | t.Awaitable[pb.Response]],
         ],
     ],

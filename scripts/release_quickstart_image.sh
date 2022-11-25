@@ -22,7 +22,7 @@ RUN pip install -U pip "vtsserving[grpc]==${VTSSERVING_VERSION}" && pip install 
 
 # For jupyter notebook UI
 EXPOSE 8888
-# For accessing BentoServer
+# For accessing VtsServer
 EXPOSE 3000
 EXPOSE 3001
 

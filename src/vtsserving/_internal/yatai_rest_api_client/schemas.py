@@ -108,19 +108,19 @@ class ClusterSchema(ResourceSchema):
 
 
 @attr.define
-class CreateBentoRepositorySchema:
+class CreateVtsRepositorySchema:
     name: str
     description: str
 
 
-class BentoImageBuildStatus(Enum):
+class VtsImageBuildStatus(Enum):
     PENDING = "pending"
     BUILDING = "building"
     SUCCESS = "success"
     FAILED = "failed"
 
 
-class BentoUploadStatus(Enum):
+class VtsUploadStatus(Enum):
     PENDING = "pending"
     BUILDING = "uploading"
     SUCCESS = "success"
@@ -128,7 +128,7 @@ class BentoUploadStatus(Enum):
 
 
 @attr.define
-class BentoApiSchema:
+class VtsApiSchema:
     route: str
     doc: str
     input: str
@@ -136,28 +136,28 @@ class BentoApiSchema:
 
 
 @attr.define
-class BentoRunnerResourceSchema:
+class VtsRunnerResourceSchema:
     cpu: t.Optional[t.Any]
     nvidia_gpu: t.Optional[t.Any]
     custom_resources: t.Optional[t.Any]
 
 
 @attr.define
-class BentoRunnerSchema:
+class VtsRunnerSchema:
     name: str
     runnable_type: t.Optional[str]
     models: t.Optional[t.List[str]]
-    resource_config: t.Optional[BentoRunnerResourceSchema]
+    resource_config: t.Optional[VtsRunnerResourceSchema]
 
 
 @attr.define
-class BentoManifestSchema:
+class VtsManifestSchema:
     service: str
     vtsserving_version: str
     size_bytes: int
-    apis: t.Dict[str, BentoApiSchema] = attr.field(factory=dict)
+    apis: t.Dict[str, VtsApiSchema] = attr.field(factory=dict)
     models: t.List[str] = attr.field(factory=list)
-    runners: t.Optional[t.List[BentoRunnerSchema]] = attr.field(factory=list)
+    runners: t.Optional[t.List[VtsRunnerSchema]] = attr.field(factory=list)
 
 
 if TYPE_CHECKING:
@@ -167,15 +167,15 @@ else:
 
 
 @attr.define
-class BentoSchema(ResourceSchema):
+class VtsSchema(ResourceSchema):
     description: str
     version: str
-    image_build_status: BentoImageBuildStatus
-    upload_status: BentoUploadStatus
+    image_build_status: VtsImageBuildStatus
+    upload_status: VtsUploadStatus
     upload_finished_reason: str
     presigned_upload_url: str
     presigned_download_url: str
-    manifest: BentoManifestSchema
+    manifest: VtsManifestSchema
 
     transmission_strategy: t.Optional[TransmissionStrategy] = attr.field(default=None)
     upload_id: t.Optional[str] = attr.field(default=None)
@@ -186,23 +186,23 @@ class BentoSchema(ResourceSchema):
 
 
 @attr.define
-class BentoRepositorySchema(ResourceSchema):
+class VtsRepositorySchema(ResourceSchema):
     description: str
-    latest_vts: t.Optional[BentoSchema]
+    latest_vts: t.Optional[VtsSchema]
 
 
 @attr.define
-class CreateBentoSchema:
+class CreateVtsSchema:
     description: str
     version: str
-    manifest: BentoManifestSchema
+    manifest: VtsManifestSchema
     build_at: datetime = attr.field(factory=datetime.now)
     labels: t.List[LabelItemSchema] = attr.field(factory=list)
 
 
 @attr.define
-class UpdateBentoSchema:
-    manifest: t.Optional[BentoManifestSchema] = attr.field(default=None)
+class UpdateVtsSchema:
+    manifest: t.Optional[VtsManifestSchema] = attr.field(default=None)
     labels: t.Optional[t.List[LabelItemSchema]] = attr.field(default=None)
 
 
@@ -225,8 +225,8 @@ class CompleteMultipartUploadSchema:
 
 
 @attr.define
-class FinishUploadBentoSchema:
-    status: t.Optional[BentoUploadStatus]
+class FinishUploadVtsSchema:
+    status: t.Optional[VtsUploadStatus]
     reason: t.Optional[str]
 
 

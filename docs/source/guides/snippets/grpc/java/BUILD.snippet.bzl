@@ -45,7 +45,7 @@ java_library(
 
 java_binary(
     name = "client_java",
-    main_class = "com.client.BentoServiceClient",
+    main_class = "com.client.VtsServiceClient",
     runtime_deps = [
         ":java_library",
     ],

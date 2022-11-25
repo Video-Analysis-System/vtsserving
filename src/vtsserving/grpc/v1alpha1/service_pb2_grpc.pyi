@@ -6,8 +6,8 @@ import abc
 import vtsserving.grpc.v1alpha1.service_pb2
 import grpc
 
-class BentoServiceStub:
-    """a gRPC BentoServer."""
+class VtsServiceStub:
+    """a gRPC VtsServer."""
 
     def __init__(self, channel: grpc.Channel) -> None: ...
     Call: grpc.UnaryUnaryMultiCallable[
@@ -16,8 +16,8 @@ class BentoServiceStub:
     ]
     """Call handles methodcaller of given API entrypoint."""
 
-class BentoServiceServicer(metaclass=abc.ABCMeta):
-    """a gRPC BentoServer."""
+class VtsServiceServicer(metaclass=abc.ABCMeta):
+    """a gRPC VtsServer."""
 
     @abc.abstractmethod
     def Call(
@@ -27,4 +27,4 @@ class BentoServiceServicer(metaclass=abc.ABCMeta):
     ) -> vtsserving.grpc.v1alpha1.service_pb2.Response:
         """Call handles methodcaller of given API entrypoint."""
 
-def add_BentoServiceServicer_to_server(servicer: BentoServiceServicer, server: grpc.Server) -> None: ...
+def add_VtsServiceServicer_to_server(servicer: VtsServiceServicer, server: grpc.Server) -> None: ...

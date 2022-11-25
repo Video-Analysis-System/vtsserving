@@ -233,7 +233,7 @@ def test_custom_pipeline():
         "Top MLOps Serving frameworks — 2021 https://link.medium.com/5Elq6Aw52ib #mlops #TritonInferenceServer #opensource #nvidia #machincelearning  #serving #tensorflow #PyTorch #Bodywork #VtsServing #KFServing #kubeflow #Cortex #Seldon #Sagify #Syndicai",
         "#MLFlow provides components for experimentation management, ML project management. #VtsServing only focuses on serving and deploying trained models",
         "2000 and beyond #OpenSource #vtsserving",
-        "Model Serving Made Easy https://github.com/vtsserving/VtsServing ⭐ 1.1K #Python #Bentoml #VtsServing #Modelserving #Modeldeployment #Modelmanagement #Mlplatform #Mlinfrastructure #Ml #Ai #Machinelearning #Awssagemaker #Awslambda #Azureml #Mlops #Aiops #Machinelearningoperations #Turn",
+        "Model Serving Made Easy https://github.com/vtsserving/VtsServing ⭐ 1.1K #Python #Vtsml #VtsServing #Modelserving #Modeldeployment #Modelmanagement #Mlplatform #Mlinfrastructure #Ml #Ai #Machinelearning #Awssagemaker #Awslambda #Azureml #Mlops #Aiops #Machinelearningoperations #Turn",
     ]
 
     try:

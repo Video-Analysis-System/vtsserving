@@ -7,7 +7,7 @@ This example showcases how one can create a custom Runner directly without savin
 to model store for frameworks that provide buil-tin trained models. See [our documentation][#custom-runner] on Runners.
 
 This example will also demonstrate how one can create custom metrics to monitor the model's performance.
-We will provide two Prometheus configs to use for either HTTP or gRPC BentoServer for demonstration.
+We will provide two Prometheus configs to use for either HTTP or gRPC VtsServer for demonstration.
 
 ### Requirements
 
@@ -74,7 +74,7 @@ curl -X POST -H "content-type: application/text" --data "VtsServing is great" ht
 <td>
 
 ```bash
-grpcurl -d @ -plaintext 0.0.0.0:3000 vtsserving.grpc.v1.BentoService/Call <<EOM
+grpcurl -d @ -plaintext 0.0.0.0:3000 vtsserving.grpc.v1.VtsService/Call <<EOM
 {
   "apiName": "classify",
   "text": "VtsServing is great"

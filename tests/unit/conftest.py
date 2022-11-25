@@ -43,7 +43,7 @@ def reload_directory(
     └── train.py
     """
     from vtsserving._internal.utils import vtsserving_cattr
-    from vtsserving._internal.vts.build_config import BentoBuildConfig
+    from vtsserving._internal.vts.build_config import VtsBuildConfig
 
     root = tmp_path_factory.mktemp("reload_directory")
     # create a models directory
@@ -64,7 +64,7 @@ def reload_directory(
     for f in root_file:
         p = root.joinpath(f)
         p.touch()
-    build_config = BentoBuildConfig(
+    build_config = VtsBuildConfig(
         service="service.py:svc",
         description="A mock service",
         exclude=["*.rs"],

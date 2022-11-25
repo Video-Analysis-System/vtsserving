@@ -852,8 +852,8 @@ _NDARRAY.fields_by_name['uint32_values']._options = None
 _NDARRAY.fields_by_name['uint64_values']._options = None
 
 _VTSSERVICE = _descriptor.ServiceDescriptor(
-  name='BentoService',
-  full_name='vtsserving.grpc.v1.BentoService',
+  name='VtsService',
+  full_name='vtsserving.grpc.v1.VtsService',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
@@ -863,7 +863,7 @@ _VTSSERVICE = _descriptor.ServiceDescriptor(
   methods=[
   _descriptor.MethodDescriptor(
     name='Call',
-    full_name='vtsserving.grpc.v1.BentoService.Call',
+    full_name='vtsserving.grpc.v1.VtsService.Call',
     index=0,
     containing_service=None,
     input_type=_REQUEST,
@@ -874,14 +874,14 @@ _VTSSERVICE = _descriptor.ServiceDescriptor(
 ])
 _sym_db.RegisterServiceDescriptor(_VTSSERVICE)
 
-DESCRIPTOR.services_by_name['BentoService'] = _VTSSERVICE
+DESCRIPTOR.services_by_name['VtsService'] = _VTSSERVICE
 
-BentoService = service_reflection.GeneratedServiceType('BentoService', (_service.Service,), dict(
+VtsService = service_reflection.GeneratedServiceType('VtsService', (_service.Service,), dict(
   DESCRIPTOR = _VTSSERVICE,
   __module__ = 'vtsserving.grpc.v1.service_pb2'
   ))
 
-BentoService_Stub = service_reflection.GeneratedServiceStubType('BentoService_Stub', (BentoService,), dict(
+VtsService_Stub = service_reflection.GeneratedServiceStubType('VtsService_Stub', (VtsService,), dict(
   DESCRIPTOR = _VTSSERVICE,
   __module__ = 'vtsserving.grpc.v1.service_pb2'
   ))

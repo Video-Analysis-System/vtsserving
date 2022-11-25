@@ -8,8 +8,8 @@ Securing Endpoint Access
 Server Side Authentication
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To enable authentication for a given BentoServer endpoint, An authentication middleware can be added to :code:`vtsserving.Service`'s via :code:`add_asgi_middleware` API. This API supports mounting
-any ASGI middleware to the BentoServer endpoints. And many of the middlewares built by
+To enable authentication for a given VtsServer endpoint, An authentication middleware can be added to :code:`vtsserving.Service`'s via :code:`add_asgi_middleware` API. This API supports mounting
+any ASGI middleware to the VtsServer endpoints. And many of the middlewares built by
 the Python community, provides authentication or security functionality.
 
 For example, you may apply HTTPS redirect and set trusted host URLs this way:
@@ -59,7 +59,7 @@ Service Mesh
 ^^^^^^^^^^^^
 
 For Kubernetes users looking for advanced authentication, access control, and routing
-policies, we recommend you to deploy Bentos with `Yatai <https://github.com/vtsserving/Yatai>`_
+policies, we recommend you to deploy Vtss with `Yatai <https://github.com/vtsserving/Yatai>`_
 and use Yatai's `Istio <https://istio.io/>`_ integration.
 
 

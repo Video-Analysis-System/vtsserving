@@ -145,7 +145,7 @@ Package.resolved
 .gradle
 
 # PHP generated stubs
-**/*/php/Bentoml
+**/*/php/Vtsml
 **/*/php/GPBMetadata
 composer.lock
 vendor

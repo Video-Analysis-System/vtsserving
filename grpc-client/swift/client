@@ -26,4 +26,4 @@ fi
 
 popd >/dev/null
 
-swift run BentoServiceClient
+swift run VtsServiceClient

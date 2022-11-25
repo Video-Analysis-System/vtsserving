@@ -198,7 +198,7 @@ Push and Pull with Yatai
 
 `Yatai <https://github.com/vtsserving/Yatai>`_ provides a centralized Model repository
 that comes with flexible APIs and Web UI for managing all models (and
-:doc:`Bentos </concepts/vts>`) created by your team. It can be configured to store
+:doc:`Vtss </concepts/vts>`) created by your team. It can be configured to store
 model files on cloud blob storage such as AWS S3, MinIO or GCS.
 
 Once your team have Yatai setup, you can use the :code:`vtsserving models push` and
@@ -304,7 +304,7 @@ Using Model Runner
 ------------------
 
 The way to run model inference in the context of a :code:`vtsserving.Service`, is via a
-Runner. The Runner abstraction gives BentoServer more flexibility in terms of how to
+Runner. The Runner abstraction gives VtsServer more flexibility in terms of how to
 schedule the inference computation, how to dynamically batch inference calls and better
 take advantage of all hardware resource available.
 

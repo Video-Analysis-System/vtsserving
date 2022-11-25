@@ -15,7 +15,7 @@
 #include "vtsserving/grpc/v1/service.grpc.pb.h"
 #include "vtsserving/grpc/v1/service.pb.h"
 
-using vtsserving::grpc::v1::BentoService;
+using vtsserving::grpc::v1::VtsService;
 using vtsserving::grpc::v1::NDArray;
 using vtsserving::grpc::v1::Request;
 using vtsserving::grpc::v1::Response;
@@ -25,7 +25,7 @@ using grpc::ClientContext;
 using grpc::Status;
 
 int main(int argc, char **argv) {
-    auto stubs = BentoService::NewStub(grpc::CreateChannel(
+    auto stubs = VtsService::NewStub(grpc::CreateChannel(
         "localhost:3000", grpc::InsecureChannelCredentials()));
     std::vector<float> data = {3.5, 2.4, 7.8, 5.1};
     std::vector<int> shape = {1, 4};

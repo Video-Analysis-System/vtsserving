@@ -187,7 +187,7 @@ vtsserving serve pytorch_mnist_demo:latest --production
 
 The Vts directory contains all code, files, models and configs required for running this service.
 VtsServing standarlizes this file structure which enables serving runtimes and deployment tools to be
-built on top of it. By default, Bentos are managed under the `~/vtsserving/vtss` directory:
+built on top of it. By default, Vtss are managed under the `~/vtsserving/vtss` directory:
 
 ```
 > cd ~/vtsserving/vtss/pytorch_mnist_demo && cd $(cat latest)

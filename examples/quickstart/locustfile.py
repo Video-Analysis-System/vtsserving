@@ -53,7 +53,7 @@ class GrpcUser(User):
 
     def on_start(self):
         self.channel = grpc.insecure_channel(self.host)
-        self.stub = services.BentoServiceStub(self.channel)
+        self.stub = services.VtsServiceStub(self.channel)
 
 
 class IrisGrpcUser(GrpcUser):

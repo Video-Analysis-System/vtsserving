@@ -1,11 +1,11 @@
 package com.client
 
-import com.vtsserving.grpc.v1.BentoServiceGrpc
+import com.vtsserving.grpc.v1.VtsServiceGrpc
 import com.vtsserving.grpc.v1.NDArray
 import com.vtsserving.grpc.v1.Request
 import io.grpc.ManagedChannelBuilder
 
-class BentoServiceClient {
+class VtsServiceClient {
   companion object {
     @JvmStatic
     fun main(args: Array<String>) {
@@ -15,7 +15,7 @@ class BentoServiceClient {
 
       val channel = ManagedChannelBuilder.forAddress("localhost", 3000).usePlaintext().build()
 
-      val client = BentoServiceGrpc.newBlockingStub(channel)
+      val client = VtsServiceGrpc.newBlockingStub(channel)
 
       val ndarray = NDArray.newBuilder().addAllShape(shape).addAllFloatValues(data).build()
       val req = Request.newBuilder().setApiName(apiName).setNdarray(ndarray).build()

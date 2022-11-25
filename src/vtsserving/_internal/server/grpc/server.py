@@ -191,7 +191,7 @@ class Server(aio._server.Server):
         # Running on_startup callback.
         await self.servicer.startup()
         # register vts servicer
-        services.add_BentoServiceServicer_to_server(self.servicer.vts_servicer, self)
+        services.add_VtsServiceServicer_to_server(self.servicer.vts_servicer, self)
         services_health.add_HealthServicer_to_server(
             self.servicer.health_servicer, self
         )

@@ -45,14 +45,14 @@ dependencies {
     api("io.grpc:grpc-kotlin-stub:${rootProject.ext["grpcKotlinVersion"]}")
 }
 
-tasks.register<JavaExec>("BentoServiceClient") {
+tasks.register<JavaExec>("VtsServiceClient") {
     dependsOn("classes")
     classpath = sourceSets["main"].runtimeClasspath
-    mainClass.set("com.client.BentoServiceClientKt")
+    mainClass.set("com.client.VtsServiceClientKt")
 }
 
 val vtsServiceClientStartScripts = tasks.register<CreateStartScripts>("vtsServiceClientStartScripts") {
-    mainClass.set("com.client.BentoServiceClientKt")
+    mainClass.set("com.client.VtsServiceClientKt")
     applicationName = "vts-service-client"
     outputDir = tasks.named<CreateStartScripts>("startScripts").get().outputDir
     classpath = tasks.named<CreateStartScripts>("startScripts").get().classpath

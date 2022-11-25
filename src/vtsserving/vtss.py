@@ -16,11 +16,11 @@ from .exceptions import VtsServingException
 from ._internal.tag import Tag
 from ._internal.vts import Vts
 from ._internal.utils import resolve_user_filepath
-from ._internal.vts.build_config import BentoBuildConfig
+from ._internal.vts.build_config import VtsBuildConfig
 from ._internal.configuration.containers import VtsServingContainer
 
 if TYPE_CHECKING:
-    from ._internal.vts import BentoStore
+    from ._internal.vts import VtsStore
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +53,7 @@ __all__ = [
 @inject
 def list(  # pylint: disable=redefined-builtin
     tag: t.Optional[t.Union[Tag, str]] = None,
-    _vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
+    _vts_store: "VtsStore" = Provide[VtsServingContainer.vts_store],
 ) -> "t.List[Vts]":
     return _vts_store.list(tag)
 
@@ -62,7 +62,7 @@ def list(  # pylint: disable=redefined-builtin
 def get(
     tag: t.Union[Tag, str],
     *,
-    _vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
+    _vts_store: "VtsStore" = Provide[VtsServingContainer.vts_store],
 ) -> Vts:
     return _vts_store.get(tag)
 
@@ -71,7 +71,7 @@ def get(
 def delete(
     tag: t.Union[Tag, str],
     *,
-    _vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
+    _vts_store: "VtsStore" = Provide[VtsServingContainer.vts_store],
 ):
     _vts_store.delete(tag)
 
@@ -86,7 +86,7 @@ def import_vts(
     passwd: t.Optional[str] = None,
     params: t.Optional[t.Dict[str, str]] = None,
     subpath: t.Optional[str] = None,
-    _vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
+    _vts_store: "VtsStore" = Provide[VtsServingContainer.vts_store],
 ) -> Vts:
     """
     Import a vts.
@@ -160,7 +160,7 @@ def export_vts(
     passwd: t.Optional[str] = None,
     params: t.Optional[t.Dict[str, str]] = None,
     subpath: t.Optional[str] = None,
-    _vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
+    _vts_store: "VtsStore" = Provide[VtsServingContainer.vts_store],
 ) -> str:
     """
     Export a vts.
@@ -218,7 +218,7 @@ def export_vts(
         params: (expert) a map of parameters to be passed to the FS used for export, e.g. :code:`{'proxy': 'myproxy.net'}`
             for setting a proxy for FTP
         subpath: (expert) the path inside the FS that the vts should be exported to
-        _vts_store: save Vts created to this BentoStore
+        _vts_store: save Vts created to this VtsStore
 
     Returns:
         str: A representation of the path that the Vts was exported to. If it was exported to the local filesystem,
@@ -241,7 +241,7 @@ def push(
     tag: t.Union[Tag, str],
     *,
     force: bool = False,
-    _vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
+    _vts_store: "VtsStore" = Provide[VtsServingContainer.vts_store],
 ):
     """Push Vts to a yatai server."""
     from vtsserving._internal.yatai_client import yatai_client
@@ -257,7 +257,7 @@ def pull(
     tag: t.Union[Tag, str],
     *,
     force: bool = False,
-    _vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
+    _vts_store: "VtsStore" = Provide[VtsServingContainer.vts_store],
 ):
     from vtsserving._internal.yatai_client import yatai_client
 
@@ -277,7 +277,7 @@ def build(
     conda: t.Optional[t.Dict[str, t.Any]] = None,
     version: t.Optional[str] = None,
     build_ctx: t.Optional[str] = None,
-    _vts_store: BentoStore = Provide[VtsServingContainer.vts_store],
+    _vts_store: VtsStore = Provide[VtsServingContainer.vts_store],
 ) -> "Vts":
     """
     User-facing API for building a Vts. The available build options are identical to the keys of a
@@ -302,10 +302,10 @@ def build(
             :class:`vtsserving._internal.vts.build_config.CondaOptions`
         version: Override the default auto generated version str
         build_ctx: Build context directory, when used as
-        _vts_store: save Vts created to this BentoStore
+        _vts_store: save Vts created to this VtsStore
 
     Returns:
-        Vts: a Vts instance representing the materialized Vts saved in BentoStore
+        Vts: a Vts instance representing the materialized Vts saved in VtsStore
 
     Example:
 
@@ -342,7 +342,7 @@ def build(
            )
 
     """
-    build_config = BentoBuildConfig(
+    build_config = VtsBuildConfig(
         service=service,
         description=description,
         labels=labels,
@@ -369,7 +369,7 @@ def build_vtsfile(
     *,
     version: t.Optional[str] = None,
     build_ctx: t.Optional[str] = None,
-    _vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
+    _vts_store: "VtsStore" = Provide[VtsServingContainer.vts_store],
 ) -> "Vts":
     """
     Build a Vts base on options specified in a vtsfile.yaml file.
@@ -381,7 +381,7 @@ def build_vtsfile(
         vtsfile: The file path to build config yaml file
         version: Override the default auto generated version str
         build_ctx: Build context directory, when used as
-        _vts_store: save Vts created to this BentoStore
+        _vts_store: save Vts created to this VtsStore
     """
     try:
         vtsfile = resolve_user_filepath(vtsfile, build_ctx)
@@ -389,7 +389,7 @@ def build_vtsfile(
         raise InvalidArgument(f'vtsfile "{vtsfile}" not found')
 
     with open(vtsfile, "r", encoding="utf-8") as f:
-        build_config = BentoBuildConfig.from_yaml(f)
+        build_config = VtsBuildConfig.from_yaml(f)
 
     vts = Vts.create(
         build_config=build_config,

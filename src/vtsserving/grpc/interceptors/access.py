@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from vtsserving.grpc.types import RpcMethodHandler
     from vtsserving.grpc.types import AsyncHandlerMethod
     from vtsserving.grpc.types import HandlerCallDetails
-    from vtsserving.grpc.types import BentoServicerContext
+    from vtsserving.grpc.types import VtsServicerContext
 else:
     pb, _ = import_generated_stubs()
     grpc, aio = import_grpc()
@@ -49,7 +49,7 @@ class AccessLogServerInterceptor(aio.ServerInterceptor):
         def wrapper(behaviour: AsyncHandlerMethod[Response]):
             @functools.wraps(behaviour)
             async def new_behaviour(
-                request: Request, context: BentoServicerContext
+                request: Request, context: VtsServicerContext
             ) -> Response | t.Awaitable[Response]:
                 content_type = GRPC_CONTENT_TYPE
                 trailing_metadata: MetadataType | None = context.trailing_metadata()

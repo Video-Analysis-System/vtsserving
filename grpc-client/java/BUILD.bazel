@@ -35,7 +35,7 @@ java_library(
 
 java_binary(
     name = "client_v1alpha1",
-    main_class = "com.client.BentoServiceClient",
+    main_class = "com.client.VtsServiceClient",
     runtime_deps = [
         ":grpc_library_v1alpha1",
         "@io_grpc_grpc_java//netty",
@@ -74,7 +74,7 @@ java_library(
 
 java_binary(
     name = "client",
-    main_class = "com.client.BentoServiceClient",
+    main_class = "com.client.VtsServiceClient",
     runtime_deps = [
         ":grpc-library",
         "@io_grpc_grpc_java//netty",

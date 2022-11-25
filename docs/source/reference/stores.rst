@@ -3,7 +3,7 @@ Vts Store APIs
 ================
 
 
-Managing Bentos
+Managing Vtss
 ---------------
 
 .. autofunction:: vtsserving.list

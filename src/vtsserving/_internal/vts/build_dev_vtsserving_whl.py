@@ -18,7 +18,7 @@ def build_vtsserving_editable_wheel(
     target_path: str, *, _internal_stubs_version: str = "v1"
 ) -> None:
     """
-    This is for VtsServing developers to create Bentos that contains the local vtsserving
+    This is for VtsServing developers to create Vtss that contains the local vtsserving
     build based on their development branch. To enable this behavior, one must
     set envar :code:`VTSSERVING_BUNDLE_LOCAL_BUILD=True` before building a Vts.
     """

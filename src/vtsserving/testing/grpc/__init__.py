@@ -99,7 +99,7 @@ async def async_client_call(
     res: pb.Response | None = None
     try:
         Call = channel.unary_unary(
-            f"/vtsserving.grpc.{_internal_stubs_version}.BentoService/Call",
+            f"/vtsserving.grpc.{_internal_stubs_version}.VtsService/Call",
             request_serializer=pb.Request.SerializeToString,
             response_deserializer=pb.Response.FromString,
         )

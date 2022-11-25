@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 PROMETHEUS_MESSAGE = (
-    'Prometheus metrics for %s BentoServer from "%s" can be accessed at %s.'
+    'Prometheus metrics for %s VtsServer from "%s" can be accessed at %s.'
 )
 
 SCRIPT_RUNNER = "vtsserving_cli.worker.runner"
@@ -267,7 +267,7 @@ def serve_http_development(
     with track_serve(svc):
         arbiter.start(
             cb=lambda _: logger.info(  # type: ignore
-                'Starting development %s BentoServer from "%s" listening on %s://%s:%d (Press CTRL+C to quit)',
+                'Starting development %s VtsServer from "%s" listening on %s://%s:%d (Press CTRL+C to quit)',
                 scheme.upper(),
                 vts_identifier,
                 scheme,
@@ -460,7 +460,7 @@ def serve_http_production(
         try:
             arbiter.start(
                 cb=lambda _: logger.info(  # type: ignore
-                    'Starting production %s BentoServer from "%s" listening on %s://%s:%d (Press CTRL+C to quit)',
+                    'Starting production %s VtsServer from "%s" listening on %s://%s:%d (Press CTRL+C to quit)',
                     scheme.upper(),
                     vts_identifier,
                     scheme,
@@ -642,7 +642,7 @@ def serve_grpc_development(
     with track_serve(svc, serve_kind="grpc"):
         arbiter.start(
             cb=lambda _: logger.info(  # type: ignore
-                'Starting development %s BentoServer from "%s" listening on %s://%s:%d (Press CTRL+C to quit)',
+                'Starting development %s VtsServer from "%s" listening on %s://%s:%d (Press CTRL+C to quit)',
                 "gRPC",
                 vts_identifier,
                 scheme,
@@ -697,7 +697,7 @@ def serve_grpc_production(
         )
     if psutil.MACOS or psutil.FREEBSD:
         logger.warning(
-            "Due to gRPC implementation on exposing SO_REUSEPORT, '--production' behaviour on %s is not correct. We recommend to containerize BentoServer as a Linux container instead.",
+            "Due to gRPC implementation on exposing SO_REUSEPORT, '--production' behaviour on %s is not correct. We recommend to containerize VtsServer as a Linux container instead.",
             "MacOS" if psutil.MACOS else "FreeBSD",
         )
 
@@ -882,7 +882,7 @@ def serve_grpc_production(
         try:
             arbiter.start(
                 cb=lambda _: logger.info(  # type: ignore
-                    'Starting production %s BentoServer from "%s" listening on %s://%s:%d (Press CTRL+C to quit)',
+                    'Starting production %s VtsServer from "%s" listening on %s://%s:%d (Press CTRL+C to quit)',
                     "gRPC",
                     vts_identifier,
                     scheme,

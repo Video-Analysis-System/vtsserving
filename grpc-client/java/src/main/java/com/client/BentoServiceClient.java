@@ -11,17 +11,17 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.vtsserving.grpc.v1.BentoServiceGrpc;
-import com.vtsserving.grpc.v1.BentoServiceGrpc.BentoServiceBlockingStub;
-import com.vtsserving.grpc.v1.BentoServiceGrpc.BentoServiceStub;
+import com.vtsserving.grpc.v1.VtsServiceGrpc;
+import com.vtsserving.grpc.v1.VtsServiceGrpc.VtsServiceBlockingStub;
+import com.vtsserving.grpc.v1.VtsServiceGrpc.VtsServiceStub;
 import com.vtsserving.grpc.v1.NDArray;
 import com.vtsserving.grpc.v1.Request;
 import com.vtsserving.grpc.v1.RequestOrBuilder;
 import com.vtsserving.grpc.v1.Response;
 
-public class BentoServiceClient {
+public class VtsServiceClient {
 
-  private static final Logger logger = Logger.getLogger(BentoServiceClient.class.getName());
+  private static final Logger logger = Logger.getLogger(VtsServiceClient.class.getName());
 
   static Iterable<Integer> convert(int[] array) {
     return () -> Arrays.stream(array).iterator();
@@ -38,7 +38,7 @@ public class BentoServiceClient {
 
     ManagedChannel channel = ManagedChannelBuilder.forTarget(target).usePlaintext().build();
     try {
-      BentoServiceBlockingStub blockingStub = BentoServiceGrpc.newBlockingStub(channel);
+      VtsServiceBlockingStub blockingStub = VtsServiceGrpc.newBlockingStub(channel);
 
       NDArray.Builder builder = NDArray.newBuilder().addAllShape(shapeIterable).addAllFloatValues(arrayIterable).setDtype(NDArray.DType.DTYPE_FLOAT);
 

@@ -162,7 +162,7 @@ class CliEvent(EventMeta):
 
 
 @attr.define
-class BentoBuildEvent(CliEvent):
+class VtsBuildEvent(CliEvent):
     vts_creation_timestamp: t.Optional[datetime] = attr.field(default=None)
     vts_size_in_kb: float = attr.field(default=0)
     model_size_in_kb: float = attr.field(default=0)
@@ -220,7 +220,7 @@ class ServeUpdateEvent(EventMeta):
 ALL_EVENT_TYPES = t.Union[
     CliEvent,
     ModelSaveEvent,
-    BentoBuildEvent,
+    VtsBuildEvent,
     ServeInitEvent,
     ServeUpdateEvent,
     EventMeta,

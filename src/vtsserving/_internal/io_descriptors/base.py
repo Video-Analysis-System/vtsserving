@@ -68,7 +68,7 @@ class IODescriptor(ABC, _OpenAPIMeta, t.Generic[IOType]):
     """
     IODescriptor describes the input/output data format of an InferenceAPI defined
     in a :code:`vtsserving.Service`. This is an abstract base class for extending new HTTP
-    endpoint IO descriptor types in BentoServer.
+    endpoint IO descriptor types in VtsServer.
     """
 
     __slots__ = ("_args", "_kwargs", "_proto_fields", "_mime_type", "descriptor_id")

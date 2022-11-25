@@ -79,13 +79,13 @@ Next, we will transform the service definition module and breakdown each section
 
             import pandas as pd
 
-            from vtsserving import env, artifacts, api, BentoService
+            from vtsserving import env, artifacts, api, VtsService
             from vtsserving.adapters import DataframeInput
             from vtsserving.frameworks.sklearn import SklearnModelArtifact
 
             @env(infer_pip_packages=True)
             @artifacts([SklearnModelArtifact('model')])
-            class IrisClassifier(BentoService):
+            class IrisClassifier(VtsService):
                 @api(input=DataframeInput(), batch=True)
                 def predict(self, df: pd.DataFrame):
                     return self.artifacts.model.predict(df)
@@ -149,8 +149,8 @@ Artifacts
 
 VtsServing version 0.13.1 provides the :code:`@artifacts`
 `decorator API <https://docs.vtsserving.org/en/0.13-lts/concepts.html#packaging-model-artifacts>`_ for users to specify
-the trained models required by a BentoService. The specified artifacts are automatically serialized and deserialized
-when saving and loading a BentoService.
+the trained models required by a VtsService. The specified artifacts are automatically serialized and deserialized
+when saving and loading a VtsService.
 
 .. code-block:: python
 
@@ -217,7 +217,7 @@ mode, API servers and runners will run in separate processes to maximize server 
     > vtsserving serve --production
 
 
-Building Bentos
+Building Vtss
 ---------------
 
 Next, we will build the service into a vts and save it to the vts store. Building a service to vts is to persist
@@ -287,7 +287,7 @@ You can view and manage all saved models via the :code:`vtsserving` CLI command.
     iris_classifier:6otbsmxzq6lwbgxi  16.48 KiB   2022-07-01 16:03:44  ~/vtsserving/vtss/iris_classifier/6otbsmxzq6lwbgxi
 
 
-Serve Bentos
+Serve Vtss
 ~~~~~~~~~~~~
 
 We can serve the saved vtss by running the :code:`vtsserving serve` command. We can add :code:`--production` to have
@@ -297,14 +297,14 @@ API servers and runners will run in separate processes to maximize server utilit
 
     > vtsserving serve iris_classifier:latest --production
 
-    2022-07-06T02:02:30-0700 [INFO] [] Starting production BentoServer from "." running on http://0.0.0.0:3000 (Press CTRL+C to quit)
+    2022-07-06T02:02:30-0700 [INFO] [] Starting production VtsServer from "." running on http://0.0.0.0:3000 (Press CTRL+C to quit)
     2022-07-06T02:02:31-0700 [INFO] [runner-iris_clf:1] Setting up worker: set CPU thread count to 10
 
 Generate Docker Images
 ----------------------
 
 Similar to version 0.13.1, we can generate docker images from vtss using the :code:`vtsserving containerize` command in VtsServing
-version 1.0.0, see :ref:`Containerize Bentos <concepts/deploy:Containerize Bentos>` to learn more.
+version 1.0.0, see :ref:`Containerize Vtss <concepts/deploy:Containerize Vtss>` to learn more.
 
 .. code-block:: bash
 
@@ -320,7 +320,7 @@ You can run the docker image to start the service.
     > docker run -p 3000:3000 iris_classifier:6otbsmxzq6lwbgxi
 
     2022-07-01T21:57:47+0000 [INFO] [] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
-    2022-07-01T21:57:47+0000 [INFO] [] Starting production BentoServer from "/home/vtsserving/vts" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
+    2022-07-01T21:57:47+0000 [INFO] [] Starting production VtsServer from "/home/vtsserving/vts" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
     2022-07-01T21:57:48+0000 [INFO] [api_server:1] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
     2022-07-01T21:57:48+0000 [INFO] [runner-iris_clf:1] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
     2022-07-01T21:57:48+0000 [INFO] [api_server:2] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
@@ -328,15 +328,15 @@ You can run the docker image to start the service.
     2022-07-01T21:57:48+0000 [INFO] [api_server:3] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
     2022-07-01T21:57:48+0000 [INFO] [api_server:4] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
 
-Deploy Bentos
+Deploy Vtss
 -------------
 
-VtsServing version 0.13.1 supports deployment of Bentos to various cloud providers, including Google Cloud Platform, Amazon Web Services,
-and Microsoft Azure. To better support the devops workflows, cloud deployment of Bentos has been moved to a separate project,
+VtsServing version 0.13.1 supports deployment of Vtss to various cloud providers, including Google Cloud Platform, Amazon Web Services,
+and Microsoft Azure. To better support the devops workflows, cloud deployment of Vtss has been moved to a separate project,
 `🚀 vtsctl <https://github.com/vtsserving/vtsctl>`_, to better focus on the deployment tasks. :code:`vtsctl` is a CLI tool for
 deploying your machine-learning models to any cloud platforms.
 
-Manage Bentos
+Manage Vtss
 -------------
 
 VtsServing version 0.13.1 relies on Yatai as a vts registry to help teams collaborate and manage vtss. In addition to vts management,

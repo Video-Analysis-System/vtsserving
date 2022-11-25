@@ -36,7 +36,7 @@ if TYPE_CHECKING:
 
 from ..tag import Tag
 from ..vts import Vts
-from ..vts import BentoStore
+from ..vts import VtsStore
 from ..utils import calc_dir_size
 from ..models import Model
 from ..models import copy_model
@@ -45,22 +45,22 @@ from ...exceptions import NotFound
 from ...exceptions import VtsServingException
 from ..configuration.containers import VtsServingContainer
 from ..yatai_rest_api_client.config import get_current_yatai_rest_api_client
-from ..yatai_rest_api_client.schemas import BentoApiSchema
+from ..yatai_rest_api_client.schemas import VtsApiSchema
 from ..yatai_rest_api_client.schemas import LabelItemSchema
-from ..yatai_rest_api_client.schemas import BentoRunnerSchema
-from ..yatai_rest_api_client.schemas import BentoUploadStatus
-from ..yatai_rest_api_client.schemas import CreateBentoSchema
+from ..yatai_rest_api_client.schemas import VtsRunnerSchema
+from ..yatai_rest_api_client.schemas import VtsUploadStatus
+from ..yatai_rest_api_client.schemas import CreateVtsSchema
 from ..yatai_rest_api_client.schemas import CreateModelSchema
 from ..yatai_rest_api_client.schemas import ModelUploadStatus
-from ..yatai_rest_api_client.schemas import UpdateBentoSchema
+from ..yatai_rest_api_client.schemas import UpdateVtsSchema
 from ..yatai_rest_api_client.schemas import CompletePartSchema
-from ..yatai_rest_api_client.schemas import BentoManifestSchema
+from ..yatai_rest_api_client.schemas import VtsManifestSchema
 from ..yatai_rest_api_client.schemas import ModelManifestSchema
 from ..yatai_rest_api_client.schemas import TransmissionStrategy
-from ..yatai_rest_api_client.schemas import FinishUploadBentoSchema
+from ..yatai_rest_api_client.schemas import FinishUploadVtsSchema
 from ..yatai_rest_api_client.schemas import FinishUploadModelSchema
-from ..yatai_rest_api_client.schemas import BentoRunnerResourceSchema
-from ..yatai_rest_api_client.schemas import CreateBentoRepositorySchema
+from ..yatai_rest_api_client.schemas import VtsRunnerResourceSchema
+from ..yatai_rest_api_client.schemas import CreateVtsRepositorySchema
 from ..yatai_rest_api_client.schemas import CreateModelRepositorySchema
 from ..yatai_rest_api_client.schemas import CompleteMultipartUploadSchema
 from ..yatai_rest_api_client.schemas import PreSignMultipartUploadUrlSchema
@@ -236,7 +236,7 @@ class YataiClient:
         if not vts_repository:
             with self.spin(text=f'Vts repository "{name}" not found, creating now..'):
                 vts_repository = yatai_rest_client.create_vts_repository(
-                    req=CreateBentoRepositorySchema(name=name, description="")
+                    req=CreateVtsRepositorySchema(name=name, description="")
                 )
         with self.spin(text=f'Try fetching Vts "{vts.tag}" from Yatai..'):
             remote_vts = yatai_rest_client.get_vts(
@@ -245,7 +245,7 @@ class YataiClient:
         if (
             not force
             and remote_vts
-            and remote_vts.upload_status == BentoUploadStatus.SUCCESS
+            and remote_vts.upload_status == VtsUploadStatus.SUCCESS
         ):
             self.log_progress.add_task(
                 f'[bold blue]Push failed: Vts "{vts.tag}" already exists in Yatai'
@@ -254,14 +254,14 @@ class YataiClient:
         labels: t.List[LabelItemSchema] = [
             LabelItemSchema(key=key, value=value) for key, value in info.labels.items()
         ]
-        apis: t.Dict[str, BentoApiSchema] = {}
+        apis: t.Dict[str, VtsApiSchema] = {}
         models = [str(m.tag) for m in info.models]
         runners = [
-            BentoRunnerSchema(
+            VtsRunnerSchema(
                 name=r.name,
                 runnable_type=r.runnable_type,
                 models=r.models,
-                resource_config=BentoRunnerResourceSchema(
+                resource_config=VtsRunnerResourceSchema(
                     cpu=r.resource_config.get("cpu"),
                     nvidia_gpu=r.resource_config.get("nvidia.com/gpu"),
                     custom_resources=r.resource_config.get("custom_resources"),
@@ -271,7 +271,7 @@ class YataiClient:
             )
             for r in info.runners
         ]
-        manifest = BentoManifestSchema(
+        manifest = VtsManifestSchema(
             service=info.service,
             vtsserving_version=info.vtsserving_version,
             apis=apis,
@@ -283,7 +283,7 @@ class YataiClient:
             with self.spin(text=f'Registering Vts "{vts.tag}" with Yatai..'):
                 remote_vts = yatai_rest_client.create_vts(
                     vts_repository_name=vts_repository.name,
-                    req=CreateBentoSchema(
+                    req=CreateVtsSchema(
                         description="",
                         version=version,
                         build_at=info.creation_time,
@@ -296,7 +296,7 @@ class YataiClient:
                 remote_vts = yatai_rest_client.update_vts(
                     vts_repository_name=vts_repository.name,
                     version=version,
-                    req=UpdateBentoSchema(
+                    req=UpdateVtsSchema(
                         manifest=manifest,
                         labels=labels,
                     ),
@@ -377,16 +377,16 @@ class YataiClient:
                     f'[bold green]Successfully pushed vts "{vts.tag}"'
                 )
                 return
-            finish_req = FinishUploadBentoSchema(
-                status=BentoUploadStatus.SUCCESS,
+            finish_req = FinishUploadVtsSchema(
+                status=VtsUploadStatus.SUCCESS,
                 reason="",
             )
             try:
                 if presigned_upload_url is not None:
                     resp = requests.put(presigned_upload_url, data=wrapped_file)
                     if resp.status_code != 200:
-                        finish_req = FinishUploadBentoSchema(
-                            status=BentoUploadStatus.FAILED,
+                        finish_req = FinishUploadVtsSchema(
+                            status=VtsUploadStatus.FAILED,
                             reason=resp.text,
                         )
                 else:
@@ -408,7 +408,7 @@ class YataiClient:
 
                     def chunk_upload(
                         upload_id: str, chunk_number: int
-                    ) -> FinishUploadBentoSchema | t.Tuple[str, int]:
+                    ) -> FinishUploadVtsSchema | t.Tuple[str, int]:
                         with self.spin(
                             text=f'({chunk_number}/{chunks_count}) Presign multipart upload url of Vts "{vts.tag}"...'
                         ):
@@ -449,14 +449,14 @@ class YataiClient:
                                     remote_vts.presigned_upload_url, data=wrapped_file
                                 )
                                 if resp.status_code != 200:
-                                    return FinishUploadBentoSchema(
-                                        status=BentoUploadStatus.FAILED,
+                                    return FinishUploadVtsSchema(
+                                        status=VtsUploadStatus.FAILED,
                                         reason=resp.text,
                                     )
                                 return resp.headers["ETag"], chunk_number
 
                     futures_: t.List[
-                        Future[FinishUploadBentoSchema | t.Tuple[str, int]]
+                        Future[FinishUploadVtsSchema | t.Tuple[str, int]]
                     ] = []
 
                     with ThreadPoolExecutor(
@@ -474,7 +474,7 @@ class YataiClient:
 
                     for future in futures_:
                         result = future.result()
-                        if isinstance(result, FinishUploadBentoSchema):
+                        if isinstance(result, FinishUploadVtsSchema):
                             finish_req = result
                             break
                         else:
@@ -501,11 +501,11 @@ class YataiClient:
                         )
 
             except Exception as e:  # pylint: disable=broad-except
-                finish_req = FinishUploadBentoSchema(
-                    status=BentoUploadStatus.FAILED,
+                finish_req = FinishUploadVtsSchema(
+                    status=VtsUploadStatus.FAILED,
                     reason=str(e),
                 )
-            if finish_req.status is BentoUploadStatus.FAILED:
+            if finish_req.status is VtsUploadStatus.FAILED:
                 self.log_progress.add_task(
                     f'[bold red]Failed to upload Vts "{vts.tag}"'
                 )
@@ -515,7 +515,7 @@ class YataiClient:
                     version=version,
                     req=finish_req,
                 )
-            if finish_req.status != BentoUploadStatus.SUCCESS:
+            if finish_req.status != VtsUploadStatus.SUCCESS:
                 self.log_progress.add_task(
                     f'[bold red]Failed pushing Vts "{vts.tag}": {finish_req.reason}'
                 )
@@ -530,7 +530,7 @@ class YataiClient:
         tag: t.Union[str, Tag],
         *,
         force: bool = False,
-        vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
+        vts_store: "VtsStore" = Provide[VtsServingContainer.vts_store],
     ) -> "Vts":
         with Live(self.progress_group):
             download_task_id = self.transmission_progress.add_task(
@@ -550,7 +550,7 @@ class YataiClient:
         download_task_id: TaskID,
         *,
         force: bool = False,
-        vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
+        vts_store: "VtsStore" = Provide[VtsServingContainer.vts_store],
     ) -> "Vts":
         try:
             vts = vts_store.get(tag)

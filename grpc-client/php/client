@@ -26,4 +26,4 @@ echo "Running PHP client"
 
 COMPILED_PATH=${COMPILED_GRPC_SO:-grpc}
 
-php -d extension="${COMPILED_PATH}" -d max_execution_time=300 BentoServiceClient.php
+php -d extension="${COMPILED_PATH}" -d max_execution_time=300 VtsServiceClient.php

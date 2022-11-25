@@ -53,7 +53,7 @@ sourceSets {
 }
 
 task vtsServiceClient(type: CreateStartScripts) {
-    mainClass = 'com.client.BentoServiceClient'
+    mainClass = 'com.client.VtsServiceClient'
     applicationName = 'vts-service-client'
     outputDir = new File(project.buildDir, 'tmp/scripts/' + name)
     classpath = startScripts.classpath

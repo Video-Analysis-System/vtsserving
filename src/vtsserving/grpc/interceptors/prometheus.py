@@ -29,7 +29,7 @@ if TYPE_CHECKING:
     from vtsserving.grpc.types import RpcMethodHandler
     from vtsserving.grpc.types import AsyncHandlerMethod
     from vtsserving.grpc.types import HandlerCallDetails
-    from vtsserving.grpc.types import BentoServicerContext
+    from vtsserving.grpc.types import VtsServicerContext
     from vtsserving._internal.server.metrics.prometheus import PrometheusClient
 else:
     pb, _ = import_generated_stubs()
@@ -106,7 +106,7 @@ class PrometheusServerInterceptor(aio.ServerInterceptor):
         def wrapper(behaviour: AsyncHandlerMethod[Response]):
             @functools.wraps(behaviour)
             async def new_behaviour(
-                request: Request, context: BentoServicerContext
+                request: Request, context: VtsServicerContext
             ) -> Response | t.Awaitable[Response]:
                 if not isinstance(request, pb.Request):
                     return await behaviour(request, context)

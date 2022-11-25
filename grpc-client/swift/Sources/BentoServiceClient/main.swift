@@ -1,8 +1,8 @@
 #if compiler(>=5.6)
 #if BAZEL_BUILD
-import swift_BentoServiceModel // internal targets
+import swift_VtsServiceModel // internal targets
 #else
-import BentoServiceModel
+import VtsServiceModel
 #endif
 import Foundation
 import GRPC
@@ -37,16 +37,16 @@ defer {
 }
 
 // Provide the connection to the generated client.
-let stubs = Bentoml_Grpc_v1_BentoServiceNIOClient(channel: channel)
+let stubs = Vtsml_Grpc_v1_VtsServiceNIOClient(channel: channel)
 
 // Form the request with the NDArray, if one was provided.
-let ndarray: Bentoml_Grpc_v1_NDArray = .with {
+let ndarray: Vtsml_Grpc_v1_NDArray = .with {
   $0.shape = shape
   $0.floatValues = data
-  $0.dtype = Bentoml_Grpc_v1_NDArray.DType.float
+  $0.dtype = Vtsml_Grpc_v1_NDArray.DType.float
 }
 
-let request: Bentoml_Grpc_v1_Request = .with {
+let request: Vtsml_Grpc_v1_Request = .with {
   $0.apiName = apiName
   $0.ndarray = ndarray
 }

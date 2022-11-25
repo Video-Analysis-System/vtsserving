@@ -88,8 +88,8 @@ def log_exception(request: Request, exc_info: t.Any) -> None:
 
 class HTTPAppFactory(BaseAppFactory):
     """
-    HTTPApp creates a REST API server based on APIs defined with a BentoService
-    via BentoService#apis. Each InferenceAPI will become one
+    HTTPApp creates a REST API server based on APIs defined with a VtsService
+    via VtsService#apis. Each InferenceAPI will become one
     endpoint exposed on the REST server, and the RequestHandler defined on each
     InferenceAPI object will be used to handle Request object before feeding the
     request data into a Service API function
@@ -346,7 +346,7 @@ class HTTPAppFactory(BaseAppFactory):
                 status = e.error_code.value
                 if 400 <= status < 500 and status not in (401, 403):
                     response = JSONResponse(
-                        content="BentoService error handling API request: %s" % str(e),
+                        content="VtsService error handling API request: %s" % str(e),
                         status_code=status,
                     )
                 else:

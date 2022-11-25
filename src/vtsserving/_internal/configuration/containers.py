@@ -397,9 +397,9 @@ class _VtsServingContainerClass:
     @providers.SingletonFactory
     @staticmethod
     def vts_store(base_dir: str = Provide[vts_store_dir]):
-        from ..vts import BentoStore
+        from ..vts import VtsStore
 
-        return BentoStore(base_dir)
+        return VtsStore(base_dir)
 
     @providers.SingletonFactory
     @staticmethod

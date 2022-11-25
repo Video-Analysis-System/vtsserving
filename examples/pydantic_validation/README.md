@@ -40,7 +40,7 @@ Test sending request with wrong field name:
 ```bash
 $ curl -X POST -H "content-type: application/json" --data '{"sepal_len": 6.2, "sepal_width": 3.2, "petal_len": 5.2, "petal_width_typo": 2.2}' http://127.0.0.1:3000/classify
 
-"BentoService error handling API request: Invalid JSON input received: 2 validation errors for IrisFeatures
+"VtsService error handling API request: Invalid JSON input received: 2 validation errors for IrisFeatures
   petal_width
     field required (type=value_error.missing)
   petal_width_typo

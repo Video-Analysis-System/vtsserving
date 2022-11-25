@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from vtsserving.grpc.types import RpcMethodHandler
     from vtsserving.grpc.types import AsyncHandlerMethod
     from vtsserving.grpc.types import HandlerCallDetails
-    from vtsserving.grpc.types import BentoServicerContext
+    from vtsserving.grpc.types import VtsServicerContext
 
 
 @dataclasses.dataclass
@@ -42,7 +42,7 @@ class AsyncContextInterceptor(aio.ServerInterceptor):
         def wrapper(behaviour: AsyncHandlerMethod[Response]):
             @functools.wraps(behaviour)
             async def new_behaviour(
-                request: Request, context: BentoServicerContext
+                request: Request, context: VtsServicerContext
             ) -> Response | t.Awaitable[Response]:
                 self._record.update(
                     {f"{self.context.usage}:{self.context.accuracy_score}"}

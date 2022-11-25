@@ -5,8 +5,8 @@ import grpc
 from vtsserving.grpc.v1alpha1 import service_pb2 as vtsserving_dot_grpc_dot_v1alpha1_dot_service__pb2
 
 
-class BentoServiceStub(object):
-    """a gRPC BentoServer.
+class VtsServiceStub(object):
+    """a gRPC VtsServer.
     """
 
     def __init__(self, channel):
@@ -16,14 +16,14 @@ class BentoServiceStub(object):
             channel: A grpc.Channel.
         """
         self.Call = channel.unary_unary(
-                '/vtsserving.grpc.v1alpha1.BentoService/Call',
+                '/vtsserving.grpc.v1alpha1.VtsService/Call',
                 request_serializer=vtsserving_dot_grpc_dot_v1alpha1_dot_service__pb2.Request.SerializeToString,
                 response_deserializer=vtsserving_dot_grpc_dot_v1alpha1_dot_service__pb2.Response.FromString,
                 )
 
 
-class BentoServiceServicer(object):
-    """a gRPC BentoServer.
+class VtsServiceServicer(object):
+    """a gRPC VtsServer.
     """
 
     def Call(self, request, context):
@@ -34,7 +34,7 @@ class BentoServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
 
-def add_BentoServiceServicer_to_server(servicer, server):
+def add_VtsServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Call': grpc.unary_unary_rpc_method_handler(
                     servicer.Call,
@@ -43,13 +43,13 @@ def add_BentoServiceServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'vtsserving.grpc.v1alpha1.BentoService', rpc_method_handlers)
+            'vtsserving.grpc.v1alpha1.VtsService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class BentoService(object):
-    """a gRPC BentoServer.
+class VtsService(object):
+    """a gRPC VtsServer.
     """
 
     @staticmethod
@@ -63,7 +63,7 @@ class BentoService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/vtsserving.grpc.v1alpha1.BentoService/Call',
+        return grpc.experimental.unary_unary(request, target, '/vtsserving.grpc.v1alpha1.VtsService/Call',
             vtsserving_dot_grpc_dot_v1alpha1_dot_service__pb2.Request.SerializeToString,
             vtsserving_dot_grpc_dot_v1alpha1_dot_service__pb2.Response.FromString,
             options, channel_credentials,

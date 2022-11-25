@@ -73,7 +73,7 @@ __all__ = [
 
 logger = logging.getLogger(__name__)
 
-BATCH_HEADER = "Bentoml-Is-Batch-Request"
+BATCH_HEADER = "Vtsml-Is-Batch-Request"
 
 # For non latin1 characters: https://tools.ietf.org/html/rfc8187
 # Also https://github.com/benoitc/gunicorn/issues/1778

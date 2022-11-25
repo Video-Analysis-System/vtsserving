@@ -13,12 +13,12 @@ import pytest
 from vtsserving import Tag
 from vtsserving._internal.vts import Vts
 from vtsserving._internal.models import ModelStore
-from vtsserving._internal.vts.vts import BentoInfo
-from vtsserving._internal.vts.vts import BentoApiInfo
-from vtsserving._internal.vts.vts import BentoModelInfo
-from vtsserving._internal.vts.vts import BentoRunnerInfo
+from vtsserving._internal.vts.vts import VtsInfo
+from vtsserving._internal.vts.vts import VtsApiInfo
+from vtsserving._internal.vts.vts import VtsModelInfo
+from vtsserving._internal.vts.vts import VtsRunnerInfo
 from vtsserving._internal.configuration import VTSSERVING_VERSION
-from vtsserving._internal.vts.build_config import BentoBuildConfig
+from vtsserving._internal.vts.build_config import VtsBuildConfig
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -26,7 +26,7 @@ if TYPE_CHECKING:
 
 def test_vts_info(tmpdir: Path):
     start = datetime.now(timezone.utc)
-    vtsinfo_a = BentoInfo(tag=Tag("tag"), service="service")
+    vtsinfo_a = VtsInfo(tag=Tag("tag"), service="service")
     end = datetime.now(timezone.utc)
 
     assert vtsinfo_a.vtsserving_version == VTSSERVING_VERSION
@@ -37,32 +37,32 @@ def test_vts_info(tmpdir: Path):
     service = "testservice"
     labels = {"label": "stringvalue"}
     model_creation_time = datetime.now(timezone.utc)
-    model_a = BentoModelInfo(
+    model_a = VtsModelInfo(
         tag=Tag("model_a", "v1"),
         module="model_a_module",
         creation_time=model_creation_time,
     )
-    model_b = BentoModelInfo(
+    model_b = VtsModelInfo(
         tag=Tag("model_b", "v3"),
         module="model_b_module",
         creation_time=model_creation_time,
     )
     models = [model_a, model_b]
-    runner_a = BentoRunnerInfo(
+    runner_a = VtsRunnerInfo(
         name="runner_a",
         runnable_type="test_runnable_a",
         models=["runner_a_model"],
         resource_config={"cpu": 2},
     )
     runners = [runner_a]
-    api_predict = BentoApiInfo(
+    api_predict = VtsApiInfo(
         name="predict",
         input_type="NumpyNdarray",
         output_type="NumpyNdarray",
     )
     apis = [api_predict]
 
-    vtsinfo_b = BentoInfo(
+    vtsinfo_b = VtsInfo(
         tag=tag,
         service=service,
         labels=labels,
@@ -137,13 +137,13 @@ conda:
         )
 
     with open(vts_yaml_b_filename, encoding="utf-8") as vts_yaml_b:
-        vtsinfo_b_from_yaml = BentoInfo.from_yaml_file(vts_yaml_b)
+        vtsinfo_b_from_yaml = VtsInfo.from_yaml_file(vts_yaml_b)
 
         assert vtsinfo_b_from_yaml == vtsinfo_b
 
 
 def build_test_vts() -> Vts:
-    vts_cfg = BentoBuildConfig(
+    vts_cfg = VtsBuildConfig(
         "simplevts.py:svc",
         include=["*.py", "config.json", "somefile", "*dir*", ".vtsignore"],
         exclude=["*.storage", "/somefile", "/subdir2"],
@@ -180,7 +180,7 @@ def test_vts_export(tmpdir: "Path", model_store: "ModelStore"):
     # Vts build will change working dir to the build_context, this will reset it
     os.chdir(working_dir)
 
-    cfg = BentoBuildConfig("vtsa.py:svc")
+    cfg = VtsBuildConfig("vtsa.py:svc")
     vtsa = Vts.create(cfg, build_ctx="./vtsa")
     # Vts build will change working dir to the build_context, this will reset it
     os.chdir(working_dir)
@@ -189,7 +189,7 @@ def test_vts_export(tmpdir: "Path", model_store: "ModelStore"):
     # Vts build will change working dir to the build_context, this will reset it
     os.chdir(working_dir)
 
-    cfg = BentoBuildConfig("vtsb.py:svc")
+    cfg = VtsBuildConfig("vtsb.py:svc")
     vtsb = Vts.create(cfg, build_ctx="./vtsb")
 
     vts = testvts

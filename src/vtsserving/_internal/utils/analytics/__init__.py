@@ -1,6 +1,6 @@
 from .schemas import CliEvent
 from .schemas import ModelSaveEvent
-from .schemas import BentoBuildEvent
+from .schemas import VtsBuildEvent
 from .schemas import ServeUpdateEvent
 from .cli_events import cli_events_map
 from .usage_stats import track
@@ -17,7 +17,7 @@ __all__ = [
     "VTSSERVING_DO_NOT_TRACK",
     "CliEvent",
     "ModelSaveEvent",
-    "BentoBuildEvent",
+    "VtsBuildEvent",
     "ServeUpdateEvent",
     "cli_events_map",
 ]

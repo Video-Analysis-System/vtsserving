@@ -33,7 +33,7 @@ if TYPE_CHECKING:
     from vtsserving.grpc.types import Interceptors
     from vtsserving.grpc.types import AddServicerFn
     from vtsserving.grpc.types import ServicerClass
-    from vtsserving.grpc.types import BentoServicerContext
+    from vtsserving.grpc.types import VtsServicerContext
 
     from ...service.service import Service
 
@@ -111,19 +111,19 @@ class Servicer:
         return self.loaded
 
 
-def create_vts_servicer(service: Service) -> services.BentoServiceServicer:
+def create_vts_servicer(service: Service) -> services.VtsServiceServicer:
     """
-    This is the actual implementation of BentoServicer.
-    Main inference entrypoint will be invoked via /vtsserving.grpc.<version>.BentoService/Call
+    This is the actual implementation of VtsServicer.
+    Main inference entrypoint will be invoked via /vtsserving.grpc.<version>.VtsService/Call
     """
 
-    class BentoServiceImpl(services.BentoServiceServicer):
-        """An asyncio implementation of BentoService servicer."""
+    class VtsServiceImpl(services.VtsServiceServicer):
+        """An asyncio implementation of VtsService servicer."""
 
         async def Call(  # type: ignore (no async types) # pylint: disable=invalid-overridden-method
             self,
             request: pb.Request,
-            context: BentoServicerContext,
+            context: VtsServicerContext,
         ) -> pb.Response | None:
             if request.api_name not in service.apis:
                 raise InvalidArgument(
@@ -173,4 +173,4 @@ def create_vts_servicer(service: Service) -> services.BentoServiceServicer:
                 )
             return response
 
-    return BentoServiceImpl()
+    return VtsServiceImpl()

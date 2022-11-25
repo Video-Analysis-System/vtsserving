@@ -10,7 +10,7 @@ Python worker and scales independently.
 
 Runner allows :ref:`vtsserving.Service <reference/core:vtsserving.Service>` to parallelize
 multiple instances of a :ref:`vtsserving.Runnable <reference/core:vtsserving.Runnable>` class,
-each on its own Python worker. When a BentoServer is launched, a group of runner worker
+each on its own Python worker. When a VtsServer is launched, a group of runner worker
 processes will be created, and :code:`run` method calls made from the
 :code:`vtsserving.Service` code will be scheduled among those runner workers.
 
@@ -86,7 +86,7 @@ CPU multi-threading.
 
 Since NLTK library doesn't support utilizing GPU or multiple CPU cores natively, supported resources
 is specified as :code:`("cpu",)`, and ``SUPPORTS_CPU_MULTI_THREADING`` is set to False. This is the default configuration.
-This information is then used by the BentoServer scheduler to determine the worker pool size for this runner.
+This information is then used by the VtsServer scheduler to determine the worker pool size for this runner.
 
 The :code:`vtsserving.Runnable.method` decorator is used for creating
 :code:`RunnableMethod` - the decorated method will be exposed as the runner interface
@@ -433,19 +433,19 @@ Distributed Runner with Yatai
 architecture specifically designed for running large scale inference workloads on a
 Kubernetes cluster.
 
-While the standalone :code:`BentoServer` schedules Runner workers on their own Python
-processes, the :code:`BentoDeployment` created by Yatai, scales Runner workers in their
+While the standalone :code:`VtsServer` schedules Runner workers on their own Python
+processes, the :code:`VtsDeployment` created by Yatai, scales Runner workers in their
 own group of `Pods <https://kubernetes.io/docs/concepts/workloads/pods/>`_ and made it
 possible to set a different resource requirement for each Runner, and auto-scaling each
 Runner separately based on their workloads.
 
 
-Sample :code:`BentoDeployment` definition file for deploying in Kubernetes:
+Sample :code:`VtsDeployment` definition file for deploying in Kubernetes:
 
 .. code:: yaml
 
     apiVersion: yatai.vtsserving.org/v1beta1
-    kind: BentoDeployment
+    kind: VtsDeployment
     spec:
     vts_tag: 'fraud_detector:dpijemevl6nlhlg6'
     autoscaling:

@@ -6,19 +6,19 @@ from urllib.parse import urljoin
 import requests
 
 from .schemas import UserSchema
-from .schemas import BentoSchema
+from .schemas import VtsSchema
 from .schemas import ModelSchema
 from .schemas import schema_to_json
 from .schemas import schema_from_json
-from .schemas import CreateBentoSchema
+from .schemas import CreateVtsSchema
 from .schemas import CreateModelSchema
-from .schemas import UpdateBentoSchema
+from .schemas import UpdateVtsSchema
 from .schemas import OrganizationSchema
-from .schemas import BentoRepositorySchema
+from .schemas import VtsRepositorySchema
 from .schemas import ModelRepositorySchema
-from .schemas import FinishUploadBentoSchema
+from .schemas import FinishUploadVtsSchema
 from .schemas import FinishUploadModelSchema
-from .schemas import CreateBentoRepositorySchema
+from .schemas import CreateVtsRepositorySchema
 from .schemas import CreateModelRepositorySchema
 from .schemas import CompleteMultipartUploadSchema
 from .schemas import PreSignMultipartUploadUrlSchema
@@ -36,7 +36,7 @@ class YataiRESTApiClient:
             {
                 "X-YATAI-API-TOKEN": api_token,
                 "Content-Type": "application/json",
-                "X-Bentoml-Version": VTSSERVING_VERSION,
+                "X-Vtsml-Version": VTSSERVING_VERSION,
             }
         )
 
@@ -68,7 +68,7 @@ class YataiRESTApiClient:
 
     def get_vts_repository(
         self, vts_repository_name: str
-    ) -> Optional[BentoRepositorySchema]:
+    ) -> Optional[VtsRepositorySchema]:
         url = urljoin(
             self.endpoint, f"/api/v1/vts_repositories/{vts_repository_name}"
         )
@@ -76,19 +76,19 @@ class YataiRESTApiClient:
         if self._is_not_found(resp):
             return None
         self._check_resp(resp)
-        return schema_from_json(resp.text, BentoRepositorySchema)
+        return schema_from_json(resp.text, VtsRepositorySchema)
 
     def create_vts_repository(
-        self, req: CreateBentoRepositorySchema
-    ) -> BentoRepositorySchema:
+        self, req: CreateVtsRepositorySchema
+    ) -> VtsRepositorySchema:
         url = urljoin(self.endpoint, "/api/v1/vts_repositories")
         resp = self.session.post(url, data=schema_to_json(req))
         self._check_resp(resp)
-        return schema_from_json(resp.text, BentoRepositorySchema)
+        return schema_from_json(resp.text, VtsRepositorySchema)
 
     def get_vts(
         self, vts_repository_name: str, version: str
-    ) -> Optional[BentoSchema]:
+    ) -> Optional[VtsSchema]:
         url = urljoin(
             self.endpoint,
             f"/api/v1/vts_repositories/{vts_repository_name}/vtss/{version}",
@@ -97,111 +97,111 @@ class YataiRESTApiClient:
         if self._is_not_found(resp):
             return None
         self._check_resp(resp)
-        return schema_from_json(resp.text, BentoSchema)
+        return schema_from_json(resp.text, VtsSchema)
 
     def create_vts(
-        self, vts_repository_name: str, req: CreateBentoSchema
-    ) -> BentoSchema:
+        self, vts_repository_name: str, req: CreateVtsSchema
+    ) -> VtsSchema:
         url = urljoin(
             self.endpoint, f"/api/v1/vts_repositories/{vts_repository_name}/vtss"
         )
         resp = self.session.post(url, data=schema_to_json(req))
         self._check_resp(resp)
-        return schema_from_json(resp.text, BentoSchema)
+        return schema_from_json(resp.text, VtsSchema)
 
     def update_vts(
-        self, vts_repository_name: str, version: str, req: UpdateBentoSchema
-    ) -> BentoSchema:
+        self, vts_repository_name: str, version: str, req: UpdateVtsSchema
+    ) -> VtsSchema:
         url = urljoin(
             self.endpoint,
             f"/api/v1/vts_repositories/{vts_repository_name}/vtss/{version}",
         )
         resp = self.session.patch(url, data=schema_to_json(req))
         self._check_resp(resp)
-        return schema_from_json(resp.text, BentoSchema)
+        return schema_from_json(resp.text, VtsSchema)
 
     def presign_vts_upload_url(
         self, vts_repository_name: str, version: str
-    ) -> BentoSchema:
+    ) -> VtsSchema:
         url = urljoin(
             self.endpoint,
             f"/api/v1/vts_repositories/{vts_repository_name}/vtss/{version}/presign_upload_url",
         )
         resp = self.session.patch(url)
         self._check_resp(resp)
-        return schema_from_json(resp.text, BentoSchema)
+        return schema_from_json(resp.text, VtsSchema)
 
     def presign_vts_download_url(
         self, vts_repository_name: str, version: str
-    ) -> BentoSchema:
+    ) -> VtsSchema:
         url = urljoin(
             self.endpoint,
             f"/api/v1/vts_repositories/{vts_repository_name}/vtss/{version}/presign_download_url",
         )
         resp = self.session.patch(url)
         self._check_resp(resp)
-        return schema_from_json(resp.text, BentoSchema)
+        return schema_from_json(resp.text, VtsSchema)
 
     def start_vts_multipart_upload(
         self, vts_repository_name: str, version: str
-    ) -> BentoSchema:
+    ) -> VtsSchema:
         url = urljoin(
             self.endpoint,
             f"/api/v1/vts_repositories/{vts_repository_name}/vtss/{version}/start_multipart_upload",
         )
         resp = self.session.patch(url)
         self._check_resp(resp)
-        return schema_from_json(resp.text, BentoSchema)
+        return schema_from_json(resp.text, VtsSchema)
 
     def presign_vts_multipart_upload_url(
         self,
         vts_repository_name: str,
         version: str,
         req: PreSignMultipartUploadUrlSchema,
-    ) -> BentoSchema:
+    ) -> VtsSchema:
         url = urljoin(
             self.endpoint,
             f"/api/v1/vts_repositories/{vts_repository_name}/vtss/{version}/presign_multipart_upload_url",
         )
         resp = self.session.patch(url, data=schema_to_json(req))
         self._check_resp(resp)
-        return schema_from_json(resp.text, BentoSchema)
+        return schema_from_json(resp.text, VtsSchema)
 
     def complete_vts_multipart_upload(
         self,
         vts_repository_name: str,
         version: str,
         req: CompleteMultipartUploadSchema,
-    ) -> BentoSchema:
+    ) -> VtsSchema:
         url = urljoin(
             self.endpoint,
             f"/api/v1/vts_repositories/{vts_repository_name}/vtss/{version}/complete_multipart_upload",
         )
         resp = self.session.patch(url, data=schema_to_json(req))
         self._check_resp(resp)
-        return schema_from_json(resp.text, BentoSchema)
+        return schema_from_json(resp.text, VtsSchema)
 
     def start_upload_vts(
         self, vts_repository_name: str, version: str
-    ) -> BentoSchema:
+    ) -> VtsSchema:
         url = urljoin(
             self.endpoint,
             f"/api/v1/vts_repositories/{vts_repository_name}/vtss/{version}/start_upload",
         )
         resp = self.session.patch(url)
         self._check_resp(resp)
-        return schema_from_json(resp.text, BentoSchema)
+        return schema_from_json(resp.text, VtsSchema)
 
     def finish_upload_vts(
-        self, vts_repository_name: str, version: str, req: FinishUploadBentoSchema
-    ) -> BentoSchema:
+        self, vts_repository_name: str, version: str, req: FinishUploadVtsSchema
+    ) -> VtsSchema:
         url = urljoin(
             self.endpoint,
             f"/api/v1/vts_repositories/{vts_repository_name}/vtss/{version}/finish_upload",
         )
         resp = self.session.patch(url, data=schema_to_json(req))
         self._check_resp(resp)
-        return schema_from_json(resp.text, BentoSchema)
+        return schema_from_json(resp.text, VtsSchema)
 
     def upload_vts(
         self, vts_repository_name: str, version: str, data: io.BytesIO

@@ -117,7 +117,7 @@ async def test_metrics_interceptors(
         server,
         host_url,
     ):
-        services.add_BentoServiceServicer_to_server(
+        services.add_VtsServiceServicer_to_server(
             create_vts_servicer(simple_service), server
         )
         try:

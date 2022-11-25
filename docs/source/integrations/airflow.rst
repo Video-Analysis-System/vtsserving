@@ -30,7 +30,7 @@ A typical Airflow pipeline with a VtsServing serving & deployment workflow look 
 7. :ref:`Push saved model to Yatai registry (or export model to s3) <concepts/model:Managing Models>`
 8. :doc:`Build a new Vts using the newly trained model </concepts/vts>`
 9. Run integration test on the Vts to verify the entire serving pipeline
-10. :ref:`Push the Vts to a Yatai (or export vts to s3) <concepts/vts:Managing Bentos>`
+10. :ref:`Push the Vts to a Yatai (or export vts to s3) <concepts/vts:Managing Vtss>`
 11. (Optional) Trigger a redeployment via Yatai, vtsctl, or custom deploy script
 
 
@@ -95,13 +95,13 @@ Artifact Management
 ~~~~~~~~~~~~~~~~~~~
 
 Since Airflow is a distributed system, it is important to save the
-:doc:`Models </concepts/model>` and :doc:`Bentos </concepts/vts>` produced in your
+:doc:`Models </concepts/model>` and :doc:`Vtss </concepts/vts>` produced in your
 Airflow pipeline to a central location that is accessible by all the nodes in the
 Airflow cluster, and also by the workers in your production deployment environment.
 
 For a simple setup, we recommend using the Import/Export API for
 :ref:`Model <concepts/model:Managing Models>` and
-:ref:`Vts <concepts/vts:Managing Bentos>`. This allows you to export the model files
+:ref:`Vts <concepts/vts:Managing Vtss>`. This allows you to export the model files
 directly to cloud storage, and import them from the same location when needed. E.g:
 
 .. code-block:: python
@@ -130,7 +130,7 @@ Python API or CLI
 ~~~~~~~~~~~~~~~~~
 
 VtsServing provides both Python APIs and CLI commands for most workflow management tasks,
-such as building Vts, managing Models/Bentos, and deploying to production.
+such as building Vts, managing Models/Vtss, and deploying to production.
 
 When using the Python APIs, you can organize your code in a Airflow PythonOperator task.
 And for CLI commands, you can use the `BashOperator <https://airflow.apache.org/docs/apache-airflow/stable/howto/operator/bash.html>`_

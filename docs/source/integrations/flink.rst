@@ -85,7 +85,7 @@ For simplicity, the input stream and output sink are abstracted out using in-mem
                 (2, "Top MLOps Serving frameworks — 2021 https://link.medium.com/5Elq6Aw52ib #mlops #TritonInferenceServer #opensource #nvidia #machincelearning  #serving #tensorflow #PyTorch #Bodywork #VtsServing #KFServing #kubeflow #Cortex #Seldon #Sagify #Syndicai"),
                 (3, "#MLFlow provides components for experimentation management, ML project management. #VtsServing only focuses on serving and deploying trained models"),
                 (4, "2000 and beyond #OpenSource #vtsserving"),
-                (5, "Model Serving Made Easy https://github.com/vtsserving/VtsServing ⭐ 1.1K #Python #Bentoml #VtsServing #Modelserving #Modeldeployment #Modelmanagement #Mlplatform #Mlinfrastructure #Ml #Ai #Machinelearning #Awssagemaker #Awslambda #Azureml #Mlops #Aiops #Machinelearningoperations #Turn")
+                (5, "Model Serving Made Easy https://github.com/vtsserving/VtsServing ⭐ 1.1K #Python #Vtsml #VtsServing #Modelserving #Modeldeployment #Modelmanagement #Mlplatform #Mlinfrastructure #Ml #Ai #Machinelearning #Awssagemaker #Awslambda #Azureml #Mlops #Aiops #Machinelearningoperations #Turn")
             ]
         )
 

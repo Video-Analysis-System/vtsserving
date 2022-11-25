@@ -21,7 +21,7 @@ let packageDependencies: [Package.Dependency] = [
 
 // Defines dependencies for our targets.
 extension Target.Dependency {
-  static let vtsServiceModel: Self = .target(name: "BentoServiceModel")
+  static let vtsServiceModel: Self = .target(name: "VtsServiceModel")
 
   static let grpc: Self = .product(name: "GRPC", package: "grpc-swift")
   static let nio: Self = .product(name: "NIO", package: "swift-nio")
@@ -34,7 +34,7 @@ extension Target.Dependency {
 // Targets can depend on other targets in this package, and on products in packages this package depends on.
 extension Target {
   static let vtsServiceModel: Target = .target(
-    name: "BentoServiceModel",
+    name: "VtsServiceModel",
     dependencies: [
       .grpc,
       .nio,
@@ -44,14 +44,14 @@ extension Target {
   )
 
   static let vtsServiceClient: Target = .executableTarget(
-    name: "BentoServiceClient",
+    name: "VtsServiceClient",
     dependencies: [
       .grpc,
       .vtsServiceModel,
       .nioCore,
       .nioPosix,
     ],
-    path: "Sources/BentoServiceClient"
+    path: "Sources/VtsServiceClient"
   )
 }
 

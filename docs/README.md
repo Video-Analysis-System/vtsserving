@@ -234,9 +234,9 @@ its type, a new indentation for description of given field. Each argument should
 ```markdown
     Args:
         vts_name (:code:`str`):
-            :class:`~vtsserving.BentoService` identifier with name format :obj:`NAME:VERSION`.
-            ``NAME`` can be accessed via :meth:`~vtsserving.BentoService.name` and ``VERSION`` can
-            be accessed via :meth:`~vtsserving.BentoService.version`
+            :class:`~vtsserving.VtsService` identifier with name format :obj:`NAME:VERSION`.
+            ``NAME`` can be accessed via :meth:`~vtsserving.VtsService.name` and ``VERSION`` can
+            be accessed via :meth:`~vtsserving.VtsService.version`
 ```
 
 For optional arguments, follow the following syntax. For example a function ```func()``` with following signature:
@@ -275,5 +275,5 @@ should be the type of the return, followed by a line return. An example for a re
 
 ```markdown
     Returns:
-        :obj:`Dict[str,str]` with keys are :class:`~vtsserving.BentoService` nametag following with saved bundle path.
+        :obj:`Dict[str,str]` with keys are :class:`~vtsserving.VtsService` nametag following with saved bundle path.
 ```

@@ -1,6 +1,6 @@
 # pragma: no cover
 """
-Specific types for BentoService gRPC server.
+Specific types for VtsService gRPC server.
 """
 from __future__ import annotations
 
@@ -15,17 +15,17 @@ if TYPE_CHECKING:
 
     from vtsserving.grpc.v1.service_pb2 import Request
     from vtsserving.grpc.v1.service_pb2 import Response
-    from vtsserving.grpc.v1.service_pb2_grpc import BentoServiceServicer
+    from vtsserving.grpc.v1.service_pb2_grpc import VtsServiceServicer
 
     P = t.TypeVar("P")
 
-    BentoServicerContext = aio.ServicerContext[Request, Response]
+    VtsServicerContext = aio.ServicerContext[Request, Response]
 
     RequestDeserializerFn = t.Callable[[Request | None], object] | None
     ResponseSerializerFn = t.Callable[[bytes], Response | None] | None
 
-    HandlerMethod = t.Callable[[Request, BentoServicerContext], P]
-    AsyncHandlerMethod = t.Callable[[Request, BentoServicerContext], t.Awaitable[P]]
+    HandlerMethod = t.Callable[[Request, VtsServicerContext], P]
+    AsyncHandlerMethod = t.Callable[[Request, VtsServicerContext], t.Awaitable[P]]
 
     class RpcMethodHandler(
         t.NamedTuple(
@@ -97,8 +97,8 @@ if TYPE_CHECKING:
     __all__ = [
         "Request",
         "Response",
-        "BentoServicerContext",
-        "BentoServiceServicer",
+        "VtsServicerContext",
+        "VtsServiceServicer",
         "HandlerCallDetails",
         "RpcMethodHandler",
     ]

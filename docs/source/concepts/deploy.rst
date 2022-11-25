@@ -13,7 +13,7 @@ The three most common deployment options with VtsServing are:
 - `🚀 vtsctl <https://github.com/vtsserving/vtsctl>`_: Fast model deployment on any cloud platform
 
 
-Containerize Bentos
+Containerize Vtss
 -------------------
 
 Containerizing vtss as Docker images allows users to easily distribute and deploy
@@ -101,7 +101,7 @@ CLI command:
 
     vtsserving yatai login --api-token {YOUR_TOKEN_GOES_HERE} --endpoint http://yatai.127.0.0.1.sslip.io
 
-Push your local Bentos to yatai:
+Push your local Vtss to yatai:
 
 .. code:: python
 
@@ -165,14 +165,14 @@ Deploy via kubectl and CRD
 
 For DevOps managing production model serving workloads along with other kubernetes
 resources, the best option is to use :code:`kubectl` and directly create
-:code:`BentoDeployment` objects in the cluster, which will be handled by the Yatai
+:code:`VtsDeployment` objects in the cluster, which will be handled by the Yatai
 deployment CRD controller.
 
 .. code:: yaml
 
     # my_deployment.yaml
     apiVersion: serving.yatai.ai/v1alpha2
-    kind: BentoDeployment
+    kind: VtsDeployment
     metadata:
       name: demo
     spec:
@@ -192,7 +192,7 @@ deployment CRD controller.
 Deploy with vtsctl
 --------------------
 
-:code:`vtsctl` is a CLI tool for deploying Bentos to run on any cloud platform. It
+:code:`vtsctl` is a CLI tool for deploying Vtss to run on any cloud platform. It
 supports all major cloud providers, including AWS, Azure, Google Cloud, and many more.
 
 Underneath, :code:`vtsctl` is powered by Terraform. :code:`vtsctl` adds required
@@ -220,7 +220,7 @@ deployment configurations:
 
     > vtsctl init
 
-    Bentoctl Interactive Deployment Config Builder
+    Vtsctl Interactive Deployment Config Builder
     ...
 
     deployment config generated to: deployment_config.yaml

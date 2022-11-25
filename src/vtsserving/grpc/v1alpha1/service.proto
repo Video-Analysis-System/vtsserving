@@ -14,8 +14,8 @@ option java_package = "com.vtsserving.grpc.v1alpha1";
 option objc_class_prefix = "SVC";
 option py_generic_services = true;
 
-// a gRPC BentoServer.
-service BentoService {
+// a gRPC VtsServer.
+service VtsService {
   // Call handles methodcaller of given API entrypoint.
   rpc Call(Request) returns (Response) {}
 }

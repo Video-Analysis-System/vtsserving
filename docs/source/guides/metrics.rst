@@ -4,7 +4,7 @@ Metrics
 
 Metrics are measurements of statistics about your service, which can provide information about the usage and performance of your vtss in production.
 
-VtsServing allows users to define custom metrics with `Prometheus <https://prometheus.io/docs/introduction/overview/>`_ to easily enable monitoring for their Bentos.
+VtsServing allows users to define custom metrics with `Prometheus <https://prometheus.io/docs/introduction/overview/>`_ to easily enable monitoring for their Vtss.
  
 This article will dive into the default metrics and how to add custom metrics for
 either a :ref:`concepts/runner:Custom Runner` or :ref:`Service <concepts/service:Service and APIs>`.
@@ -13,7 +13,7 @@ Having a `Prometheus server <https://prometheus.io/docs/prometheus/latest/gettin
 
 .. note::
 
-   This article assumes that you have a base understanding of a BentoService. If you
+   This article assumes that you have a base understanding of a VtsService. If you
    are new to VtsServing, please start with :ref:`the quickstart tutorial <tutorial:Tutorial: Intro to VtsServing>`.
 
 .. seealso::
@@ -227,7 +227,7 @@ invocation for ``analysis`` by polarity scores.
 
        .. code-block:: bash
 
-          » grpcurl -d @ -plaintext 0.0.0.0:3000 vtsserving.grpc.v1.BentoService/Call <<EOT
+          » grpcurl -d @ -plaintext 0.0.0.0:3000 vtsserving.grpc.v1.VtsService/Call <<EOT
             {
               "apiName": "predict",
               "serializedBytes": "..."

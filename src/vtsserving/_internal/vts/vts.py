@@ -31,10 +31,10 @@ from ..runner import Runner
 from ...exceptions import InvalidArgument
 from ...exceptions import VtsServingException
 from .build_config import CondaOptions
-from .build_config import BentoPathSpec
+from .build_config import VtsPathSpec
 from .build_config import DockerOptions
 from .build_config import PythonOptions
-from .build_config import BentoBuildConfig
+from .build_config import VtsBuildConfig
 from ..configuration import VTSSERVING_VERSION
 from ..configuration.containers import VtsServingContainer
 
@@ -120,7 +120,7 @@ class Vts(StoreItem):
     _tag: Tag = attr.field()
     __fs: FS = attr.field()
 
-    _info: BentoInfo
+    _info: VtsInfo
 
     _model_store: ModelStore
     _doc: t.Optional[str] = None
@@ -139,7 +139,7 @@ class Vts(StoreItem):
             pass
         self._model_store = ModelStore(new_fs.opendir("models"))
 
-    def __init__(self, tag: Tag, vts_fs: "FS", info: "BentoInfo"):
+    def __init__(self, tag: Tag, vts_fs: "FS", info: "VtsInfo"):
         self._tag = tag
         self.__fs = vts_fs
         self.check_fs(None, vts_fs)
@@ -154,14 +154,14 @@ class Vts(StoreItem):
         return self.__fs
 
     @property
-    def info(self) -> BentoInfo:
+    def info(self) -> VtsInfo:
         return self._info
 
     @classmethod
     @inject
     def create(
         cls,
-        build_config: BentoBuildConfig,
+        build_config: VtsBuildConfig,
         version: t.Optional[str] = None,
         build_ctx: t.Optional[str] = None,
     ) -> Vts:
@@ -211,7 +211,7 @@ class Vts(StoreItem):
         # Apply default build options
         build_config = build_config.with_defaults()
         # create ignore specs
-        specs = BentoPathSpec(build_config.include, build_config.exclude)  # type: ignore (unfinished attrs converter type)
+        specs = VtsPathSpec(build_config.include, build_config.exclude)  # type: ignore (unfinished attrs converter type)
 
         # Copy all files base on include and exclude, into `src` directory
         relpaths = [s for s in build_config.include if s.startswith("../")]
@@ -263,14 +263,14 @@ class Vts(StoreItem):
         res = Vts(
             tag,
             vts_fs,
-            BentoInfo(
+            VtsInfo(
                 tag=tag,
                 service=svc,  # type: ignore # attrs converters do not typecheck
                 labels=build_config.labels,
-                models=[BentoModelInfo.from_vts_model(m) for m in models],
-                runners=[BentoRunnerInfo.from_runner(r) for r in svc.runners],
+                models=[VtsModelInfo.from_vts_model(m) for m in models],
+                runners=[VtsRunnerInfo.from_runner(r) for r in svc.runners],
                 apis=[
-                    BentoApiInfo.from_inference_api(api) for api in svc.apis.values()
+                    VtsApiInfo.from_inference_api(api) for api in svc.apis.values()
                 ],
                 docker=build_config.docker,
                 python=build_config.python,
@@ -290,7 +290,7 @@ class Vts(StoreItem):
     def from_fs(cls, item_fs: FS) -> Vts:
         try:
             with item_fs.open(VTS_YAML_FILENAME, "r", encoding="utf-8") as vts_yaml:
-                info = BentoInfo.from_yaml_file(vts_yaml)
+                info = VtsInfo.from_yaml_file(vts_yaml)
         except fs.errors.ResourceNotFound:
             raise VtsServingException(
                 f"Failed to load vts because it does not contain a '{VTS_YAML_FILENAME}'"
@@ -331,7 +331,7 @@ class Vts(StoreItem):
     @inject
     def save(
         self,
-        vts_store: "BentoStore" = Provide[VtsServingContainer.vts_store],
+        vts_store: "VtsStore" = Provide[VtsServingContainer.vts_store],
     ) -> "Vts":
         try:
             self.validate()
@@ -356,20 +356,20 @@ class Vts(StoreItem):
         return f'Vts(tag="{self.tag}")'
 
 
-class BentoStore(Store[Vts]):
+class VtsStore(Store[Vts]):
     def __init__(self, base_path: t.Union[PathType, "FS"]):
         super().__init__(base_path, Vts)
 
 
 @attr.frozen
-class BentoRunnerInfo:
+class VtsRunnerInfo:
     name: str
     runnable_type: str
     models: t.List[str] = attr.field(factory=list)
     resource_config: t.Optional[t.Dict[str, t.Any]] = attr.field(default=None)
 
     @classmethod
-    def from_runner(cls, r: Runner) -> BentoRunnerInfo:
+    def from_runner(cls, r: Runner) -> VtsRunnerInfo:
         return cls(
             name=r.name,
             runnable_type=r.runnable_class.__name__,
@@ -379,13 +379,13 @@ class BentoRunnerInfo:
 
 
 @attr.frozen
-class BentoApiInfo:
+class VtsApiInfo:
     name: str
     input_type: str
     output_type: str
 
     @classmethod
-    def from_inference_api(cls, api: InferenceAPI) -> BentoApiInfo:
+    def from_inference_api(cls, api: InferenceAPI) -> VtsApiInfo:
         return cls(
             name=api.name,
             input_type=api.input.__class__.__name__,
@@ -394,13 +394,13 @@ class BentoApiInfo:
 
 
 @attr.frozen
-class BentoModelInfo:
+class VtsModelInfo:
     tag: Tag = attr.field(converter=Tag.from_taglike)
     module: str
     creation_time: datetime
 
     @classmethod
-    def from_vts_model(cls, vts_model: Model) -> BentoModelInfo:
+    def from_vts_model(cls, vts_model: Model) -> VtsModelInfo:
         return cls(
             tag=vts_model.tag,
             module=vts_model.info.module,
@@ -409,9 +409,9 @@ class BentoModelInfo:
 
 
 @attr.frozen(repr=False)
-class BentoInfo:
+class VtsInfo:
 
-    # for backward compatibility in case new fields are added to BentoInfo.
+    # for backward compatibility in case new fields are added to VtsInfo.
     __forbid_extra_keys__ = False
     # omit field in yaml file if it is not provided by the user.
     __omit_if_default__ = True
@@ -422,14 +422,14 @@ class BentoInfo:
     )
     name: str = attr.field(init=False)
     version: str = attr.field(init=False)
-    # using factory explicitly instead of default because omit_if_default is enabled for BentoInfo
+    # using factory explicitly instead of default because omit_if_default is enabled for VtsInfo
     vtsserving_version: str = attr.field(factory=lambda: VTSSERVING_VERSION)
     creation_time: datetime = attr.field(factory=lambda: datetime.now(timezone.utc))
 
     labels: t.Dict[str, t.Any] = attr.field(factory=dict)
-    models: t.List[BentoModelInfo] = attr.field(factory=list)
-    runners: t.List[BentoRunnerInfo] = attr.field(factory=list)
-    apis: t.List[BentoApiInfo] = attr.field(factory=list)
+    models: t.List[VtsModelInfo] = attr.field(factory=list)
+    runners: t.List[VtsRunnerInfo] = attr.field(factory=list)
+    apis: t.List[VtsApiInfo] = attr.field(factory=list)
     docker: DockerOptions = attr.field(factory=lambda: DockerOptions().with_defaults())
     python: PythonOptions = attr.field(factory=lambda: PythonOptions().with_defaults())
     conda: CondaOptions = attr.field(factory=lambda: CondaOptions().with_defaults())
@@ -451,7 +451,7 @@ class BentoInfo:
         return yaml.dump(self, stream, sort_keys=False)
 
     @classmethod
-    def from_yaml_file(cls, stream: t.IO[t.Any]) -> BentoInfo:
+    def from_yaml_file(cls, stream: t.IO[t.Any]) -> VtsInfo:
         try:
             yaml_content = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
@@ -468,7 +468,7 @@ class BentoInfo:
         if "runners" in yaml_content:
             runners = yaml_content["runners"]
             for r in runners:
-                if "runner_type" in r:  # BentoRunnerInfo prior to 1.0.0rc1 release
+                if "runner_type" in r:  # VtsRunnerInfo prior to 1.0.0rc1 release
                     r["runnable_type"] = r["runner_type"]
                     del r["runner_type"]
                     if "model_runner_module" in r:
@@ -499,23 +499,23 @@ class BentoInfo:
 
 
 vtsserving_cattr.register_structure_hook_func(
-    lambda cls: issubclass(cls, BentoInfo),
+    lambda cls: issubclass(cls, VtsInfo),
     make_dict_structure_fn(
-        BentoInfo,
+        VtsInfo,
         vtsserving_cattr,
         name=override(omit=True),
         version=override(omit=True),
     ),
 )
 vtsserving_cattr.register_unstructure_hook(
-    BentoInfo,
+    VtsInfo,
     # Ignore tag, tag is saved via the name and version field
-    make_dict_unstructure_fn(BentoInfo, vtsserving_cattr, tag=override(omit=True)),
+    make_dict_unstructure_fn(VtsInfo, vtsserving_cattr, tag=override(omit=True)),
 )
 
 
-def _BentoInfo_dumper(dumper: yaml.Dumper, info: BentoInfo) -> yaml.Node:
+def _VtsInfo_dumper(dumper: yaml.Dumper, info: VtsInfo) -> yaml.Node:
     return dumper.represent_dict(info.to_dict())
 
 
-yaml.add_representer(BentoInfo, _BentoInfo_dumper)  # type: ignore (incomplete yaml types)
+yaml.add_representer(VtsInfo, _VtsInfo_dumper)  # type: ignore (incomplete yaml types)

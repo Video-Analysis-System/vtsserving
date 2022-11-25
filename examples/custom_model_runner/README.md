@@ -3,7 +3,7 @@
 This example showcases how one can extend VtsServing's provided runner and build a custom Runner. See [our documentation][#custom-runner] on Runners.
 
 This example will also demonstrate how one can create custom metrics to monitor the model's performance.
-We will provide two Prometheus configs to use for either HTTP or gRPC BentoServer for demonstration.
+We will provide two Prometheus configs to use for either HTTP or gRPC VtsServer for demonstration.
 
 ### Requirements
 
@@ -76,7 +76,7 @@ curl -F 'image=@mnist_png/testing/8/1007.png' http://127.0.0.1:3000/predict
 <td>
 
 ```bash
-grpcurl -d @ -plaintext 0.0.0.0:3000 vtsserving.grpc.v1.BentoService/Call <<EOM
+grpcurl -d @ -plaintext 0.0.0.0:3000 vtsserving.grpc.v1.VtsService/Call <<EOM
 {
   "apiName": "classify",
   "file": {

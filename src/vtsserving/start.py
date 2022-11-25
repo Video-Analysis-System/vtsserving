@@ -215,7 +215,7 @@ def start_http_server(
     with track_serve(svc, production=True, component=API_SERVER):
         arbiter.start(
             cb=lambda _: logger.info(  # type: ignore
-                'Starting bare %s BentoServer from "%s" running on %s://%s:%d (Press CTRL+C to quit)',
+                'Starting bare %s VtsServer from "%s" running on %s://%s:%d (Press CTRL+C to quit)',
                 scheme.upper(),
                 vts_identifier,
                 scheme,
@@ -362,7 +362,7 @@ def start_grpc_server(
     with track_serve(svc, production=True, component=API_SERVER, serve_kind="grpc"):
         arbiter.start(
             cb=lambda _: logger.info(  # type: ignore
-                'Starting bare %s BentoServer from "%s" running on %s://%s:%d (Press CTRL+C to quit)',
+                'Starting bare %s VtsServer from "%s" running on %s://%s:%d (Press CTRL+C to quit)',
                 "gRPC",
                 vts_identifier,
                 scheme,

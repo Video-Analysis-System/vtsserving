@@ -1,5 +1,5 @@
 apiVersion: serving.yatai.ai/v1alpha2
-kind: BentoDeployment
+kind: VtsDeployment
 metadata:
   name: inference-graph-demo
   namespace: yatai

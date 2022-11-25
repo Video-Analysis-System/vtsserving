@@ -165,7 +165,7 @@ def save_model(
 
     assert not isinstance(
         script_module, dict
-    ), "Saving a dict of pytorch_lightning Module into one BentoModel is not supported"
+    ), "Saving a dict of pytorch_lightning Module into one VtsModel is not supported"
 
     return script_save_model(
         name,

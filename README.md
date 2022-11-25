@@ -1,4 +1,4 @@
-# The parody of BentoML
+# The parody of VtsML
 
 <!-- [<img src="https://raw.githubusercontent.com/vtsserving/VtsServing/main/docs/source/_static/img/vtsserving-readme-header.jpeg" width="600px" margin-left="-5px">](https://github.com/vtsserving/VtsServing)
 <br> -->
@@ -133,7 +133,7 @@ $ vtsserving containerize pytorch_mnist:4mymorgurocxjuqj
 Successfully built docker image "pytorch_mnist:4mymorgurocxjuqj"
 
 $ docker run -p 3000:3000 pytorch_mnist:4mymorgurocxjuqj
-Starting production BentoServer from "pytorch_mnist:4mymorgurocxjuqj" running on http://0.0.0.0:3000
+Starting production VtsServer from "pytorch_mnist:4mymorgurocxjuqj" running on http://0.0.0.0:3000
 ```
 
 <!-- For a more detailed user guide, check out the [VtsServing Tutorial](https://docs.vtsserving.org/en/latest/tutorial.html).

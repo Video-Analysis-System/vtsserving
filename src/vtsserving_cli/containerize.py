@@ -486,7 +486,7 @@ def add_containerize_command(cli: Group) -> None:
 
         \b
 
-        ``VTS`` is the target BentoService to be containerized, referenced by its name
+        ``VTS`` is the target VtsService to be containerized, referenced by its name
         and version in format of name:version. For example: ``iris_classifier:v1.2.0``
 
         \b

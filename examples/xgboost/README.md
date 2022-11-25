@@ -130,7 +130,7 @@ vtsserving serve agaricus:latest --production
 
 The Vts directory contains all code, files, models and configuration required to run this service.
 VtsServing standarizes this file structure, enabling serving runtimes and deployment tools to be built
-on top of it. By default, Bentos are managed under the `~/vtsserving/vtss` directory:
+on top of it. By default, Vtss are managed under the `~/vtsserving/vtss` directory:
 
 ```
 > cd $(vtsserving get agaricus:latest -o path)

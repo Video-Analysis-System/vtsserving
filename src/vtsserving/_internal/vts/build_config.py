@@ -686,11 +686,11 @@ def dict_options_converter(
 
 
 @attr.frozen
-class BentoBuildConfig:
+class VtsBuildConfig:
     """This class is intended for modeling the vtsfile.yaml file where user will
     provide all the options for building a Vts. All optional build options should be
     default to None so it knows which fields are NOT SET by the user provided config,
-    which makes it possible to omitted unset fields when writing a BentoBuildOptions to
+    which makes it possible to omitted unset fields when writing a VtsBuildOptions to
     a yaml file for future use. This also applies to nested options such as the
     DockerOptions class and the PythonOptions class.
     """
@@ -720,7 +720,7 @@ class BentoBuildConfig:
 
     if TYPE_CHECKING:
 
-        # NOTE: This is to ensure that BentoBuildConfig __init__
+        # NOTE: This is to ensure that VtsBuildConfig __init__
         # satisfies type checker. docker, python, and conda accepts
         # dict[str, t.Any] since our converter will handle the conversion.
         # There is no way to tell type checker signatures of the converter from attrs
@@ -774,15 +774,15 @@ class BentoBuildConfig:
                         f"{self.docker.cuda_version} is not supported for {self.docker.distro}. Supported cuda versions are: {', '.join(spec.supported_cuda_versions)}."
                     )
 
-    def with_defaults(self) -> FilledBentoBuildConfig:
+    def with_defaults(self) -> FilledVtsBuildConfig:
         """
         Convert from user provided options to actual build options with defaults
         values filled in.
 
         Returns:
-            BentoBuildConfig: a new copy of self, with default values filled
+            VtsBuildConfig: a new copy of self, with default values filled
         """
-        return FilledBentoBuildConfig(
+        return FilledVtsBuildConfig(
             self.service,
             self.description,
             {} if self.labels is None else self.labels,
@@ -794,7 +794,7 @@ class BentoBuildConfig:
         )
 
     @classmethod
-    def from_yaml(cls, stream: t.TextIO) -> BentoBuildConfig:
+    def from_yaml(cls, stream: t.TextIO) -> VtsBuildConfig:
         try:
             yaml_content = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
@@ -812,13 +812,13 @@ class BentoBuildConfig:
                 raise InvalidArgument(str(e)) from e
 
     def to_yaml(self, stream: t.TextIO) -> None:
-        # TODO: Save BentoBuildOptions to a yaml file
+        # TODO: Save VtsBuildOptions to a yaml file
         # This is reserved for building interactive build file creation CLI
         raise NotImplementedError
 
 
 @attr.define(frozen=True)
-class BentoPathSpec:
+class VtsPathSpec:
     _include: PathSpec = attr.field(
         converter=lambda x: PathSpec.from_lines("gitwildmatch", x)
     )
@@ -861,7 +861,7 @@ class BentoPathSpec:
             yield dir_path, PathSpec.from_lines("gitwildmatch", fs_.open(file))
 
 
-class FilledBentoBuildConfig(BentoBuildConfig):
+class FilledVtsBuildConfig(VtsBuildConfig):
     service: str
     description: t.Optional[str]
     labels: t.Dict[str, t.Any]

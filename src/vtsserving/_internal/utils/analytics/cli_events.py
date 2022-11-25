@@ -2,7 +2,7 @@ import typing as t
 from typing import TYPE_CHECKING
 
 from .. import calc_dir_size
-from .schemas import BentoBuildEvent
+from .schemas import VtsBuildEvent
 
 if TYPE_CHECKING:
     from ...vts.vts import Vts
@@ -12,10 +12,10 @@ def _cli_vtsserving_build_event(
     cmd_group: str,
     cmd_name: str,
     return_value: "t.Optional[Vts]",
-) -> BentoBuildEvent:  # pragma: no cover
+) -> VtsBuildEvent:  # pragma: no cover
     if return_value is not None:
         vts = return_value
-        return BentoBuildEvent(
+        return VtsBuildEvent(
             cmd_group=cmd_group,
             cmd_name=cmd_name,
             vts_creation_timestamp=vts.info.creation_time,
@@ -27,7 +27,7 @@ def _cli_vtsserving_build_event(
             runnable_types=[r.runnable_type for r in vts.info.runners],
         )
     else:
-        return BentoBuildEvent(
+        return VtsBuildEvent(
             cmd_group=cmd_group,
             cmd_name=cmd_name,
         )

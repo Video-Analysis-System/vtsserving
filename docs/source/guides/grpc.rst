@@ -41,10 +41,10 @@ Thats it! You can now serve your Vts with gRPC via :ref:`vtsserving serve-grpc <
 
    » vtsserving serve-grpc iris_classifier:latest --production
 
-Using your gRPC BentoService
+Using your gRPC VtsService
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There are two ways to interact with your gRPC BentoService:
+There are two ways to interact with your gRPC VtsService:
 
 1. Use tools such as :github:`fullstorydev/grpcurl`, :github:`fullstorydev/grpcui`: 
    The server requires :github:`reflection <grpc/grpc/blob/master/doc/server-reflection.md>` to be enabled for those tools to work.
@@ -58,7 +58,7 @@ There are two ways to interact with your gRPC BentoService:
 
    Open a different terminal and use one of the following:
 
-2. Use one of the below :ref:`client implementations <guides/grpc:Client Implementation>` to send test requests to your BentoService.
+2. Use one of the below :ref:`client implementations <guides/grpc:Client Implementation>` to send test requests to your VtsService.
 
 .. _workspace: https://bazel.build/concepts/build-ref
 
@@ -261,7 +261,7 @@ gRPC server:
          » mkdir -p ~/workspace/iris_java_client
          » cd ~/workspace/iris_java_client
 
-      Create the client Java package (``com.client.BentoServiceClient``):
+      Create the client Java package (``com.client.VtsServiceClient``):
 
       .. code-block:: bash
 
@@ -312,11 +312,11 @@ gRPC server:
 
                » ./gradlew build
 
-      Proceed to create a ``src/main/java/com/client/BentoServiceClient.java`` file with the following content:
+      Proceed to create a ``src/main/java/com/client/VtsServiceClient.java`` file with the following content:
 
-      .. literalinclude:: ../../../grpc-client/java/src/main/java/com/client/BentoServiceClient.java
+      .. literalinclude:: ../../../grpc-client/java/src/main/java/com/client/VtsServiceClient.java
          :language: java
-         :caption: `BentoServiceClient.java`
+         :caption: `VtsServiceClient.java`
 
       .. dropdown:: On running ``protoc`` standalone (optional)
          :icon: book
@@ -395,11 +395,11 @@ gRPC server:
 
                » ./gradlew build
 
-      Proceed to create a ``src/main/kotlin/com/client/BentoServiceClient.kt`` file with the following content:
+      Proceed to create a ``src/main/kotlin/com/client/VtsServiceClient.kt`` file with the following content:
 
-      .. literalinclude:: ../../../grpc-client/kotlin/src/main/kotlin/com/client/BentoServiceClient.kt
+      .. literalinclude:: ../../../grpc-client/kotlin/src/main/kotlin/com/client/VtsServiceClient.kt
          :language: java
-         :caption: `BentoServiceClient.kt`
+         :caption: `VtsServiceClient.kt`
 
       .. dropdown:: On running ``protoc`` standalone (optional)
          :icon: book
@@ -503,9 +503,9 @@ gRPC server:
                   --plugin=protoc-gen-grpc-swift=$(which protoc-gen-grpc-swift) \
                   vtsserving/grpc/v1/service.proto
 
-      Proceed to create a ``Sources/BentoServiceClient/main.swift`` file with the following content:
+      Proceed to create a ``Sources/VtsServiceClient/main.swift`` file with the following content:
 
-      .. literalinclude:: ../../../grpc-client/swift/Sources/BentoServiceClient/main.swift
+      .. literalinclude:: ../../../grpc-client/swift/Sources/VtsServiceClient/main.swift
          :language: swift
          :caption: `main.swift`
 
@@ -551,11 +551,11 @@ gRPC server:
                   --plugin=protoc-gen-grpc=$(which grpc_php_plugin) \
                   vtsserving/grpc/v1/service.proto
 
-      Proceed to create a ``BentoServiceClient.php`` file with the following content:
+      Proceed to create a ``VtsServiceClient.php`` file with the following content:
 
-      .. literalinclude:: ../../../grpc-client/php/BentoServiceClient.php
+      .. literalinclude:: ../../../grpc-client/php/VtsServiceClient.php
          :language: php
-         :caption: `BentoServiceClient.php`
+         :caption: `VtsServiceClient.php`
 
 .. TODO::
 
@@ -678,14 +678,14 @@ Then you can proceed to run the client scripts:
 
       .. code-block:: bash
 
-         » swift run BentoServiceClient
+         » swift run VtsServiceClient
 
    .. tab-item:: PHP
       :sync: php
 
       .. code-block:: bash
 
-         » php -d extension=/path/to/grpc.so -d max_execution_time=300 BentoServiceClient.php
+         » php -d extension=/path/to/grpc.so -d max_execution_time=300 VtsServiceClient.php
 
 
 .. dropdown:: Additional language support for client implementation
@@ -734,7 +734,7 @@ dependencies to your Vts
 
    » vtsserving containerize iris_classifier:latest --enable-features=grpc
 
-``--enable-features`` allows users to containerize any of the existing Bentos with :ref:`additional features <concepts/vts:Enable features for your Vts>` that VtsServing provides without having to rebuild the Vts.
+``--enable-features`` allows users to containerize any of the existing Vtss with :ref:`additional features <concepts/vts:Enable features for your Vts>` that VtsServing provides without having to rebuild the Vts.
 
 .. note::
 
@@ -748,7 +748,7 @@ After containerization, your Vts container can now be used with gRPC:
                 -p 3000:3000 -p 3001:3001 \
                 iris_classifier:6otbsmxzq6lwbgxi serve-grpc --production
 
-Congratulations! You have successfully served, containerized and tested your BentoService with gRPC.
+Congratulations! You have successfully served, containerized and tested your VtsService with gRPC.
 
 -------------
 
@@ -760,11 +760,11 @@ We will dive into some of the details of how gRPC is implemented in VtsServing.
 Protobuf definition
 ~~~~~~~~~~~~~~~~~~~
 
-Let's take a quick look at `protobuf <https://developers.google.com/protocol-buffers/>`_  definition of the BentoService:
+Let's take a quick look at `protobuf <https://developers.google.com/protocol-buffers/>`_  definition of the VtsService:
 
 .. code-block:: protobuf
 
-   service BentoService {
+   service VtsService {
      rpc Call(Request) returns (Response) {}
    }
 
@@ -783,11 +783,11 @@ Let's take a quick look at `protobuf <https://developers.google.com/protocol-buf
          .. literalinclude:: ../../../src/vtsserving/grpc/v1alpha1/service.proto
             :language: protobuf
 
-As you can see, BentoService defines a `simple rpc` ``Call`` that sends a ``Request`` message and returns a ``Response`` message.
+As you can see, VtsService defines a `simple rpc` ``Call`` that sends a ``Request`` message and returns a ``Response`` message.
 
 A ``Request`` message takes in:
 
-* `api_name`: the name of the API function defined inside your BentoService. 
+* `api_name`: the name of the API function defined inside your VtsService. 
 * `oneof <https://developers.google.com/protocol-buffers/docs/proto3#oneof>`_ `content`: the field can be one of the following types:
 
 +------------------------------------------------------------------+-------------------------------------------------------------------------------------------+
@@ -1212,7 +1212,7 @@ VtsServing leverages the field to improve serialization performance between VtsS
 Mounting Servicer
 ~~~~~~~~~~~~~~~~~
 
-gRPC service :ref:`multiplexing <guides/grpc:Demystifying the misconception of gRPC vs. REST>` enables us to mount additional custom servicers alongside with BentoService,
+gRPC service :ref:`multiplexing <guides/grpc:Demystifying the misconception of gRPC vs. REST>` enables us to mount additional custom servicers alongside with VtsService,
 and serve them under the same port.
 
 .. code-block:: python
@@ -1299,7 +1299,7 @@ because VtsServing gRPC server is an async implementation of gRPC server.
           from vtsserving.grpc.types import RpcMethodHandler
           from vtsserving.grpc.types import AsyncHandlerMethod
           from vtsserving.grpc.types import HandlerCallDetails
-          from vtsserving.grpc.types import BentoServicerContext
+          from vtsserving.grpc.types import VtsServicerContext
 
 
       @dataclasses.dataclass
@@ -1328,7 +1328,7 @@ because VtsServing gRPC server is an async implementation of gRPC server.
                def wrapper(behaviour: AsyncHandlerMethod[Response]):
                    @functools.wraps(behaviour)
                    async def new_behaviour(
-                      request: Request, context: BentoServicerContext
+                      request: Request, context: VtsServicerContext
                    ) -> Response | t.Awaitable[Response]:
                        self._record.update(
                          {f"{self.context.usage}:{self.context.accuracy_score}"}
@@ -1348,7 +1348,7 @@ because VtsServing gRPC server is an async implementation of gRPC server.
 
                return wrap_rpc_handler(wrapper, handler)
 
-To add your intercptors to existing BentoService, use ``svc.add_grpc_interceptor``:
+To add your intercptors to existing VtsService, use ``svc.add_grpc_interceptor``:
 
 .. code-block:: python
    :caption: `service.py`

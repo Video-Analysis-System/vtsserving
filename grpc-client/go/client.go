@@ -25,7 +25,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	client := pb.NewBentoServiceClient(conn)
+	client := pb.NewVtsServiceClient(conn)
 
 	req := &pb.Request{
 		ApiName: "classify",

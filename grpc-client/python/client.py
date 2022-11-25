@@ -9,7 +9,7 @@ pb, services = import_generated_stubs()
 
 async def run():
     async with grpc.aio.insecure_channel("localhost:3000") as channel:
-        stub = services.BentoServiceStub(channel)
+        stub = services.VtsServiceStub(channel)
         req = await stub.Call(
             request=pb.Request(
                 api_name="classify",

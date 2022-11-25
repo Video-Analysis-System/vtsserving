@@ -166,8 +166,8 @@ We can now run the VtsServing server for our new service in development mode:
        .. code-block:: bash
 
           » vtsserving serve service:svc --reload
-          2022-09-18T21:11:22-0700 [INFO] [cli] Prometheus metrics for HTTP BentoServer from "service.py:svc" can be accessed at http://localhost:3000/metrics.
-          2022-09-18T21:11:22-0700 [INFO] [cli] Starting development HTTP BentoServer from "service.py:svc" listening on 0.0.0.0:3000 (Press CTRL+C to quit)
+          2022-09-18T21:11:22-0700 [INFO] [cli] Prometheus metrics for HTTP VtsServer from "service.py:svc" can be accessed at http://localhost:3000/metrics.
+          2022-09-18T21:11:22-0700 [INFO] [cli] Starting development HTTP VtsServer from "service.py:svc" listening on 0.0.0.0:3000 (Press CTRL+C to quit)
           2022-09-18 21:11:23 circus[80177] [INFO] Loading the plugin...
           2022-09-18 21:11:23 circus[80177] [INFO] Endpoint: 'tcp://127.0.0.1:61825'
           2022-09-18 21:11:23 circus[80177] [INFO] Pub/sub: 'tcp://127.0.0.1:61826'
@@ -179,8 +179,8 @@ We can now run the VtsServing server for our new service in development mode:
        .. code-block:: bash
 
           » vtsserving serve-grpc service:svc --reload --enable-reflection
-          2022-09-18T21:12:18-0700 [INFO] [cli] Prometheus metrics for gRPC BentoServer from "service.py:svc" can be accessed at http://localhost:3001.
-          2022-09-18T21:12:18-0700 [INFO] [cli] Starting development gRPC BentoServer from "service.py:svc" listening on 0.0.0.0:3000 (Press CTRL+C to quit)
+          2022-09-18T21:12:18-0700 [INFO] [cli] Prometheus metrics for gRPC VtsServer from "service.py:svc" can be accessed at http://localhost:3001.
+          2022-09-18T21:12:18-0700 [INFO] [cli] Starting development gRPC VtsServer from "service.py:svc" listening on 0.0.0.0:3000 (Press CTRL+C to quit)
           2022-09-18 21:12:19 circus[81102] [INFO] Loading the plugin...
           2022-09-18 21:12:19 circus[81102] [INFO] Endpoint: 'tcp://127.0.0.1:61849'
           2022-09-18 21:12:19 circus[81102] [INFO] Pub/sub: 'tcp://127.0.0.1:61850'
@@ -240,7 +240,7 @@ Send prediction request to the service:
                pb, services = import_generated_stubs()
 
                with grpc.insecure_channel("localhost:3000") as channel:
-                  stub = services.BentoServiceStub(channel)
+                  stub = services.VtsServiceStub(channel)
 
                   req: pb.Response = stub.Call(
                      request=pb.Request(
@@ -257,7 +257,7 @@ Send prediction request to the service:
          .. tab-item:: grpcURL
             :sync: curl-client
 
-            We will use `fullstorydev/grpcurl <https://github.com/fullstorydev/grpcurl>`_ to send a CURL-like request to the gRPC BentoServer.
+            We will use `fullstorydev/grpcurl <https://github.com/fullstorydev/grpcurl>`_ to send a CURL-like request to the gRPC VtsServer.
 
             Note that we will use `docker <https://docs.docker.com/get-docker/>`_ to run the ``grpcurl`` command.
 
@@ -268,7 +268,7 @@ Send prediction request to the service:
 
                   .. code-block:: bash
 
-                     » docker run -i --rm fullstorydev/grpcurl -d @ -plaintext host.docker.internal:3000 vtsserving.grpc.v1.BentoService/Call <<EOM
+                     » docker run -i --rm fullstorydev/grpcurl -d @ -plaintext host.docker.internal:3000 vtsserving.grpc.v1.VtsService/Call <<EOM
                      {
                         "apiName": "classify",
                         "ndarray": {
@@ -283,7 +283,7 @@ Send prediction request to the service:
 
                   .. code-block:: bash
 
-                     » docker run -i --rm --network=host fullstorydev/grpcurl -d @ -plaintext 0.0.0.0:3000 vtsserving.grpc.v1.BentoService/Call <<EOM
+                     » docker run -i --rm --network=host fullstorydev/grpcurl -d @ -plaintext 0.0.0.0:3000 vtsserving.grpc.v1.VtsService/Call <<EOM
                      {
                         "apiName": "classify",
                         "ndarray": {
@@ -325,7 +325,7 @@ Using Models in a Service
 
 In this example, ``vtsserving.sklearn.get`` creates a reference to the saved model
 in the model store, and ``to_runner`` creates a Runner instance from the model.
-The Runner abstraction gives BentoServer more flexibility in terms of how to schedule
+The Runner abstraction gives VtsServer more flexibility in terms of how to schedule
 the inference computation, how to dynamically batch inference calls and better take
 advantage of all hardware resource available.
 
@@ -464,8 +464,8 @@ For starters, you can now serve it with the ``vtsserving serve`` CLI command:
           » vtsserving serve iris_classifier:latest --production
 
           2022-09-18T21:22:17-0700 [INFO] [cli] Environ for worker 0: set CPU thread count to 10
-          2022-09-18T21:22:17-0700 [INFO] [cli] Prometheus metrics for HTTP BentoServer from "iris_classifier:latest" can be accessed at http://0.0.0.0:3000/metrics.
-          2022-09-18T21:22:18-0700 [INFO] [cli] Starting production HTTP BentoServer from "iris_classifier:latest" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
+          2022-09-18T21:22:17-0700 [INFO] [cli] Prometheus metrics for HTTP VtsServer from "iris_classifier:latest" can be accessed at http://0.0.0.0:3000/metrics.
+          2022-09-18T21:22:18-0700 [INFO] [cli] Starting production HTTP VtsServer from "iris_classifier:latest" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
 
     .. tab-item:: gRPC
        :sync: grpc
@@ -475,8 +475,8 @@ For starters, you can now serve it with the ``vtsserving serve`` CLI command:
           » vtsserving serve-grpc iris_classifier:latest --production
 
           2022-09-18T21:23:11-0700 [INFO] [cli] Environ for worker 0: set CPU thread count to 10
-          2022-09-18T21:23:11-0700 [INFO] [cli] Prometheus metrics for gRPC BentoServer from "iris_classifier:latest" can be accessed at http://0.0.0.0:3001.
-          2022-09-18T21:23:11-0700 [INFO] [cli] Starting production gRPC BentoServer from "iris_classifier:latest" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
+          2022-09-18T21:23:11-0700 [INFO] [cli] Prometheus metrics for gRPC VtsServer from "iris_classifier:latest" can be accessed at http://0.0.0.0:3001.
+          2022-09-18T21:23:11-0700 [INFO] [cli] Starting production gRPC VtsServer from "iris_classifier:latest" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
 
 .. note::
 
@@ -485,7 +485,7 @@ For starters, you can now serve it with the ``vtsserving serve`` CLI command:
 
 Vts is the unit of deployment in VtsServing, one of the most important artifacts to keep
 track of in your model deployment workflow. VtsServing provides CLI commands and APIs for
-managing Bentos and moving them around, see the :ref:`concepts/vts:Managing Bentos`
+managing Vtss and moving them around, see the :ref:`concepts/vts:Managing Vtss`
 section to learn more.
 
 
@@ -546,7 +546,7 @@ installed. The docker image tag will be same as the Vts tag by default:
    iris_classifier    6otbsmxzq6lwbgxi    0b4f5ec01941    10 seconds ago   1.06GB
 
 
-Run the docker image to start the BentoServer:
+Run the docker image to start the VtsServer:
 
 .. tab-set::
 
@@ -560,8 +560,8 @@ Run the docker image to start the BentoServer:
           2022-09-19T05:27:31+0000 [INFO] [cli] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
           2022-09-19T05:27:31+0000 [WARNING] [cli] GPU not detected. Unable to initialize pynvml lib.
           2022-09-19T05:27:31+0000 [INFO] [cli] Environ for worker 0: set CPU thread count to 4
-          2022-09-19T05:27:31+0000 [INFO] [cli] Prometheus metrics for HTTP BentoServer from "/home/vtsserving/vts" can be accessed at http://0.0.0.0:3000/metrics.
-          2022-09-19T05:27:32+0000 [INFO] [cli] Starting production HTTP BentoServer from "/home/vtsserving/vts" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
+          2022-09-19T05:27:31+0000 [INFO] [cli] Prometheus metrics for HTTP VtsServer from "/home/vtsserving/vts" can be accessed at http://0.0.0.0:3000/metrics.
+          2022-09-19T05:27:32+0000 [INFO] [cli] Starting production HTTP VtsServer from "/home/vtsserving/vts" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
           2022-09-19T05:27:32+0000 [INFO] [api_server:2] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
           2022-09-19T05:27:32+0000 [INFO] [api_server:1] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
           2022-09-19T05:27:32+0000 [INFO] [runner:iris_clf:1] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
@@ -578,8 +578,8 @@ Run the docker image to start the BentoServer:
           2022-09-19T05:28:29+0000 [INFO] [cli] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
           2022-09-19T05:28:29+0000 [WARNING] [cli] GPU not detected. Unable to initialize pynvml lib.
           2022-09-19T05:28:29+0000 [INFO] [cli] Environ for worker 0: set CPU thread count to 4
-          2022-09-19T05:28:29+0000 [INFO] [cli] Prometheus metrics for gRPC BentoServer from "/home/vtsserving/vts" can be accessed at http://0.0.0.0:3001.
-          2022-09-19T05:28:30+0000 [INFO] [cli] Starting production gRPC BentoServer from "/home/vtsserving/vts" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
+          2022-09-19T05:28:29+0000 [INFO] [cli] Prometheus metrics for gRPC VtsServer from "/home/vtsserving/vts" can be accessed at http://0.0.0.0:3001.
+          2022-09-19T05:28:30+0000 [INFO] [cli] Starting production gRPC VtsServer from "/home/vtsserving/vts" running on http://0.0.0.0:3000 (Press CTRL+C to quit)
           2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:2] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
           2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:4] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
           2022-09-19T05:28:30+0000 [INFO] [grpc_api_server:3] Service loaded from Vts directory: vtsserving.Service(tag="iris_classifier:6otbsmxzq6lwbgxi", path="/home/vtsserving/vts/")
@@ -593,7 +593,7 @@ moving to a production deployment. This helps verify the correctness of all the 
 and dependency configs specified in the ``vtsfile.yaml``.
 
 
-Deploying Bentos
+Deploying Vtss
 ----------------
 
 VtsServing standardizes the saved model format, service API definition and the Vts build
@@ -606,7 +606,7 @@ docker images can be directly deployed to your infrastructure without any modifi
 
 .. note::
 
-   To streamline the deployment process, BentoServer follows most common best practices
+   To streamline the deployment process, VtsServer follows most common best practices
    found in a backend service: it provides
    :doc:`health check and prometheus metrics <guides/monitoring>`
    endpoints for monitoring out-of-the-box; It provides configurable

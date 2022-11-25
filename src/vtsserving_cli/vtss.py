@@ -88,7 +88,7 @@ def add_vts_management_commands(cli: Group):
         default="table",
     )
     def list_vtss(vts_name: str, output: str) -> None:  # type: ignore (not accessed)
-        """List Bentos in local store
+        """List Vtss in local store
 
         \b
         # show all vtss saved

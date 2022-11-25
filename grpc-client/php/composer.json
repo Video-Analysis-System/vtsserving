@@ -9,7 +9,7 @@
     "autoload": {
         "psr-4": {
             "GBPMetadata\\": "GPBMetadata/",
-            "Bentoml\\": "Bentoml"
+            "Vtsml\\": "Vtsml"
         }
     },
     "authors": [
