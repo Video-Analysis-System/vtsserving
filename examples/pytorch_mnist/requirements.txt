@@ -1,4 +1,0 @@
-scikit-learn
-torch
-torchvision
-vtsserving>=1.0.0

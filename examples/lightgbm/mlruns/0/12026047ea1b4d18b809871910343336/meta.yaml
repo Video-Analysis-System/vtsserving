@@ -1,0 +1,15 @@
+artifact_uri: file:///home/tungn197-2/code/demo_vtsserving/examples/mlflow/lightgbm/mlruns/0/12026047ea1b4d18b809871910343336/artifacts
+end_time: 1669891517155
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 12026047ea1b4d18b809871910343336
+run_name: fun-turtle-168
+run_uuid: 12026047ea1b4d18b809871910343336
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1669891514861
+status: 3
+tags: []
+user_id: tungn197-2

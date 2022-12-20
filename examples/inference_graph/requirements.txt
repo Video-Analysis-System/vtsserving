@@ -1,3 +1,0 @@
-vtsserving>=1.0.0
-torch
-transformers==4.11.3

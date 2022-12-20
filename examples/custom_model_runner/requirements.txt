@@ -1,3 +1,0 @@
-vtsserving
-torch
-torchvision

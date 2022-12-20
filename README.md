@@ -1,4 +1,10 @@
-# The parody of VtsML
+# VTSServing
+
+## Installation
+In your terminal, run the following script:
+```bat
+pip install git+https://github.com/tungedng2710/vtsserving.git
+```
 
 <!-- [<img src="https://raw.githubusercontent.com/vtsserving/VtsServing/main/docs/source/_static/img/vtsserving-readme-header.jpeg" width="600px" margin-left="-5px">](https://github.com/vtsserving/VtsServing)
 <br> -->
@@ -33,7 +39,7 @@ for the easiest and fastest way to deploy your vts.
 ## Highlights
 
 🍭 Unified Model Serving API
-
+pip install git+https://github.com/tungedng2710/vtsserving.git
 - Framework-agnostic model packaging for Tensorflow, PyTorch, XGBoost, Scikit-Learn, ONNX, and [many more](https://docs.vtsserving.org/en/latest/frameworks/index.html)!
 - Write **custom Python code** alongside model inference for pre/post-processing and business logic
 - Apply the **same code** for online(REST API or gRPC), offline batch, and streaming inference
@@ -192,3 +198,13 @@ export VTSSERVING_DO_NOT_TRACK=True
 [Apache License 2.0](https://github.com/vtsserving/VtsServing/blob/main/LICENSE)
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fvtsserving%2FVtsServing.svg?type=small)](https://app.fossa.com/projects/git%2Bgithub.com%2Fvtsserving%2FVtsServing?ref=badge_small) -->
+## Examples
+Some examples are placed under the ```examples``` folder, please checkout it.
+
+For instance, with ```torch_hub_yolov5```, run the following commands
+```bat
+cd examples/torch_hub_yolov5
+pip install -r requirements.txt
+vtsserving serve service.py:svc --reload
+```
+In the first run, the YOLOv5s model will be downloaded from ```torch.hub```. Then open the web page to try it out (default address: http://0.0.0.0:3000). I also provided some samples in the ```test_images``` folder. For other example, you may have to train the model before serving them.

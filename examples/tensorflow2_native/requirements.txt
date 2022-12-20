@@ -1,3 +1,0 @@
-tensorflow
-pillow
-vtsserving>=1.0.0

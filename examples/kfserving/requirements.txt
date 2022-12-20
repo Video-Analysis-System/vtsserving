@@ -1,4 +1,0 @@
-scikit-learn
-pandas
-vtsserving>=1.0.0
-pydantic

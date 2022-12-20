@@ -1,0 +1,15 @@
+artifact_uri: file:///home/tungn197-2/code/demo_vtsserving/examples/mlflow/lightgbm/mlruns/0/f9388b5aa1784f1192e9bdc8fb572e05/artifacts
+end_time: 1671500581881
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: f9388b5aa1784f1192e9bdc8fb572e05
+run_name: vaunted-hog-429
+run_uuid: f9388b5aa1784f1192e9bdc8fb572e05
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1671500578955
+status: 3
+tags: []
+user_id: tungn197-2
