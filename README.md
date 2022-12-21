@@ -3,7 +3,7 @@
 ## Installation
 In your terminal, run the following script:
 ```bat
-pip install git+https://github.com/tungedng2710/vtsserving.git
+pip install git+https://github.com/Video-Analysis-System/vtsserving.git
 ```
 
 <!-- [<img src="https://raw.githubusercontent.com/vtsserving/VtsServing/main/docs/source/_static/img/vtsserving-readme-header.jpeg" width="600px" margin-left="-5px">](https://github.com/vtsserving/VtsServing)
